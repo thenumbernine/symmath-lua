@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>quaternion basis as coordinates</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+${\eta} = {\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& -1& 0& 0\\ 0& 0& -1& 0\\ 0& 0& 0& -1\end{array}\right]}$
+<br>
+${{{{ K} _x} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& -1& 0& 0\\ 1& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+${{{{ K} _y} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& 0& -1& 0\\ 0& 0& 0& 0\\ 1& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+${{{{ K} _z} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& 0& 0& -1\\ 0& 0& 0& 0\\ 0& 0& 0& 0\\ 1& 0& 0& 0\end{array}\right]}$
+<br>
+${{{{ J} _x} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& -1\\ 0& 0& 1& 0\end{array}\right]}$
+${{{{ J} _y} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 1\\ 0& 0& 0& 0\\ 0& -1& 0& 0\end{array}\right]}$
+${{{{ J} _z} ^{\sharp}} _{\flat}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& -1& 0\\ 0& 1& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+<br>
+${{{{ K} _x} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 1& 0& 0\\ 1& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+${{{{ K} _y} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 0& 1& 0\\ 0& 0& 0& 0\\ 1& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+${{{{ K} _z} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 0& 0& 1\\ 0& 0& 0& 0\\ 0& 0& 0& 0\\ 1& 0& 0& 0\end{array}\right]}$
+<br>
+${{{{ J} _x} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 1\\ 0& 0& -{1}& 0\end{array}\right]}$
+${{{{ J} _y} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& -{1}\\ 0& 0& 0& 0\\ 0& 1& 0& 0\end{array}\right]}$
+${{{{ J} _z} ^{\sharp}} ^{\sharp}} = {\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 1& 0\\ 0& -{1}& 0& 0\\ 0& 0& 0& 0\end{array}\right]}$
+<br>
+$\left[\begin{array}{c|cccccc} [\cdot,\cdot]& {K_x}& {K_y}& {K_z}& {J_x}& {J_y}& {J_z}\\\hline {K_x}& 0& {J_z}& -{{J_y}}& 0& -{{K_z}}& {K_y}\\ {K_y}& -{{J_z}}& 0& {J_x}& {K_z}& 0& -{{K_x}}\\ {K_z}& {J_y}& -{{J_x}}& 0& -{{K_y}}& {K_x}& 0\\ {J_x}& 0& -{{K_z}}& {K_y}& 0& -{{J_z}}& {J_y}\\ {J_y}& {K_z}& 0& -{{K_x}}& {J_z}& 0& -{{J_x}}\\ {J_z}& -{{K_y}}& {K_x}& 0& -{{J_y}}& {J_x}& 0\end{array}\right]$
+<br>
+${\cosh\left(  \gamma\right)} = {{\frac{1}{2}} {{{\exp\left( \gamma\right)}} {{\left({{1} + {\frac{1}{\exp\left({{{2}} {{\gamma}}}\right)}}}\right)}}}}$
+<br>
+${\exp\left({{{2}} {{\gamma}}}\right)} = {{-{1}} + {{{2}} {{\exp\left( \gamma\right)}} {{\cosh\left(  \gamma\right)}}}}$
+<br>
+${\sinh\left(  \gamma\right)} = {{\frac{1}{2}} {{{\exp\left( \gamma\right)}} {{\left({{1}{-{\frac{1}{\exp\left({{{2}} {{\gamma}}}\right)}}}}\right)}}}}$
+<br>
+${\exp\left({{{-1}} {{\gamma}}}\right)} = {\frac{{{2}} {{\sinh\left(  \gamma\right)}}}{{-{1}} + {\exp\left({{{2}} {{\gamma}}}\right)}}}$
+<br>
+${\exp\left({{{2}} {{\gamma}}}\right)} = {{1} + {{{2}} {{\exp\left( \gamma\right)}} {{\sinh\left(  \gamma\right)}}}}$
+<br>
+${{ R} _t} = {\left[\begin{array}{cccc} \cos\left(  \gamma\right)& -{\sin\left(  \gamma\right)}& 0& 0\\ \sin\left(  \gamma\right)& \cos\left(  \gamma\right)& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& 1\end{array}\right]}$
+<br>
+${{ R} _x} = {\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 0\\ 0& 0& \cos\left(  \theta\right)& -{\sin\left(  \theta\right)}\\ 0& 0& \sin\left(  \theta\right)& \cos\left(  \theta\right)\end{array}\right]}$
+<br>
+${{ R} _y} = {\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& \cos\left(  \psi\right)& 0& \sin\left(  \psi\right)\\ 0& 0& 1& 0\\ 0& -{\sin\left(  \psi\right)}& 0& \cos\left(  \psi\right)\end{array}\right]}$
+<br>
+${{ R} _z} = {\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& \cos\left(  \phi\right)& -{\sin\left(  \phi\right)}& 0\\ 0& \sin\left(  \phi\right)& \cos\left(  \phi\right)& 0\\ 0& 0& 0& 1\end{array}\right]}$
+<br>
+$P =  R_t(\gamma) R_z(\psi) R_x(\theta) R_z(\phi) = $
+<br>
+${P} = {\left[\begin{array}{cccc} \cos\left(  \gamma\right)& {{\left({{-{{{\cos\left(  \phi\right)}} {{\cos\left(  \psi\right)}}}} + {{{\cos\left(  \theta\right)}} {{\sin\left(  \phi\right)}} {{\sin\left(  \psi\right)}}}}\right)}} {{\sin\left(  \gamma\right)}}& {{\left({{{{\cos\left(  \psi\right)}} {{\sin\left(  \phi\right)}}} + {{{\cos\left(  \phi\right)}} {{\cos\left(  \theta\right)}} {{\sin\left(  \psi\right)}}}}\right)}} {{\sin\left(  \gamma\right)}}& -{{{\sin\left(  \psi\right)}} {{\sin\left(  \theta\right)}} {{\sin\left(  \gamma\right)}}}\\ \sin\left(  \gamma\right)& {{\left({{{{\cos\left(  \phi\right)}} {{\cos\left(  \psi\right)}}}{-{{{\cos\left(  \theta\right)}} {{\sin\left(  \phi\right)}} {{\sin\left(  \psi\right)}}}}}\right)}} {{\cos\left(  \gamma\right)}}& -{{{\cos\left(  \gamma\right)}} {{\left({{{{\cos\left(  \psi\right)}} {{\sin\left(  \phi\right)}}} + {{{\cos\left(  \phi\right)}} {{\cos\left(  \theta\right)}} {{\sin\left(  \psi\right)}}}}\right)}}}& {{\sin\left(  \theta\right)}} {{\cos\left(  \gamma\right)}} {{\sin\left(  \psi\right)}}\\ 0& {{{\sin\left(  \psi\right)}} {{\cos\left(  \phi\right)}}} + {{{\cos\left(  \theta\right)}} {{\cos\left(  \psi\right)}} {{\sin\left(  \phi\right)}}}& {-{{{\sin\left(  \phi\right)}} {{\sin\left(  \psi\right)}}}} + {{{\cos\left(  \psi\right)}} {{\cos\left(  \phi\right)}} {{\cos\left(  \theta\right)}}}& -{{{\cos\left(  \psi\right)}} {{\sin\left(  \theta\right)}}}\\ 0& {{\sin\left(  \phi\right)}} {{\sin\left(  \theta\right)}}& {{\cos\left(  \phi\right)}} {{\sin\left(  \theta\right)}}& \cos\left(  \theta\right)\end{array}\right]}$
+<br>
