@@ -29,6 +29,15 @@ function findCtrlForUID(uid) {
 	}
 }
 
+// https://docs.mathjax.org/en/latest/web/typeset.html#typeset-async
+// new MathJax is a bit more restrictive of how to handle concurrent rendering ...
+function typeset(code) {
+	MathJax.startup.promise = MathJax.startup.promise
+		.then(() => MathJax.typesetPromise(code()))
+		.catch((err) => console.log('Typeset failed: ' + err.message));
+	return MathJax.startup.promise;
+}
+
 function CellControl(
 	cell, 
 	nextSibling
@@ -423,12 +432,11 @@ console.log("refreshing output type for", outputtype);
 		var outputstr = ctrl.cell.output;
 		if (outputtype == 'html') {
 			ctrl.outputDiv.html(outputstr);
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
-
+			typeset(() => ctrl.outputDiv);
 		//should there even be a 'latex' type? or just 'html' and mathjax?
 		} else if (outputtype == 'latex') {
 			ctrl.outputDiv.html(outputstr);
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, ctrl.outputDiv.attr('id')]);
+			typeset(() => ctrl.outputDiv);
 		} else if (outputtype == 'stop') {
 			outputstr = '<hr><hr><hr>';
 			ctrl.outputDiv.html(outputstr);
