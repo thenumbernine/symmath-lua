@@ -10,7 +10,7 @@ local t,x,y,z = vars('t', 'x', 'y', 'z')
 local coords = {t,x,y,z}
 
 local C = Tensor.Chart{coords=coords}
-local CS = Tensor.Chart{coords={x,y,z}, symbols='ijklmn', metric=function() return {{1,0,0},{0,1,0},{0,0,1}} end}
+local CS = Tensor.Chart{coords={x,y,z}, symbols='ijklmn', metric=function() return Matrix({1,0,0},{0,1,0},{0,0,1}) end}
 local Ct = Tensor.Chart{coords={t}, symbols='t'}
 local Cx = Tensor.Chart{coords={x}, symbols='x'}
 local Cy = Tensor.Chart{coords={y}, symbols='y'}
@@ -28,6 +28,7 @@ printbr(xs, '= warp bubble center location along the x axis.')
 --[[
 local vs = func('v_s', {t}, xs:diff(t))
 printbr(vs:printEqn(), '= warp bubble velocity, as a function of t')
+TODO make this zero?  constant-velocity?
 --]]
 -- [[
 local vs = var('v_s', {t})
@@ -36,12 +37,12 @@ printbr(vsdef, '= warp bubble velocity, as a function of t')
 --]]
 
 --[[
-local rs = func('r_s', {x,y,z,xs}, sqrt((x - var'x_s')^2 + y^2 + z^2))
+local rs = func('r_s', {x,y,z,xs}, sqrt((x - xs)^2 + y^2 + z^2))
 printbr(rs:printEqn(), '= warp bubble radial coordinate')
 --]]
 -- [[
-local rs = var('r_s', {x,y,z,xs})
-local rsdef = rs:eq(sqrt((x - var'x_s')^2 + y^2 + z^2))
+local rs = var('r_s', {t,x,y,z,xs})
+local rsdef = rs:eq(sqrt((x - xs)^2 + y^2 + z^2))
 printbr(rsdef, '= warp bubble radial coordinate')
 --]]
 
@@ -72,6 +73,33 @@ printbr(fdef, '= shape of bubble')
 local udef = u:eq(vs * f(rs))
 --]]
 
+local drs_dx_defs = table()
+for i,xi in ipairs(coords) do
+	drs_dx_defs[i] = rsdef:diff(xi)()
+		:subst(rsdef():switch())
+		:subst(vsdef:switch())
+		:simplify()
+	printbr(drs_dx_defs[i])
+end
+printbr()
+
+local d2rs_dx2_defs = table()
+for i=1,#coords do
+	local xi = coords[i]
+	for j=i,#coords do
+		--local ij = i + j - (math.min(i,j) > 1 and 0 or 1)
+		local ij = i+j-1+(math.min(i,j)>=2 and 2 or 0)+(math.min(i,j)>=3 and 1 or 0)
+		local xj = coords[j]
+		assert(not d2rs_dx2_defs[ij])
+		d2rs_dx2_defs[ij] = drs_dx_defs[i]:diff(xj)()
+			:subst(drs_dx_defs:unpack())()
+			:subst(vsdef:switch())()
+		printbr(d2rs_dx2_defs[ij])
+	end
+end
+assert(#d2rs_dx2_defs == 10)
+printbr()
+
 --[[
 u = v_s(t) * f(r_s(t))
 du/dt = dv_s/dt * f + v_s * df/dt
@@ -85,25 +113,45 @@ printbr(udef)
 printbr()
 
 printbr(udef'_,i'())
-printbr(udef:diff(x)())
-printbr(udef:diff(y)())
-printbr(udef:diff(z)())
+local du_dx_defs = table()
+for i,xi in ipairs(coords) do
+	du_dx_defs[i] = udef:diff(xi)()
+	printbr(du_dx_defs[i])
+end
 printbr()
 
 -- in the mean time
 local udefraw = udef
 	--:replace(f, fdefrhs)	-- needed for the var version?
 	:subst(rsdef)
-printbr(udefraw():subst(rsdef():switch()))
-local du_dx_def = udefraw:diff(x)():subst(rsdef():switch())
-printbr(du_dx_def)
-local du_dy_def = udefraw:diff(y)():subst(rsdef():switch())
-printbr(du_dy_def)
-local du_dz_def = udefraw:diff(z)():subst(rsdef():switch())
-printbr(du_dz_def)
+--printbr(udefraw:subst(rsdef():switch())'_,i')
 
-MathJax.useCommaDerivative = true
+for i=1,#du_dx_defs do
+	du_dx_defs[i] = du_dx_defs[i]:subst(drs_dx_defs:unpack())()
+	printbr(du_dx_defs[i])
+end
+printbr()
 
+local d2u_dx2_defs = table()
+printbr(udef'_,ij'())
+for i=1,#coords do
+	local xi = coords[i]
+	for j=i,#coords do
+		local xj = coords[j]
+		--local d2rs_dxij = 
+		local tmp = udef:diff(xi,xj)()
+		local d2u_dx2_def = tmp
+			:subst(d2rs_dx2_defs:unpack())
+			:subst(drs_dx_defs:unpack())
+			:simplifyAddMulDiv()
+		printbr(tmp:eq(d2u_dx2_def:rhs()))
+		d2u_dx2_defs:insert(d2u_dx2_def)
+	end
+end
+assert(#d2u_dx2_defs == 10)
+printbr()
+
+--MathJax.useCommaDerivative = true
 
 local alpha_var = var'\\alpha'
 local alpha = 1
@@ -231,6 +279,12 @@ EFEdef_wrt_T = EFEdef_wrt_T:replace(var'G''_ab', Einstein'_ab')()
 printbr(EFEdef_wrt_T)
 printbr()
 
+EFEdef_wrt_T_u = EFEdef_wrt_T
+	:subst(du_dx_defs:unpack())
+	:subst(d2u_dx2_defs:unpack())
+	:simplify()
+printbr(EFEdef_wrt_T_u)
+printbr()
 
 local rho = var'\\rho'
 local n = var'n'
@@ -245,8 +299,8 @@ rho_def = rho_def:subst(EFEdef_wrt_T)
 	:simplify()
 
 printbr(rho_def)
-printbr('using', du_dy_def, ',', du_dz_def)
-rho_def = rho_def:subst(du_dy_def, du_dz_def)()
+printbr('using', du_dx_defs[3], ',', du_dx_defs[4])
+rho_def = rho_def:subst(du_dx_defs[3], du_dx_defs[4])()
 printbr(rho_def)
 printbr()
 

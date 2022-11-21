@@ -67,9 +67,9 @@ local txs = table{t}:append(xs)
 
 
 --[[
-set to true to use alpha_,i as a state var, instead of log(alpha)_,i
-using log(alpha)_,i is more common
-using alpha_,i can include both positive and negative alpha's
+set to true to use α_,i as a state var, instead of log(α)_,i
+using log(α)_,i is more common
+using α_,i can include both positive and negative α's
 flux jacobian looks the same?
 --]]
 useDAlphaAsStateVar = false
