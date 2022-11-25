@@ -9,7 +9,15 @@ MathJax = {
 	}
 };
 
-function loadScript(args) {
+var tryToFindMathJax = {};
+
+tryToFindMathJax.urls = [
+	'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js',
+	'/MathJax/es5/tex-svg.js',
+];
+
+
+tryToFindMathJax.loadScript = function(args) {
 	console.log("loading "+args.src);
 	var el = document.createElement('script');
 	document.body.append(el);
@@ -22,26 +30,24 @@ function loadScript(args) {
 		if (args.fail !== undefined) args.fail();
 	};
 	el.src = args.src;
-}
+	//el.setAttr('id', 'MathJax-script');
+	//el.setAttr('async');
+};
 
-function tryToFindMathJax(args) {
+tryToFindMathJax.init = function(args) {
 	if (args === undefined) args = {};
 	console.log('init...');
-	var urls = [
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
-	];
 	var i = 0;
 	var loadNext = function() {
-		loadScript({
-			src : urls[i],
+		tryToFindMathJax.loadScript({
+			src : tryToFindMathJax.urls[i],
 			done : function() {
 				console.log("success!");
 				if (args.done !== undefined) args.done();
 			},
 			fail : function() {
 				++i;
-				if (i >= urls.length) {
+				if (i >= tryToFindMathJax.urls.length) {
 					console.log("looks like all our sources have failed!");
 					if (args.fail !== undefined) args.fail();
 				} else {
@@ -52,3 +58,8 @@ function tryToFindMathJax(args) {
 	}
 	loadNext();
 }
+/*
+window.addEventListener('load', function() {
+	tryToFindMathJax.init();
+}, false);
+*/

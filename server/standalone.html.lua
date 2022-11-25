@@ -17,7 +17,7 @@ symmathDir = '.';	//standalone.lua includes SYMMATH_PATH in its search path
 
 //TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
 $(document).ready(function() {
-	tryToFindMathJax({
+	tryToFindMathJax.init({
 		done : function() {
 			init({
 				root : document.body,

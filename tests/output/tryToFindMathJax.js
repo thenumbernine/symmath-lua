@@ -28,9 +28,9 @@ function tryToFindMathJax(args) {
 	if (args === undefined) args = {};
 	console.log('init...');
 	var urls = [
-		'file:///C:/Users/Chris/Projects/christopheremoore.net/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		//'http:///localhost:8000/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
-		'/MathJax/MathJax.js?config=TeX-MML-AM_CHTML',
+		'file:///C:/Users/Chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
+		//'http:///localhost:8000/MathJax/es5/tex-svg.js',
+		'/MathJax/es5/tex-svg.js',
 		'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
 	];
 	var i = 0;

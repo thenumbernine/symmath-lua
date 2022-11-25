@@ -1,6 +1,11 @@
 #!/usr/bin/env luajit
 --[[
 Z4 equations, in index notation
+
+Based on my worksheet at: https://thenumbernine.github.io/math/Numerical%20Relativity/Z4%20From%20Killing%20Vectors.html
+Which lists a few Z4 formulations in literature, then derives.
+Itself is based on the "Differential Geometry" worksheets at https://thenumbernine.github.io/
+
 rewritten in terms of first order hyperbolic coordinates
 and for a general metric (i.e. difference-of-connections) instead of strictly for cartesian.
 same idea as my 'BSSN - index' worksheet (why not just call it 'BSSN' ?)
@@ -735,6 +740,14 @@ function usingRHSSubstIndexSimplify(expr, ...)
 end
 
 
+printbr[[
+Z4 formulation<br>
+
+For more background, see my derivation from the Einstein Field Equations (with Z4 Killing vectors) to initial value problems
+<a href='https://thenumbernine.github.io/math/Numerical%20Relativity/Z4%20From%20Killing%20Vectors.html'>here</a>.<br>
+]]
+
+
 printbr(gamma'_ij', '= spatial metric')
 printbr()
 
@@ -1138,7 +1151,6 @@ printbr()
 
 printHeader'extrinsic curvature evolution:'
 
--- TODO derive this?
 local dt_K_ll_def = K'_ij,t':eq(
 	-- source terms
 --	-alpha'_;ij'
@@ -1157,6 +1169,8 @@ local dt_K_ll_def = K'_ij,t':eq(
 		+ K'_ij' * (tr_K - 2 * Theta)
 		- 2 * K'_ik' * gamma'^kl' * K'_lj'
 	)
+
+	- kappa1 * (1 + kappa2) * gamma'_ij' * Theta
 	
 	-- matter terms
 	+ 4 * pi * alpha * (
