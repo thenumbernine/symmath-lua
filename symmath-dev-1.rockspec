@@ -44,7 +44,6 @@ build = {
 		["symmath.cbrt"] = "cbrt.lua",
 		["symmath.clone"] = "clone.lua",
 		["symmath.commutativeRemove"] = "commutativeRemove.lua",
-		["symmath.complex"] = "complex.lua",
 		["symmath.cos"] = "cos.lua",
 		["symmath.cosh"] = "cosh.lua",
 		["symmath.distributeDivision"] = "distributeDivision.lua",

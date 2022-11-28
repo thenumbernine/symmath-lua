@@ -6,7 +6,7 @@ local symmath
 local acos = class(Function)
 acos.name = 'acos'
 acos.realFunc = math.acos
-acos.cplxFunc = require 'symmath.complex'.acos
+acos.cplxFunc = require 'complex'.acos
 
 function acos:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

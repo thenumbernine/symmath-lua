@@ -7,7 +7,7 @@ local symmath
 local abs = class(Function)
 abs.name = 'abs'
 abs.realFunc = math.abs
-abs.cplxFunc = require 'symmath.complex'.abs
+abs.cplxFunc = require 'complex'.abs
 
 function abs:evaluateDerivative(deriv, ...)
 	local x = self[1]

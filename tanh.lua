@@ -6,7 +6,7 @@ local symmath
 local tanh = class(Function)
 tanh.name = 'tanh'
 tanh.realFunc = math.tanh
-tanh.cplxFunc = require 'symmath.complex'.tanh
+tanh.cplxFunc = require 'complex'.tanh
 
 function tanh:evaluateDerivative(deriv, ...)
 	symmath = symmath or require 'symmath'

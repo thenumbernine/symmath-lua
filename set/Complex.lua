@@ -17,7 +17,7 @@ function Complex:containsNumber(x)
 end
 
 -- TODO even nan?
-local complex = require 'symmath.complex'
+local complex = require 'complex'
 function Complex:containsComplex(x)
 	assert(complex:isa(x))
 	return true

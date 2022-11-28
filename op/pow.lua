@@ -3,7 +3,7 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
-local complex = require 'symmath.complex'
+local complex = require 'complex'
 local symmath
 
 local pow = class(Binary)

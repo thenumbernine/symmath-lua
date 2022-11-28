@@ -12,7 +12,7 @@ cbrt.nameForExporterTable = {}
 cbrt.nameForExporterTable.LaTeX = '\\sqrt[3]'
 
 cbrt.realFunc = math.cbrt
-cbrt.cplxFunc = require 'symmath.complex'.cbrt
+cbrt.cplxFunc = require 'complex'.cbrt
 
 -- (u^(1/3))' =  u'/(3 u^(2/3))
 function cbrt:evaluateDerivative(deriv, ...)

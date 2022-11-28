@@ -5,7 +5,7 @@ local symmath
 local sinh = class(Function)
 sinh.name = 'sinh'
 sinh.realFunc = math.sinh
-sinh.cplxFunc = require 'symmath.complex'.sinh
+sinh.cplxFunc = require 'complex'.sinh
 
 function sinh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self)

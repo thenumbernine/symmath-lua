@@ -5,7 +5,7 @@ local symmath
 local atan = class(Function)
 atan.name = 'atan'
 atan.realFunc = math.atan
-atan.cplxFunc = require 'symmath.complex'.atan
+atan.cplxFunc = require 'complex'.atan
 
 function atan:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
-local complex = require 'symmath.complex'
+local complex = require 'complex'
 local symmath 
 
 --[[

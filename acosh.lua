@@ -10,7 +10,7 @@ function acosh.realFunc(x)
 	return math.log(x + math.sqrt(x*x - 1))
 end
 
-acosh.cplxFunc = require 'symmath.complex'.acosh
+acosh.cplxFunc = require 'complex'.acosh
 
 -- domain: (1, inf]
 function acosh:evaluateDerivative(deriv, ...)

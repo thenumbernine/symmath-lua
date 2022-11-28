@@ -10,7 +10,7 @@ function asinh.realFunc(x)
 	return math.log(x + math.sqrt(x*x + 1))
 end
 
-asinh.cplxFunc = require 'symmath.complex'.asinh
+asinh.cplxFunc = require 'complex'.asinh
 
 -- domain: reals
 function asinh:evaluateDerivative(deriv, ...)

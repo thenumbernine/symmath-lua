@@ -7,7 +7,7 @@ local symmath
 local sin = class(Function)
 sin.name = 'sin'
 sin.realFunc = math.sin
-sin.cplxFunc = require 'symmath.complex'.sin
+sin.cplxFunc = require 'complex'.sin
 
 function sin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

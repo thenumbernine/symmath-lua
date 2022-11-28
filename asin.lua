@@ -5,7 +5,7 @@ local symmath
 local asin = class(Function)
 asin.name = 'asin'
 asin.realFunc = math.asin
-asin.cplxFunc = require 'symmath.complex'.asin
+asin.cplxFunc = require 'complex'.asin
 
 function asin:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

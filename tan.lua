@@ -6,7 +6,7 @@ local symmath
 local tan = class(Function)
 tan.name = 'tan'
 tan.realFunc = math.tan
-tan.cplxFunc = require 'symmath.complex'.tan
+tan.cplxFunc = require 'complex'.tan
 
 function tan:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

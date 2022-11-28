@@ -5,7 +5,7 @@ local symmath
 local cosh = class(Function)
 cosh.name = 'cosh'
 cosh.realFunc = math.cosh
-cosh.cplxFunc = require 'symmath.complex'.cosh
+cosh.cplxFunc = require 'complex'.cosh
 
 function cosh:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

@@ -11,7 +11,7 @@ sqrt.nameForExporterTable.Console = '√'
 sqrt.nameForExporterTable.LaTeX = '\\sqrt'
 
 sqrt.realFunc = math.sqrt
-sqrt.cplxFunc = require 'symmath.complex'.sqrt
+sqrt.cplxFunc = require 'complex'.sqrt
 
 function sqrt:evaluateDerivative(deriv, ...)
 	local x = self[1]:clone()

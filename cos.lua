@@ -10,7 +10,7 @@ local cos = class(Function)
 
 cos.name = 'cos'
 cos.realFunc = math.cos
-cos.cplxFunc = require 'symmath.complex'.cos
+cos.cplxFunc = require 'complex'.cos
 
 function cos:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()

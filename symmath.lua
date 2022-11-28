@@ -184,7 +184,7 @@ symmath.tableCommutativeEqual = require 'symmath.tableCommutativeEqual'
 
 symmath.Expression = require 'symmath.Expression'
 symmath.Constant = require 'symmath.Constant'
-symmath.complex = require 'symmath.complex'
+symmath.complex = require 'complex'
 
 -- TODO singleton?  constant?  Variable with value=nan?
 symmath.Invalid = require 'symmath.Invalid'

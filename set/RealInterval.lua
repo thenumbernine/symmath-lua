@@ -1,7 +1,7 @@
 local class = require 'ext.class'
 local math = require 'ext.math'
 local Set = require 'symmath.set.Set'
-local complex = require 'symmath.complex'
+local complex = require 'complex'
 local symmath
 
 -- in some places I'm using subclasses to represent subsets ...

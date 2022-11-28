@@ -307,7 +307,7 @@ For the most part Lua numbers will work, and will automatically be replaced by s
 This is because Constant is a subclass of Expression, and I was too lazy to implement all the ridiculous number of edge cases required to handle Lua numbers, though I am thinking about doing this.
 Constant can be constructed with numbers (`Constant(0), Constant(1)`, etc) or with complex values (`Constant{re=1, im=0}`, etc).
 
-Complex values can be represented by symmath.complex, which uses builtin complex types when run within LuaJIT, or uses a pure-Lua alternative otherwise.
+Complex values can be represented by `complex`, which uses builtin complex types when run within LuaJIT, or uses a pure-Lua alternative otherwise.
 
 Some day I will properly represent sets (naturals, integers, rationals, reals, complex, etc), and maybe groups, rings, etc, but not for now.
 
@@ -865,7 +865,7 @@ This constructs a Wildcard object for Expression matching.
 - A number, which specifies the Wildcard index.
 - A table with the following:
 - - index = The wildcard index.  Optionally the first argument of the table can also specify the index.
-- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and *)
+- - atLeast = The wildcard must match at least this many sub-expressions, if matching within variable-children expressions (such as + and * )
 - - atMost = The wildcard can only match at most this many sub-expressions.
 - - dependsOn = The wildcard must depend on the specified variable.  See 'Expression:dependsOn()' for more information.
 - - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
@@ -905,6 +905,7 @@ In the case of multiplication, unmatched wildcards will be assigned a value of 1
 ## Dependencies
 
 - https://github.com/thenumbernine/lua-ext
+- https://github.com/thenumbernine/complex-lua
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
 - 'utf8' if available.  Used by console-based output methods.
 - 'ffi' if available.

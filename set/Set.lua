@@ -29,7 +29,7 @@ function Set:containsNumber(x)
 	assert(type(x) == 'number')
 end
 
-local complex = require 'symmath.complex'
+local complex = require 'complex'
 function Set:containsComplex(x)
 	assert(complex:isa(x))
 
