@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Keplerian Orbital Elements</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	</head>
+	<body onload='tryToFindMathJax();'>
+
+$m$	= meter
+<br>
+$kg$	= kilogram
+<br>
+$s$	= second
+<br>
+$G$	= gravitational constant
+<br>
+${G} = {{{6.673848\cdot{10^{-11}}}} \cdot {{\frac{{m}^{3}}{{{kg}} \cdot {{{s}^{2}}}}}}}$
+<br>
+$Mass$	= mass
+<br>
+${Mass_{parent}}$	= parent mass
+<br>
+$\mu$	= gravitational parameter
+<br>
+${\mu} = {{{G}} {{\left({{Mass} + {{Mass_{parent}}}}\right)}}}$
+<br>
+$L$	= angular momentum
+<br>
+$e$	= eccentricity
+<br>
+$l$	= semi-latus rectum
+<br>
+${l} = {{\frac{1}{G}} {{L}^{2}}}$
+<br>
+$i$	= inclination
+<br>
+$\Omega$	= longitude of ascending node
+<br>
+$\omega$	= argument of periapsis
+<br>
+$a$	= semi-major axis
+<br>
+$b$	= semi-minor axis
+<br>
+${b} = {\sqrt{{{a}} {{l}}}}$
+<br>
+${b} = {{{a}} {{\sqrt{{1}{-{{e}^{2}}}}}}}$
+<br>
+$\vec{A}$	= semi-major axis vector
+<br>
+${\vec{A}} = {\left[\begin{array}{c} {{a}} {{\left({{{{\cos\left(  \Omega\right)}} {{\cos\left(  \omega\right)}}}{-{{{\sin\left(  \Omega\right)}} {{\sin\left(  \omega\right)}} {{\cos\left(  i\right)}}}}}\right)}}\\ {{a}} {{\left({{{{\sin\left(  \Omega\right)}} {{\cos\left(  \omega\right)}}} + {{{\cos\left(  \Omega\right)}} {{\sin\left(  \omega\right)}} {{\cos\left(  i\right)}}}}\right)}}\\ {{a}} {{\sin\left(  \omega\right)}} {{\sin\left(  i\right)}}\end{array}\right]}$
+<br>
+$\vec{B}$	= semi-minor axis vector
+<br>
+${\vec{B}} = {\left[\begin{array}{c}  {-{b}} {{\left({{{{\cos\left(  \Omega\right)}} {{\sin\left(  \omega\right)}}} + {{{\sin\left(  \Omega\right)}} {{\cos\left(  \omega\right)}} {{\cos\left(  i\right)}}}}\right)}}\\ {{b}} {{\left({{ {-{\sin\left(  \Omega\right)}} {{\sin\left(  \omega\right)}}} + {{{\cos\left(  \Omega\right)}} {{\cos\left(  \omega\right)}} {{\cos\left(  i\right)}}}}\right)}}\\ {{b}} {{\cos\left(  \omega\right)}} {{\sin\left(  i\right)}}\end{array}\right]}$
+<br>
+$P$	= orbital period
+<br>
+${P} = {{{2}} {{π}} \cdot {{\sqrt{{\frac{1}{\mu}} {{a}^{3}}}}}}$
+<br>
+$\vec{r}$	= position
+<br>
+$d$	= distance to parent
+<br>
+$E$	= eccentric anomaly
+<br>
+${\cos\left(  E\right)} = {{\frac{1}{e}}{\left({{1}{-{{\frac{1}{a}} {d}}}}\right)}}$
+<br>
+${M_0}$	= mean anomaly at epoch
+<br>
+$t$	= time
+<br>
+${t_0}$	= epoch
+<br>
+$n$	= mean motion
+<br>
+${n} = {{\frac{1}{P}} {{{2}} {{π}}}}$
+<br>
+$M$	mean anomaly
+<br>
+${M} = {{{M_0}} + {{{n}} {{\left({{t}{-{{t_0}}}}\right)}}}}$
+<br>
+${M} = {{E}{-{{{e}} {{\sin\left(  E\right)}}}}}$
+<br>
+This equation relates E to M, and the previous relates M to t, 
+so from these two you can calculate E based on t.
+Also notice that all arguments of $\vec{A}$ and $\vec{B}$ are not determined by time.
+
+<br>
+${\vec{r}} = {{{{\left({{\cos\left(  E\right)}{-{e}}}\right)}} {{\vec{A}}}} + {{{\sin\left(  E\right)}} {{\vec{B}}}}}$
+<br>
+	</body>
+</html>
+

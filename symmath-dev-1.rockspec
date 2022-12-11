@@ -177,6 +177,7 @@ build = {
 		["symmath.tests.Kerr-Schild - dense"] = "tests/Kerr-Schild - dense.lua",
 		["symmath.tests.Kerr-Schild - expression"] = "tests/Kerr-Schild - expression.lua",
 		["symmath.tests.Kerr-Schild degenerate case"] = "tests/Kerr-Schild degenerate case.lua",
+		["symmath.tests.KOE"] = "tests/KOE.lua",
 		["symmath.tests.MHD - flux eigenvectors"] = "tests/MHD - flux eigenvectors.lua",
 		["symmath.tests.MHD inverse"] = "tests/MHD inverse.lua",
 		["symmath.tests.MHD symmetrization"] = "tests/MHD symmetrization.lua",
