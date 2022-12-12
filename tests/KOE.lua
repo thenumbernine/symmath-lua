@@ -1,12 +1,5 @@
 #!/usr/bin/env luajit
 -- 1998 Vinti, Der, Bonavito. "Orbital and Celestial Mechanics"
--- https://en.wikipedia.org/wiki/Orbital_elements
--- https://en.wikipedia.org/wiki/Eccentric_anomaly
--- https://en.wikipedia.org/wiki/Mean_anomaly
--- https://en.wikipedia.org/wiki/Standard_gravitational_parameter
--- https://en.wikipedia.org/wiki/Longitude_of_the_periapsis
--- https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes
--- https://en.wikipedia.org/wiki/Conic_section#Conic_parameters
 
 local env = setmetatable({}, {__index=_G})
 require 'ext.env'(env)
@@ -17,6 +10,21 @@ symmath.tostring = MathJax
 local printbr = MathJax.print
 MathJax.header.title = 'Keplerian Orbital Elements'
 print(MathJax.header)
+
+local function ahref(x)
+	printbr("<a href='"..x.."'>"..x.."</a>")
+end
+
+ahref'https://en.wikipedia.org/wiki/Orbital_elements'
+ahref'https://en.wikipedia.org/wiki/Eccentric_anomaly'
+ahref'https://en.wikipedia.org/wiki/Mean_anomaly'
+ahref'https://en.wikipedia.org/wiki/Standard_gravitational_parameter'
+ahref'https://en.wikipedia.org/wiki/Longitude_of_the_periapsis'
+ahref'https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes'
+ahref'https://en.wikipedia.org/wiki/Conic_section#Conic_parameters'
+ahref'https://astronomy.stackexchange.com/questions/632/determining-effect-of-small-variable-force-on-planetary-perihelion-precession'
+ahref'https://en.wikipedia.org/wiki/Two-body_problem_in_general_relativity'
+ahref'https://en.wikipedia.org/wiki/Laplace%E2%80%93Runge%E2%80%93Lenz_vector#Evolution_under_perturbed_potentials'
 
 -- units
 
@@ -45,10 +53,10 @@ printbr(mass, '= mass')
 local massParent = var'Mass_{parent}'
 printbr(massParent, '= parent mass')
 
-local mu = var'\\mu'
-printbr(mu, '= gravitational parameter')
-local mudef = mu:eq(G * (mass + massParent))
-printbr(mudef)
+local gravitationalParameter = var'\\mu'
+printbr(gravitationalParameter, '= gravitational parameter')
+local gravitationalParameterDef = gravitationalParameter:eq(G * (mass + massParent))
+printbr(gravitationalParameterDef)
 
 local L = var'L'	-- angular momentum
 printbr(L, '= angular momentum')
@@ -84,6 +92,9 @@ printbr(bdef1)
 local bdef2 = b:eq(a * sqrt(1 - eccentricity^2))
 printbr(bdef2)
 
+local ldef2 = l:eq(a * (1 - eccentricity^2))
+printbr(ldef2)
+
 local Avec = var'\\vec{A}'	-- Vinti semi-major axis vector
 printbr(Avec, '= semi-major axis vector')
 local Avecdef = Avec:eq(Matrix{
@@ -102,10 +113,15 @@ local Bvecdef = Bvec:eq(Matrix{
 }:T())
 printbr(Bvecdef)
 
-local P = var'P'
-printbr(P, '= orbital period')
-local pdef = P:eq(2 * pi * sqrt(a^3 / mu))
-printbr(pdef)
+local orbitalPeriod = var'T'
+printbr(orbitalPeriod, '= orbital period')
+local orbitalPeriodDef = orbitalPeriod:eq(2 * pi * sqrt(a^3 / gravitationalParameter))
+printbr(orbitalPeriodDef, ": Kepler's 3rd law")
+
+-- ugly ... cuz it's not factoring the cube-root ... (TODO?)
+--local semiMajorAxisFor3rdLaw = orbitalPeriodDef:solve(a)()
+local semiMajorAxisFor3rdLaw = a:eq(cbrt(frac(gravitationalParameter * orbitalPeriod^2, 4 * pi^2)))
+printbr(semiMajorAxisFor3rdLaw)
 
 local rvec = var'\\vec{r}'
 printbr(rvec, '= position')
@@ -130,8 +146,13 @@ printbr(t0, '= epoch')
 
 local meanMotion = var'n'
 printbr(meanMotion, '= mean motion')
-local meanMotionDef = meanMotion:eq(2 * pi / P)
+local meanMotionDef = meanMotion:eq(2 * pi / orbitalPeriod)
 printbr(meanMotionDef)
+
+local angle = var'\\theta'
+printbr(angle, '= angle of orbit (better name?)')
+local angleDef = angle:eq(meanMotion * (t - t0))
+printbr(angleDef)
 
 local meanAnomaly = var'M'
 printbr(meanAnomaly, 'mean anomaly')
