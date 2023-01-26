@@ -776,14 +776,6 @@ Tensor.__newindex = function(self, key, value)
 			value = Tensor(dstVariance, function(...) return clone(value) end)
 		end
 
-		-- raise/lower self according to the key
-		-- also apply any change-of-coordinate-system transform
-		-- but don't apply subsets of basis
-		local dst = self:clone()
-		for i=1,#dstVariance do
-			dst = dst:applyRaiseOrLower(i, dstVariance[i])
-		end
-
 -- [====[ ok now I'm going to do this in :prune()
 -- ... but what about subtensor assignment?
 -- or was that pruning indexes in Tensor ctor?
