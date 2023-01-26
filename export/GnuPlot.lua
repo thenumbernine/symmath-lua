@@ -50,7 +50,7 @@ function GnuPlot:plot(args)
 	local gnuplot = require 'gnuplot'
 	local var = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'
-	
+
 	-- TODO accept *all* vars used, and define vars in gnuplot before producing the plot command
 	for i,arg in ipairs(args) do
 		local expr = arg[1]
@@ -76,7 +76,7 @@ function GnuPlot:plot(args)
 			args.output = 'tmp.txt'
 		end
 	end
-	
+
 	gnuplot(args)
 
 	-- TODO print or return?

@@ -10,8 +10,8 @@ add.name = '+'
 
 --[[
 -- auto flatten any adds ...?
--- I don't think anyone depends on nested adds ... 
--- and flattening here will make the API easier, requiring less simplify's for matching and == 
+-- I don't think anyone depends on nested adds ...
+-- and flattening here will make the API easier, requiring less simplify's for matching and ==
 function add:init(...)
 	add.super.init(self, ...)
 	self:flatten()
@@ -32,7 +32,7 @@ function add:flatten()
 		end
 		i = i - 1
 	end
-	
+
 	-- TODO while you're here, sort terms, don't violate commutativity.
 	-- then, for match and __eq, don't bother with commutativity of terms -- just compare term-by-term.
 	-- this can also integrate with the ProdLists somehow, which converts to and fro add's often enough to be slow
@@ -94,7 +94,7 @@ function add.match(a, b, matches)
 	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
 	local a = table(a)
 	local b = table(b)
-	
+
 	-- compare things order-independent, remove as you go
 	-- skip wildcards, do those last
 	for i=#a,1,-1 do
@@ -140,20 +140,20 @@ local tab = (' '):rep(indent)
 		matches = matches or table()
 		a = table(a)
 		b = table(b)
-		
+
 --print(tab.."checking match of what's left with "..#a.." elements")
 
 		if #a == 0 and #b == 0 then
 --print(tab.."matches - returning true")
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
-		
+
 		-- #a == 0 is fine if b is full of nothing but wildcards
 		if #b == 0 and #a > 0 then
 --print(tab.."has remaining elements -- returning false")
 			return false
 		end
-		
+
 		-- TODO bi isn't necessarily a wildcard -- it could be an 'addNonCommutative' term (though nothing does this for addition yet)
 		if #a == 0 and #b ~= 0 then
 			-- TODO verify that the matches are equal
@@ -185,13 +185,13 @@ local tab = (' '):rep(indent)
 			-- hmm, what if there's a sub-expression that has wildcard
 			-- then we need matches
 			-- then we need to push/pop matches
-		
+
 			local firstsubmatch = table()
 			if not a1:match(b1, firstsubmatch) then
 --print(tab.."first match didn't match - failing")
 				return false
 			end
-		
+
 			for i=1,table.maxn(firstsubmatch) do
 				if firstsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
@@ -245,7 +245,7 @@ local tab = (' '):rep(indent)
 			for a in a:permutations() do
 				a = table(a)
 --print(tab.."checking a permutation "..a:mapi(SingleLine):concat', ')
-			
+
 				local b1match = matchSize == 0 and Constant(0)
 					or matchSize == 1 and a[1]
 					or setmetatable(a:sub(1, matchSize), add)
@@ -259,7 +259,7 @@ local tab = (' '):rep(indent)
 				if b1match:match(b1, matchesForThisSize) then
 --print(tab.."matchesForThisSize["..b1.index.."] is now "..SingleLine(matchesForThisSize[b1.index]))
 					local suba = a:sub(matchSize+1)
---print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')			
+--print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')
 					local didMatch = checkWhatsLeft(suba, b, matchesForThisSize, indent)
 --print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
 					if didMatch then
@@ -280,12 +280,12 @@ local tab = (' '):rep(indent)
 --print(tab.."all sized matches failed - failing")
 		return false
 	end
-	
+
 	-- now what's left in b[i] should all be wildcards
 	-- we just have to assign them between the a's
 	-- but if we want add match to return wildcards of +0 then we can't just rely on a 1-or-more rule
 	-- for that reason,
-	
+
 	return checkWhatsLeft(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
@@ -293,8 +293,8 @@ end
 --[[
 alright, what if we want to match Constant(0):match(Wildcard(1) + Wildcard(2) ?
 add needs its own 'wildcardMatches' function for that to happen
-... and that function needs to fall when it encounters adds 
-and if it doesn't ... 
+... and that function needs to fall when it encounters adds
+and if it doesn't ...
 then it needs to look through its children and see if it has all-but-1...
 
 ... if it has no non-wildcards then make sure we are matching against Constant(0), and match the wildcards with Constant(0)
@@ -348,13 +348,13 @@ function add:wildcardMatches(a, matches)
 
 	-- if any of these wildcards needed a term then fail
 	-- (that will be handled in the add.match fallthrough
-	--  which is why add.match should not call this -- only other non-add Expressions' .match())			
+	--  which is why add.match should not call this -- only other non-add Expressions' .match())
 	local totalAtLeast = 0
 	for _,w in ipairs(wildcards) do
 		if w.atLeast and w.atLeast > 0 then
 			totalAtLeast = totalAtLeast + w.atLeast
 			if totalAtLeast > 1 then
---print("add.wildcardMatches: wildcard needs at least 1, and we have none left - failing") 
+--print("add.wildcardMatches: wildcard needs at least 1, and we have none left - failing")
 				return false
 			end
 		end
@@ -417,7 +417,7 @@ function add:wildcardMatches(a, matches)
 		end
 		return true
 	end
-	
+
 	for wildcards in wildcards:permutations() do
 		wildcards = table(wildcards)
 		if checkWildcardPermutation(wildcards, matches) then
@@ -461,7 +461,7 @@ function add.__eq(a,b)
 	for i=1,n do
 		if a[i] ~= b[i] then return false end
 	end
-	
+
 	return true
 end
 
@@ -482,9 +482,9 @@ end
 function add:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
+	if I == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	for i=2,#self do
 		local I2 = self[i]:getRealRange()
@@ -560,7 +560,7 @@ local function compare(a,b)
 		return a.name < b.name
 	end
 	if va ~= vb then return va end
-	
+
 	-- TensorRef
 	local ta = TensorRef:isa(a)
 	local tb = TensorRef:isa(b)
@@ -607,7 +607,7 @@ local function compare(a,b)
 	local sa = Verbose(a)
 	local sb = Verbose(b)
 	if #sa ~= #sb then return #sa < #sb end
-	return sa < sb 
+	return sa < sb
 end
 
 
@@ -652,7 +652,7 @@ function ProdList:isSquare()
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	for i,pi in ipairs(self) do
-		if 
+		if
 		-- [[ exclude any constants, especially the -1's
 		Constant:isa(pi.term)
 		--]]
@@ -660,7 +660,7 @@ function ProdList:isSquare()
 		(
 			Constant.isValue(pi.term, 1)
 			and Constant.isValue(pi.power, 1)
-		) 
+		)
 		--]]
 		or (
 			Constant:isa(pi.power)
@@ -698,7 +698,7 @@ function getProductList(x)
 	else
 		prodList = table{x}
 	end
-	
+
 	-- pick out any exponents in any of the products
 	prodList = prodList:mapi(function(ch)
 		if pow:isa(ch) then
@@ -713,7 +713,7 @@ function getProductList(x)
 			}
 		end
 	end)
-	
+
 	local newProdList = ProdList()
 	for k,x in ipairs(prodList) do
 		if Constant:isa(x.term) then
@@ -731,7 +731,7 @@ function getProductList(x)
 					})
 					c = -c
 				end
-				
+
 				--if symmath.set.positiveInteger:contains(list[i])
 				if c == math.floor(c) then
 					local ppow = {}
@@ -768,7 +768,7 @@ function getProductList(x)
 end
 
 --[[
-this is a summed collection p1 + p2 + ... 
+this is a summed collection p1 + p2 + ...
 where each pi is a ProdList above a1^b1 * a2^b2 * ...
 --]]
 local ProdLists = class()
@@ -833,7 +833,7 @@ add.rules = {
 	Factor = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)
-			
+
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -892,7 +892,7 @@ for i=1,#prodLists do	-- these are added
 	for j=1,#prodList do
 		local pi = prodList[j]
 		if symmath.set.negativeReal:contains(pi.power) then
-			pi.term = pi.term 
+			pi.term = pi.term
 		end
 	end
 end
@@ -911,7 +911,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				then replace them with (x + y)(x - y)
 			end
 			--]]
-			-- [[ searching expr 
+			-- [[ searching expr
 			if #expr == 2 then
 				if symmath.op.pow:isa(expr[1])
 				and symmath.set.evenInteger:contains(expr[1][2])
@@ -961,7 +961,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 --print('e prodLists', prodLists)
 
-	
+
 -- without this (y-x)/(x-y) doesn't simplify to -1
 -- but with this our simplification takes forever
 --[=[
@@ -979,8 +979,8 @@ print('prodList', prodLists:toExpr(), '<br>')
 					--if expr[i] has a leading negative constant
 					#prodLists[i] > 0
 					-- [[ old - expect a leading constant
-					and Constant:isa(prodLists[i][1].term) 
-					and prodLists[i][1].term.value < 0 
+					and Constant:isa(prodLists[i][1].term)
+					and prodLists[i][1].term.value < 0
 					--]]
 					--[[ alternative to old, but doesn't work like the old does
 					and symmath.set.negativeReal:contains(prodLists[i][1])
@@ -1013,11 +1013,11 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 --]=]
-		
+
 --print('f prodLists', prodLists)
 			-- 2) find smallest set of common terms
-			
-			local minProds = setmetatable(prodLists[1]:mapi(function(prod) 
+
+			local minProds = setmetatable(prodLists[1]:mapi(function(prod)
 				return ProdTerm{
 					term = prod.term,
 					power = 1,
@@ -1038,17 +1038,17 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 --print('minProds', minProds)
-			
+
 			-- found no common factors -- don't touch the expression
-			if #minProds == 0 then 
+			if #minProds == 0 then
 				--return
 				-- or do touch, return the sorted expression
 				-- this lets -x+y == y-x
-				return expr 
+				return expr
 				-- or do you need to rebuild it?
 				--return prodLists:toExpr()
 			end
-				
+
 			local prune = symmath.prune
 			local div = symmath.op.div
 			for i,minProd in ipairs(minProds) do
@@ -1060,7 +1060,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 						if prodLists[i][j].term == minProd.term then
 							-- TODO isConstant ?
 							-- or should I just handle Constant and div-of-Constant ?
-							if Constant:isa(prodLists[i][j].power) 
+							if Constant:isa(prodLists[i][j].power)
 							or (
 								div:isa(prodLists[i][j].power)
 								and Constant:isa(prodLists[i][j].power[1])
@@ -1111,13 +1111,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 			local terms = table()
 			for i=1,#minProds do
 				if type(minProds[i].power) == 'number'
-				and minProds[i].power > 0 
+				and minProds[i].power > 0
 				then
 					terms:insert(minProds[i].term ^ minProds[i].power)
 				end
 			end
 			--]]
-	
+
 			-- [[
 			-- remove any product lists that are to the zero power
 			-- NOTICE this will put prodLists[] out of sync with expr[]
@@ -1140,13 +1140,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 			if #terms > 0 then
 				-- prune is still needed here -- it looks like only to recombine constants (and move them to the left of the muls) before the quadratic testing at the top of Factor is run
 				lastTerm = prune(lastTerm)
--- causing stack overflow:				
+-- causing stack overflow:
 --				lastTerm = factor(lastTerm)
 			end
 			--]]
 
 			terms:insert(lastTerm)
-		
+
 			local result = #terms == 1 and terms[1] or mul(terms:unpack())
 
 --print('returning result')
@@ -1202,15 +1202,15 @@ print('prodList', prodLists:toExpr(), '<br>')
 --]=]
 		end},
 
-		-- TODO is this technically valid? inf + c = inf?  
+		-- TODO is this technically valid? inf + c = inf?
 		-- or is it only valid in the context of a limit? inf + c = invalid, lim(x+c, x, inf) = inf
 		-- also TODO distinct reals vs extendedReals
 		{handleInfAndInvalid = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 				-- anything + invalid is invalid
 			for i=1,#expr do
-				if expr[i] == symmath.invalid then 
-					return symmath.invalid 
+				if expr[i] == symmath.invalid then
+					return symmath.invalid
 				end
 			end
 			-- inf + -inf is invalid
@@ -1227,11 +1227,11 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 			-- inf + anything else is inf
 			for i=1,#expr do
-				if expr[i] == symmath.inf then 
-					return symmath.inf 
+				if expr[i] == symmath.inf then
+					return symmath.inf
 				end
 			end
-	
+
 		end},
 
 		-- move all constants to the left hand side and combine them
@@ -1239,7 +1239,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 		{combineConstants = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			local cval	-- nil means not cloned yet
 			for i=#expr,2,-1 do
 				if Constant:isa(expr[i]) then
@@ -1250,7 +1250,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					cval = cval + table.remove(expr, i).value
 				end
 			end
-		
+
 			-- cval is set and expr is cloned if we found any constants not in the far left place
 			if cval then
 				if Constant:isa(expr[1]) then
@@ -1274,7 +1274,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				else
 					return prune:apply(expr)
 				end
-			
+
 			-- haven't found a Constant elsewhere, but there's a Constant(0) in the 1st entry ...
 			else
 				assert(#expr > 1)
@@ -1294,14 +1294,14 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 		{['Array.pruneAdd'] = function(prune, expr, ...)
 
---[=[ old version		
+--[=[ old version
 			-- any overloaded subclass simplification
 			-- specifically used for vector/matrix addition
 			-- only operate on neighboring elements - don't assume commutativitiy, and that we can exchange elements to be arbitrary neighbors
 			for i=#expr,2,-1 do
 				local rhs = expr[i]
 				local lhs = expr[i-1]
-				
+
 				local result
 				if lhs.pruneAdd then
 					result = lhs.pruneAdd(lhs, rhs)
@@ -1325,7 +1325,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			for i=#expr,2,-1 do
 				local rhs = expr[i]
 				local lhs = expr[i-1]
-				
+
 				local result
 				if lhs.pruneAdd then
 					-- [[ original
@@ -1356,10 +1356,10 @@ print('prodList', prodLists:toExpr(), '<br>')
 					return prune:apply(expr)
 				end
 			end
---]=] 
+--]=]
 		end},
-		
-		{combineMultipliedConstants = function(prune, expr, ...) 
+
+		{combineMultipliedConstants = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 			local tableCommutativeEqual = symmath.tableCommutativeEqual
 			local Constant = symmath.Constant
@@ -1380,7 +1380,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					local baseTerms
 					local didntFind
 					for _,mul in ipairs(muls) do
-						local nonConstTerms = table.filter(mul, function(x,k) 
+						local nonConstTerms = table.filter(mul, function(x,k)
 							if type(k) ~= 'number' then return end
 							return not Constant:isa(x)
 						end)
@@ -1392,7 +1392,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 								break
 							end
 						end
-						local constTerms = table.filter(mul, function(x,k) 
+						local constTerms = table.filter(mul, function(x,k)
 							if type(k) ~= 'number' then return end
 							return Constant:isa(x)
 						end)
@@ -1401,7 +1401,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 						for _,const in ipairs(constTerms) do
 							thisConst = thisConst * const.value
 						end
-						
+
 						baseConst = baseConst + thisConst
 					end
 					if not didntFind then
@@ -1426,14 +1426,14 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 			--]]
 		end},
-		
+
 		{flattenAddMul = function(prune, expr, ...)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 			local pow = symmath.op.pow
-	
+
 			local function toTerms(x)
 				local t = table()
 				if mul:isa(x) then
@@ -1453,7 +1453,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					and y[2][1].value > 1
 					and y[2][1].value < 20	-- upper bound?
 					and y[2][1].value % 2 == 1
-					and Constant.isValue(y[2][2], 2) 
+					and Constant.isValue(y[2][2], 2)
 					then
 						local n = (y[2][1].value - 1) / 2
 						table.remove(t, i)
@@ -1496,7 +1496,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 						end
 					end
 					if not constI then constI = 1 end
-					
+
 					local constJ
 					if not fail then
 						for _,ch in ipairs(termsJ) do
@@ -1515,7 +1515,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 						end
 					end
 					if not constJ then constJ = 1 end
-					
+
 					if not fail then
 						expr = expr:shallowCopy()
 						table.remove(expr, j)
@@ -1576,7 +1576,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 			--]]
 			--[[ divs all at once: a/b + c/d + e => (d*a + b*d + b*d*e) / (b*d)
-			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases 
+			-- much faster when you remove the final prune:apply() (5s vs 60s) but doesn't seem to finish simplifying all cases
 			local denom
 			for i,x in ipairs(expr) do
 				if div:isa(x) then
@@ -1617,12 +1617,12 @@ print('prodList', prodLists:toExpr(), '<br>')
 				local cos = require 'symmath.cos'
 				local sin = require 'symmath.sin'
 				local Function = require 'symmath.Function'
-			
+
 				local function checkAdd(ch)
 					local cosAngle, sinAngle
 					local cosIndex, sinIndex
 					for i,x in ipairs(ch) do
-						
+
 						if pow:isa(x)
 						and Function:isa(x[1])
 						and Constant.isValue(x[2], 2)
@@ -1675,25 +1675,25 @@ print('prodList', prodLists:toExpr(), '<br>')
 					if foundTrig then
 						local result = checkAdd(expr)
 						if result then
-							return prune:apply(result) 
+							return prune:apply(result)
 						end
 
-						-- this is factoring ... and pruning ... 
+						-- this is factoring ... and pruning ...
 						-- such that it is recursively calling this function for its simplification
 						local f = require 'symmath.factor'(expr)
 						if f then
 							return f
 						end
-					end	
-				end	
+					end
+				end
 				--]]
-				--[[ 
+				--[[
 				if mul:isa(f) then	-- should always be a mul unless there was nothing to factor
 					for _,ch in ipairs(f) do
 						if add:isa(ch) then
 							local result = checkAdd(ch)
-							if result then 
-								return prune:apply(result) 
+							if result then
+								return prune:apply(result)
 							end
 						end
 					end
@@ -1702,7 +1702,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			end
 		end},
 		--]=]
-	
+
 		-- log(a) + log(b) = log(ab)
 		{logMul = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -1728,19 +1728,19 @@ print('prodList', prodLists:toExpr(), '<br>')
 	},
 
 	Tidy = {
-		
+
 		{trig = function(tidy, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local cos = symmath.cos
 			local sin = symmath.sin
 			local Wildcard = symmath.Wildcard
-			
+
 			-- 1 + -1 * cos(x)^2 => sin(x)^2
-			-- this form isn't used by the time this code is reached 
+			-- this form isn't used by the time this code is reached
 			local theta = expr:match(1 + -1 * cos(Wildcard(1))^2)
 			if theta then return sin(theta)^2 end
-			
+
 			-- but this form is:
 			-- 1 + -(cos(x)^2) => sin(x)^2
 			local theta = expr:match(1 + -cos(Wildcard(1))^2)
@@ -1761,13 +1761,13 @@ print('op.add.rules.Tidy.apply with', symmath.Verbose(expr))
 			for i=1,#expr-1 do
 				-- x + -y => x - y
 				if unm:isa(expr[i+1]) then
---[=[ old					
+--[=[ old
 					local a = table.remove(expr, i)
 					local b = table.remove(expr, i)[1]
 					assert(a)
 					assert(b)
 					table.insert(expr, i, a - b)
-					
+
 					assert(#expr > 0)
 					if #expr == 1 then
 						expr = expr[1]
@@ -1792,7 +1792,7 @@ print('op.add.rules.Tidy.apply with', symmath.Verbose(expr))
 				end
 			end
 		end},
---]]	
+--]]
 	},
 }
 

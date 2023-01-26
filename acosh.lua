@@ -29,20 +29,20 @@ end
 function acosh:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local Is = x[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	for _,I in ipairs(Is) do
-		if I.start < 1 then 
+		if I.start < 1 then
 			self.cachedSet = nil
-			return nil 
+			return nil
 		end
 	end
-	
+
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
+
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		return RealSubset(
 			x.realFunc(I.start),
@@ -65,7 +65,7 @@ function acosh:evaluateLimit(x, a, side)
 		end
 		return symmath.invalid
 	end
-	
+
 	return Limit.evaluateLimit_ifInDomain(self, L)
 end
 
@@ -74,7 +74,7 @@ acosh.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			local x = expr[1]
 
 			if Constant.isValue(x, 1) then
@@ -84,7 +84,7 @@ acosh.rules = {
 			if x == symmath.inf then
 				return symmath.inf
 			end
-			
+
 			-- TODO this should be on all Function's prune()'s
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid

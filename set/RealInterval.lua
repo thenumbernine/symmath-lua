@@ -15,14 +15,14 @@ function RealInterval:init(start, finish, includeStart, includeFinish)
 	self.includeStart = includeStart
 	self.includeFinish = includeFinish
 -- extended real stuff
---[[ 
+--[[
 assert(self.start ~= -math.huge or self.includeStart)
 assert(self.finish ~= math.huge or self.includeFinish)
 --]]
 -- [[
 if self.start == -math.huge then self.includeStart = true end
 if self.finish == math.huge then self.includeFinish = true end
---]]	
+--]]
 	assert(type(self.includeStart) == 'boolean')
 	assert(type(self.includeFinish) == 'boolean')
 	if math.isnan(self.start) or math.isnan(self.finish) then
@@ -55,8 +55,8 @@ function RealInterval:__tostring()
 		.. (self.includeFinish and ']' or ')')
 end
 
-function RealInterval.__concat(a,b) 
-	return tostring(a) .. tostring(b) 
+function RealInterval.__concat(a,b)
+	return tostring(a) .. tostring(b)
 end
 
 function RealInterval:intersects(x)
@@ -75,7 +75,7 @@ function RealInterval:intersects(x)
 			-- does (a,... contain ...,b)
 			result = result and self.start <= x.finish
 		end
-		
+
 		if self.includeFinish and x.includeStart then
 			-- does ...,a] contain [b,...
 			result = result and x.start <= self.finish
@@ -89,7 +89,7 @@ function RealInterval:intersects(x)
 			-- does ...,a) contain (b,...
 			result = result and x.start < self.finish
 		end
-		
+
 		if result == true then return true end
 	end
 end
@@ -135,7 +135,7 @@ function RealInterval.isSubsetOf(subI, supI)
 			-- does (a,... contain (b,...
 			result = result and supI.start <= subI.start
 		end
-		
+
 		if supI.includeFinish and subI.includeFinish then
 			-- does ...,a] contain ...,b]
 			result = result and subI.finish <= supI.finish
@@ -149,9 +149,9 @@ function RealInterval.isSubsetOf(subI, supI)
 			-- does ...,a) contain ...,b)
 			result = result and subI.finish <= supI.finish
 		end
-		
+
 		if result == true then return true end
-		
+
 		if subI.finish < supI.start then return false end
 		if supI.finish < subI.start then return false end
 
@@ -173,7 +173,7 @@ function RealInterval.isSubsetOf(subI, supI)
 			local containsI = self:isSubsetOf(setI)
 			if containsI == nil then
 				return nil	-- if any are uncertain then return uncertain
-			elseif containsI == false then 
+			elseif containsI == false then
 				-- if a previous interval was true, but this interval is false,
 				-- then return uncertain
 				if result == true then
@@ -193,13 +193,13 @@ function RealInterval:containsExpression(x)
 	-- Expressions, other than Variable, Constant, etc
 	-- is Set an Expression?  not right now.
 	-- should it be?
-	-- 
+	--
 	-- this function is specific to each function -- maybe make it a member?
 	-- but for now it is only used here, so only keep it here
 	local I = x:getRealRange()
 	if I == nil then return end
 	assert(not RealInterval:isa(I))
-	
+
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
 	if RealSubset:isa(I) then
@@ -239,7 +239,7 @@ end
 = [b*c, a*d] for 0 <= a <= b and c <= d <= 0
 = [b*d, a*c] for a <= b <= 0 and c <= d <= 0
 
-for a <= 0 <= b and 0 <= c <= d it is 
+for a <= 0 <= b and 0 <= c <= d it is
 	union of [a,0] * [c,d] and [0,b] * [c,d]
 	= union of [a*d, 0*c] and [0*c, b*d]
 	= [a*d, b*d]
@@ -350,7 +350,7 @@ function RealInterval.__mul(A,B)
 end
 
 --[[
-[a,b] / [c,d] => 
+[a,b] / [c,d] =>
 for 0 <= c <= d this is the same as [a,b] * [1/d, 1/c] = [a/d, b/c]
 for c <= d <= 0 this is the same as [a,b] * [1/d, 1/c] = [b/d, a/c]
 for c <= 0 <= d this is the same as
@@ -362,28 +362,28 @@ function RealInterval.__div(A,B)
 	-- reals are (-inf, inf)
 	-- I saw shorthand for extended reals to be [-inf, inf] and jumped on it
 	-- but using this concept comes with its own set of problems
-	-- for example, when considering the boundary of 1/(a,b), it's nice for inf to be open by default 
+	-- for example, when considering the boundary of 1/(a,b), it's nice for inf to be open by default
 
 	if 0 <= A.start and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif 0 <= A.start and B.finish <= 0 then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
-	
+
 	elseif A.finish <= 0 and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif A.finish <= 0 and B.finish <= 0 then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
-	
+
 	elseif A.start <= 0 and 0 <= A.finish and 0 <= B.start then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 	elseif A.start <= 0 and 0 <= A.finish and B.finish <= 0 then
 		return A * RealInterval(1/B.finish, 1/B.start, B.includeFinish, B.includeStart)
 
 	--[[
-	these produce disjoint domains, not intervals, 
-	so they cannot be handled in the RealInterval operator, 
+	these produce disjoint domains, not intervals,
+	so they cannot be handled in the RealInterval operator,
 	but they are in the RealSubset operator
-	
+
 	better to err on the side of a larger domain than a smaller domain
 	and built-in operators don't support multiple return
 	so for these, I'll have the first result by (-inf,inf) - for doing operators on intervals
@@ -455,24 +455,24 @@ function RealInterval.__pow(A,B)
 	if any of the (a,b) interval is negative:
 	if (c,d) *contains* a non-integer then our domain is not real and therefore invalid
 	however if it is solely an integer then, for odd integers, we preserve sign and apply power
-	for even integers we make it positive 
+	for even integers we make it positive
 	--]]
 	if A.start < 0 then
 		-- if it is an interval at all then there will be an irrational point within it, and our exponent will be a root and therefore not real and therefore invalid
 		-- if it not inclusive on both sides then it won't contain its sole point and therefore will be invalid
-		if not (B.start == B.finish and B.includeStart and B.includeFinish) then 
-			return nil 
+		if not (B.start == B.finish and B.includeStart and B.includeFinish) then
+			return nil
 		end
-			
+
 		-- roots of negatives are not real:
-		if B.start ~= math.floor(B.start) then 
-			
+		if B.start ~= math.floor(B.start) then
+
 -- however ... R^R lies in this condition
 -- x^x, x in reals, has a range of (-inf,inf)^(-inf,inf)
 -- and this will lie here ...
-			return nil 
+			return nil
 		end
-		
+
 		if B.start % 2 == 1 then 	-- odd: preserve sign
 			return RealInterval(
 				A.start ^ B.start,
@@ -500,7 +500,7 @@ function RealInterval.__pow(A,B)
 
 	--[[
 	for 0 < a, 0 < c, (a,b) ^ (c,d) = (a^c, b^d)
-	mind you, for 0 <= c <= 1, the interval (a,b)^c will increase, but for 1 < c, (a,b)^c will decrease, but it will maintain its order 
+	mind you, for 0 <= c <= 1, the interval (a,b)^c will increase, but for 1 < c, (a,b)^c will decrease, but it will maintain its order
 	this means (.5, .6) ^ (.5, 2) will reverse its order
 	--]]
 	if 0 <= A.start then
@@ -543,14 +543,14 @@ function RealInterval.__pow(A,B)
 				math.min(A.start ^ B.start, A.start ^ B.finish),
 				math.max(A.finish ^ B.start, A.finish ^ B.finish),
 				A.includeStart and B.includeStart,
-				A.includeFinish and B.includeFinish)	
+				A.includeFinish and B.includeFinish)
 		end
 	end
-	
+
 	return RealInterval(-math.huge, math.huge, true, true)
 end
 
---[[ TODO modulo 
+--[[ TODO modulo
 -- [a,b] % [c,d]
 function RealInterval.__mod(A,B)
 end
@@ -563,4 +563,4 @@ function RealInterval.__eq(A,B)
 	and A.includeFinish == B.includeFinish
 end
 
-return RealInterval 
+return RealInterval

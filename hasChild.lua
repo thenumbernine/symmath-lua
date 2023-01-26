@@ -1,5 +1,5 @@
 --[[
-example: 
+example:
 expr:hasChild(function(x) return whatever:isa(x) end)
 --]]
 local function hasChild(x, lookfor)

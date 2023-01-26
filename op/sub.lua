@@ -37,9 +37,9 @@ end
 function sub:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
+	if I == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	for i=2,#self do
 		local I2 = self[i]:getRealRange()
@@ -55,10 +55,10 @@ sub.rules = {
 		{apply = function(expand, expr)
 			symmath = symmath or require 'symmath'
 			local add = symmath.op.add
-			
+
 			--assert(#expr > 1) -- TODO
-			if #expr == 1 then 
-				return expand:apply(expr[1]) 
+			if #expr == 1 then
+				return expand:apply(expr[1])
 			end
 
 			if #expr == 2 then

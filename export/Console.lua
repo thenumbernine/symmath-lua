@@ -18,7 +18,7 @@ local orig = name
 	while i < #name do
 		for symname,symchar in pairs(Console.symbols) do
 			if name:sub(i):match('^'..symname)
-			and not name:sub(i+#symname):match('%a')	-- check 'not %w' rather than %W so that '' will hit the condition 
+			and not name:sub(i+#symname):match('%a')	-- check 'not %w' rather than %W so that '' will hit the condition
 			then
 				name = name:sub(1,i-1) .. symchar .. name:sub(i+#symname)
 				i = i + #symname - 1

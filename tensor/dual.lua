@@ -1,6 +1,6 @@
 return function(expr)
 	local chart = require 'symmath.tensor.Manifold':findChartForSymbol()
-	
+
 	-- TODO look up signatures and coords
 	print'FINISHME'
 end

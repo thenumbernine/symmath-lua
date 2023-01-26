@@ -12,7 +12,7 @@ end
 --[[
 args:
 	m = matrix
-	
+
 	args:
 		callback = optional callback, every second, with the percent of progress
 		TODO maxDepth = how deep to compute
@@ -35,7 +35,7 @@ local function determinant(m, args)
 	if not Array:isa(m) then return m end
 	local dim = m:dim()
 	if #dim == 0 then return Constant(1) end
-	
+
 	local volume = #dim == 0 and 0 or 1
 	for i=1,#dim do
 		volume = volume * dim[i]
@@ -46,10 +46,10 @@ local function determinant(m, args)
 
 	-- tempted to write a volume=1 rank=n return the n-th nested element condition ...
 
-	-- not a rank-2 array? return nothing.  maybe error. 
-	if #dim ~= 2 then 
+	-- not a rank-2 array? return nothing.  maybe error.
+	if #dim ~= 2 then
 		--print('m',require 'ext.tolua'(m))
-		error("dim is "..#dim..' with value '..m[1][1]) 
+		error("dim is "..#dim..' with value '..m[1][1])
 	end
 
 	-- not square?
@@ -59,7 +59,7 @@ local function determinant(m, args)
 
 	local n = dim[1]
 
-	-- 1x1 matrix? 
+	-- 1x1 matrix?
 	if n == 1 then
 		return m[1][1]
 	elseif n == 2 then
@@ -91,7 +91,7 @@ local function determinant(m, args)
 			colWithMostZeros = i
 		end
 	end
-	
+
 	local useCol = mostZerosOfCol > mostZerosOfRow
 	local x = useCol and colWithMostZeros or rowWithMostZeros
 
@@ -100,7 +100,7 @@ local function determinant(m, args)
 		local i,j
 		if useCol then i,j = y,x else i,j = x,y end
 		local mij = m[i][j]
-		-- if the # of flips is odd then scale by -1, if even then by +1 
+		-- if the # of flips is odd then scale by -1, if even then by +1
 		local sign = ((i+j)%2)==0 and 1 or -1
 		if not isZero(mij) then
 			local submat = Array()

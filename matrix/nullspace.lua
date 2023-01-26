@@ -61,7 +61,7 @@ local function nullspace(A, verbose)
 	if m > 0 then
 		-- now build the eigenvector basis for this eigenvalue
 		local ev = Matrix:zeros{n, m}
-		
+
 		for j,i in ipairs(nonLeadingCols) do
 			ev[i][j] = Constant(1)
 		end
@@ -105,9 +105,9 @@ local function nullspace(A, verbose)
 				end
 			end
 		end
-		
+
 		ev = ev()
-		
+
 		return ev
 	end
 end

@@ -7,7 +7,7 @@ TODO make canonical form add -> sub -> mul -> div
 local class = require 'ext.class'
 local Visitor = require 'symmath.visitor.Visitor'
 local DistributeDivision = class(Visitor)
-DistributeDivision.name = 'DistributeDivision' 
+DistributeDivision.name = 'DistributeDivision'
 
 -- prune beforehand to undo tidy(), to undo subtractions and unary - signs
 function DistributeDivision:apply(expr, ...)
@@ -26,4 +26,4 @@ function DistributeDivision:apply(expr, ...)
 	--]]
 end
 
-return DistributeDivision 
+return DistributeDivision

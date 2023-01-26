@@ -16,7 +16,7 @@ dependentVars = table of...
 		src =
 			= self	for dx/dy
 			= TensorRef(self, ...) for dx^I/dy
-		
+
 		wrt =
 			= var	for dx/dy
 			= TensorRef(var, ...) for dx/dy^J
@@ -26,7 +26,7 @@ dependentVars = table of...
 --]]
 local Variable = class(Expression)
 
-Variable.precedence = 10	-- high since it will never have nested members 
+Variable.precedence = 10	-- high since it will never have nested members
 
 Variable.name = 'Variable'
 
@@ -41,16 +41,16 @@ function Variable:init(name, dependentVars, value, set)
 
 --[[ this works, but is rigid.
 -- once it is set, you can't change 'fixVariableNames' and get different behavior.
--- you have to manually clear all created variables' nameForExporterTables 
+-- you have to manually clear all created variables' nameForExporterTables
 -- so instead I'm doing it in Expression:nameForExporter
 
 	-- to avoid the require() infinite loop if symmath itself is building these Variables?
 	symmath = symmath or require 'symmath.namespace'()
-	
+
 	-- here, instead of in tostring()/Export, apply the 'fixVariableName'
 	-- so that all the exporter conditional stuff is handled by nameForExporter()
 	if symmath.fixVariableNames then
-			
+
 		-- manually apply over all exporters that have their own 'fixVariableName' functions
 		for _,exporter in ipairs{
 			'Console',
@@ -69,13 +69,13 @@ function Variable:init(name, dependentVars, value, set)
 
 	-- optional - inferred otherwise
 	if not set then
-		if complex:isa(value) then 
+		if complex:isa(value) then
 			set = require 'symmath.set.sets'.complex
 		elseif type(value) == 'number' then
 			set = require 'symmath.set.sets'.real
 		else
 			-- default set ... Real or Universal?
-			set = require 'symmath.set.sets'.real	
+			set = require 'symmath.set.sets'.real
 		end
 	end
 	self.set = set
@@ -113,7 +113,7 @@ end
 --]]
 
 -- Variable equality is by name and value at the moment
--- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1 
+-- this way log(e) fails to simplify, but log(symmath.e) simplifies to 1
 function Variable.match(a, b, matches)
 	-- same as in Expression.match
 	matches = matches or table()
@@ -138,7 +138,7 @@ end
 
 --[[
 assign or concatenate?
-Maxima would concatenate 
+Maxima would concatenate
 but that'd leave us no room to remove
 so I'll assign
 but I'll only assign for unique TensorRefs of self, so x'^i':setDependentVars(...) will clear all the other x'^i" setDependentVars but leave the x, x'^ij', etc setDependentVars based on # of tensor indexes
@@ -188,19 +188,19 @@ function Variable:dependsOn(x)
 --printbr('does Variable '..self..' depend on '..x..'?')
 
 	if x == self then return true end
-	
+
 	local TensorRef = require 'symmath.tensor.Ref'
 	if self.dependentVars then
 		for _,depvar in ipairs(self.dependentVars) do
 			if depvar.src == self then
 				-- [[ matches TensorRef:dependsOn
 				local wrt = depvar.wrt
-				if Variable:isa(wrt) 
-				and wrt == x 
+				if Variable:isa(wrt)
+				and wrt == x
 				then
-					return true 
+					return true
 				end
-				if TensorRef:isa(wrt) 
+				if TensorRef:isa(wrt)
 				and TensorRef:isa(x)
 				and #wrt == #x
 				then
@@ -228,8 +228,8 @@ function Variable:getRealRange()
 
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
-	if self.value then 
+
+	if self.value then
 		if type(self.value) == 'number' then
 			self.cachedSet = RealSubset(self.value, self.value, true, true)
 			return self.cachedSet
@@ -238,13 +238,13 @@ function Variable:getRealRange()
 			return self.cachedSet
 		end
 	end
-	
+
 	-- TODO why test this?  when won't it be true?
 	if RealSubset:isa(self.set) then
 		self.cachedSet = self.set
 		return self.cachedSet
 	end
-	
+
 	-- assuming start and finish are defined in all Real's subclasses
 	-- what about Integer?  Integer's RealInterval is discontinuous ...
 end

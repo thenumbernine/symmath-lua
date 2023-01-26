@@ -42,7 +42,7 @@ local function processTerm(coeffs, expr, x)
 --print('processTerm',expr,x)
 	local clone = require 'symmath.clone'
 	local mul = require 'symmath.op.mul'
-		
+
 	if not mul:isa(expr) then
 --print('not mul')
 		-- just process expr
@@ -98,14 +98,14 @@ end
 -- such that (sum for n=0 to table.max(result) of x^n * result[n]) + result.extra == expr
 return function(expr, x)
 	local ExpandPolynomial = require 'symmath.visitor.ExpandPolynomial'
-	
+
 	--[[
 	Alright, this is supposed to put our expression into a polynomial form
 	but it's not
 	It's supposed to do something like simplifyAddMulDiv does
 	but simplifyAddMulDiv doesn't specify powers, and seems to put powers at highest precedence
 	when what we want here is powers at lowest precedence ... so add-mul-div-pow
-	
+
 	but with that said,
 	where else are ExpandPolynomial or factorDivision used?
 	isn't factorDivision now just simplifyAddMulDiv?  no, it's called by it though on all its terms
@@ -115,12 +115,12 @@ return function(expr, x)
 	--expr = expr:factorDivision()	-- this recombines too
 	--expr = expr:simplifyAddMulDiv()	-- this starts off with :simplify(), so it's as bad as above
 
-	-- mul/Prune/factorDenominators will convert back to div, so avoid that	
+	-- mul/Prune/factorDenominators will convert back to div, so avoid that
 	local mul = require 'symmath.op.mul'
 	local pushed = mul:pushRule'Prune/factorDenominators'
 	expr = expr:prune()				-- this combines x powers and sums without recombining the poly
 	if pushed then mul:popRule'Prune/factorDenominators' end
-	
+
 	-- group terms by polynomial coefficients
 	local coeffs = {}	-- result = coeffs[n] * x^n + coeffs.extra, where coeffs.extra holds all the nonlinear x references
 

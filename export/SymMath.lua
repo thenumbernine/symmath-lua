@@ -27,7 +27,7 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 		if expr.dependentVars and #expr.dependentVars > 0 then
 			s = s .. ', {'..expr.dependentVars:filter(function(depvar)
 				return depvar.src == expr
-			end):mapi(function(depvar) 
+			end):mapi(function(depvar)
 				return self:apply(depvar.wrt)
 			end):concat', '..'}'
 		elseif expr.value then	-- only add ,nil if we need to pad our expr
@@ -45,13 +45,13 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 				return self:apply(xi, indent..tab)
 			end):concat(' '..expr:nameForExporter(self)..'\n')..'\n'
 			..indent..')'
-	end,	
+	end,
 	[require 'symmath.op.Equation'] = function(self, expr, indent)
 		return indent .. '(\n'
 			..table.mapi(expr, function(xi)
 				return self:apply(xi, indent..tab)
 			end):concat('\n'..indent..'):'..expr:nameForExporter(self)..'(\n')..'\n'
-			..indent..')'	
+			..indent..')'
 	end,
 	-- TODO same with ne, ge, gt, le, lt
 	-- 'unary' ?
@@ -79,8 +79,8 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 				end):concat(',\n')..'\n'
 				..indent..tab..'},\n'
 		end
-		s = s ..table.mapi(expr, function(xi) 
-				return self:apply(xi, indent..tab) 
+		s = s ..table.mapi(expr, function(xi)
+				return self:apply(xi, indent..tab)
 			end):concat(',\n')..'\n'
 			..indent..')'
 		return s
@@ -88,8 +88,8 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 	[require 'symmath.Expression'] = function(self, expr, indent)
 		local name = expr:nameForExporter(self)
 		return indent..expr:nameForExporter(self)..'(\n'
-			..table.mapi(expr, function(xi) 
-				return self:apply(xi, indent..tab) 
+			..table.mapi(expr, function(xi)
+				return self:apply(xi, indent..tab)
 			end):concat(',\n')..'\n'
 			..indent..')'
 	end,

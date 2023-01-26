@@ -103,7 +103,7 @@ produces:
 function MultiLine:fraction(top, bottom)
 	local res = table()
 	local width = math.max(strlen(top[1]), strlen(bottom[1]))
-	
+
 	local topPadding = width - strlen(top[1]) + 1
 	local topLeft = math.floor(topPadding/2)
 	local topRight = topPadding - topLeft
@@ -112,14 +112,14 @@ function MultiLine:fraction(top, bottom)
 	end
 
 	res:insert(vert(width+2))
-	
+
 	local bottomPadding = width - strlen(bottom[1]) + 1
 	local bottomLeft = math.floor(bottomPadding/2)
 	local bottomRight = bottomPadding - bottomLeft
 	for i=1,#bottom do
 		res:insert((' '):rep(bottomLeft+1)..bottom[i]..(' '):rep(bottomRight))
 	end
-	
+
 	return res
 end
 
@@ -146,7 +146,7 @@ function MultiLine:matrixBody(parts)
 			return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
 		end)
 	end)
-	
+
 	local widths = range(matwidth):mapi(function(j)
 		return (range(matheight):mapi(function(i)
 			return partwidths[i][j]
@@ -303,7 +303,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		if diffPower > 1 then
 			topText = topText .. '^'..diffPower
 		end
-		
+
 		topText = {topText}
 		symmath = symmath or require 'symmath'
 		local diffIsVar = symmath.Variable:isa(expr[1])
@@ -314,7 +314,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 			end
 			topText = self:combine(topText, varText)
 		end
-		
+
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
 			-- TODO this will call SingleLine's var:nameForExporter
@@ -334,7 +334,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 					return s, #newtable+1
 				end):concat' '
 			})
-	
+
 		-- vars go on the top, exprs go to the right
 		if not diffIsVar then
 			local rhs = self:wrapStrOfChildWithParenthesis(expr, expr[1])
@@ -344,13 +344,13 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
 		local s = self:apply(expr[1])
-		
+
 		local xL = expr[3]
 		local xR = expr[4]
-		
+
 		local dx = self:combine({' d'}, self:apply(expr[2]))
 		s = self:combine(s, dx)
-		
+
 		local n = math.max(2, #s)
 		local sLR
 		if xL and xR then
@@ -378,9 +378,9 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 			end
 			n = math.max(n, #sLR)
 		end
-	
+
 		-- TODO n should be the max of either the inner height or the sL height + sR height + padding
-		
+
 		local intstr = {}
 		for i=1,n do
 			if i == 1 then
@@ -395,14 +395,14 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 			intstr = self:combine(intstr, sLR)
 		end
 		s = self:combine(self:combine(intstr, {' '}), s)
-		
+
 		return s
 	end,
 	[require 'symmath.Array'] = function(self, expr)
 		local degree = expr:degree()
-		
+
 		if degree == 0 then return table() end
-		
+
 		-- even if it doesn't have a Matrix metatable, if it's degree-2 then display it as a matrix ...
 		-- TODO just put Matrix's entry here and get rid of its empty, let its subclass fall through to here instead
 		if degree % 2 == 0 then
@@ -455,7 +455,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		local Array = symmath.Array
 		local TensorRef = require 'symmath.tensor.Ref'
 		local Variable = symmath.Variable
-		
+
 		local t = expr[1]
 		local indexes = table.sub(expr,2)
 		local separateVarianceSymbols
@@ -477,7 +477,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 				)
 			)
 		end
-		
+
 		--[[ trusting the TensorIndex for proper generation
 		for _,index in ipairs(indexes) do
 			s = self:combine(s, self:apply(index))
@@ -488,9 +488,9 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		for i,index in ipairs(indexes) do
 			local is = indexStrs[i]
 			local lower = index.lower or false
-			if not separateVarianceSymbols 
-			and i ~= 1 
-			and lower == lastLower 
+			if not separateVarianceSymbols
+			and i ~= 1
+			and lower == lastLower
 			then
 				is[1] = is[1]:sub(2)
 			end
@@ -499,7 +499,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 			s = self:combine(s, is)
 		end
 		--]]
-		
+
 		return s
 	end,
 }:setmetatable(nil)

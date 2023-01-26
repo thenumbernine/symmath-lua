@@ -22,13 +22,13 @@ end
 
 function Integer:containsNumber(x)
 	assert(type(x) == 'number')
-	
+
 	-- if it isn't a real then it isn't an integer
 	-- TODO make a class for Real based on RealSubset(-huge,huge) ?
 	symmath = symmath or require 'symmath'
 	local isReal = symmath.set.real:containsNumber(x)
 	if isReal ~= true then return isReal end
-	
+
 	if x == math.floor(x) then return true end
 end
 

@@ -63,7 +63,7 @@ args.log = 10
 
 	SymmathHTTP.super.init(self, args)
 
-	self.worksheetFilename = worksheetFilename 
+	self.worksheetFilename = worksheetFilename
 
 	-- TODO here, determine the url or something, and ask the OS to open it
 	-- one of these should work ... not both, right?
@@ -73,7 +73,7 @@ args.log = 10
 	else
 		os.execute('open http://localhost:'..self.port)
 	end
-	
+
 	-- docroot is already set to cwd by parent class
 	self.symmathPath = assert(os.getenv'SYMMATH_PATH', 'SYMMATH_PATH not defined')
 	self.symmathPath = self.symmathPath:gsub(os.sep, '/')
@@ -106,10 +106,10 @@ function FakeFile:setvbuf() end
 function FakeFile:write() end
 
 function SymmathHTTP:setupSandbox()
-	
+
 	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
 	self.env = {}
-	
+
 
 	for k,v in pairs(_G) do
 		self.env[k] = v
@@ -145,7 +145,7 @@ function SymmathHTTP:setupSandbox()
 			self.buffer = self.buffer .. tostring((select(i, ...)))
 		end
 	end
-	
+
 	function self.env.io.read(...)
 		return self.env.io.stdin:read(...)
 	end
@@ -153,11 +153,11 @@ function SymmathHTTP:setupSandbox()
 	function self.env.io.write(...)
 		return self.env.io.stdout:write(...)
 	end
-	
+
 	function self.env.io.flush(...)
 		return self.env.io.stdout:flush(...)
 	end
-	
+
 	function self.env.print(...)
 		for i=1,select('#', ...) do
 			if i > 1 then self.env.io.write'\t' end
@@ -206,14 +206,14 @@ end
 
 function SymmathHTTP:handleDirectoryTemplate()
 	local code = SymmathHTTP.super.handleDirectoryTemplate(self)
-	-- TODO a better way?  I guess encode the dom as a tree ... 
+	-- TODO a better way?  I guess encode the dom as a tree ...
 	-- am I reinventing kepler project?
 	code = code:gsub('</head>', [[
 		<script type="text/javascript">
 function addnewworksheet() {
 	var name = prompt("what's the name?");
 	if (name === null) return;
-	
+
 	// TODO ajax request to a url that the server interprets as 'create a doc'
 	location.href = "createnew?name="+name;
 }
@@ -268,7 +268,7 @@ function SymmathHTTP:handleRequest(...)
 		if file(destfn):exists() then
 			return '404 Not Found', coroutine.wrap(function() coroutine.yield"file already exists" end)
 		end
-	
+
 		-- TODO make the file here
 		-- then open it for editing
 		-- then launch an instance associated with it
@@ -284,7 +284,7 @@ function SymmathHTTP:handleRequest(...)
 		GET = GET,
 		POST = POST,
 	})
-	
+
 	return SymmathHTTP.super.handleRequest(self, ...)
 end
 --]===]
@@ -295,8 +295,8 @@ end
 
 function SymmathHTTP:getCellForUID(gt, POST)
 	local uid = assert(tonumber(gt.uid or POST.uid))
-	local cellIndex, cell = self.cells:find(nil, function(cell) 
-		return cell.uid == uid 
+	local cellIndex, cell = self.cells:find(nil, function(cell)
+		return cell.uid == uid
 	end)
 	assert(cell, "failed to find cell with uid "..uid)
 	-- switch k,v to v,k
@@ -312,8 +312,8 @@ function SymmathHTTP:updateAllCells(POST)
 	if not newcells then
 		error("expected POST cells field, got "..tolua(POST))
 	end
-	self:log(2, 'updateAllCells got '..tolua(newcells))	
-	
+	self:log(2, 'updateAllCells got '..tolua(newcells))
+
 	nextValidUID = 0
 	for _,cell in ipairs(newcells) do
 		nextValidUID = math.max(nextValidUID, cell.uid)
@@ -335,7 +335,7 @@ to prevent runaway loops, I should add a way to interrupt execution to the gui.
 this also means keeping a separate lua instance as an intermediate to all the commands.
 this would also double for a webserver that handles directory listings.
 
-so you've got the main process that 
+so you've got the main process that
 - handles directories,
 - opens files
 - handles ajax requests
@@ -350,7 +350,7 @@ only once.
 and after being interrupted once, any subsequent interrupt calls will kill the whole process.
 seems dangerous.
 seems like I might have to interject my own signal handler as soon as the docall() code stars, which is entirely possible and straightforward:
-  
+
 default:
 
 	docall() {
@@ -370,7 +370,7 @@ to just not reset to the default signal:
 
 	static void laction (int i) {
 	  int flag = LUA_MASKCALL | LUA_MASKRET | LUA_MASKLINE | LUA_MASKCOUNT;
-	  // *** don't reset the signal handler *** 
+	  // *** don't reset the signal handler ***
 	  lua_sethook(globalL, lstop, flag, 1);
 	}
 
@@ -383,20 +383,20 @@ function SymmathHTTP:runCell(cell)
 	self:log(2, showcode(cell.input))
 	self.env.io.stdout.buffer = ''
 	cell.haserror = nil
-	
+
 	-- TODO use this in cell env print() and io.write()
-	currentBlockNewLineSymbol = 
+	currentBlockNewLineSymbol =
 		cell.outputtype == 'html' and '<br>\n'
 		or '\n'
-	
+
 	xpcall(function()
 
 		-- put a ; at the end to suppress assignment output.  sound familiar?
 		local suppressOutput = cell.input:sub(-1) == ';'
-	self:log(1, 'suppressOutput = ', suppressOutput) 
-		
+	self:log(1, 'suppressOutput = ', suppressOutput)
+
 		local results
-				
+
 		-- first try loading the code with 'return ' in front - just like lua interpreter
 		-- but don't if we are suppressing output -- because the 'return' is only used for just that
 		if not suppressOutput then
@@ -412,7 +412,7 @@ function SymmathHTTP:runCell(cell)
 		if not results then
 			-- first strip out comments, then search for =
 			local findlhs = cell.input
-			
+
 			-- strip out block comments
 			while true do
 				local before, equals, afterstart = findlhs:match'(.-)%-%-%[(=*)%[(.*)'
@@ -422,7 +422,7 @@ self:log(5, "block comment start equals: "..equals)
 self:log(5, "after block comment start: "..afterstart)
 				local comment, aftercomment = afterstart:match('(.-)%]'..equals..'%](.*)')
 self:log(5, "comment: "..comment)
-self:log(5, "aftercomment: "..aftercomment)				
+self:log(5, "aftercomment: "..aftercomment)
 				if not comment then
 					-- error: unfinished long comment
 				else
@@ -430,7 +430,7 @@ self:log(5, "aftercomment: "..aftercomment)
 self:log(5, "cellinput is now "..findlhs)
 				end
 			end
-			
+
 			-- strip out single-line comments
 			findlhs = findlhs:gsub('%-%-[^\r\n]*', '')
 
@@ -445,10 +445,10 @@ self:log(5, "cellinput is now "..findlhs)
 				-- if it failed then there's an error in it ... so we want to report the error ...
 				-- also we don't need 'results' ... since we're going to get it from the xpcall on lhs
 				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
-				-- TODO sometimes it crashes here 
+				-- TODO sometimes it crashes here
 				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 				self:log(2, "run() successfully handled assign-stmt")
-			
+
 				if not suppressOutput then
 					--[[ rely on return tostring()
 					-- try to append the lhs's tostring to the output
@@ -466,7 +466,7 @@ self:log(5, "cellinput is now "..findlhs)
 						results = table.pack(fromlua(lhs, nil, nil, self.env))
 						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
-					end)				
+					end)
 					--]]
 					--[[ rely on print() (handles mult ret better)
 					local pushOutput = self.env.io.stdout.buffer
@@ -483,7 +483,7 @@ self:log(5, "cellinput is now "..findlhs)
 						results = self.env.io.stdout.buffer
 					end, function(err)
 					end)
-				
+
 					self.env.io.stdout.buffer = pushOutput
 					--]]
 				end
@@ -517,7 +517,7 @@ self:log(5, "cellinput is now "..findlhs)
 				)
 			end
 		end
-	
+
 	end, function(err)
 		self:log(0, 'got error '..err)
 		cell.output = err..'\n'..debug.traceback()
@@ -541,10 +541,10 @@ function SymmathHTTP:handleRequest(...)
 		GET,
 		POST = ...
 	self:log(2, 'SymmathHTTP.handleRequest', filename)
-		
+
 	local gt = self:makeGETTable(GET)
 
-	-- TODO trap all errors and return any error back 
+	-- TODO trap all errors and return any error back
 	-- TODO more modular, client and server response in same lua object
 	-- TODO load function?  for reloading from last save?
 	-- TODO run-all?  and run-from-location, and run-until-location?
@@ -573,7 +573,7 @@ function SymmathHTTP:handleRequest(...)
 	elseif filename == '/newcell' then
 		self:log(2, "adding new cell before "..(gt.uid or 'end'))
 		local newcell = Cell()
-		
+
 		if gt.uid then
 			local _, pos = self:getCellForUID(gt, nil)
 			self.cells:insert(pos, newcell)
@@ -629,7 +629,7 @@ function SymmathHTTP:handleRequest(...)
 		end)
 	elseif filename == '/getworksheet' then
 		self:log(5, "getworksheet "..gt.filename)
-	
+
 		-- TODO search dir based on symmath dir
 		local data = assert(file(self.symmathPath..'/'..gt.filename):read())
 		data = assert(fromlua(data))
@@ -640,7 +640,7 @@ function SymmathHTTP:handleRequest(...)
 		end)
 	elseif filename == '/' then
 		return '200/OK', coroutine.wrap(function()
-			-- TODO this is also accessible as its filename, so ... ? 
+			-- TODO this is also accessible as its filename, so ... ?
 			coroutine.yield(
 				template(
 					-- TODO just call this 'index.html.lua' , but index to what, considering it is in a separate search path.
@@ -655,4 +655,4 @@ function SymmathHTTP:handleRequest(...)
 	end
 end
 
-SymmathHTTP():run() 
+SymmathHTTP():run()

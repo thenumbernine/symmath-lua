@@ -46,8 +46,8 @@ JavaScript.generateParams = {
 	returnCode = function(outputs)
 		return '\treturn '
 			..(#outputs > 1 and '[' or '')
-			..outputs:mapi(function(output) 
-				return output.name 
+			..outputs:mapi(function(output)
+				return output.name
 			end):concat', '
 			..(#outputs > 1 and ']' or '')
 			..';'

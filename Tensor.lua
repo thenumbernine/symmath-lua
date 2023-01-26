@@ -5,7 +5,7 @@ transformIndexes works fine between upper and lower, using the metric and its in
 	I think I have some sort of implicit subset working for my adm calculations between 4D and 3D that just chops off a letter (and neglects the 4D projection part)
 	... based on the fact that the 3D part of the ADM metric is the 3D spatial metric, and the 3D part of the ADM metric inverse is the 3D spatial metric inverse plus an outer of shift vectors
 	... which are orthogonal to the spatial metric (so any spatial terms only operate with the 3D portion anyways)
-	
+
 so neglect aside, what is the correct way I should be doing this?
 
 each index set needs a metric (and an inverse, which can be calculated)
@@ -107,7 +107,7 @@ local C = Tensor.Chart{
 	-- or optionally, should I just provide embeddedChart() that returns a Tensor in the chart's coordinates?
 	-- and then the inner product is already defined in the embedded chart's space
 	-- but in that case, how to handle indexes?
-	
+
 	-- in presence of a chart (and basis operators), the metric can be calculated
 	-- in absence of it, metric can be provided to describe the manifold behavior
 	metric = function(),
@@ -294,7 +294,7 @@ function Tensor:init(...)
 	symmath = symmath or require 'symmath.namespace'()
 	local Constant = symmath.Constant
 	local TensorIndex = self.Index
-	
+
 	local args = {...}
 
 	local argsAreNamed = type(args[1]) == 'table'
@@ -329,7 +329,7 @@ function Tensor:init(...)
 			-- construct content from default of zeroes
 			local subdim = table(dim)
 			local thisdim = subdim:remove(1)
-			
+
 			local superArgs = {}
 			for i=1,thisdim do
 				if #subdim > 0 then
@@ -344,7 +344,7 @@ function Tensor:init(...)
 			-- construct content from default of zeroes
 			local subVariance = table(self.variance)
 			local firstVariance = table.remove(subVariance, 1)
-			
+
 			local chart = self:findChartForSymbol(firstVariance.symbol)
 			assert(chart, "looks like you haven't created a chart yet, so I don't know how to determine the dimension of the indexes")
 
@@ -359,7 +359,7 @@ function Tensor:init(...)
 			Expression.init(self, table.unpack(superArgs))
 		end
 	else
-	
+
 		--[[
 		Tensor'^i'
 		Tensor'_jk'
@@ -370,9 +370,9 @@ function Tensor:init(...)
 		-- got an array of TensorIndexes
 		or (type(args[1]) == 'table' and TensorIndex:isa(args[1][1]))
 		then
-			
+
 			local indexes = table.remove(args, 1)
-			
+
 			-- *) parse string into indicies (and what chart they belong to) and contra- vs co- variance
 			-- should I make a distinction for multi-letter variables? not allowed for the time being ...
 			self.variance = TensorIndex.parseIndexes(indexes)
@@ -385,9 +385,9 @@ function Tensor:init(...)
 				-- assert that the sizes are correct
 				local subVariance = table(self.variance)
 				table.remove(subVariance, 1)
-			
+
 				Expression.init(self, table.unpack(args))
-				
+
 				-- matches below
 				for i=1,#self do
 					local x = self[i]
@@ -398,7 +398,7 @@ function Tensor:init(...)
 						self[i] = x
 					end
 				end
-		
+
 			else
 				-- construct content from default of zeroes
 				local subVariance = table(self.variance)
@@ -425,7 +425,7 @@ function Tensor:init(...)
 			-- default: covariant?
 			-- TODO create defaults according to children (from the Expression.init(self, ...) call)
 			self.variance = {}
-		
+
 			-- now that children are stored, construct them as lower-degree objects if the arguments were provided implicitly as metatable-less tables
 			-- this way we know all children (a) are Tensors and have a ".degree" field, or (b) are non-Tensor Expressions and are degree-0
 			for i=1,#self do
@@ -490,14 +490,14 @@ function Tensor:trace(i,j)
 	if dim[i] ~= dim[j] then
 		error("tried to apply tensor contraction across indices of differing dimension: "..i.."th and "..j.."th of "..table.concat(dim, ','))
 	end
-	
+
 	local newdim = table(dim)
 	-- remove the second index from the new dimension
 	local removedDim = table.remove(newdim,j)
 	-- keep track of where the first index is in the new dimension
 	local newdimI = i
 	if j < i then newdimI = newdimI - 1 end
-	
+
 	local newVariance = {table.unpack(self.variance)}
 	table.remove(newVariance, j)
 
@@ -510,7 +510,7 @@ function Tensor:trace(i,j)
 
 			local srcIndexes = {table.unpack(indexes)}
 			table.insert(srcIndexes, j, indexes[newdimI])
-			
+
 			return self:get(srcIndexes)
 		end,
 	}
@@ -524,7 +524,7 @@ if it removes the last dim then a number is returned (rather than a 0-degree ten
 function Tensor:contraction(i)
 	symmath = symmath or require 'symmath.namespace'()
 	local clone = symmath.clone
-	
+
 	local dim = self:dim()
 	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only degree "..#dim) end
 
@@ -604,14 +604,14 @@ function Tensor:transformIndex(ti, m)
 		-- current element being transformed
 		local is = {...}
 		local vxi = is[ti]	-- the current coordinate along the vector being transformed
-		
+
 		local result = 0
 		for vi=1,mdim[1] do
 			local vis = {table.unpack(is)}
 			vis[ti] = vi
 			result = result + m:get{vxi, vi} * self:get(vis)
 		end
-		
+
 		return result
 	end}
 end
@@ -628,11 +628,11 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		-- how do we handle raising indexes of subsets
 		local metric = (dstChart and dstChart.metric) or (srcChart and srcChart.metric)
 		local metricInverse = (dstChart and dstChart.metricInverse) or (srcChart and srcChart.metricInverse)
-		
+
 		if not metric then
 			error("tried to raise/lower an index without a metric:"..tostring(self))
 		end
-	
+
 		local tdim = t:dim()
 		if tdim[i] ~= metric:dim()[1]
 		or tdim[i] ~= metricInverse:dim()[1]
@@ -644,9 +644,9 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 			print("  metric inverse dimensions: "..table.concat(metricInverse:dim(),','))
 			error("you can reset the metric tensor via the Chart:setMetric() function")
 		end
-		
+
 		-- TODO generalize transforms, including inter-basis-symbol-sets
-	
+
 		local oldVariance = table.mapi(t.variance, function(v) return v:clone() end)
 		if tensorIndex.lower and not t.variance[i].lower then
 			t = t:transformIndex(i, metric)
@@ -655,7 +655,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		else
 			error("don't know how to raise/lower these indexes")
 		end
-			
+
 		symmath = symmath or require 'symmath.namespace'()
 		t = symmath.simplify(t)
 		t.variance = oldVariance
@@ -678,7 +678,7 @@ function Tensor:permute(dstVariance)
 	end
 
 --print('dstVariance', table.mapi(dstVariance, tostring):concat())
-	
+
 	-- determine index remapping
 	local indexMap = {}
 	for i,srcVar in ipairs(self.variance) do
@@ -789,7 +789,7 @@ Tensor.__newindex = function(self, key, value)
 		you will have to mark them off as you find them ...
 		first find which single-variable indexes exist in both
 		then, if there are any left in 'dstVariance', wrap 'value' in those
-		
+
 		without this, g['_tt'] = 2 will fail ... and must be written g['_tt'] = Tensor('_tt', 2)
 		or g['_ti'] = A'_i' will fail ... and must be written g['_ti'] = Tensor('_ti', A)
 		--]]
@@ -868,7 +868,7 @@ Tensor.__newindex = function(self, key, value)
 		dst = dst(self.variance)
 --for i=1,#dst do print('dst['..i..']=', dst[i]) end
 --print('simplifying...')
-		
+
 		dst = dst()
 --print('assigning from dst\n'..dst)
 -- applying variance to dst puts dst into dst[1] because the subindex isn't there ...
@@ -876,7 +876,7 @@ Tensor.__newindex = function(self, key, value)
 --print('all dst iters:')
 --for is in dst:iter() do print(table.concat(is, ',')) end
 --print('...done')
-		
+
 		--[[ copy in new values
 		for is in self:iter() do
 --print('index is',table.concat(is, ','), ' assigning '..dst[is]..' to '..self[is])
@@ -921,7 +921,7 @@ Tensor.__newindex = function(self, key, value)
 			end
 		end
 		--]]
-		
+
 		if #value.variance ~= #self.variance then
 			error("can't assign tensors of mismatching number of indexes")
 		end
@@ -1021,11 +1021,11 @@ function Tensor.pruneMul(lhs, rhs)
 						if resultIndexes[i].symbol == resultIndexes[j].symbol then
 --print("removing indexes", i, j)
 --print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)
-							
+
 							local infoj = resultIndexInfos:remove(j)	-- remove larger first
 							resultIndexes:remove(j)
 							resultDims:remove(j)
-							
+
 							local infoi = resultIndexInfos:remove(i)
 							resultIndexes:remove(i)
 							resultDims:remove(i)
@@ -1041,7 +1041,7 @@ function Tensor.pruneMul(lhs, rhs)
 				end
 			until not found
 		end
-	
+
 		--[=[ TODO are my sums optimal?
 		-- since the TensorRef mul is commutative (so long as all the dense Tensor's indexes are commutative...)
 		-- am I picking the optimal mul order?
@@ -1073,12 +1073,12 @@ function Tensor.pruneMul(lhs, rhs)
 			for i=1,select('#', ...) do
 				dst[i] = select(i, ...)
 			end
-			
+
 			for i,info in ipairs(resultIndexInfos) do
 				srcs[info.side][info.loc] = dst[i]
 			end
 --print('setting fixed read indexes of lhs '..require'ext.tolua'(srca)..' rhs '..require'ext.tolua'(srcb))
-			
+
 			-- now we can assert all the sumAcrossPairs' index locations are nil in srca and srcb
 
 			local result = setmetatable({}, table)
@@ -1088,13 +1088,13 @@ function Tensor.pruneMul(lhs, rhs)
 				-- assert that srca and srcb are already full
 				return lhs:get(srca) * rhs:get(srcb)
 			end
-			
+
 
 			if numSums > 0 then
 				for i=1,numSums do
 					iter[i] = 1
 				end
-				
+
 				local iterdone
 				while not iterdone do
 					-- callback(indexes) here:
@@ -1104,7 +1104,7 @@ function Tensor.pruneMul(lhs, rhs)
 						end
 					end
 					result:insert(lhs:get(srca) * rhs:get(srcb))
-					
+
 					for i=numSums,1,-1 do
 						iter[i] = iter[i] + 1
 						if iter[i] <= sumDims[i] then break end
@@ -1191,7 +1191,7 @@ function Tensor:printElem(name, write, defaultsep)
 			sep = defaultsep
 		end
 	end
-	
+
 	-- none found:
 	if sep == '' then
 		write(tostring(Ref(Variable(name), table.unpack(self.variance)):eq(0)))

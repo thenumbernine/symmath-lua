@@ -12,7 +12,7 @@ A = matrix to invert
 AInv = vector to solve the linear system inverse of.  default: identity, to produce the inverse matrix.
 callback = watch the progress!
 allowRectangular = set this to true to perform Gaussian elimination on the rectangular linear system
-A_det = assign this to substitute an expression into A_det.  
+A_det = assign this to substitute an expression into A_det.
 	Only works for 2x2 and 3x3 for now.
 	TODO do like maxima and leave the determinant factored out front?
 
@@ -21,7 +21,7 @@ as a separate function? symmath.inverse.
 same question with matrix multiplication
 same question with per-component matrix multiplication
 then there's the question of how to integrate arrays in general
-then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices 
+then there's breaking down prune/simplify op visitors into rules, so I could quickly insert a new rule when using matrices
 
 returns AInv, A, and any errors encountered during the simplification
 (should I favor consistency of return argument order, like pcall?
@@ -35,11 +35,11 @@ return function(A, b, callback, allowRectangular, A_det)
 	local Constant = require 'symmath.Constant'
 	local simplify = require 'symmath.simplify'
 	local clone = require 'symmath.clone'
-	
+
 	if type(A) == 'number' then return 1/Constant(A) end
 	if not Array:isa(A) then return Constant(1)/A end
 
-	-- expects A to be  
+	-- expects A to be
 	local dim = A:dim()
 	if #dim ~= 2 then
 		error("expected A to be a index-2 Array, found index-"..#dim)
@@ -60,7 +60,7 @@ return function(A, b, callback, allowRectangular, A_det)
 	local m, n = dim[1], dim[2]
 
 	A = clone(A)
-	
+
 	-- assumes A is a rank-2 array with matching height
 	local AInv = b and clone(b) or Matrix.identity(m)
 	local invdim = AInv:dim()
@@ -100,7 +100,7 @@ return function(A, b, callback, allowRectangular, A_det)
 		elseif m == 3 and n == 3 then
 			A_det = A_det or A:determinant()
 			if not Constant.isValue(A_det, 0) then
-				-- transpose, +-+- sign stagger, for each element remove that row and column and 
+				-- transpose, +-+- sign stagger, for each element remove that row and column and
 				local result = (Matrix(
 					{A[2][2]*A[3][3]-A[2][3]*A[3][2], A[1][3]*A[3][2]-A[1][2]*A[3][3], A[1][2]*A[2][3]-A[1][3]*A[2][2]},
 					{A[2][3]*A[3][1]-A[2][1]*A[3][3], A[1][1]*A[3][3]-A[1][3]*A[3][1], A[1][3]*A[2][1]-A[1][1]*A[2][3]},

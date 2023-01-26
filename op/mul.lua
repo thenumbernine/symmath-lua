@@ -116,7 +116,7 @@ local Verbose = symmath.export.Verbose
 	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
 	local a = table(a)
 	local b = table(b)
-	
+
 	-- compare things order-independent, remove as you go
 	-- skip wildcards, do those last
 	for i=#a,1,-1 do
@@ -162,20 +162,20 @@ local tab = (' '):rep(indent)
 		matches = matches or table()
 		a = table(a)
 		b = table(b)
-		
+
 --print(tab.."checking match of what's left with "..#a.." elements")
 
 		if #a == 0 and #b == 0 then
 --print(tab.."matches - returning true")
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
-		
+
 		-- #a == 0 is fine if b is full of nothing but wildcards
 		if #b == 0 and #a > 0 then
 --print(tab.."has remaining elements -- returning false")
 			return false
 		end
-		
+
 		-- TODO bi isn't necessarily a wildcard -- it could be an 'mulNonCommutative' term (though nothing does this for multiplication yet)
 		if #a == 0 and #b ~= 0 then
 			-- TODO verify that the matches are equal
@@ -207,13 +207,13 @@ local tab = (' '):rep(indent)
 			-- hmm, what if there's a sub-expression that has wildcard
 			-- then we need matches
 			-- then we need to push/pop matches
-		
+
 			local firstsubmatch = table()
 			if not a1:match(b1, firstsubmatch) then
 --print(tab.."first match didn't match - failing")
 				return false
 			end
-		
+
 			for i=1,table.maxn(firstsubmatch) do
 				if firstsubmatch[i] ~= nil then
 					if matches[i] ~= nil then
@@ -267,7 +267,7 @@ local tab = (' '):rep(indent)
 			for a in a:permutations() do
 				a = table(a)
 --print(tab.."checking a permutation "..a:mapi(SingleLine):concat', ')
-			
+
 				local b1match = matchSize == 0 and Constant(1)
 					or matchSize == 1 and a[1]
 					or setmetatable(a:sub(1, matchSize), mul)
@@ -302,12 +302,12 @@ local tab = (' '):rep(indent)
 --print(tab.."all sized matches failed - failing")
 		return false
 	end
-	
+
 	-- now what's left in b[i] should all be wildcards
 	-- we just have to assign them between the a's
 	-- but if we want mul match to return wildcards of +0 then we can't just rely on a 1-or-more rule
 	-- for that reason,
-	
+
 	return checkWhatsLeft(a,b, matches)
 	--return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
@@ -384,18 +384,18 @@ local Verbose = symmath.export.Verbose
 		local submatches = table(matches)
 		if not a:match(nonWildcards[1], submatches) then
 --print("mul.wildcardMatches single remaining mul sub-term didn't match first non-wildcard - failing")
-			
+
 			--[[
 			(a = Constant(4)) : match ( b = mul(Constant (2), Wildcard(1)) )
 			calls (b = mul(Constant (2), Wildcard(1))) : wildcardMatches ( (a = Constant(4)) )
 			has 1 non-wildcard: Constant(2)
 			and 1 wildcard: Wildcard(1)
-			
+
 			now if (a = Constant(4)) matches (nw[1] = Constant(2)) then the next condition hits
 			 and we continue on with our matched expresssion set to the operator identity of Constant(1)
 			but if it doesn't match ...
 			... what if we can just factor one out of the other?
-			
+
 			this is a question of the scope of the function:
 			how much is this tree matching, and how much is this unknown substitution?
 			tree matching? fail here.
@@ -507,7 +507,7 @@ local Verbose = symmath.export.Verbose
 		end
 		return true
 	end
-	
+
 	for wildcards in wildcards:permutations() do
 		wildcards = table(wildcards)
 		if checkWildcardPermutation(wildcards, matches) then
@@ -549,7 +549,7 @@ function mul.__eq(a,b)
 	for i=1,n do
 		if a[i] ~= b[i] then return false end
 	end
-	
+
 	return true
 end
 
@@ -585,7 +585,7 @@ function mul:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	local Limit = symmath.Limit
-	
+
 	-- TODO handle indeterminate forms here?  or outside of limits?
 	-- right now they are evaluated outside of limits...
 	return symmath.prune(
@@ -756,12 +756,12 @@ mul.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local div = symmath.op.div
-			
+
 			-- first time processing we want to simplify()
 			--  to remove powers and divisions
 			--expr = expr:simplify()
 			-- but not recursively ... hmm ...
-			
+
 			-- flatten multiplications
 			local flat = expr:flattenAndClone()
 			if flat then return factorDivision:apply(flat) end
@@ -789,16 +789,16 @@ mul.rules = {
 					cval = cval * table.remove(expr, i).value
 				end
 			end
-			
+
 			-- if it's all constants then return what we got
 			if #expr == 0 then
 				return Constant(cval)
 			end
-			
+
 			if cval == 0 then
 				return Constant(0)
 			end
-			
+
 			if cval ~= 1 then
 				table.insert(expr, 1, Constant(cval))
 			else
@@ -806,7 +806,7 @@ mul.rules = {
 					return factorDivision:apply(expr[1])
 				end
 			end
-			
+
 			--]]
 		end},
 	},
@@ -891,13 +891,13 @@ mul.rules = {
 		end},
 
 --[[ push fractions of constants to the left ... as a separate rule.
--- ... does this even do anything?		
--- no, i'm pretty sure prune() will turn a mul div into a div mul		
--- so until further notice it is disabled		
+-- ... does this even do anything?
+-- no, i'm pretty sure prune() will turn a mul div into a div mul
+-- so until further notice it is disabled
 		{pushFractionsOfConstantsLeft = function(prune, expr)
 			local function shouldMoveLeft(i)
-				return isConstantFraction(expr[i]) 
-					and not isConstantFraction(expr[i-1]) 
+				return isConstantFraction(expr[i])
+					and not isConstantFraction(expr[i-1])
 			end
 			local hasBeenCloned
 			local function doMoveLeft(i)
@@ -929,9 +929,9 @@ mul.rules = {
 			symmath = symmath or require 'symmath'
 			local Tensor = symmath.Tensor
 			local TensorRef = Tensor.Ref
-		
+
 			local modified
-		
+
 			-- TODO here
 			-- next step is pruneMul for simplifying things like Tensor's
 			-- but a few steps further is sorting terms, which also can sort TensorRef's
@@ -941,7 +941,7 @@ mul.rules = {
 
 			-- [=[ ok so since TensorRef of Tensor isn't commutative, lets sort them here
 			-- oh yeah TensorRef-of-Tensor has already been prune()'d into a Tensor, so ...
-			
+
 			-- wait TensorRef of Tensor mul is commutative, isn't it?  though Matrix mul isn't.
 			local indexesOfTensors
 			for i,x in ipairs(expr) do
@@ -976,7 +976,7 @@ mul.rules = {
 				end
 				-- higher #tensorsForSymbols[sym] means more terms summed between them
 --print('keys(tensorsForSymbols): '..table.keys(tensorsForSymbols):concat',')
-				
+
 				-- ok now we need to associate tensors with counts
 				-- so sum up the counts of the number
 				local countsForTensors = {}
@@ -1046,20 +1046,20 @@ mul.rules = {
 					local ti = table.remove(tensors,j)
 					local tj = table.remove(tensors,i)
 --print('#expr', #expr, 'insertLoc', insertLoc)
-					if not ti.fake then 
+					if not ti.fake then
 						if not modified then
 							expr = expr:clone()
 							modified = true
 						end
-						table.insert(expr, insertLoc, ti) 
+						table.insert(expr, insertLoc, ti)
 					end
 --print('#expr', #expr, 'insertLoc', insertLoc)
-					if not tj.fake then 
+					if not tj.fake then
 						if not modified then
 							expr = expr:clone()
 							modified = true
 						end
-						table.insert(expr, insertLoc, tj) 
+						table.insert(expr, insertLoc, tj)
 					end
 --print('#tensors is now '..#tensors)
 					if #tensors == 0 then break end
@@ -1072,7 +1072,7 @@ mul.rules = {
 			--]==]
 			end
 			--]=]
-			
+
 			if modified then
 				return prune:apply(expr)
 			end
@@ -1086,7 +1086,7 @@ mul.rules = {
 			for i=#expr,2,-1 do
 				local rhs = expr[i]
 				local lhs = expr[i-1]
-			
+
 				local result
 				if lhs.pruneMul then
 					result = lhs.pruneMul(lhs, rhs)
@@ -1113,7 +1113,7 @@ mul.rules = {
 			local pow = symmath.op.pow
 			local Variable = symmath.Variable
 			local TensorRef = symmath.Tensor.Ref
-		
+
 			--expr = expr:clone()	-- wow this causes a lot of damage
 
 			--[[ here push all mulNonCommutes to the rhs
@@ -1126,9 +1126,9 @@ mul.rules = {
 			5) Tensor (commutes ... mind you TensorRef-of-Tensor has already been prune'd into a Tensor)
 			4) Array, Matrix (doesn't commute)
 			--]]
-	
+
 			local hasBeenCloned
-		
+
 			-- push all Constants to the lhs, mul as we go
 			-- if we get a times 0 then return 0
 			local cval = 1
@@ -1149,12 +1149,12 @@ mul.rules = {
 					cval = cval * x.value
 				end
 			end
-			
+
 			-- if it's all constants then return what we got
 			if #expr == 0 then
 				return Constant(cval)
 			end
-			
+
 			if cval ~= 1 then
 				--[=[ for some reason this one causes all sorts of errors
 				if not hasBeenCloned then
@@ -1242,18 +1242,18 @@ mul.rules = {
 		end},
 
 -- [[ a^m * a^n => a^(m + n)
--- notice that the rule before and after are important to this one 
+-- notice that the rule before and after are important to this one
 		{combinePows = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
-			
+
 			--[=[ before combining powers, separate out any -1's from constants
 			-- this fixes my -2 * 2^(-1/2) simplify bug, but somehow screws up everything
-			-- 
+			--
 			-- Feel like I should timestamp this next comment: I'm not seeing the alleged bug anymore.
-			-- 
+			--
 			if mul:isa(expr)
 			and Constant:isa(expr[1])
 			and expr[1].value < 0
@@ -1264,12 +1264,12 @@ mul.rules = {
 				table.insert(expr, 1, Constant(-1))
 			end
 			--]=]
-	
+
 			local function getBasePower(x)
 				if pow:isa(x) then
 					return x[1], x[2]
 				end
-				
+
 				-- [=[ I have a weird bug where 4 * 2^(-1/2) won't simplify to 2 sqrt(2)
 				if Constant:isa(x) then
 					if x.value > 1 then
@@ -1282,7 +1282,7 @@ mul.rules = {
 				end
 				--]=]
 				-- same with -2 * 2^(-1/2) ... hmm ...
-				
+
 				return x, Constant(1)
 			end
 
@@ -1317,10 +1317,10 @@ mul.rules = {
 		end},
 --]]
 
---[[ after combining powers, re-merge any leading -1's: 
+--[[ after combining powers, re-merge any leading -1's:
 -- -1 * c * ... => -c * ...
 -- TODO maybe it's bad to assume structure of the mul after Prune:apply is finished ...
--- NOTICE not seeing a need for this anymore ... ?  If there is then add it into the unit tests.		
+-- NOTICE not seeing a need for this anymore ... ?  If there is then add it into the unit tests.
 		{mergeLeadingNegativeConstant = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
@@ -1329,7 +1329,7 @@ mul.rules = {
 			and Constant.isValue(expr[1], -1)
 			and Constant:isa(expr[2])
 			then
-				return 
+				return
 --					prune:apply(	-- NOTICE this causes a stack overflow
 						symmath.tableToMul{
 							Constant(-expr[2].value),
@@ -1349,13 +1349,13 @@ mul.rules = {
 			local Constant = symmath.Constant
 			local pow = symmath.op.pow
 			local div = symmath.op.div
-			
+
 			local uniqueDenomIndexes = table()
-			
+
 			local denoms = table()
 			local powers = table()
 			local bases = table()
-			
+
 			for i=1,#expr do
 				-- decompose expressions of the form
 				--  (base / denom) ^ power
@@ -1377,9 +1377,9 @@ mul.rules = {
 				powers:insert(power)
 				bases:insert(base)
 			end
-			
+
 			if #uniqueDenomIndexes > 0 then
-				
+
 				local num
 				if #bases == 1 then
 					num = bases[1]
@@ -1401,7 +1401,7 @@ mul.rules = {
 						num = mul(num:unpack())
 					end
 				end
-				
+
 				local denom
 				if #uniqueDenomIndexes == 1 then
 					local i = uniqueDenomIndexes[1]
@@ -1418,7 +1418,7 @@ mul.rules = {
 						end
 					end)))
 				end
-				
+
 				local expr = num
 				if not Constant.isValue(denom, 1) then
 					expr = expr / denom
@@ -1526,12 +1526,12 @@ so when we find mul -> pow -> add
 			local div = symmath.op.div
 			local Constant = symmath.Constant
 			for i=1,#expr-1 do
-				if pow:isa(expr[i]) 
+				if pow:isa(expr[i])
 				-- only for constants (I guess?). if I do non-constants then it interferes with other rules
 				and Constant:isa(expr[i][1])
 				then
 					for j=i+1,#expr do
-						if pow:isa(expr[j]) 
+						if pow:isa(expr[j])
 						and Constant:isa(expr[j][1])
 						then
 							-- if the powers match
@@ -1553,7 +1553,7 @@ so when we find mul -> pow -> add
 								table.remove(expr, j)
 								expr[i] = repl
 								if #expr == 1 then expr = expr[1] end
-								return expr						
+								return expr
 							--]=]
 							end
 						end
@@ -1609,11 +1609,11 @@ so when we find mul -> pow -> add
 			symmath = symmath or require 'symmath'
 			local unm = symmath.op.unm
 			local Constant = symmath.Constant
-			
+
 			-- TODO where was in-place modification allowed?
 			-- I think I was moving away from it in visitors
 			expr = expr:clone()
-			
+
 			-- -x * y * z => -(x * y * z)
 			-- -x * y * -z => x * y * z
 			do
@@ -1632,7 +1632,7 @@ so when we find mul -> pow -> add
 					return tidy:apply(expr)	-- got an even number?  remove it and simplify this
 				end
 			end
-			
+
 			-- (has to be solved post-prune() because tidy's Constant+unm will have made some new ones)
 			-- 1 * x => x
 			local first = expr[1]
@@ -1659,7 +1659,7 @@ so when we find mul -> pow -> add
 			return expr:flatten()	-- flatten() is in-place
 			--]]
 		end},
-	
+
 	},
 }
 -- ExpandPolynomial inherits from Expand

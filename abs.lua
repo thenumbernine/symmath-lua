@@ -31,10 +31,10 @@ abs.rules = {
 			-- unm's are converted to -1 * 's
 			local mul = symmath.op.mul
 			local Constant = symmath.Constant
-			
+
 			local x = expr[1]	-- abs(x)
-			
-			if mul:isa(x) 
+
+			if mul:isa(x)
 			and Constant:isa(x[1])
 			and x[1].value < 0
 			then
@@ -45,19 +45,19 @@ abs.rules = {
 					)
 				)
 			end
-		
+
 			if Constant:isa(x)
 			and x.value < 0
 			then
 				return prune:apply(Constant(math.abs(x.value)))
 			end
-		
+
 			if symmath.set.nonNegativeReal:contains(x) then
 				return x
 			end
-		
+
 --[[ TODO this should be on all Function's prune()'s
--- but for this set the complement of real is empty			
+-- but for this set the complement of real is empty
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end

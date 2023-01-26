@@ -27,15 +27,15 @@ cos.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
 
 function cos:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	
+
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
+
 	-- (-inf,inf) => (-1,1)
 	local Is = self[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		if I.start == -math.huge or I.finish == math.huge then return RealSubset(-1, 1, true, true) end
@@ -60,7 +60,7 @@ function cos:getRealRange()
 		elseif deltaQ == 1 then
 			if startQmod4 == 3 then
 				behavior = 0	-- all inc
-			elseif startQmod4 == 0 then	
+			elseif startQmod4 == 0 then
 				behavior = 2	-- inc dec
 			elseif startQmod4 == 1 then	-- so finishQmod4 == 2
 				behavior = 1	-- all dec
@@ -90,7 +90,7 @@ function cos:getRealRange()
 			-- increasing then decreasing
 			return RealSubset(
 				math.min(math.sin(I.start), math.sin(I.finish)), math.sin(math.pi/2),
-				I.includeStart or I.includeFinish, true)	
+				I.includeStart or I.includeFinish, true)
 		elseif behavior == 3 then
 			-- decreasing then increasing
 			return RealSubset(
@@ -146,11 +146,11 @@ cos.rules = {
 			local unm = symmath.op.unm
 			local mul = symmath.op.mul
 			local div = symmath.op.div
-		
+
 			local theta = expr[1]
 
 			-- cos(acos(x)) = x
-			if symmath.acos:isa(theta) then 
+			if symmath.acos:isa(theta) then
 				-- TODO only if x's domain is a subset of cos's realDomain
 				if symmath.set.RealInterval(-1, 1, true, true):contains(theta[1]) then
 					return theta[1]
@@ -161,31 +161,31 @@ cos.rules = {
 				-- TODO domains ...
 				return sqrt(1 - theta[1]^2)()
 			end
-			
+
 			-- cos(-x) = cos(x)
 			if unm:isa(theta) then
 				return cos(theta[1])
 			end
-				
+
 			-- cos(pi) => -1
 			if theta == symmath.pi then return Constant(-1) end
 
 			if Constant:isa(theta) then
 				-- cos(0) => 1
 				if theta.value == 0 then return Constant(1) end
-			
+
 				-- cos(-c) = cos(c)
 				if theta.value < 0 then return cos(Constant(-theta.value)) end
 			elseif mul:isa(theta) then
-				if #theta == 2 
-				and theta[2] == symmath.pi 
+				if #theta == 2
+				and theta[2] == symmath.pi
 				then
 					-- cos(k * pi) for even k => 1
 					if symmath.set.evenInteger:contains(theta[1]) then return Constant(1) end
 					-- cos(k * pi) for odd k => -1
 					if symmath.set.oddInteger:contains(theta[1]) then return Constant(-1) end
 				end
-			
+
 				-- cos(-c x y z) => cos(c x y z)
 				if Constant:isa(theta[1])
 				and theta[1].value < 0
@@ -194,7 +194,7 @@ cos.rules = {
 						return theta[i]:clone()
 					end)
 					local c = -mulArgs:remove(1).value
-					local rest = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack()) 
+					local rest = #mulArgs == 1 and mulArgs[1] or mul(mulArgs:unpack())
 					return prune:apply(c == 1 and cos(rest) or cos(c * rest))
 				end
 			elseif div:isa(theta) then
@@ -205,14 +205,14 @@ cos.rules = {
 					if p > q then
 						p = 2 * q - p
 					end
-					
+
 					local neg
 					if p == q/2 then return Constant(0) end
 					if p > q/2 then
 						neg = true
 						p = q - p
 					end
-					
+
 					if p == 0 then return Constant(1) end
 
 					local lookupq = cos.lookup[q]
@@ -229,8 +229,8 @@ cos.rules = {
 				then
 					local q = theta[2].value
 					-- cos(pi / q)
-					if theta[1] == symmath.pi then 
-						local result = handleFrac(1,q) 
+					if theta[1] == symmath.pi then
+						local result = handleFrac(1,q)
 						if result then return result end
 					else
 						-- cos((k * pi) / q)
@@ -246,15 +246,15 @@ cos.rules = {
 					end
 				end
 			end
-		
-			if expr[1] == symmath.inf 
+
+			if expr[1] == symmath.inf
 			or expr[1] == Constant(-1) * symmath.inf
 			then
 				return symmath.invalid
 			end
-		
+
 --[[ TODO this should be on all Function's prune()'s
--- but in this case the complement of the real is the empty set			
+-- but in this case the complement of the real is the empty set
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end

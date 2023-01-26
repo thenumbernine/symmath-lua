@@ -17,7 +17,7 @@ function OddInteger:containsNumber(x)
 	symmath = symmath or require 'symmath'
 	local isInteger = symmath.set.integer:containsNumber(x)
 	if isInteger ~= true then return isInteger end
-	return x % 2 == 1 
+	return x % 2 == 1
 end
 
 return OddInteger

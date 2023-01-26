@@ -70,7 +70,7 @@ function LaTeX:wrapStrOfChildWithParenthesis(parent, child)
 	-- tostring() needed to call MultiLine's conversion to tables ...
 	--local s = tostring(child)
 	local s = self:apply(child)
-	
+
 	if self:testWrapStrOfChildWithParenthesis(parent, child) then
 		if type(s) == 'string' then
 			return table{self.parOpenSymbol, s, self.parCloseSymbol}
@@ -142,7 +142,7 @@ local function explode(s)
 end
 
 LaTeX.lookupTable = table(LaTeX.lookupTable):union{
-	
+
 	[require 'symmath.Constant'] = function(self, expr)
 		if expr.symbol then
 			return table{prepareName(expr.symbol)}
@@ -160,7 +160,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		s = explode(s)
 		return s
 	end,
-	
+
 	[require 'symmath.Invalid'] = function(self, expr)
 		return table{expr:nameForExporter(self)}
 	end,
@@ -169,7 +169,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		local name = expr:nameForExporter(self)
 		name = prepareName(name)
 		return table{
-			prepareName(name), 
+			prepareName(name),
 			self.parOpenSymbol,
 			tableConcat(range(#expr):map(function(i)
 				return self:apply(expr[i])
@@ -210,17 +210,17 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		end
 		return res
 	end,
-	-- alright, for simplification/equality's sake I'm immediately turning all sub(a,b)'s into add(a,unm(b)) ... but that makes output look bad ... 
+	-- alright, for simplification/equality's sake I'm immediately turning all sub(a,b)'s into add(a,unm(b)) ... but that makes output look bad ...
 	-- TODO this in all other exporters as well?
 	[require 'symmath.op.add'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local unm = symmath.op.unm
 		local res = table()
 		for i=1,#expr do
-			if i > 1 
+			if i > 1
 			and not unm:isa(expr[i])	-- if it's a - then just let the - do the talking
-			then 
-				res:insert(expr:getSepStr(self)) 
+			then
+				res:insert(expr:getSepStr(self))
 			end
 			res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 		end
@@ -263,9 +263,9 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		symmath = symmath or require 'symmath'
 		local Constant = symmath.Constant
 		local Variable = symmath.Variable
-		
+
 		local a,b = table.unpack(expr)
-		
+
 		-- if the second term is small enough ...
 		-- for now, just look for single constants or Variables (or both?)
 		-- this could be done in tidy ...
@@ -275,7 +275,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				or Variable:isa(b)
 				then
 					local astr = table{table(self:apply(a), {force=true})}
-					
+
 					-- parenthesis if precedence is needed
 					if symmath.op.add:isa(a)
 					or symmath.op.sub:isa(a)
@@ -292,7 +292,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				end
 			end
 		end
-		
+
 		return table{
 			'\\frac',
 			table(self:apply(a), {force=true}),
@@ -300,7 +300,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		}
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		
+
 		symmath = symmath or require 'symmath'
 		if self.showExpAsFunction
 		and expr[1] == symmath.e
@@ -329,7 +329,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				res:append(self:wrapStrOfChildWithParenthesis(expr, expr[i]))
 			end
 		end
-		
+
 		return res
 	end,
 	[require 'symmath.Variable'] = function(self, expr)
@@ -352,12 +352,12 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 
 		local diffVars = table.sub(expr, 2)
 		local diffPower = #diffVars
-		
+
 		local diffExpr = expr[1]
 		local diffExprStr = self:apply(diffExpr)
 		local diffExprOnTop = Variable:isa(diffExpr)
 			or (TensorRef:isa(diffExpr) and Variable:isa(diffExpr[1]))
-			
+
 		local d = expr:nameForExporter(self)
 
 		if self.useCommaDerivative then
@@ -392,7 +392,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		if diffExprOnTop then
 			top:insert(diffExprStr)
 		end
-	
+
 		local powersForDeriv = {}
 		for _,var in ipairs(diffVars) do
 			-- TODO this will call LaTeX's var:nameForExporter
@@ -400,7 +400,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			local varname = self:applyLaTeX(var)
 			powersForDeriv[varname] = (powersForDeriv[varname] or 0) + 1
 		end
-	
+
 		local bottom = table()
 		for name,power in pairs(powersForDeriv) do
 			bottom:insert(d)
@@ -415,7 +415,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			table(top, {force=true}),
 			table(bottom, {force=true}),
 		}
-		
+
 		if not diffExprOnTop then
 			s = table{s, self.parOpenSymbol, diffExprStr, self.parCloseSymbol}
 		end
@@ -438,12 +438,12 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				},
 				table{'\\lim', force=true},
 			},
-			
+
 			--self:apply(f),
 			self:wrapStrOfChildWithParenthesis(expr, expr[1]),
 		}
 	end,
-	
+
 	-- options for column/row dividers using LaTeX array and {c|c|c} and \\hline
 	-- A.colsplits specifies columns to insert dividing lines before
 	-- A.rowsplits is the same thing for rows
@@ -452,7 +452,7 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		if expr:degree() % 2 == 0 then
 			return self.lookupTable[require 'symmath.Matrix'](self, expr)
 		end
-		
+
 		local result = table(omit{self.matrixLeftSymbol, self.matrixBeginSymbol})
 		result:append(omit(tableConcat(range(#expr):map(function(i)
 			return omit(self:apply(expr[i]))
@@ -478,13 +478,13 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			end), ' & '))
 			if #expr > 1 then rows[i] = omit(rows[i]) end
 		end
-		
+
 		local result = table{self.matrixLeftSymbol, self.matrixBeginSymbol}
 		result:append(omit(tableConcat(rows, ' \\\\')))
 		result:append{self.matrixEndSymbol, self.matrixRightSymbol}
 		return omit(result)
 		--]]
-		
+
 		-- [[ with rowsplits, have to use \begin{array} \end{array}
 		local m = #expr
 		local n = #expr[1]
@@ -600,14 +600,14 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 				s:insert(table{'{'}:append(self:apply(to)):append{'}'})
 			end
 		end
-		
+
 		if var and self.integralDxBeforeExpr then
 			s:insert'd'
 			s:insert(self:apply(var))
 		end
-	
+
 		s:insert(self:wrapStrOfChildWithParenthesis(expr, expr[1]))
-		
+
 		if var and not self.integralDxBeforeExpr then
 			s:insert'd'
 			s:insert(self:apply(var))
@@ -628,11 +628,11 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then
 			s = self.parOpenSymbol .. s .. self.parCloseSymbol
 		end
-		
+
 		for _,index in ipairs(indexes) do
 			s = '{' .. s .. '}' .. self:applyLaTeX(index)
 		end
-		
+
 		return table{s}
 	end,
 	-- looks a lot like TensorIndex.__tostring, except with some {}'s wrapping stuff
@@ -679,7 +679,7 @@ function LaTeX:applyLaTeX(...)
 		if type(result) ~= 'table' then
 			error("don't know how to handle type "..type(result))
 		end
-		
+
 		local omit = result.omit
 		local force = result.force
 		local count = #result
@@ -694,7 +694,7 @@ function LaTeX:applyLaTeX(...)
 			end
 		end
 		result = result:concat()
-		
+
 		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
 		if force then
 			result = '{' .. result .. '}'
@@ -703,7 +703,7 @@ function LaTeX:applyLaTeX(...)
 		else
 			result = ' ' .. result
 		end
-		
+
 		return result
 	end
 
@@ -723,7 +723,7 @@ alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu
 nu xi omicron pi rho sigma tau upsilon phi chi psi omega
 ]]):gmatch'%S+' do
 	texSymbols:insert{k, '\\'..k}
-	
+
 	k = k:sub(1,1):upper() .. k:sub(2)
 	-- a few capitol Greek letters are also capitol Latin, so LaTeX doesn't support escapes for them:
 	local v = ({
@@ -773,7 +773,7 @@ function LaTeX:fixVariableName(name)
 	if type(name) == 'number' then name = tostring(name) end
 	local i=1
 	while i < #name do
-		
+
 		-- automatically convert subscript/superscript within a name?
 		if i>1 then
 			if name:sub(i):match'^_' then
@@ -782,7 +782,7 @@ function LaTeX:fixVariableName(name)
 				name = name:sub(1,i-1) .. '^{' .. name:sub(i+1) .. '}'
 			end
 		end
-		
+
 		-- replace all greek letter names in the string with \+the greek letter name
 		-- replace any tex symbols?  is this necessary?  I've already got inf handled
 		-- and what if there's already a \ there?  If that's the goal then how about I ignore those?

@@ -1,5 +1,5 @@
 --[[
-post-simplify change from canonical form to make the equation look more presentable 
+post-simplify change from canonical form to make the equation look more presentable
 --]]
 local class = require 'ext.class'
 local Visitor = require 'symmath.visitor.Visitor'

@@ -183,7 +183,7 @@ return function(args)
 		{'joule', 'J', kg * m^2 / s^2},
 		{'watt', 'W', kg * m^2 / s^3},
 	}
-	
+
 	psi_in_Pa = psi_in_SI:subst(Pa_in_SI:solve(kg))()
 
 	-- ampere
@@ -371,7 +371,7 @@ return function(args)
 	G = 1 = 6.67384e-11 * m^3 * kg^-1 * s^-2
 	hBar = 1 = 1.05457173e-34 * m^2 * kg * s^-1
 	kB = 1 = 1.3806488e-23 * m^2 * kg * s^-2 * K-1
-	 
+
 	c relates m to s:
 		1 = 299792458 * m * s^-1
 		s = 299792458 * m
@@ -410,7 +410,7 @@ return function(args)
 		substitute hBar's kg...
 		K = 1.5361789647104e-40 * 45945129.645799
 		K = 7.0579941692769e-33
-	 
+
 	... what relates V or A?
 	V = kg * m^2 * s^-3 * A^-1
 	V * A = (kg * m^2 * s^-1) * s^-2
@@ -419,8 +419,8 @@ return function(args)
 	V * A = 9.4825223505659e+033 / 1.854922629615e+43^2
 	V * A = 2.7559559767945e-053
 	... they at least relate to one another ...
-	 
-	 
+
+
 	Energy is measured in Joules = kg m^2 / s^2
 		hBar says
 		1 / 1.05457173e-34 = kg * m^2 * s^-1
@@ -444,14 +444,14 @@ return function(args)
 		kg = 1.05457173e-34^-1 * (9.482522350566e+033 * J^-1) * (3.1630289880628e+025 * J^-1)^-2
 		kg = 1.05457173e-34^-1 * 9.482522350566e+033 * 3.1630289880628e+025^-2 * J
 		kg = 8.9875517873681e+016 * J
-	 
-	 
+
+
 	new unit! electronvolt (eV)
 		... must be in terms of ratios of V and A
 	eV = 1.60217653e-19 * J
 	J = 6.2415094796077e+18 * eV
 	J = 6.2415094796077e+9 * GeV
-	 
+
 	result:
 		m = 3.1630289880628e+025 / 6.2415094796077e+9 * GeV^-1
 		s = 9.482522350566e+033 / 6.2415094796077e+9 * GeV^-1
@@ -469,7 +469,7 @@ return function(args)
 		GeV^-2 = 389.37935799925 µb
 
 	--]]
-	
+
 	if args.verbose then
 		Gprint(MathJax.footer)
 	end
@@ -477,7 +477,7 @@ return function(args)
 	-- by here we're done with the operations,
 	-- so we no longer need the lookup tables in the environment which point back to the global namespace
 	setmetatable(env, nil)
-	
+
 	symmath.simplifyConstantPowers = push
 
 	if setfenv ~= nil then

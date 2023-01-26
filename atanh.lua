@@ -26,7 +26,7 @@ atanh.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			local x = expr[1]
 
 			if Constant.isValue(x, 0) then return Constant(0) end

@@ -36,17 +36,17 @@ tanh.rules = {
 			if Constant.isValue(x, 0) then
 				return Constant(0)
 			end
-			
+
 			if x == symmath.inf then
 				return Constant(1)
 			end
-			
+
 			if x == Constant(-1) * symmath.inf then
 				return Constant(-1)
 			end
-		
+
 --[[ TODO this should be on all Function's prune()'s
--- but this domain is reals so the complement is empty			
+-- but this domain is reals so the complement is empty
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end

@@ -28,16 +28,16 @@ sinh.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			if expr[1] == symmath.inf then
 				return symmath.inf
 			end
 			if expr[1] == Constant(-1) * symmath.inf then
 				return Constant(-1) * symmath.inf
 			end
-		
+
 --[[ TODO this should be on all Function's prune()'s
--- but since this is reals, the complement is empty	
+-- but since this is reals, the complement is empty
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid
 			end

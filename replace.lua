@@ -12,7 +12,7 @@ local function replaceRecurse(expr, find, repl, cond)
 	if type(find) == 'number' then
 		find = Constant(find)
 	end
-	if repl == nil then 
+	if repl == nil then
 		error("expected to have something to replace, got nil")
 	elseif type(repl) == 'number' then
 		repl = Constant(repl)
@@ -20,18 +20,18 @@ local function replaceRecurse(expr, find, repl, cond)
 
 	-- cond returns true to short circuit search
 	if cond and cond(expr) then return end
-	
+
 	local modified
 
--- [[  TODO (a + a + b + b):replace(a + b, x) will fail 
+-- [[  TODO (a + a + b + b):replace(a + b, x) will fail
 	local replacedAll, replacedIndex
 	-- here I need to not just test equality, but also portions of equality
-	-- esp for commutative equals operators 
+	-- esp for commutative equals operators
 	if expr.removeIfContains then
 		local status, removed = expr:removeIfContains(find)
 		-- "removed" was originally most likely a BinOp
 		-- but its children have been removed
-		-- therefore it could reach an invalid state of having 0 or 1 children 
+		-- therefore it could reach an invalid state of having 0 or 1 children
 		if status then
 --print("# children left", #removed, '<br>')
 			-- bit of a hack
@@ -44,11 +44,11 @@ local function replaceRecurse(expr, find, repl, cond)
 					expr = removed
 					table.insert(expr, repl)
 					replacedIndex = #expr
-				end	
-			end	
+				end
+			end
 			modified = true
 		end
---print("expr is now",expr,'<br>')	
+--print("expr is now",expr,'<br>')
 	end
 	if replacedAll then return expr end
 --]]
@@ -65,7 +65,7 @@ local function replaceRecurse(expr, find, repl, cond)
 			print(' with '..tostring(repl))
 			error'here'
 		end
-		-- don't recursively apply our replace() to the replaced result 
+		-- don't recursively apply our replace() to the replaced result
 		if i ~= replacedIndex then
 			local replexpri = replaceRecurse(expr[i], find, repl, cond)
 			if replexpri then
@@ -84,7 +84,7 @@ end
 
 local function replace(expr, ...)
 	assert(expr)
-	local result = replaceRecurse(expr, ...) 
+	local result = replaceRecurse(expr, ...)
 	if not result then return expr end
 	result:flatten()
 	return result

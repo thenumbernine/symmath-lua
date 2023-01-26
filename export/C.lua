@@ -35,7 +35,7 @@ C.lookupTable = table(C.lookupTable):union{
 			predefs = table(predefs, sx2)
 		end
 		s = s:concat(', ')
-		
+
 		local funcName
 		if not expr.code then
 			funcName = expr:nameForExporter(self)
@@ -85,11 +85,11 @@ C.lookupTable = table(C.lookupTable):union{
 C.generateParams = {
 	localType = function(self) return self.numberType end,
 	lineEnd = ';',
-	
+
 	funcHeaderStart = function(self, name, inputs)
 		-- technically this is straying into C++ realm...
 		local prefix = name and ('void '..name) or '[]'
-		
+
 		return prefix..'('..self.numberType..'* out'
 			..(#inputs > 0 and ', ' or '')
 	end,

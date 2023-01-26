@@ -24,10 +24,10 @@ and not x.mutable
 and x:hasTrig()
 then
 --timer('trigsimp', function(...)
-		
+
 		-- trigonometric
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
-		
+
 		if x.map then
 --printbr('testing for trig squares:', x)
 			local sin = symmath.sin
@@ -116,7 +116,7 @@ end
 	return x
 end
 
-	
+
 simplifyObj.simplifyMaxIter = 10
 
 simplifyObj.useTrigSimplify = true
@@ -162,27 +162,27 @@ local function simplifyCall(simplifyObj, x, ...)
 	local tidy = symmath.tidy
 	local Invalid = symmath.Invalid
 	local lastx
-	
+
 	local clone, stack
 	if simplifyObj.debugLoops then
 		-- [[ with stack trace on loop
 		clone = symmath.clone
 		stack = table()
 	end
-	
+
 	-- TODO if we get nested calls then this gets overwritten and we lose the ability for Visitor to store extra rules ...
 	-- unless instead we return this object, so we don't rely on globals
 	simplifyObj.stack = stack
-	
+
 	if stack then stack:insert{'Init', clone(x)} end
-		
+
 	x = prune(x, ...)
 	if stack then stack:insert{'Prune', clone(x)} end
-	
+
 	local i = 0
 	repeat
 		lastx = x	-- lastx = x invokes the simplification loop.  that means one of the next few commands operates in-place.
-	
+
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		if stack then stack:insert{'Expand', clone(x)} end
 --print('expand\n'..x)
@@ -190,17 +190,17 @@ local function simplifyCall(simplifyObj, x, ...)
 		x = prune(x, ...)
 		if stack then stack:insert{'Prune', clone(x)} end
 --print('prune\n'..x)
-		
+
 		x = factor(x)
 		if stack then stack:insert{'Factor', clone(x)} end
 --print('factor\n'..x)
-		
+
 		x = prune(x)
 		if stack then stack:insert{'Prune', clone(x)} end
 --print('prune\n'..x)
 
 		x = simplifyTrig(x, ...)
-	
+
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
@@ -223,7 +223,7 @@ local function simplifyCall(simplifyObj, x, ...)
 --print(debug.traceback())
 	end
 --]]
-		
+
 	x = tidy(x, ...)
 	if stack then stack:insert{'Tidy', clone(x)} end
 

@@ -33,7 +33,7 @@ function pow:evaluateDerivative(deriv, ...)
 			-- a & b are constant ... a^b is constant ... d/dx (a^b) = 0
 			return Constant(0)
 		end
-	
+
 		-- b is constant, a is not ... d/dx (a^b) = b a^(b-1) * d/dx(a)
 		return b * a ^ Constant(b.value-1) * deriv(a, ...)
 	elseif Constant:isa(a) then
@@ -48,7 +48,7 @@ function pow:evaluateDerivative(deriv, ...)
 end
 
 -- [==[ going slow...
--- for a:match(b), calling this where b == self 
+-- for a:match(b), calling this where b == self
 function pow:wildcardMatches(a, matches)
 	local b = self
 	symmath = symmath or require 'symmath'
@@ -62,7 +62,7 @@ function pow:wildcardMatches(a, matches)
 	if not pow:isa(a) then
 		-- (non-power):match( non-wildcard ^ wildcard)
 		if not w1 and w2 then
-			-- [[ if non-wildcard == non-power then return true with  wildcard = 1 
+			-- [[ if non-wildcard == non-power then return true with  wildcard = 1
 			if a == self[1] then
 				if Constant(1):match(self[2], matches) then
 					return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
@@ -72,7 +72,7 @@ function pow:wildcardMatches(a, matches)
 			-- [[ or for unknown-substitution, return true with wildcard = log(non-power)/log(non-wildcard)
 			-- but only for non-wildcard > 0
 			--]]
-	
+
 		-- (non-power):match( wildcard ^ non-wildcard)
 		elseif w1 and not w2 then
 			-- [[ if non-wildcard == 1 then return true with wildcard = non-power
@@ -84,7 +84,7 @@ function pow:wildcardMatches(a, matches)
 			--]]
 			-- [[ or for unknown-substitution, return true with wildcard = (non-power) ^ (1/(non-wildcard))
 			--]]
-		
+
 		-- (non-power):match( wildcard[1] ^ wildcard[2] )
 		elseif w1 and w2 then
 			-- assuming they are dif index wildcards
@@ -93,18 +93,18 @@ function pow:wildcardMatches(a, matches)
 			-- TODO what about x:match(W(1)^W(1)) ? how do you solve x = y^y ?
 			local pushmatches = table(matches)
 			if not Constant(1):match(self[2], matches) then return false end
-			if not a:match(self[1], matches) then 
+			if not a:match(self[1], matches) then
 				-- restore from previous match
 				for k,v in pairs(matches) do matches[k] = nil end
 				for k,v in pairs(pushmatches) do matches[k] = v end
-				return false 
+				return false
 			end
 			return matches[1] or true, table.unpack(matches, 2, table.maxn(matches))
 		end
 	end
 --]=]
 
-	-- from Expression.match	
+	-- from Expression.match
 	if getmetatable(a) ~= getmetatable(b) then return false end
 	-- check subexpressions
 	local n = #a
@@ -124,7 +124,7 @@ function pow:expand()
 	local Constant = symmath.Constant
 	if not Constant:isa(self[2]) then return end
 	local n = self[2].value
-	-- for certain small integer powers, expand 
+	-- for certain small integer powers, expand
 	-- ... or should we have all integer powers expended under a different command?
 	if symmath.set.integer:contains(self[2])
 	and n >= 0
@@ -152,7 +152,7 @@ function pow:reverse(soln, index)
 	-- y = p(x)^q => y^(1/q) = p(x)
 	if index == 1 then
 		-- for q is integer, include all 1/q roots
-		
+
 		-- TODO positive integer please
 		if symmath.set.integer:contains(q)
 		and symmath.set.positiveReal:contains(q)
@@ -170,7 +170,7 @@ function pow:reverse(soln, index)
 			end
 			--]]
 		end
-		
+
 		return soln^(1/q)
 	-- y = p^q(x) => log(y) / log(p) = q(x)
 	elseif index == 2 then
@@ -182,14 +182,14 @@ end
 function pow:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
+	if I == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	local I2 = self[2]:getRealRange()
-	if I2 == nil then 
+	if I2 == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 	self.cachedSet = I ^ I2
 	return self.cachedSet
@@ -201,9 +201,9 @@ function pow:evaluateLimit(x, a, side)
 	local prune = symmath.prune
 	local Limit = symmath.Limit
 	local Constant = symmath.Constant
-	
+
 	local p, q = table.unpack(self)
-	-- TODO what about sqrts?  
+	-- TODO what about sqrts?
 	-- in that case we should handle lim x->0+ sqrt(x) differently from lim x->0- sqrt(x)
 	local Lp = prune(Limit(p, x, a, side))
 	local Lq = prune(Limit(q, x, a, side))
@@ -222,7 +222,7 @@ end
 
 pow.rules = {
 	Expand = {
-		
+
 		-- (a / b)^n => a^n / b^n
 		-- not simplifying ...
 		-- maybe this should go in factor() or expand()
@@ -238,7 +238,7 @@ pow.rules = {
 		end},
 
 		-- a^n => a*a*...*a,  n times, only for integer 2 <= n < 10
-		-- hmm this can cause problems in some cases ... 
+		-- hmm this can cause problems in some cases ...
 		-- comment this out to get schwarzschild_spherical_to_cartesian to work
 		{integerPower = function(expand, expr)
 			symmath = symmath or require 'symmath'
@@ -249,7 +249,7 @@ pow.rules = {
 			and expr[2].value >= 2
 			and expr[2].value < 10
 			then
-				if symmath.simplifyConstantPowers 
+				if symmath.simplifyConstantPowers
 				and Constant:isa(expr[1])
 				then
 					return Constant(expr[1].value ^ expr[2].value)
@@ -264,7 +264,7 @@ pow.rules = {
 
 -- [[ (a * b) ^ c => a^c * b^c
 -- doesn't help me like I thought it would
--- also in pow/Prune/expandMulOfLikePow 
+-- also in pow/Prune/expandMulOfLikePow
 -- the opposite of this is in mul/Prune/combineMulOfLikePow and mul/Factor/combineMulOfLikePow
 		{expandMulOfLikePow = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -288,14 +288,14 @@ pow.rules = {
 -- with this, polyCoeffs works
 -- without this, equations look a whole lot cleaner during simplificaton
 -- (and dividing polys works a bit better)
--- until factor() works, simplify() works better without this enabled ... but polyCoeffs() doesn't ... 
+-- until factor() works, simplify() works better without this enabled ... but polyCoeffs() doesn't ...
 -- [[
 	ExpandPolynomial = {
 		{apply = function(expandPolynomial, expr)
 			symmath = symmath or require 'symmath'
 			local clone = symmath.clone
 			local Constant = symmath.Constant
-			
+
 			expr = clone(expr)
 	--local original = clone(expr)
 			local maxPowerExpand = 10
@@ -322,18 +322,18 @@ pow.rules = {
 					if frac ~= 0 then
 						terms:insert(expr[1]:clone()^frac)
 					end
-				
+
 					assert(#terms > 0)
-					
+
 					if #terms == 1 then
 						expr = terms[1]
 					else
 						local mul = symmath.op.mul
 						expr = mul(terms:unpack())
 					end
-					
+
 					if div then expr = 1/expr end
-					
+
 					return expandPolynomial:apply(expr)
 				end
 			end
@@ -350,7 +350,7 @@ pow.rules = {
 			local sets = symmath.set
 			local RealSubset = sets.RealSubset
 			local negativeReal = sets.negativeReal
-		
+
 			if expr[1] == inf then
 				-- inf ^ -inf = invalid
 				if expr[2] == Constant(-1) * inf then
@@ -360,7 +360,7 @@ pow.rules = {
 				if negativeReal:contains(expr[2]) then
 					return Constant(0)
 				end
-				-- inf^0 = invalid 
+				-- inf^0 = invalid
 				if Constant.isValue(expr[2], 0) then
 					return invalid
 				end
@@ -399,7 +399,7 @@ pow.rules = {
 			symmath = symmath or require 'symmath'
 			local div = symmath.op.div
 			local Constant = symmath.Constant
-			
+
 			-- x^(-1/2) = x^(1/2) / x
 			if div:isa(expr[2])
 			and Constant.isValue(expr[2][1], -1)
@@ -417,19 +417,19 @@ pow.rules = {
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 			local Constant = symmath.Constant
-	
-			-- x^(1/2) 
-			-- TODO x^(p/q) 
+
+			-- x^(1/2)
+			-- TODO x^(p/q)
 			if (
 				div:isa(expr[2])
 				and Constant.isValue(expr[2][2], 2)
-				
+
 				and Constant.isValue(expr[2][1], 1)
 				--and symmath.set.oddInteger:contains(expr[2][1])
-			) 
-			-- does tidy() or prune() already turn this into a fraction? 
+			)
+			-- does tidy() or prune() already turn this into a fraction?
 			-- seems like one of the should be doing this...
-			or Constant.isValue(expr[2], .5) 
+			or Constant.isValue(expr[2], .5)
 			then
 				local x = expr[1]
 				if mul:isa(x)
@@ -453,7 +453,7 @@ pow.rules = {
 		{simplifyConstantPowers = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			if Constant:isa(expr[1])
 			and Constant:isa(expr[2])
 			then
@@ -469,13 +469,13 @@ pow.rules = {
 		{zeroToTheX = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-		
+
 			-- 0^a = 0 for a>0
 			if Constant.isValue(expr[1], 0) then
 				if symmath.set.positiveReal:contains(expr[2]) then
 					return Constant(0)
 				end
-			
+
 				-- 0^0 => invalid
 				if Constant.isValue(expr[2], 0) then
 					return symmath.invalid
@@ -495,8 +495,8 @@ pow.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local sets = symmath.set
-			
-			if Constant.isValue(expr[1], -1) 
+
+			if Constant.isValue(expr[1], -1)
 			then
 				if sets.evenInteger:contains(expr[2]) then return Constant(1) end
 				if sets.oddInteger:contains(expr[2]) then return Constant(-1) end
@@ -524,10 +524,10 @@ pow.rules = {
 			local Constant = symmath.Constant
 			local div = symmath.op.div
 			local i = symmath.i
-			
+
 			if expr[1] == i then
 				if Constant:isa(expr[2])
-				and symmath.set.integer:contains(expr[2]) 
+				and symmath.set.integer:contains(expr[2])
 				then
 					local v = expr[2].value % 4
 					if v == 0 then		-- integer mod 4 == 0 set... TODO implement
@@ -544,7 +544,7 @@ pow.rules = {
 						return i^(v%4)
 					end
 				end
-			
+
 				-- sqrt(i) = sqrt(2) + i sqrt(2)
 				if div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
@@ -562,11 +562,11 @@ pow.rules = {
 		{distributePow = function(prune, expr)
 			if pow:isa(expr[1]) then
 				return prune:apply(expr[1][1] ^ (expr[1][2] * expr[2]))
-			end	
+			end
 		end},
 
 -- [[ (a * b) ^ c => a^c * b^c
--- also in pow/Expand/expandMulOfLikePow 
+-- also in pow/Expand/expandMulOfLikePow
 -- the opposite of this is in mul/Prune/combineMulOfLikePow and mul/Factor/combineMulOfLikePow
 		{expandMulOfLikePow = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -587,7 +587,7 @@ pow.rules = {
 --]]
 
 		-- exp(i*x) => cos(x) + i*sin(x)
-		-- do this before a^-c => 1/a^c, 
+		-- do this before a^-c => 1/a^c,
 		{expToTheI = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
@@ -621,14 +621,14 @@ pow.rules = {
 		-- x^c => x*x*...*x (c times)
 		{xToTheIntExpand = function(prune, expr)
 			if Constant:isa(expr[2])
-			and expr[2].value > 0 
+			and expr[2].value > 0
 			and expr[2].value == math.floor(expr[2].value)
 			then
 				local m = mul()
 				for i=1,expr[2].value do
 					table.insert(m, expr[1]:clone())
 				end
-				
+
 				return prune:apply(m)
 			end
 		end},
@@ -646,13 +646,13 @@ pow.rules = {
 
 
 		-- this all matches the top of add.Factor:
-		
+
 		{sqrtFix3 = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
 			local div = symmath.op.div
 			local Constant = symmath.Constant
-			
+
 			-- x^(1/2)
 			if (
 				div:isa(expr[2])
@@ -661,7 +661,7 @@ pow.rules = {
 			) or Constant.isValue(expr[2], .5) then
 				local x = expr[1]
 
-				-- polynomials 
+				-- polynomials
 				-- quadratic so far
 				-- sqrt(a^2 + 2ab + b^2) = a + b
 				-- TODO now we have to consider domains ... this is only true for (a+b)>0 ... or two roots for ±
@@ -669,7 +669,7 @@ pow.rules = {
 				local function isSquare(x)
 					return pow:isa(x) and Constant.isValue(x[2], 2)
 				end
-				
+
 				if #x == 3 then
 					local squares = table()
 					local notsquares = table()
@@ -691,39 +691,39 @@ pow.rules = {
 			end
 		end},
 
-		-- x^(1/2) 
-		-- TODO x^(p/q) 
+		-- x^(1/2)
+		-- TODO x^(p/q)
 		{sqrtFix4 = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local div = symmath.op.div
 			local Constant = symmath.Constant
 			local sets = symmath.set
-		
+
 			if (
 				div:isa(expr[2])
 				and Constant.isValue(expr[2][1], 1)
 				and Constant.isValue(expr[2][2], 2)
-			) or Constant.isValue(expr[2], .5) 
+			) or Constant.isValue(expr[2], .5)
 			then
 				local x = expr[1]
 
 				-- dealing with constants
 				local imag
-				if symmath.op.unm:isa(x) 
+				if symmath.op.unm:isa(x)
 				and Constant:isa(x[1])
 				then
 					x = x[1]
 					imag = true
 				end
-				if Constant:isa(x) 
-				and x.value < 0 
+				if Constant:isa(x)
+				and x.value < 0
 				-- and q is even
 				then
 					imag = not imag
 					x = Constant(-x.value)
 				end
-				if sets.integer:contains(x) 
-				and x.value > 0 
+				if sets.integer:contains(x)
+				and x.value > 0
 				then
 					local primes = math.primeFactorization(x.value)
 					local outside = 1
@@ -739,14 +739,14 @@ pow.rules = {
 					for i=1,#primes do
 						inside = inside * primes[i]
 					end
-					
+
 					local result
-					if inside == 1 and outside == 1 then 
-						result = Constant(1) 
-					elseif outside == 1 then 
-						result = Constant(inside)^div(1,2) 
-					elseif inside == 1 then 
-						result = Constant(outside) 
+					if inside == 1 and outside == 1 then
+						result = Constant(1)
+					elseif outside == 1 then
+						result = Constant(inside)^div(1,2)
+					elseif inside == 1 then
+						result = Constant(outside)
 					else
 						result = outside * inside^div(1,2)
 					end
@@ -767,7 +767,7 @@ pow.rules = {
 		end},
 		--]]
 
--- [=[	
+-- [=[
 		{replacePowerOfFractionWithRoots = function(tidy, expr)
 			symmath = symmath or require 'symmath'
 			local sets = symmath.set
@@ -822,10 +822,10 @@ pow.rules = {
 				local result = checkNthRoot(expr[1], p, q)
 				if result then return result end
 			end
-	
+
 			-- I'm not sure how many numbers I should entertain here
 			-- I should do like Maxima and try to auto-deduce the fraction upon Constant construction (though that seems iffy for any rounded constants)
-			-- That's why I only want to test for rational numbers from a few cases 
+			-- That's why I only want to test for rational numbers from a few cases
 			if Constant:isa(expr[2]) then
 				for q=2,3 do
 					for p=1,q-1 do

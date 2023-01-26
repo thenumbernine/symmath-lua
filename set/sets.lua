@@ -15,14 +15,14 @@ return {
 	Universal = require 'symmath.set.Universal',
 	Null = require 'symmath.set.Null',
 	Complex = require 'symmath.set.Complex',
-	
+
 	--Real = require 'symmath.set.Real',
-	
+
 --[[
 TODO instead: Real with conditions:
-x in Real, min {< | <=} x && x {< | <=} max 
+x in Real, min {< | <=} x && x {< | <=} max
 so now we now need boolean operations:
-set cond: 
+set cond:
 	_or(
 		(min1:l|le(x)):_and(x:l|le(max1)),
 		...
@@ -38,13 +38,13 @@ triangle inequality: a <= b, b <= c implies a <= c
 so how do we evaluate whether the expression is true?
 
 	_and( a:le(b), b:le(c) ):impl( a:le(c) ):isTrue() == true
-	- but how do we do this? 
+	- but how do we do this?
 	-- how does the triangle inequality result in this to be true?
 	- and what constitutes as 'false' ?
 
 --]]
 	RealInterval = RealInterval,
-	
+
 	RealSubset = RealSubset,
 	Integer = require 'symmath.set.Integer',
 	EvenInteger = require 'symmath.set.EvenInteger',

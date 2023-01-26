@@ -52,7 +52,7 @@ symmath.useHasBeenFlags = true
 
 symmath.Variable = require 'symmath.Variable'
 symmath.var = symmath.Variable					--shorthand
-function symmath.vars(...)						--create variables for each string parameter 
+function symmath.vars(...)						--create variables for each string parameter
 	return table{...}:mapi(function(x) return symmath.var(x) end):unpack()
 end
 
@@ -87,19 +87,19 @@ symmath.export = {
 --[[
 builds a function out of the expression
 exprs - specifies the table of expressions that will be associated with function input parameters
-	- can either be a list of expressions -- in which case the text of the expression will be used (i.e. the name of the Variable) 
+	- can either be a list of expressions -- in which case the text of the expression will be used (i.e. the name of the Variable)
 	- or can be a table with a key/value pair, mapping the expression (the key) to the string to be used in the function (the value)
-	- ex: 
-		x=symmath.var'x' 
-		(x^2):compile{x} 
+	- ex:
+		x=symmath.var'x'
+		(x^2):compile{x}
 		... produces function(x) return x^2 end
-		
-		x=symmath.var'x' 
-		(x^2):copmile{x='y'} 
+
+		x=symmath.var'x'
+		(x^2):copmile{x='y'}
 		... produces function(y) return y^2 end
-		
-		x,t=symmath.vars('x','t') 
-		x:setDependentVars(t) 
+
+		x,t=symmath.vars('x','t')
+		x:setDependentVars(t)
 		symmath.exp(-x^2):diff(t):simplify():compile{x,{dx_dt=x:diff(t)}})
 		... produces "function(x, dx_dt) return -2 * x * dx_dt * math.exp(-x^2) end"
 
@@ -122,14 +122,14 @@ end
 
 local rules = {
 	function(expr)
-		
+
 	end,
 }
 
 
 function applyRuleAtNode(expr, node, rule)
 	expr = expr:clone()
-	
+
 	-- find 'node' in 'expr'
 	-- replace it with 'prune(node)'
 	if node == expr then
@@ -260,7 +260,7 @@ symmath.tostring = symmath.export.MultiLine
 symmath.Verbose = symmath.export.Verbose
 symmath.GnuPlot = symmath.export.GnuPlot
 
--- constants 
+-- constants
 --[[ hmm, should these be constants or variables?
 symmath.i = symmath.Constant(symmath.complex(0,1), 'i')
 symmath.e = symmath.Constant(math.exp(1), 'e')
@@ -269,7 +269,7 @@ symmath.inf = symmath.Constant(math.huge, 'infty')	-- TODO use 'infinite' or 'in
 --]]
 -- [[
 -- right now I'm comparing variables by name ... don't do that.  Or else complex's "i" will match an iterator's "i".
--- a temporary fix in the mean time ... I'll use '_i' for the name and swap it out with a unicode char, just like Mathematica does.  
+-- a temporary fix in the mean time ... I'll use '_i' for the name and swap it out with a unicode char, just like Mathematica does.
 -- This way users who use 'i' as an arbitrary variable won't have it collide with symmath.i
 -- (why not use unicode all around?  don't use unicode escape codes, since lua 5.2 can't handle it with string length, but just use unicode strings here.)
 symmath.i = symmath.Variable('_i', nil, symmath.complex(0,1), nil, symmath)	-- ⅈ (doesn't show up in Windows Consolas)
@@ -300,7 +300,7 @@ do
 	symmath.e:nameForExporter('JavaScript', 'Math.exp(1)')
 	symmath.pi:nameForExporter('JavaScript', 'Math.PI')
 	symmath.inf:nameForExporter('JavaScript', 'Infinity')
-	
+
 	local Console = require 'symmath.export.Console'
 	-- hmm, MultiLine goes to SingleLine for its variable name encoding
 	-- so nameForExporter will use SingleLine, even for MultiLine encoding
@@ -312,7 +312,7 @@ do
 	symmath.e:nameForExporter('Lua', 'math.exp(1)')
 	symmath.pi:nameForExporter('Lua', 'math.pi')
 	symmath.inf:nameForExporter('Lua', 'math.huge')
-	
+
 	symmath.i:nameForExporter('Mathematica', 'ii')
 	symmath.e:nameForExporter('Mathematica', 'e')
 
@@ -353,8 +353,8 @@ args:
 --]]
 symmath.setup = function(args)
 	args = args or {}
-	local env = args.env or _G	
-	
+	local env = args.env or _G
+
 	--[[ just copy
 	for k,v in pairs(symmath) do
 		if k ~= 'tostring' then
@@ -365,7 +365,7 @@ symmath.setup = function(args)
 	-- [[ override environment
 	for k,v in pairs(args) do
 		-- hmm, some args are for symmath, some are for setup ...
-		if k ~= 'env' 
+		if k ~= 'env'
 		and k ~= 'MathJax'
 		then
 			symmath[k] = v
@@ -383,7 +383,7 @@ symmath.setup = function(args)
 		mt = {}
 	end
 	env.symmath = symmath
-	
+
 	local oldIndex = mt.__index
 
 	function mt.__index(t,k)
@@ -398,7 +398,7 @@ symmath.setup = function(args)
 
 		-- last fall back on the old metatable __index (if it did previously exist)
 		if oldIndex then
-			if type(oldIndex) == 'table' then	
+			if type(oldIndex) == 'table' then
 				x = oldIndex[k]
 			elseif type(oldIndex) == 'function' then
 				x = oldIndex(t,k)
@@ -407,7 +407,7 @@ symmath.setup = function(args)
 			end
 			if x ~= nil then return x end
 		end
-		
+
 		-- if we are using implicitVars then create vars when we can't find anything else
 		if symmath.implicitVars then
 			return symmath.var(k)
@@ -416,7 +416,7 @@ symmath.setup = function(args)
 		return nil
 
 	end
-	
+
 	-- the 5.4 interpreter uses __index to read _PROMPT, which this mt changes the behavior of to create a variable
 	-- so in lua5.4, the prompt becomes "_PROMPT" instead of "> "
 	-- (admittantly the whole idea of modifying _G's __index is a bad idea, but this is a hack to make things act like a real CAS interpreter)

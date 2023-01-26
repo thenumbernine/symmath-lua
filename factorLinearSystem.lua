@@ -25,7 +25,7 @@ return function(exprs, factors)
 
 	for i=1,#exprs do
 		local expr = exprs[i]:factorDivision()
-		
+
 		-- just consider expr as its terms (since I no longer support single-term binary ops)
 		expr = add:isa(expr) and {table.unpack(expr)} or {expr}
 		-- find factors
@@ -39,10 +39,10 @@ return function(exprs, factors)
 					found = true
 				elseif mul:isa(expr[k]) then
 					for l=#expr[k],1,-1 do
-						
+
 						-- factorDivision() should prevent this
 						if mul:isa(expr[k][l]) then error"needs flattening" end
-					
+
 						-- TODO what if factors[j] is a product?
 						-- in that case we need to make sure it's a common subset
 						if expr[k][l] == factors[j] then
@@ -70,6 +70,6 @@ return function(exprs, factors)
 			S[i][1] = (S[i][1] + expr):simplify()
 		end
 	end
-	
+
 	return A, S
 end

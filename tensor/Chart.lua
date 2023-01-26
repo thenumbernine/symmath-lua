@@ -4,18 +4,18 @@
 ----------- original TensorCoordBasis class: -----------
 TensorCoordBasis represents an entry in the coordSrcs
 complete with
-	variables = table of what variables are in this basis 
+	variables = table of what variables are in this basis
 		- if this is variables, assumes the basis is e_i = diff(variable[i])
-		- if this is a function, uses the function to apply the basis 
+		- if this is a function, uses the function to apply the basis
 		- TODO rename to 'basis'
-	symbols = what symbols are used to representing this basis 
+	symbols = what symbols are used to representing this basis
 			symbols == nil means all symbols
 			like Tensor variance, if there is a space present then symbols are assumed to be space-separated multi-chars
 			otherwise they are assumed to be single chars
 	(c) what metrics are used for raising/lowering
 	[(d)] what linear transforms go between this and the other TensorCoordBasis's
 
-	signature = array of signature associated with each variable, used as inner product with Hodge dual 
+	signature = array of signature associated with each variable, used as inner product with Hodge dual
 ----------- end original TensorCoordBasis class: -----------
 --]]
 
@@ -58,7 +58,7 @@ function Chart:init(args)
 		end)
 	end
 
-	-- TODO inter-basis transforms as well?  i.e. vielbein would be the inter-transform from curved coords to Minkowski coords 
+	-- TODO inter-basis transforms as well?  i.e. vielbein would be the inter-transform from curved coords to Minkowski coords
 	-- these can be inferred from the manifold.embedded if it is provided
 
 
@@ -73,14 +73,14 @@ However I don't like the idea of using the same variables in the holonomic and a
 And I also don't like the idea of tacking on a single function into Variable solely for the purpose of Chart tangent space evaluation.
 So here's my solution:
 Define the chart using the holonomic coordinates.
-Then, for anholonomic charts, use a second set of variables, (thetaHat, phiHat, etc), strictly for distinct indexes, 
-and define their associated tangentSpaceOperators in the Chart as differentiating wrt the original holonomic coordinates 
+Then, for anholonomic charts, use a second set of variables, (thetaHat, phiHat, etc), strictly for distinct indexes,
+and define their associated tangentSpaceOperators in the Chart as differentiating wrt the original holonomic coordinates
 ... and then do whatever linear transform or whatever that you want to do.
 --]]
 	--[[
 	optional
 	default: use expr:diff(coords[i])
-	
+
 	TODO what to do for multipoint tensors (tensor with symbols associated with multiple charts
 		best example of this: an embedding derivative i.e. a jacobian)
 	another reason for a global registry of index symbols?
@@ -157,7 +157,7 @@ and define their associated tangentSpaceOperators in the Chart as differentiatin
 					for k,uk in ipairs(coords) do
 						local coeff = (A[1][k] * dzeta[k] / dk(zeta))()
 						-- assert dphi is nowhere in coeff ...
-						self.commutation[i][j][k] = coeff 
+						self.commutation[i][j][k] = coeff
 					end
 				end
 			end
@@ -206,7 +206,7 @@ function Chart:setMetric(metric, metricInverse)
 	assert(a and b and #a>0 and #b>0)
 
 	local Tensor = require 'symmath.Tensor'
-	if not Tensor:isa(self.metric) then 
+	if not Tensor:isa(self.metric) then
 		self.metric = Tensor{
 			indexes = {'_'..a, '_'..b},
 			values = self.metric,

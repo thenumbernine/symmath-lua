@@ -54,7 +54,7 @@ function div:evaluateLimit(x, a, side)
 	local inf = symmath.inf
 
 	local p, q = table.unpack(self)
-	
+
 	local Lp = prune(Limit(p, x, a, side))
 	local Lq = prune(Limit(q, x, a, side))
 
@@ -114,7 +114,7 @@ function div:evaluateLimit(x, a, side)
 	then
 		local cp = p:polyCoeffs(x)
 		local cq = q:polyCoeffs(x)
-		
+
 		-- if we got two polynomials ...
 		if cp.extra == nil
 		and cq.extra == nil
@@ -226,7 +226,7 @@ div.rules = {
 		-- (r^m * x1 * ...) / (r^n * y1 * ...) => (r^(m-n) * x1 * ...) / (y1 * ...)
 		-- this is also in prune(), but if you call prune() to do it, you will get op/add/Prune which re-absorbs terms into adds: (2*(x+y))/2 => (2*x + 2*y)/2 and won't cancel the 2 on top and bottom
 		{removeCommonTerms = function(factor, expr)
-			-- if this is after polydiv then it's not reaching here, polydiv stopping us ...			
+			-- if this is after polydiv then it's not reaching here, polydiv stopping us ...
 			-- so I'll put this before polydiv, but a better fix is to fix polydiv:
 			-- TODO have polydiv recursively call upon div, and have it not handle the same expression twice
 			for _,rule in ipairs(div.rules.Prune) do
@@ -246,11 +246,11 @@ div.rules = {
 		{polydiv = function(factor, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
-			
+
 			local function candivide(p, q)
 				-- for expr == p / q
 				-- if p and q are polynomials of some var (with no 'extra')
@@ -259,7 +259,7 @@ div.rules = {
 
 				local vars = expr:getDependentVars()
 				for _,x in ipairs(vars) do
-					
+
 					local c, r = polydivr(p, q, x)
 					if Constant.isValue(r, 0) then
 --print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
@@ -268,7 +268,7 @@ div.rules = {
 						-- without
 						return c * q, q
 					end
-				
+
 					local c, r = polydivr(q, p, x)
 					if Constant.isValue(r, 0) then
 --print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
@@ -279,7 +279,7 @@ div.rules = {
 					end
 				end
 			end
-			
+
 			local function candividesimplify(p, q)
 				-- for expr == p / q
 				-- if p and q are polynomials of some var (with no 'extra')
@@ -288,13 +288,13 @@ div.rules = {
 
 				local vars = expr:getDependentVars()
 				for _,x in ipairs(vars) do
-					
+
 					local c, r = polydivr(p, q, x)
 					if Constant.isValue(r, 0) then
 --print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
 						return c
 					end
-				
+
 					local c, r = polydivr(q, p, x)
 					if Constant.isValue(r, 0) then
 --print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
@@ -302,7 +302,7 @@ div.rules = {
 					end
 				end
 			end
-	
+
 
 --[=[ TODO HAS BUGS DON'T USE THIS
 			local mp, mq = table.unpack(expr)
@@ -313,7 +313,7 @@ div.rules = {
 			-- instead cycle through mul's terms and check them individually
 			--  and pick them apart
 			--  maybe remove them too?
-			
+
 			local srcp
 			if symmath.op.mul:isa(mp) then
 				srcp = table(mp)
@@ -343,7 +343,7 @@ div.rules = {
 				found = nil
 				for i,p in ipairs(srcp) do
 					for j,q in ipairs(srcq) do
-						
+
 						local newp, newq = candivide(p, q)
 						if newp then
 							assert(newq)
@@ -369,7 +369,7 @@ div.rules = {
 -- [=[ or just try the num/denom as-is
 -- this adds in extra terms that need to be prune()'d later
 -- ex: ((2*x + 2*y)/2):factor() makes ((2*x + 2*y)/2 * 2)/2
---print('from', symmath.Verbose(expr))			
+--print('from', symmath.Verbose(expr))
 			local np, nq = candivide(expr[1], expr[2])
 			if np then
 				return np / nq
@@ -387,7 +387,7 @@ div.rules = {
 				end
 			end
 --]=]
-	
+
 		end},
 --]]
 
@@ -403,9 +403,9 @@ div.rules = {
 		{polydiv = function(factor, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			local p, q = table.unpack(expr)
-			
+
 			-- for expr == p / q
 			-- if p and q are polynomials of some var (with no 'extra')
 			-- then try to divide p from q and see if no remainer exists
@@ -414,21 +414,21 @@ div.rules = {
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
-			
+
 			local vars = expr:getDependentVars()
 			for _,x in ipairs(vars) do
-				
+
 				local c, r = polydivr(p, q, x)
 				if Constant.isValue(r, 0) then
 					return c
 				end
-				
+
 				local c, r = polydivr(q, p, x)
 				if Constant.isValue(r, 0) then
 					return 1/c
 				end
 			end
-			
+
 		end},
 --]]
 
@@ -442,7 +442,7 @@ div.rules = {
 			local mul = symmath.op.mul
 
 			if Constant.isValue(expr[1], 1) then return end
-			
+
 			-- a/(b1 * ... * bn) => a * 1/b1 * ... * 1/bn
 			if mul:isa(expr[2]) then
 				local prod = mul(expr[1], range(#expr[2]):mapi(function(i)
@@ -484,7 +484,7 @@ div.rules = {
 			local Constant = symmath.Constant
 			local invalid = symmath.invalid
 			local inf = symmath.inf
-		
+
 			if expr[1] == invalid
 			or expr[2] == invalid
 			then
@@ -536,19 +536,19 @@ div.rules = {
 						Constant(1/expr[2].value) * expr[1]
 					)
 				end
-		
+
 				-- (c1 * m) / c2 => (c1 / c2) * m
 				if mul:isa(expr[1]) and Constant:isa(expr[1][1]) and Constant:isa(expr[2]) then
 					local rest = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
 					return Constant(expr[1][1].value / expr[2].value) * rest
 				end
-			
+
 				-- c1 / (c2 * m) => (c1/c2) / m
 				if Constant:isa(expr[1]) and mul:isa(expr[2]) and Constant:isa(expr[2][1]) then
 					local rest = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
 					return Constant(expr[1].value / expr[2][1].value) / rest
 				end
-		
+
 				-- (c1 * m1) / (c2 * m2) => ((c1/c2) * m1) / m2
 				if mul:isa(expr[1]) and Constant:isa(expr[1][1])
 				and mul:isa(expr[2]) and Constant:isa(expr[2][1])
@@ -609,7 +609,7 @@ div.rules = {
 		{xOverMinusOne = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-		
+
 			if Constant:isa(expr[2])
 			and expr[2].value < 0
 			then
@@ -623,7 +623,7 @@ div.rules = {
 		{zeroOverX = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-		
+
 			if Constant.isValue(expr[1], 0)
 			and not Constant.isValue(expr[2], 0)
 			then
@@ -728,7 +728,7 @@ div.rules = {
 							-- pick out the rest of qi's children (this is 'a')
 							-- pick out the coeff of the ^div(1,2) (this is 'b')
 							-- pick out the c^div(1,2) (this is 'c')
-							
+
 							--[=[ this sure is more convenient to write:
 							local a, b, c = qi:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
 							--]=]
@@ -743,7 +743,7 @@ div.rules = {
 							local a,b,c
 							for j=1,#qi do		-- j'th add term
 								local qij = qi[j]
-								
+
 								if isSqrt(qij) then
 									b = Constant(1)
 									c = qij[1]
@@ -893,13 +893,13 @@ div.rules = {
 		{divMulNegToNegDivMul = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local mul = symmath.op.mul
-			local Constant = symmath.Constant		
+			local Constant = symmath.Constant
 			local num, denom = table.unpack(expr)
 			if mul:isa(denom) then
 				for i=1,#denom do
 					if Constant:isa(denom[i])
 					and denom[i].value < 0
-					--and symmath.set.negativeReal:contains(denom[i])  
+					--and symmath.set.negativeReal:contains(denom[i])
 					then
 						denom = denom:clone()
 						--denom[i] = prune:apply(-denom[i])
@@ -909,8 +909,8 @@ div.rules = {
 				end
 			end
 		end},
-		--]]	
-		
+		--]]
+
 		-- [=[ (r^m * a * b * ...) / (r^n * x * y * ...) => (r^(m-n) * a * b * ...) / (x * y * ...)
 		-- TODO combine this with the stuff in add.Factor somehow
 		-- that builds lists of term=, power= as well
@@ -922,14 +922,14 @@ div.rules = {
 			local Constant = symmath.Constant
 
 			local modified
-			
+
 			local nums
 			if mul:isa(expr[1]) then
 				nums = table(expr[1])
 			else
 				nums = table{expr[1]}
 			end
-		
+
 			local denoms
 			if mul:isa(expr[2]) then
 				denoms = table(expr[2])
@@ -954,7 +954,7 @@ div.rules = {
 				end
 				return bases, powers
 			end
-			
+
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
 --[[
@@ -987,7 +987,7 @@ end
 						bases:remove(i)
 						local value = b.value
 						local power = powers:remove(i)
-						
+
 						if value < 0 then	-- insert -1 if necessary
 							bases:insert(i, Constant(-1))
 							powers:insert(i, power:clone())
@@ -1026,7 +1026,7 @@ end
 					end
 				end
 			end
-			
+
 			if modified then
 				if #numBases == 0 and #denomBases == 0 then return Constant(1) end
 
@@ -1055,7 +1055,7 @@ end
 						denom = mul(denom:unpack())
 					end
 				end
-				
+
 				local result
 				if #numBases == 0 then
 					result = Constant(1) / denom
@@ -1071,7 +1071,7 @@ end
 			end
 		end},
 		--]=]
-		
+
 		--[=[
 --print'not modified'
 		{apply = function(prune, expr)
@@ -1081,7 +1081,7 @@ end
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
 
-		
+
 			--[[ a / b^(p/q) => (a / b^(p/q)) * (b^((q-p)/q) / b^((q-p)/q)) => (a * b^((q-p)/q)) / b
 			local Wildcard = symmath.Wildcard
 			local a, b, p, q = expr:match(Wildcard(1) / Wildcard(2) ^ (Wildcard(3) / Wildcard(4)))
@@ -1114,12 +1114,12 @@ end
 			if pow:isa(expr[2]) and expr[1] == expr[2][1] then
 				return prune:apply(expr[1]:clone() ^ (1 - expr[2][2]:clone()))
 			end
-			
+
 			-- x^a / x => x^(a-1)
 			if pow:isa(expr[1]) and expr[1][1] == expr[2] then
 				return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - 1))
 			end
-			
+
 			-- x^a / x^b => x^(a-b)
 			if pow:isa(expr[1])
 			and pow:isa(expr[2])
@@ -1128,7 +1128,7 @@ end
 				return prune:apply(expr[1][1]:clone() ^ (expr[1][2]:clone() - expr[2][2]:clone()))
 			end
 			--]]
-		
+
 			--[[ TODO attempt polynomial division?  or put that in :factor()?
 			if add:isa(expr[1]) then
 				local a,b = expr[1], expr[2]
@@ -1136,7 +1136,7 @@ end
 				local r = a
 			end
 			--]]
-		
+
 			--[[ cheat
 			-- now that cos.rules.Prune has simplified all the cos^2's into sin^2's
 			-- if there's a div that needs to be simplified, there could be some extra terms not simplified
@@ -1172,19 +1172,19 @@ end
 			symmath = symmath or require 'symmath'
 			local unm = symmath.op.unm
 			local Constant = symmath.Constant
-			
+
 			local a, b = table.unpack(expr)
 			local ua = unm:isa(a)
 			local ub = unm:isa(b)
-			
+
 			if ua and ub then return tidy:apply(a[1] / b[1]) end
-			
+
 			if ua
 			--and Constant:isa(a[1])
 			then
 				return tidy:apply(-(a[1] / b))
 			end
-			
+
 			if ub
 			--and Constant:isa(b[1])
 			then

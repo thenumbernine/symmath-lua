@@ -34,7 +34,7 @@ asin.rules = {
 			if Constant.isValue(x, 0) then
 				return Constant(0)
 			end
-			
+
 -- [[ TODO this should be on all Function's prune()'s
 			if expr:getRealDomain():complement():open():contains(x) then
 				return symmath.invalid

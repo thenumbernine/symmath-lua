@@ -1,3 +1,3 @@
-return function(...) 
+return function(...)
 	return require 'symmath.Array'(...)
 end

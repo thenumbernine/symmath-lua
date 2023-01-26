@@ -25,7 +25,7 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 			predefs = table(predefs, sx2)
 		end
 		s = s:concat', '
-	
+
 		-- if the Function has .code then use that
 		-- put it before the actual function definition at the end
 		local funcName
@@ -36,7 +36,7 @@ Lua.lookupTable = table(Lua.lookupTable):union{
 			funcName = expr:nameForExporter(self)
 			predefs['local '..funcName..' = '..expr.code] = true
 		end
-		
+
 		if expr:nameForExporter(self) == 'cbrt' then
 			-- shouldn't this be done somewhere else?
 			-- either in cbrt or in tidy() but probably in cbrt() somewhere

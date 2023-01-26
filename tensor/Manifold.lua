@@ -1,16 +1,16 @@
---[[ 
+--[[
 Should Manifold be an ... Expression?  a Set?  should Set be an Expressoin so that I can introduce set operators like 'union', 'exclusion', 'set-subtract' etc?
 For now I think all Manifold will do is collect Chart's
 Then maybe later it will handle calculation of transforms between charts
 
-An n-manifold is a collection of points who have a neighborhood of a R^n Euclidian open ball 
+An n-manifold is a collection of points who have a neighborhood of a R^n Euclidian open ball
 it is composed of charts that map from U to phi(U) which have a neighborhood of an open ball in R^n
 
 for multiple charts, they use 'transition functions'
 which can be deduced by providing an embedded manifold, and computing the chart mapping function jacobian and inverse
 
-so if the range of phi(U) is R^n ... the domain doesn't have to be ... 
-but 
+so if the range of phi(U) is R^n ... the domain doesn't have to be ...
+but
 --]]
 
 local class = require 'ext.class'
@@ -32,11 +32,11 @@ function Manifold:init(args)
 	but the # of coordinates is the domain dimension ...
 	the difference is the vertical tangent space dimension
 	(TODO later, this is going to get into tangent bundles, vertical bundles, horitzontal bundles ... )
-	
+
 	if chart is specified then this is redundant ...
 	but if Chart is built after Manifold then, until then, dim isn't known ...
 	should I allow Manifold to be allocated but not initialized?
-	
+
 	I'll make this optional for now
 	and if it is present then I'll use it for index-expression-traces
 	or should I use the chart coordinate count for the dim?

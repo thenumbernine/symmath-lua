@@ -34,7 +34,7 @@ function Array:init(...)
 
 	for i=1,#self do
 		local x = self[i]
-		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions") 
+		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions")
 		if not Expression:isa(x) then
 			-- then assume it's meant to be a sub-array
 			self[i] = mt(table.unpack(x))
@@ -57,7 +57,7 @@ Array.__index = function(self, key)
 end
 
 Array.__newindex = function(self, key, value)
-	
+
 	-- I don't think I do much assignment-by-table ...
 	--  except for in the Visitor.lookupTable ...
 	-- otherwise, looks like it's not allowed in Arrays, where I've overridden it to be the setter
@@ -101,7 +101,7 @@ function Array.iterForDim(dim)
 	for i=1,n do
 		index[i] = 1
 	end
-	
+
 	return coroutine.wrap(function()
 		while true do
 			coroutine.yield(index)
@@ -130,7 +130,7 @@ function Array:iter()
 	for i=1,n do
 		index[i] = 1
 	end
-	
+
 	return coroutine.wrap(function()
 		while true do
 			coroutine.yield(index, self:get(index))
@@ -148,12 +148,12 @@ end
 function Array:innerIter()
 	local dim = self:dim()
 	local n = #dim
-	
+
 	local index = {}
 	for i=1,n do
 		index[i] = 1
 	end
-	
+
 	return coroutine.wrap(function()
 		while true do
 			coroutine.yield(index, self:get(index))
@@ -170,7 +170,7 @@ end
 
 -- calculated degree was a great idea, except when the Array is dynamically constructed
 function Array:degree()
-	-- note to self: empty Array objects means no way of representing empty degree>1 objects 
+	-- note to self: empty Array objects means no way of representing empty degree>1 objects
 	-- ... which means special case of type assertion of the determinant being always degree-2 (except for empty matrices)
 	-- ... unless I also introduce "shallow" arrays vs "deep" arrays ... "shallow" being represented only by their indices and contra-/co-variance (and "deep" being these)
 	if #self == 0 then return 0 end
@@ -197,7 +197,7 @@ end
 --[[
 Why does :dim() return symmath.Constant instead of lua number?
 Right now it must be a fixed size
-Maybe in the future I will have 'shallow' Array objects with no internal value, 
+Maybe in the future I will have 'shallow' Array objects with no internal value,
 but only external properties (degree, index, etc) from which I can perform index gymnastics.
 In such a case, I would want to allow variable-dimension arrays:
 	a = Matrix{name='a', dim={m,k}}
@@ -211,7 +211,7 @@ In such a case, I would want to allow variable-dimension arrays:
 --]]
 function Array:dim()
 	local dim = table()
-	
+
 	if not Array:isa(self) then return dim end
 
 	local degreeFunc = self.degree or Array.degree
@@ -232,7 +232,7 @@ function Array:dim()
 	for j=2,#self do
 		local subdim_j = self[j]:dim()
 		assert(#subdim_j == degree-1, "array has subarray with inequal degree")
-		
+
 		for k=1,#subdim_1 do
 			if subdim_1[k] ~= subdim_j[k] then
 				error("array has subarray with inequal dimensions: "
@@ -241,12 +241,12 @@ function Array:dim()
 		end
 	end
 
-	-- copy subrank into 
+	-- copy subrank into
 	for i=1,degree-1 do
 		dim[i+1] = subdim_1[i]
 	end
 	dim[1] = #self
-	
+
 	return dim
 end
 
@@ -258,10 +258,10 @@ function Array.pruneAdd(a,b)
 	for i=1,#result do
 		result[i] = result[i] + b[i]
 	end
-	
+
 	symmath = symmath or require 'symmath'
 	local prune = symmath.prune
-	
+
 	return prune(result)
 end
 
@@ -301,10 +301,10 @@ local function arrayScalarMul(m,s)
 	for i=1,#result do
 		result[i] = result[i] * s
 	end
-	
+
 	symmath = symmath or require 'symmath'
 	local prune = symmath.prune
-	
+
 	return prune:apply(result)
 end
 
@@ -313,7 +313,7 @@ local function scalarArrayMul(s,m)
 	for i=1,#result do
 		result[i] = s * result[i]
 	end
-	
+
 	symmath = symmath or require 'symmath'
 	return symmath.prune(result)
 end
@@ -322,18 +322,18 @@ function Array.pruneMul(lhs,rhs)
 	local lhsIsArray = Array:isa(lhs)
 	local rhsIsArray = Array:isa(rhs)
 	assert(lhsIsArray or rhsIsArray)
-	
+
 	-- hmm but this converts the result to a Matrix ... not whatever class the members are
 	if lhsIsArray and rhsIsArray then
 		return matrixMatrixMul(lhs, rhs)
 	end
 
 	-- matrix-scalar multiplication
-	-- notice I'm not handling Matrix/Array multiplication.  
+	-- notice I'm not handling Matrix/Array multiplication.
 	-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
 	-- I'm sure that will change once I start introducing tensors.
 	-- See the tests/alcubierre.lua file for thoughts on this.
-	local result 
+	local result
 	if lhsIsArray then
 		return arrayScalarMul(lhs, rhs)
 	elseif rhsIsArray then

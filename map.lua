@@ -14,7 +14,7 @@ local function map(expr, callback)
 	end
 	-- process this node
 	expr = callback(expr) or expr
-	if type(expr) == 'number' then 
+	if type(expr) == 'number' then
 		Constant = Constant or require 'symmath.Constant'
 		return Constant(expr)
 	end

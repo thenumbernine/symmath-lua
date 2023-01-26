@@ -31,7 +31,7 @@ cosh.rules = {
 			local inf = symmath.inf
 
 			local x = expr[1]
-			
+
 			if Constant.isValue(x, 0) then
 				return Constant(1)
 			end
@@ -42,7 +42,7 @@ cosh.rules = {
 			if x == Constant(-1) * inf then
 				return inf
 			end
-		
+
 --[[ TODO this should be on all Function's prune()'s
 -- but this has domain real, so complement is empty
 			if expr:getRealDomain():complement():open():contains(x) then

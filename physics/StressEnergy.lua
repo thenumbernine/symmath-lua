@@ -3,8 +3,8 @@ return {
 	args:
 		F = (optional) Faraday tensor
 		index = (optional) index to get metric and inverse from.
-		g, gU = (optional) manual metric and inverse 
-	
+		g, gU = (optional) manual metric and inverse
+
 	TODO how to use the default coordinate basis?
 	--]]
 	EM = function(args)

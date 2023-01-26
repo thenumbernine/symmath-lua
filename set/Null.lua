@@ -4,7 +4,7 @@ local Set = require 'symmath.set.Set'
 local Null = class(Set)
 Null.name = 'Null'
 
--- is the null set a subset of itself? 
+-- is the null set a subset of itself?
 -- can a variable be defined to exist in the null set?
 function Null:variable(...)
 	error"you cannot create a variable from the null set"

@@ -4,7 +4,7 @@ local range = require 'ext.range'
 makeLeviCivita(symbol, sqrtDetG)
 	symbol = (optional) symbol of coordinates that the Levi-Civita symbol pertains to
 		this determines the rank and the sqrtDetG
-		if symbol is a number then this is the rank and the sqrtDetG default value is 1 
+		if symbol is a number then this is the rank and the sqrtDetG default value is 1
 	sqrtDetG = (optional) sqrtDetG
 --]]
 local function makeLeviCivita(symbol, sqrtDetG)
@@ -14,7 +14,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local sqrt = require 'symmath.sqrt'
 	local abs = require 'symmath.abs'
 	local TensorIndex = require 'symmath.tensor.Index'
-	
+
 	local rank
 	local chart
 	if type(symbol) == 'number' then
@@ -33,7 +33,7 @@ local function makeLeviCivita(symbol, sqrtDetG)
 				or Constant(1)
 		end
 	end
-	
+
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
 	local variance = ' '..range(rank):mapi(function(i)
 		return '_'..(
@@ -67,8 +67,8 @@ local function makeLeviCivita(symbol, sqrtDetG)
 				end
 			end
 			local result = parity * sqrtDetG
-			if type(result) == 'number' then 
-				result = Constant(result) 
+			if type(result) == 'number' then
+				result = Constant(result)
 			else
 				result = result()
 			end

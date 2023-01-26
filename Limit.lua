@@ -53,9 +53,9 @@ function Limit:init(...)
 	if select('#', ...) < 3 then
 		error("expected Limit(f(x), x, a, [side])")
 	end
-	
+
 	local f, x, a, side = ...
-	
+
 	symmath = symmath or require 'symmath.namespace'()
 	assert(symmath.Variable:isa(x))
 
@@ -69,18 +69,18 @@ end
 
 function Limit.evaluateLimit_ifInDomain(f, L)
 	symmath = symmath or require 'symmath'
-	
+
 	local domain = f:getRealDomain()
 	if domain:contains(L) then
 		return symmath.prune(getmetatable(f)(L))
 	end
-	
+
 	-- is it enough that the complement contains L?
 	-- or should we be safe?  only the open complement?
 	if domain:complement():open():contains(L) then
 		return symmath.invalid
 	end
-	
+
 	-- SFINAE: if we cannot determine whether f(x) is inside or outside the function domain then don't touch the limit
 end
 
@@ -97,7 +97,7 @@ function Limit.evaluateLimit_plusMinusOne_to_plusMinusInf(f, x, a, side, decreas
 	local inf = symmath.inf
 
 	local L = symmath.prune(Limit(f[1], x, a, side))
-	
+
 	-- TODO use this elsewhere.  it's preferrable to Constant.isValue(L, -1), right?
 	-- then again, the only difference is that RealSubset(-1,-1,true,true):contains(L) will also pick up variables defined to exist only on the set {-1} ...
 	-- so it's basically the same as Constant.isValue(L, -1)
@@ -160,7 +160,7 @@ Limit.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local inf = symmath.inf
-			
+
 			-- limits ...
 			-- put this in their own Expression member function?
 			local f, x, a, side = table.unpack(expr)
@@ -199,7 +199,7 @@ Limit.rules = {
 
 				local pl = prune:apply(ll)
 				local pr = prune:apply(lr)
-				
+
 				if pl == pr then
 					return prune:apply(pl)
 				else
@@ -212,7 +212,7 @@ Limit.rules = {
 					-- but this causes the default unknown return of Limit, to return itself as is,
 					--  to cause this to compare lim x->a+ to lim x->a- , and see the two are separate expressions, and return 'invalid'
 					-- so which is it?
-				
+
 					-- how about both?
 					-- if the left and right limits are untouched (i.e. equal to the original expression before pruning)
 					-- then return the original both-sides limit

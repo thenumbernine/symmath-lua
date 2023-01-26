@@ -1,6 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
--- single-line strings 
+-- single-line strings
 local Console = require 'symmath.export.Console'
 local symmath
 
@@ -94,7 +94,7 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		side = side.name or ''
 		return 'lim_'..self:apply(x)..'→'..self:apply(a)..side..' '..self:apply(f)
 	end,
-	[require 'symmath.Derivative'] = function(self, expr) 
+	[require 'symmath.Derivative'] = function(self, expr)
 		local symmath = require 'symmath'
 		local d = expr:nameForExporter(self)
 		local topText = d
@@ -102,14 +102,14 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		local diffPower = #diffVars
 		if diffPower > 1 then
 			topText = topText .. '^'..diffPower
-		end	
+		end
 		local powersForDeriv = {}
-		
+
 		-- used to look the var back up for calling nameForExporter
 		-- this means multiple Variable objects with separate nameForExporterTable's will have undefined behavior
 		-- good thing Variable:clone() returns the original var
 		local varForName = diffVars:mapi(function(var) return var, var.name end)
-		
+
 		for _,var in ipairs(diffVars) do
 			-- don't fix name -- since var.name is used for variable equality
 			powersForDeriv[var.name] = (powersForDeriv[var.name] or 0) + 1
@@ -118,13 +118,13 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		return topText..'/{'..
 			table.keys(powersForDeriv):sort():mapi(function(name, i, newtable)
 				local power = powersForDeriv[name]
-				
+
 				-- get the var for this name
 				local var = varForName[name]
-				
+
 				-- get the var's name for this exporter
 				name = var:nameForExporter(self)
-				
+
 				local s = d..name
 				if power > 1 then
 					s = s .. '^' .. power
@@ -133,8 +133,8 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 			end):concat(' ')..'}['..diffexpr..']'
 	end,
 	[require 'symmath.Integral'] = function(self, expr)
-		return '∫('..table.mapi(expr, function(x) 
-			return (self:apply(x)) 
+		return '∫('..table.mapi(expr, function(x)
+			return (self:apply(x))
 		end):concat', '..' )'
 	end,
 	[require 'symmath.Array'] = function(self, expr)
@@ -146,7 +146,7 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		return expr:__tostring()
 	end,
 	[require 'symmath.tensor.Ref'] = function(self, expr)
-	
+
 		local indexes = table.sub(expr,2)
 		local separateVarianceSymbols
 		local indexStrs = indexes:mapi(function(index)
@@ -162,9 +162,9 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		for i,index in ipairs(indexes) do
 			local is = indexStrs[i]
 			local lower = index.lower or false
-			if not separateVarianceSymbols 
-			and i ~= 1 
-			and lower == lastLower 
+			if not separateVarianceSymbols
+			and i ~= 1
+			and lower == lastLower
 			then
 				is = is:sub(2)
 			end

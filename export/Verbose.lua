@@ -33,7 +33,7 @@ Verbose.lookupTable = table(Verbose.lookupTable):union{
 		if expr.value then
 			s = s .. '|' .. expr.value
 		end
-		return s	
+		return s
 	end,
 	[require 'symmath.Expression'] = function(self, expr)
 		return expr:nameForExporter(self)..'{'..table.mapi(expr, function(x)

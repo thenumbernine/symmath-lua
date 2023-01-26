@@ -2,7 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local complex = require 'complex'
-local symmath 
+local symmath
 
 --[[
 what about complex numbers?
@@ -13,7 +13,7 @@ I'll let .value hold whatever is essential to the constant - whatever class of c
 --]]
 
 local Constant = class(Expression)
-Constant.precedence = 10	-- high since it can't have child nodes 
+Constant.precedence = 10	-- high since it can't have child nodes
 Constant.name = 'Constant'
 
 -- [[ override 'new' operator and fall back on caching
@@ -27,7 +27,7 @@ function Constant:new(value, ...)	-- 'self' is the class for calls to :new()
 	and value <= 100
 	then
 		local obj = cache[value]
-		if obj == nil then 
+		if obj == nil then
 			obj = newmember(self, value, ...)
 			cache[value] = obj
 		end
@@ -57,7 +57,7 @@ function Constant:init(value, symbol)
 -- if I'm going to use cached objects then I had better prevent them from being modified
 -- mind you, switching to cached objects without this saved 25% of the time taken
 -- but this might slow us down a bit ...
--- if caching constants improved speed by 25%, this slows us down by 8% 
+-- if caching constants improved speed by 25%, this slows us down by 8%
 	rawset(self, '__private', {
 		value = value,
 		symbol = symbol,
@@ -101,18 +101,18 @@ end
 function Constant.match(a, b, matches)
 	-- same as in Expression.match
 	matches = matches or table()
-	
-	-- this will insert muls where necessary, 
+
+	-- this will insert muls where necessary,
 	-- so Constant(2):match(Constant(2)*Wildcard()) returns (1),
 	-- and Constant(2):match(Constant(1)*Wildcard()) returns Constant(2)
-	-- but doesn't implicitly factor 
-	-- or divide? TODO Constant(2):match(Constant(2)/Wildcard()) 
+	-- but doesn't implicitly factor
+	-- or divide? TODO Constant(2):match(Constant(2)/Wildcard())
 	if b.wildcardMatches then
 		if not b:wildcardMatches(a, matches) then return false end
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
 
-	-- if either is a constant then get the value 
+	-- if either is a constant then get the value
 	-- (which should not be an expression of its own)
 	if Constant:isa(a) then a = a.value end
 	if Constant:isa(b) then b = b.value end
@@ -123,7 +123,7 @@ function Constant.match(a, b, matches)
 	if complex:isa(a) or complex:isa(b) then
 		return complex.__eq(a,b)
 	end
-	
+
 	-- by here they both should be numbers
 	if a ~= b then return false end
 
@@ -132,7 +132,7 @@ function Constant.match(a, b, matches)
 end
 
 function Constant.__eq(a,b)
-	-- if either is a constant then get the value 
+	-- if either is a constant then get the value
 	-- (which should not be an expression of its own)
 	if Constant:isa(a) then a = a.value end
 	if Constant:isa(b) then b = b.value end
@@ -143,7 +143,7 @@ function Constant.__eq(a,b)
 	if complex:isa(a) or complex:isa(b) then
 		return complex.__eq(a,b)
 	end
-	
+
 	-- by here they both should be numbers
 	return a == b
 end
@@ -154,20 +154,20 @@ end
 
 function Constant:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	
+
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
+
 	if type(self.value) == 'number' then
 		-- should a Constant's domain be the single value of the constant?
 		self.cachedSet = RealSubset(self.value, self.value, true, true)
 		return self.cachedSet
 	end
-	
-	if complex:isa(self.value) then 
-		if self.im ~= 0 then 
+
+	if complex:isa(self.value) then
+		if self.im ~= 0 then
 			self.cachedSet = nil
-			return nil 
+			return nil
 		end
 		self.cachedSet = RealSubset(self.re, self.re, true, true)
 		return self.cachedSet
@@ -192,7 +192,7 @@ Constant.rules = {
 			if expr.value == 0 then	-- which could possibly be -0 ...
 				return Constant(0)
 			end
-			
+
 			-- (-c) => -(c)
 			if complex.unpack(expr.value) < 0 then
 				return tidy:apply(-Constant(-expr.value))

@@ -15,7 +15,7 @@ return function(rank, symbol)
 	local chart = Tensor:findChartForSymbol(symbol)
 
 	local defaultSymbols = require 'symmath.Tensor'.defaultSymbols
-	local variance = 
+	local variance =
 	' '..range(1,rank):mapi(function(i)
 		return '^'..(
 			chart and chart.symbols and chart.symbols[i]
@@ -51,7 +51,7 @@ return function(rank, symbol)
 				if indexes[j+rank] > indexes[j+1+rank] then
 					indexes[j+rank], indexes[j+1+rank] = indexes[j+1+rank], indexes[j+rank]
 					parity = -parity
-				end		
+				end
 			end
 		end
 		for i=1,rank do

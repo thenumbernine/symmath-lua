@@ -89,7 +89,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		id = hash(expr)
 		print(id, 'begin Visitor', Verbose(expr))
 	end
-	
+
 	local clone = symmath.clone
 	local Expression = symmath.Expression
 
@@ -108,8 +108,8 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		-- TODO how about a mutableCopy() or mutableShallowCopy()
 		-- that does deep copy for Array/mutable, but shallow for all non-mutable Expression's
 		if not expr.mutable then
-			-- TODO make this not a shallow copy ... make it no copy for not mutable 
-			-- to cut down on one more clone ... 
+			-- TODO make this not a shallow copy ... make it no copy for not mutable
+			-- to cut down on one more clone ...
 			-- if it's an Expression then rely on the Visitor to return a clone ... only when necessary
 			expr = expr:shallowCopy()
 		else
@@ -150,7 +150,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	if t == 'table' then
 		local m = getmetatable(expr)
 		assert(m, "got back a result with no metatable")
-		
+
 		local modifiedChild
 		-- bubble-in
 		-- nobody's using this right now
@@ -193,7 +193,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		-- stop at null
 
 		-- bubble-out
-		
+
 		-- only here, copy hasBeen* flags if no children were modified
 		if not modifiedChild then
 			if origIsExpr then
@@ -221,7 +221,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 					local name, func = next(rule)
 
 --local beforeCount = Expression.countNodes(expr)
-					
+
 					local newexpr = func(self, expr, ...)
 					if newexpr then
 						expr = newexpr

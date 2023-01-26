@@ -17,14 +17,14 @@ Heaviside.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
 
 function Heaviside:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	
+
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
+
 	local Is = self[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		self.cachedSet = nil
-		return nil 
+		return nil
 	end
 
 	-- if the input domain overlaps the negative reals then include {0}
@@ -62,7 +62,7 @@ function Heaviside:evaluateLimit(x, a, side)
 	if symmath.set.positiveReal:contains(L) then return Constant(1) end
 	--]]
 	-- here: lim x->a H(x) when a>0 is undetermined
-	
+
 	-- TODO only for L contained within the domain of H
 	return Heaviside(L)
 end

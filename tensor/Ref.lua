@@ -11,7 +11,7 @@ TensorRef.precedence = 10	-- stop wrapping tensor reps in parenthesis ...
 
 function TensorRef:init(tensor, ...)
 	TensorRef.super.init(self, tensor, ...)
-	
+
 	-- not necessarily true, for comma derivatives of scalars/expressions
 	--assert(Tensor:isa(tensor))
 
@@ -187,14 +187,14 @@ NOTICE lower'ness can be sorted as well ... but also notice if g_ij = g_ji then 
 function TensorRef:setSymmetries(...)
 	symmath = symmath or require 'symmath'
 	local Variable = symmath.Variable
-	
+
 	local var = self[1]
 	if not Variable:isa(var) then
 		error("can only set symmetries of a TensorRef of a Variable")
 	end
-	
+
 	local targetDegree = #self-1
-	
+
 	-- override all symmetries every time you call?
 	-- or just override all of them for this particular degree?
 	-- or just override them for this particular combination of lower and deriv?
@@ -259,7 +259,7 @@ TODO how about implicit for derivatives of tensors, like K_(ij) => K_(ij),k
 
 hmm this asks the question, should the symmetries also include deriv-only sets of indexes?
 how about deriv+non-deriv? (like d_kij,l == d_lij,k)
-	
+
 assert all the sym indexes have matching lower and deriv~=nil
 but the lower doesn't have to match the 'find' TensorRef in 'symmetries'
 --]]
@@ -270,10 +270,10 @@ function TensorRef:applySymmetries()
 	if not Variable:isa(var) then
 		error("can't apply symmetries to a Tensor.Ref that is not of a Variable")
 	end
-	
+
 	local result = self:clone()
 	if not var.indexSymmetries then return result end
-	
+
 	local key = self:getSymmetriesKey()
 	local syms = var.indexSymmetries[key]
 	if not syms then return result end
@@ -338,7 +338,7 @@ function TensorRef:makeDense()
 	local degreeCSuffix = '_'..indexes:mapi(function(index)
 		return index.lower and 'l' or 'u'
 	end):concat()
-	
+
 	-- ss[1] is the TensorRef, ss[2...] is the
 	local allsymkeys = {}
 	for _,s in ipairs{self:getSymmetries()} do
@@ -369,7 +369,7 @@ function TensorRef:makeDense()
 	local dependentVars = self:getDependentVars()
 
 	local result = Tensor(indexesWithoutDeriv, function(...)
-		
+
 		-- [[ TODO this is just the same as :reindex() ...
 		local is = {...}
 		local thisIndexes = indexes:mapi(function(index) return index:clone() end)
@@ -378,18 +378,18 @@ function TensorRef:makeDense()
 		end
 		local thisRef = TensorRef(basevar, thisIndexes:unpack())
 		--]]
-		
+
 		-- now sort 'thisIndexes' based on symmetries
 		thisRef = thisRef:applySymmetries()
-		
+
 		-- TODO how to specify names per exporter?
-		
+
 		local name_SingleLine = symmath.export.SingleLine:apply(thisRef)
 		local name_LaTeX = symmath.export.LaTeX:applyLaTeX(thisRef)
-		
+
 		local v = Variable(name_LaTeX, dependentVars)
 		v:nameForExporter('SingleLine', name_SingleLine)
-	
+
 		-- insert dots between non-sym indexes
 		local thisIndexCSuffix = table()
 		for i=1,#thisRef-1 do
@@ -400,7 +400,7 @@ function TensorRef:makeDense()
 			thisIndexCSuffix:insert(index.symbol)
 		end
 		thisIndexCSuffix = thisIndexCSuffix:concat()
-		
+
 		local derivCPrefix
 		if numDeriv == 0 then
 			derivCPrefix = ''
@@ -411,7 +411,7 @@ function TensorRef:makeDense()
 		end
 		local cname = derivCPrefix .. basevar:nameForExporter'C'..degreeCSuffix..'.'..thisIndexCSuffix
 		v:nameForExporter('C', cname)
-		
+
 		return v
 	end)
 --printbr(self, '=>', result)
@@ -541,7 +541,7 @@ TensorRef.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Tensor = symmath.Tensor
-			
+
 			local t = expr[1]
 			local indexes = {table.unpack(expr,2)}
 
@@ -550,7 +550,7 @@ TensorRef.rules = {
 			if not Tensor:isa(t) then return end
 
 			-- now transform all indexes that don't match up
-			
+
 			local foundDerivative
 			local nonDerivativeIndexes = table()
 			for i,index in ipairs(indexes) do
@@ -589,14 +589,14 @@ TensorRef.rules = {
 						-- with one general routine for transforming between basii (in place of transformIndex)
 
 						t = t:applyRaiseOrLower(i, indexes[i])
-						
+
 						-- TODO this matches Tensor:applyRaiseOrLower
 						local srcChart = t:findChartForSymbol(t.variance[i].symbol)
 						local dstChart = t:findChartForSymbol(indexes[i].symbol)
-					
+
 						if srcChart ~= dstChart then
 							-- only handling exchanges of variables at the moment
-							
+
 							local indexMap = {}
 							for j=1,#dstChart.coords do
 								indexMap[j] = table.find(srcChart.coords, dstChart.coords[j])  --assert(..., "failed to find src variable in dst chart")
@@ -639,10 +639,10 @@ TensorRef.rules = {
 						chartForCommaIndex[i] = t:findChartForSymbol(indexes[i].symbol)
 					end
 				end
-			
+
 				symmath = symmath or require 'symmath'
 				local TensorIndex = symmath.Tensor.Index
-			
+
 				local newVariance = {}
 				-- TODO straighten out the upper/lower vs differentiation order
 				for i=1,#indexes do
@@ -673,7 +673,7 @@ TensorRef.rules = {
 						return x
 					end,
 				}
-				
+
 				-- raise after differentiating
 				-- TODO do this after each diff
 				transformIndexes(true)
@@ -683,7 +683,7 @@ TensorRef.rules = {
 				end
 		--print('after differentiation: '..tensor)
 			end
-			
+
 			-- handle specific number/variable indexes
 			do
 				local foundNumbers = table.find(indexes, nil, function(index)
@@ -723,7 +723,7 @@ TensorRef.rules = {
 			end
 
 			-- for all indexes
-			
+
 			-- apply any summations upon construction
 			-- if any two indexes match then zero non-diagonal entries in the resulting tensor
 			--  (scaling with the delta tensor)
@@ -734,7 +734,7 @@ TensorRef.rules = {
 					assert(index.symbol, "failed to find index on "..i.." of "..#t.variance)
 				end
 			end
-			
+
 
 
 -- ok here unravel any rank-1 dimension

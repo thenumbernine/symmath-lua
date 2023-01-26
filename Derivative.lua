@@ -1,7 +1,7 @@
 --[[
 How Derivative, and diff, works:
 
-First, user calls y:diff(x) or y:totalDiff(x) or etc for other subclasses.  
+First, user calls y:diff(x) or y:totalDiff(x) or etc for other subclasses.
 Right now the base class is a total derivative.
 That sits as-is, and does not evaluate immediately, in case you want to print it.
 
@@ -14,13 +14,13 @@ Upon prune() (done by simplify(), implicitly ())
 	- in prune(),
 		- - for Array's, applies the Derivative obj's class + params to all the Array elements
 		- - for Constant's return 0
-		- - for Derivative's, consolidates variables (i.e. x:diff(y):diff(z) => x:diff(y,z)) 
+		- - for Derivative's, consolidates variables (i.e. x:diff(y):diff(z) => x:diff(y,z))
 		- - for self, i.e. x:diff(x), return 1
 				- for x^I:diff(x^J), return delta^I_J
 				- in both cases, if we have more vars after, then short-circuit (0 or 1):diff(x) to just return 0
 		- - for dy/dx:
 			- - for partial, return 0
-			- - for total, just don't evalulate? TODO insert the def here and evaluate. 
+			- - for total, just don't evalulate? TODO insert the def here and evaluate.
 
 		- for all else, for d/dx expr: call expr:evaluateDerivative() wrt each var of the derivative
 
@@ -34,7 +34,7 @@ Upon prune() (done by simplify(), implicitly ())
 alright, comma derivative represents the partial derivative
 but chain rule is especially defined in terms of the total derivative
 so what is the chain rule of a partial derivative in a multivariate formula?
-hmm 
+hmm
 https://math.stackexchange.com/questions/2354875/partial-derivatives-vs-total-derivatives-for-chain-rule
 https://math.stackexchange.com/questions/174270/what-exactly-is-the-difference-between-a-derivative-and-a-total-derivative
 
@@ -97,7 +97,7 @@ Derivative.rules = {
 				return res
 			end
 		end},
-	
+
 		-- d/dx c = 0
 		{constants = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -114,7 +114,7 @@ Derivative.rules = {
 			if Derivative:isa(expr[1]) then
 				return prune:apply(
 					getmetatable(expr)(
-						expr[1][1], 
+						expr[1][1],
 						table.unpack(
 							table.append({table.unpack(expr, 2)}, {table.unpack(expr[1], 2)})
 						)
@@ -142,8 +142,8 @@ Derivative.rules = {
 				-- d/dy dx/dx = 0
 				elseif #expr > 2 then
 					for i=2,#expr do
-						if expr[i] == var then 
-							return Constant(0) 
+						if expr[i] == var then
+							return Constant(0)
 						end
 					end
 				end
@@ -155,7 +155,7 @@ Derivative.rules = {
 				-- dx^I/dx^J = delta^I_J
 				if #expr == 2 then
 					if TensorRef:isa(expr[2])
-					and var == expr[2][1] 
+					and var == expr[2][1]
 					and #expr[1] == #expr[2]	-- only matching # of symbols
 					then
 						-- if upper/lower differ then use delta
@@ -172,7 +172,7 @@ Derivative.rules = {
 							index2.lower = not index2.lower
 							prod:insert(TensorRef(symbol, index1, index2))
 						end
-					
+
 						return symmath.tableToMul(prod)
 					end
 				-- d/dy dx^I/dx^J = 0
@@ -198,7 +198,7 @@ Derivative.rules = {
 			local TensorRef = symmath.Tensor.Ref
 			-- apply differentiation
 			-- don't do so if it's a diff of a variable that requests not to
-			if Variable:isa(expr[1]) 
+			if Variable:isa(expr[1])
 			or (
 				TensorRef:isa(expr[1])
 				and Variable:isa(expr[1][1])
@@ -215,14 +215,14 @@ Derivative.rules = {
 					end
 				end
 			end
-			
+
 --[[
 same with tensor references
 how should this work?
 should you need to specify the TensorRef that it is dependent upon (and do a pattern-compare on the indexes?)
 or should you just specify the letter, and get rid of anything based on that letter?
 
-also, how should comma derivatives work into this?  
+also, how should comma derivatives work into this?
 honestly they should be shorthand for Tensor('_i', function(x) return x:diff(chart.coords[i]) end)
 that's a dense expression
 in terms of index expressions though, you would have to reserve a letter for what you want to index to determine your variables
@@ -250,9 +250,9 @@ a,b,c = vars('a', 'b', 'c')
 and now a'^i_,j' can be interchangeable with a'^i':diff(x'^j')
 ...which can be expanded to a dense tensor (along specific indexes?)
 	{a'^i':diff(x), a'^i':diff(y), a'^i':diff(z)}				-- via expr:toDenseTensor{indexes='i'}
-		... vs ... 
+		... vs ...
 	{a'^1':diff(x'^j'), a'^2':diff(x'^j'), a'^3':diff(x'^j')}	-- via expr:toDenseTensor{indexes='j'}
-		... vs ...	
+		... vs ...
 	{
 		{a'^1':diff(x), a'^1':diff(y), a'^1':diff(z)},			-- via expr:toDenseTensor{indexes='ij'}
 		{a'^2':diff(x), a'^2':diff(y), a'^2':diff(z)},			-- or just default: expr:toDenseTensor()
@@ -284,7 +284,7 @@ but back to all of this ...
 a'^i':setDependentVars(a'^j')
 that means putting :setDependentVars() in TensorRef to forward to Variable
 and it means in Variable we keep track of the indexes of the 'numerator' and 'denominator' symbols
-and we only preserve the derivative if we match to these 
+and we only preserve the derivative if we match to these
 otherwise we return zero
 ... and if the variable symbols are equal then we now need an official Kronecher delta symbol.
 

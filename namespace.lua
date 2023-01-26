@@ -2,7 +2,7 @@
 -- so instead of require 'symmath', preferrable is require 'symmath.namespace'()
 local namespace
 return function(...)
-	local old = namespace	
+	local old = namespace
 	if select('#', ...) > 0 then
 		namespace = ...
 	end

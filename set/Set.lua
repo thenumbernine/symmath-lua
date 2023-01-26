@@ -20,7 +20,7 @@ function Set.__eq(a,b)
 end
 
 function Set:vars(...)
-	return table{...}:mapi(function(x) 
+	return table{...}:mapi(function(x)
 		return self:var(x)
 	end):unpack()
 end
@@ -53,14 +53,14 @@ function Set:containsVariable(x)
 	-- TODO should I care about x.value?
 	-- it is more accurate to use its 'containsConstant' for sure
 	-- then the resolution is specific to the number value.
-	-- 
+	--
 	-- TODO what is x.value? is it always a Constant?
 	-- if it's an expression then shouldn't it be a UserFunction?
 	-- just let :contains()'s cases handle it
 	if x.value then
 		return self:contains(x.value)
 	end
-	
+
 	-- if x's set is a subset of this set then true
 	-- but if x's set is not a subset ... x could still be contained
 	assert(Set:isa(x.set))
@@ -72,7 +72,7 @@ end
 -- TODO another math technicality ... subset and containment are two separate things
 -- you can have a set of elements of sets, and those sets are not subsets of the set
 -- also, in that case, the set does not necessarily contain itself
--- so I'm really starting to lean away from this function name 
+-- so I'm really starting to lean away from this function name
 -- and from this function altogether
 function Set:containsSet(s)
 	-- rather than consider all possible subsets 's'...
@@ -81,16 +81,16 @@ function Set:containsSet(s)
 	return s:isSubsetOf(self)
 end
 
--- does 's' contain 'self'? 
+-- does 's' contain 'self'?
 -- called by 'containsSet', which subclasses hopefully shouldn't need to modify
 --  because there are usually too many subsets to enumerate
--- instead just modify this function, 
+-- instead just modify this function,
 --  and check against a minimal number of possible supersets
 --  and trust them to check against a minimal number of supersets too
 function Set:isSubsetOf(s)
 end
 
--- any non-Variable non-Constant Expression 
+-- any non-Variable non-Constant Expression
 function Set:containsExpression(x)
 end
 
@@ -114,9 +114,9 @@ function Set:contains(x)
 	if complex:isa(x) then
 		return self:containsComplex(x)
 	end
-	
-	if Set:isa(x) then 
-		return x:isSubsetOf(self) 
+
+	if Set:isa(x) then
+		return x:isSubsetOf(self)
 	end
 
 	-- returns ~= nil when we get a Variable
@@ -130,7 +130,7 @@ function Set:contains(x)
 	end
 
 --[[
-	set-containment 
+	set-containment
 	and at that, make Set a subclass of Expression
 	and add set operators
 	if symmath.Set:isa(x) then
@@ -148,7 +148,7 @@ function Set:contains(x)
 so TODO something like:
 	local t = type(x)
 	if t ~= 'table' then
-		local rule = self.containsRules[t] 
+		local rule = self.containsRules[t]
 		if rule then return rule(self, x) end
 	else
 		local m = getmetatable(x)
@@ -157,7 +157,7 @@ so TODO something like:
 			if rule then return rule(self, x) end
 			m = m.super
 		until m == nil
-		local rule = self.containsRule.table 
+		local rule = self.containsRule.table
 		if rule then return rule(self, x) end
 	end
 	local rule = self.containsRule['*']

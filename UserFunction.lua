@@ -1,7 +1,7 @@
 --[[
 
 Should this be a Variable subclass?
-Yes, because 
+Yes, because
 	- Variable is almost there.  it already has name, depends, and value.  This is 1-1 with a function's name, arguments, and definition.
 	- other expressions can be defined / can be differentiated with respect to this (can they?)
 	in fact, can they?  f(x) = x^2 sin(x) ... can be dif'd wrt x, wrt sin(x), but not wrt sin....
@@ -95,7 +95,7 @@ function UserFunction:init(name, args, def, set)
 	if def then assert(Expression:isa(def), "def must be an Expression") end
 
 	-- TODO warn if we override our definition?
-	self.registeredFunctions[self.name] = self 
+	self.registeredFunctions[self.name] = self
 end
 
 function UserFunction:defeq()
@@ -140,10 +140,10 @@ function UserFunction:makeSubclass(name, args, def, set)
 	for _,arg in ipairs(f.args) do
 		assert(Variable:isa(arg), "args must be a table of Variables")
 	end
-	
+
 	f.def = def	-- optional
 	if def then assert(Expression:isa(def), "def must be an Expression or nil") end
-	
+
 	-- TODO warn if we override our definition?
 	self.registeredFunctions[f.name] = f
 
@@ -162,7 +162,7 @@ though in math the range and the image are separate ... the set of all outputs o
 TODO ... the variables in a function's definition are internal, not external.
 f(x) = x^2, the x in f(x) refers to the x^2, not to any other x's on the worksheet.
 However defining a function as "f = func('f', {x})" would require an externally declared variable ...
-... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2", 
+... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2",
  	so techniaclly it would be "external", however it would just be just "local".
 --]]
 
@@ -173,7 +173,7 @@ function UserFunction:evaluateDerivative(deriv, ...)
 		cl.cached_df = UserFunction:makeSubclass(
 			cl.name.."'",
 			cl.args,
-			cl.def and self.def:diff(x)() or nil, 
+			cl.def and self.def:diff(x)() or nil,
 			cl.set	-- will set be the same?
 		)
 	end
@@ -198,7 +198,7 @@ end
 -- with this, evals too much
 -- without this, doesn't eval enough
 -- though with this you have the option to just not assign .def
--- [[ 
+-- [[
 UserFunction.rules = {
 	Prune = {
 		{apply = function(prune, expr)
@@ -219,4 +219,4 @@ UserFunction.rules = {
 
 -- UserFunction based on Function ]===]
 
-return UserFunction 
+return UserFunction

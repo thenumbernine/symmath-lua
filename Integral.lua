@@ -66,7 +66,7 @@ Integral.rules = {
 				local defStart = replaceDefinite(expr, start)
 				return defFin - defStart
 			end
-			
+
 			-- TODO make this canonical form?
 			int = int():factorDivision()
 
@@ -96,7 +96,7 @@ Integral.rules = {
 			if int:match(Wildcard{1, cannotDependOn=x}) then
 				return int * x
 			end
-			
+
 			-- TODO Technically by this point we should have c * f(x), otherwise the previous capture should have got it
 			-- which means I could simply test if this fails, to treat it like it is an integral of a constant.
 			--
@@ -106,7 +106,7 @@ Integral.rules = {
 --print('f', f and Verbose(f) or tostring(f))
 --print('c', c and Verbose(c) or tostring(c))
 			if f then
-				
+
 
 				-- https://en.wikipedia.org/wiki/Lists_of_integrals
 
@@ -115,7 +115,7 @@ Integral.rules = {
 				if f == x then
 					return (c / 2) * x^2
 				end
-			
+
 				-- int(c * x^n)
 				local n = f:match(x^Wildcard{1, cannotDependOn=x})
 				if n then
@@ -126,7 +126,7 @@ Integral.rules = {
 						return (c / (n+1)) * x^(n+1)
 					end
 				end
-			
+
 				-- int(c / x)
 				local d = f:match(1 / (Wildcard{1, cannotDependOn=x} * x))
 				if d then
@@ -171,7 +171,7 @@ Integral.rules = {
 
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_rational_functions
 
-				
+
 				-- int(f'(x)/f(x))
 				local dgpat, g = f:match(Wildcard(1) * (1 / Wildcard(2)))
 --print('dgpat', dgpat and Verbose(dgpat) or tostring(dgpat))
@@ -212,7 +212,7 @@ Integral.rules = {
 				-- I should get better conditional (/piecewise?) expressions working before embarking on this.
 				local a, b, d = f:match(x / (Wildcard{1, cannotDependOn=x} * x * x + Wildcard{2, cannotDependOn=x} * x + Wildcard{3, cannotDependOn=x}))
 				if a then
-					
+
 				end
 				--]]
 
@@ -251,7 +251,7 @@ Integral.rules = {
 
 
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_trigonometric_functions
-				
+
 				-- ...involving only sine
 
 
@@ -260,7 +260,7 @@ Integral.rules = {
 				if a then
 					return -frac(c,a) * cos(a * x)
 				end
-			
+
 				-- int(c*sin(a*x)^2)
 				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x)^2)
 				if a then
@@ -317,7 +317,7 @@ Integral.rules = {
 
 
 				-- sine and cosine
-				
+
 
 				-- int(sin(a1*x) * cos(a2*x))
 				local a1, a2 = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * cos(Wildcard{2, cannotDependOn=x} * x))
@@ -393,7 +393,7 @@ Integral.rules = {
 				if a then
 					return frac(c, a) * log(abs(sinh(a * x)))
 				end
-				
+
 				-- int(sinh(a*x)^2*cosh(a*x))
 				-- = sinh(a*x)^3 / (3*a) for a = b
 				local a, b = f:match(sinh(Wildcard{2, cannotDependOn=x} * x)^2 * cosh(Wildcard{1, cannotDependOn=x} * x))

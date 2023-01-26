@@ -19,7 +19,7 @@ function DenseCache:get(x)
 	local Variable = require 'symmath.Variable'
 
 	assert(Tensor.Ref:isa(x) and Variable:isa(x[1]))
-	
+
 --printbr('dense tensor cache has', cachedDenseTensors:mapi(function(t) return t[1] end):mapi(tostring):concat';')
 	local _, t = self.cache:find(nil, function(t)
 		return Tensor.Ref.matchesIndexForm(t[1], x)

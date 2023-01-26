@@ -47,7 +47,7 @@ Language.lookupTable = table(Language.lookupTable):union{
 	end,
 
 	[require 'symmath.Limit'] = function(self, expr)
-		return 
+		return
 			expr:nameForExporter(self)
 			.. ({
 				[''] = '',
@@ -67,7 +67,7 @@ Language.lookupTable = table(Language.lookupTable):union{
 
 	[require 'symmath.Derivative'] = function(self, expr)
 		symmath = symmath or require 'symmath'
-		
+
 		if symmath.Variable:isa(expr[1]) then
 			return expr:nameForExporter(self)
 				..(#expr == 2 and '' or (#expr-1))
@@ -80,7 +80,7 @@ Language.lookupTable = table(Language.lookupTable):union{
 		-- this would make sense if the internal of the derivative was a function wrt the variables
 		-- but evaluating the derivative would remove a need for this in the first place
 		-- so ultimately, the most likely derivatives we will encounter here are unreplaced variables.
-		return 
+		return
 			expr:nameForExporter(self)
 			.. '('
 			.. self:toFuncCode{
@@ -90,9 +90,9 @@ Language.lookupTable = table(Language.lookupTable):union{
 			}
 			..')'
 	end,
-	
+
 	[require 'symmath.Integral'] = function(self, expr)
-		return 
+		return
 			expr:nameForExporter(self)
 			.. '('
 			.. self:toFuncCode{
@@ -156,7 +156,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 	local Variable = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'
 	inputs = inputs or {}
-	
+
 	assert(not Expression:isa(outputs), "prepareToCodeArgs() expects arg 1 to be a non-Expression")
 	local fixedOutputs = table()
 	for i,output in ipairs(outputs) do
@@ -175,7 +175,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 			error("output table entries should be either expr or {name=expr}")
 		end
 	end
-	
+
 	local fixedInputs = table()
 	for _,input in ipairs(inputs) do
 		if type(input) == 'table' then
@@ -259,15 +259,15 @@ function Language:toCodeInternal(args)
 	but the * and + operators are flattened tree nodes
 	so even if a+b is found inside of a+b+c and a+b+d, it will not match in this algorithm because the trees are exact.
 	how to get around this?
-	
+
 	exhaustive: when counting trees, count all permutations of + and * subtrees, and then when replacing them later, chop them up
-	
+
 	combined: when chopping them up, count which subtree is most often used, and then chop up now accordingly.
 		the challenge is whatever counts go towards copies of the + or * permutation subtrees that match elsewhere will have to be thrown away if that particular chop scheme isn't used
 		because, depending on what subtree partition choices you use, the counts of other trees will be affected.
 
 	lazy: just chop them up arbitrarily now
-	
+
 	of course for now I'm doing the lazy method.
 	--]]
 	-- [[
@@ -295,7 +295,7 @@ function Language:toCodeInternal(args)
 
 	local tmpvardefs = table()
 	if not disableTmpVars then
-	
+
 		local varindex = 0
 		-- TODO assert that this variable name doesn't exist in the expression
 		local function newvarname()
@@ -312,7 +312,7 @@ function Language:toCodeInternal(args)
 			for _,x in ipairs(expr) do
 				totalCount = totalCount + recurse(x)
 			end
-			
+
 			if Expression:isa(expr)
 			and not Constant:isa(expr)
 			and totalCount > 1
@@ -387,12 +387,12 @@ print('CHECKING SUBEXPR '..SingleLine(subexpr))
 					end
 				end
 			end
-			
+
 			-- don't allow entire tmpvars[i] to be replaced with other tmpvars, (that would be redundant), only tmpvars[i][j] etc
 			for j=1,#tmpvardefs do
 				recurse(tmpvardefs[j][2])
 			end
-			
+
 			-- allow exprs[i] to be replaced with tmpvars
 			recurse(exprs)
 
@@ -509,7 +509,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 		--]]
 		-- now if used[j] is not set then you can substitute it into whoever is using it
 		tmpvardefs = tmpvardefs:reverse()
-	
+
 		-- [[ now reindex ... which invalidates 'used'
 		for i=#tmpvardefs,1,-1 do
 			local oldvar = tmpvardefs[i][1]
@@ -530,13 +530,13 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 
 	-- TODO parameter
 	local genParams = self.generateParams or {}
-	
+
 	local localType = genParams.localType
 	if type(localType) == 'function' then localType = localType(self) end
 	localType = localType and #localType > 0 and localType..' ' or ''
-	
+
 	local lineEnd = genParams.lineEnd or ''
-	
+
 	local lines = table()
 	-- TODO keep track of what vars are used, and compare it to the vars in the compile, to ensure correct code is generated...?
 
@@ -555,7 +555,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 --]=]
 		lines:insert((args.assignOnly and '' or localType)..outputs[i].name..' = '..body..lineEnd)
 	end
-	
+
 	return lines:concat'\n'
 end
 
@@ -569,11 +569,11 @@ args:
 --]]
 function Language:toFuncCode(args)
 	local genParams = self.generateParams or {}
-	
+
 	local argType = genParams.funcArgType
 	if type(argType) == 'function' then argType = argType(self) end
 	argType = argType and #argType > 0 and (argType..' ') or ''
-	
+
 	local outputs, inputs = self:prepareToCodeArgs(args.output, args.input)
 
 	local lineEnd = genParams.lineEnd or ''

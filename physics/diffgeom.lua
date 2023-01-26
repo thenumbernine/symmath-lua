@@ -6,7 +6,7 @@ local Tensor = require 'symmath.Tensor'
 --[[
 helper class for computing common differential geometry values from a metric tensor
 
-TODO 
+TODO
 Bake this directly into the metric information of the Tensor.
 Compute it as requested.
 I am already doing so for the metric and its inverse.
@@ -48,8 +48,8 @@ Props.fields = table{
 		title = '1st kind Christoffel',
 		calc = function(self)
 			local expr = ((self.dg'_abc' + self.dg'_acb' - self.dg'_bca') / 2)
-			if self.c then 
-				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_cba') / 2 
+			if self.c then
+				expr = expr + (self.c'_abc' + self.c'_acb' - self.c'_cba') / 2
 			end
 			return expr():permute'_abc'
 		end,
@@ -90,8 +90,8 @@ Props.fields = table{
 		title = 'Riemann curvature, $\\sharp\\flat\\flat\\flat$',
 		calc = function(self)
 			local expr = (self.dGamma'^a_dbc' - self.dGamma'^a_cbd' + self.GammaSq'^a_bcd' - self.GammaSq'^a_bdc')
-			if self.c then 
-				expr = expr - self.Gamma'^a_eb' * self.c'_cd^e' 
+			if self.c then
+				expr = expr - self.Gamma'^a_eb' * self.c'_cd^e'
 			end
 			return expr():permute'^a_bcd'
 		end,
@@ -122,11 +122,11 @@ Props.fields = table{
 		name = 'RicciTF',
 		symbol = '(R^{TF})',
 		title = 'trace-free Ricci, $\\sharp\\flat$',
-		calc = function(self) 
+		calc = function(self)
 			local frac = require 'symmath.op.div'
 			local delta = require 'symmath.tensor.KronecherDelta'(1)
 			local n = #self.Ricci
-			return (self.Ricci'^a_b' - frac(1, n) * self.Gaussian * delta'^a_b')() 
+			return (self.Ricci'^a_b' - frac(1, n) * self.Gaussian * delta'^a_b')()
 		end,
 		display = function(self) return var'(R^{TF})''^a_b':eq(self.RicciTF'^a_b'()) end,
 	},
@@ -134,12 +134,12 @@ Props.fields = table{
 		name = 'Einstein',
 		symbol = 'G',
 		title = 'Einstein / trace-reversed Ricci curvature, $\\sharp\\flat$',
-		calc = function(self) 
+		calc = function(self)
 			local delta = require 'symmath.tensor.KronecherDelta'(1)
 			local n = #self.Ricci
 			local frac = require 'symmath.op.div'
 			-- you could also do 2 * (RicciTF - Ricci) + Ricci
-			return (self.Ricci'^a_b' - frac(2, n) * delta'^a_b' * self.Gaussian)() 
+			return (self.Ricci'^a_b' - frac(2, n) * delta'^a_b' * self.Gaussian)()
 		end,
 		display = function(self) return var'G''^a_b':eq(self.Einstein'^a_b'()) end,
 	},
@@ -209,7 +209,7 @@ Props.fields = table{
 		end,
 		display = function(self) return var'P''^ab_cd':eq(self.Plebanski()) end,
 	},
---[[	
+--[[
 	{
 		name = 'Bel-Robinson',
 		symbol = 'T',
@@ -247,7 +247,7 @@ end
 -- print all
 function Props:print()
 	for _,field in ipairs(self.fields) do
-		if self[field.name] then	
+		if self[field.name] then
 			self:doPrint(field)
 		end
 	end
@@ -277,8 +277,8 @@ function Props:init(g, gU, c, chart)
 		if field.calc then
 			self[name] = field.calc(self)
 		end
-		if self[name] and self.verbose then 
-			self:printField(name) 
+		if self[name] and self.verbose then
+			self:printField(name)
 		end
 	end
 

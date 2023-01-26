@@ -14,8 +14,8 @@ return function(theta, n)
 	local K = Matrix({0, -nz, ny}, {nz, 0, -nx}, {-ny, nx, 0})
 	-- K2_ij = K_ik K_kj = ε_ikl n^l ε_lmj n^m
 	-- = (δ_im δ_kj - δ_ij δ_km) n^l n^m
-	local K2 = (K * K 
--- this is here because the formula otherwise has an (1 - |n|^2) in it		
+	local K2 = (K * K
+-- this is here because the formula otherwise has an (1 - |n|^2) in it
 		+ I * (nx^2 + ny^2 + nz^2 - 1)
 	)()
 	-- I + K sin(θ) + K2 (1 - cos(θ))
@@ -41,7 +41,7 @@ return function(theta, ...)
 	local Tensor = symmath.Tensor
 	local sin = symmath.sin
 	local cos = symmath.cos
-	
+
 	local ns = {...}
 	local dim = #ns + 2
 	for i=1,#ns do
@@ -49,7 +49,7 @@ return function(theta, ...)
 		ns[i] = Array(table.unpack(ns[i]))
 	end
 	local syms = table.sub(Tensor.defaultSymbols, 3, dim)
-	
+
 	local I = Matrix.identity(dim)
 	-- K_ij = -ε_ijk..l * n1^k * ... * nN^l
 	local eps = Tensor.LeviCivita(dim)
@@ -69,7 +69,7 @@ return function(theta, ...)
 
 	-- K2_ij = K_ik K_kj
 	local K2 = (K * K)()
-	
+
 	if dim == 3 then
 		-- only for 3D, replace the (1 - |n1|^2) with 0
 		K2 = (K2 + Matrix:lambda({dim, dim}, function(i,j)

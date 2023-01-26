@@ -29,11 +29,11 @@ atan.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			
+
 			if expr[1] == symmath.inf then
 				return symmath.pi / 2
 			end
-			
+
 			if expr[1] == Constant(-1) * symmath.inf then
 				return (Constant(-1) * symmath.pi) / 2
 			end

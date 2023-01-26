@@ -24,7 +24,7 @@ local function solve(eqn, x, hasSimplified)
 	local Equation = symmath.op.Equation
 
 	assert(eqn, 'expected equation to solve, or expression to solve for zero')
-	if not Equation:isa(eqn) then	
+	if not Equation:isa(eqn) then
 		error("expected the expression to be an equation or inequality: "..eqn)
 	end
 
@@ -50,23 +50,23 @@ local function solve(eqn, x, hasSimplified)
 			assert(rawequal(stack:remove().expr, ch))
 		end
 	end
-	
+
 	recurse(eqn)
-	
+
 	if count == 0 then
 		return nil, "couldn't find "..x.." in eqn "..eqn
 	end
-	
-	-- in this case, find the variable, reverse each operation above it 
---print('solving for ',x)	
+
+	-- in this case, find the variable, reverse each operation above it
+--print('solving for ',x)
 	if count == 1 then
---print('found 1 occurrence')		
+--print('found 1 occurrence')
 		local stack = trace[1]
---print('our stack is',stack:map(function(q) return q.expr end):unpack())		
+--print('our stack is',stack:map(function(q) return q.expr end):unpack())
 		-- trace[1] holds the stack to the var, so we can find parents that way
 		local solns
 		local side = stack[1].index
---print('our variable is on side',side)		
+--print('our variable is on side',side)
 		if side == 1 then
 			solns = table{eqn[2]:clone()}
 		elseif side == 2 then
@@ -88,19 +88,19 @@ local function solve(eqn, x, hasSimplified)
 		end
 
 		-- fwiw here's the pathway that (x^2):eq(0) uses
-		return 
+		return
 		--filterUnique(
-			solns:mapi(function(soln) 
-				return x:eq(soln()) 
+			solns:mapi(function(soln)
+				return x:eq(soln())
 			end):unpack()
 		--)
 	end
-	
+
 	-- otherwise, polynomial solver?
 
 	local eq = getmetatable(eqn)
 		-- move everything to one side of the equation
---print'subtracting lhs from rhs...'		
+--print'subtracting lhs from rhs...'
 	local lhs = eqn[1] - eqn[2]
 --print('...got',lhs)
 
@@ -120,13 +120,13 @@ local function solve(eqn, x, hasSimplified)
 		-- make sure you add the != operators last
 		solns = table{lhs[1]:eq(0):solve(x)}:append(solns)
 		-- TODO remove contraditions, {x!=y, x==y} => {x!=y}
-		return 
+		return
 		--filterUnique(
 			solns:unpack()
 		--)
 	end
 --]]
-	
+
 	-- handle multiplication separately
 	if mul:isa(lhs) then
 		local solns = table()
@@ -135,19 +135,19 @@ local function solve(eqn, x, hasSimplified)
 				solns:append{term:eq(0):solve(x)}
 			end
 		end
-		return 
+		return
 		--filterUnique(
 			solns:unpack()
 		--)
 	end
 
---print('looking for coeffs wrt',x)	
+--print('looking for coeffs wrt',x)
 	local coeffs = polyCoeffs(lhs, x)
 
 	local function getCoeff(n)
 		return coeffs[n] or Constant(0)
 	end
-	
+
 	local n = table.maxn(coeffs)
 
 	-- 'homogeneous' polynomial
@@ -160,25 +160,25 @@ local function solve(eqn, x, hasSimplified)
 		-- quadratic solution
 		-- this is where factor() comes in handy ...
 		if n == 2 then
---print('solving poly n==2')			
+--print('solving poly n==2')
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
 			local res1 = eq(x, (-b-sqrt(b^2-4*a*c))/(2*a))()
 			local res2 = eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
-			return 
+			return
 			--filterUnique(
 				res1, res2
 			--)
 		end
 		-- and on ...
-	
+
 		if n == 4 then
---print('solving poly n==4')			
+--print('solving poly n==4')
 			if not coeffs[1] and not coeffs[3] then
 				-- ax^4 + bx^2 + c
 				local a,b,c = getCoeff(4), getCoeff(2), getCoeff(0)
 				local res1 = eq(x, sqrt((-b-sqrt(b^2-4*a*c))/(2*a)))()
 				local res2 = eq(x, sqrt((-b+sqrt(b^2-4*a*c))/(2*a)))()
-				return 
+				return
 				--filterUnique(
 					res1, (-res1)(), res2, (-res2)()
 				--)

@@ -33,28 +33,28 @@ function TensorIndex.match(a, b, matches)
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	
+
 	if not (a.lower == b.lower
 		and a.derivative == b.derivative
 		and a.symbol == b.symbol
 	) then
 		return false
 	end
-	
+
 	return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 end
 
 function TensorIndex.__eq(a, b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	
+
 	if not (a.lower == b.lower
 		and a.derivative == b.derivative
 		and a.symbol == b.symbol
 	) then
 		return false
 	end
-	
-	return true	
+
+	return true
 end
 
 
@@ -65,7 +65,7 @@ function TensorIndex:__tostring()
 		s = self.derivative .. s
 	end
 	if self.lower then s = '_' .. s else s = '^' .. s end
-	
+
 	-- TODO how about making symbol a Variable?
 	-- and then specifying subsets / spans?  i in x,y,z; mu in t,x,y,z, etc.
 	-- that would easily merge with _,t differentiation, with tostring(), and with other things.
@@ -87,7 +87,7 @@ end
 helper function
 static function
 
-accepts tensor string with ^, _, a-z, 1-9 
+accepts tensor string with ^, _, a-z, 1-9
 returns table of the following fields for each index:
 	- whether this index is contra- (upper) or co-(lower)-variant
 	- whether this index is a variable, or a range of variables
@@ -120,14 +120,14 @@ function TensorIndex.parseIndexes(indexes)
 					return true
 				end
 				-- if the expression is upper/lower..comma then switch order so comma is first
-				
+
 				for _,d in ipairs(TensorIndex.derivativeSymbols) do
-					if removeIfFound(d) then 
-						derivative = d 
+					if removeIfFound(d) then
+						derivative = d
 						break
 					end
 				end
-				
+
 				local lower = not not removeIfFound('_')
 				if removeIfFound('^') then
 					--print('removing upper denotation from index table (it is default for tables of indices)')
@@ -158,7 +158,7 @@ function TensorIndex.parseIndexes(indexes)
 				end
 			end
 		end
-		return indexes	
+		return indexes
 	end
 
 	if type(indexes) == 'string' then
@@ -174,7 +174,7 @@ function TensorIndex.parseIndexes(indexes)
 			for i=1,#indexString do
 				local ch = indexString:sub(i,i)
 				if ch == '^' then
-					lower = false 
+					lower = false
 				elseif ch == '_' then
 					lower = true
 				elseif TensorIndex.derivativeSymbols:find(ch) then
@@ -206,11 +206,11 @@ function TensorIndex.parseIndexes(indexes)
 	else
 		error('indexes had unknown type: '..type(indexes))
 	end
-	
+
 	for i,index in ipairs(indexes) do
 		assert(index.symbol, "index missing symbol")
 	end
-	
+
 	return indexes
 end
 

@@ -203,9 +203,9 @@ function Expression.match(a, b, matches)
 		return (matches[1] or true), table.unpack(matches, 2, table.maxn(matches))
 	end
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	
+
 	if not a or not b then return false end
-	
+
 	-- check subexpressions
 	local n = #a
 	if n ~= #b then return false end
@@ -221,9 +221,9 @@ end
 
 function Expression.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
-	
+
 	if not a or not b then return false end
-	
+
 	-- check subexpressions
 	local n = #a
 	if n ~= #b then return false end
@@ -246,13 +246,13 @@ end
 function Expression.__add(a,b)
 	if a == 0 then return b end
 	if b == 0 then return a end
-	
+
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
 	if Constant.isValue(a, 0) then return b end
 	if Constant.isValue(b, 0) then return a end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__add(a,b) end
 
@@ -264,10 +264,10 @@ function Expression.__sub(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__sub(a,b) end
-	
+
 	if Constant.isValue(a, 0) then return -b end
 	if Constant.isValue(b, 0) then return a end
 
@@ -286,7 +286,7 @@ function Expression.__mul(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__mul(a,b) end
 
@@ -306,7 +306,7 @@ function Expression.__mul(a,b)
 	if Constant.isValue(a, 0) and not Array:isa(b) and not Equation:isa(b) then return a end
 	if Constant.isValue(b, 0) and not Array:isa(a) and not Equation:isa(a) then return b end
 --]]
-	
+
 	if Constant.isValue(a, 1) then return b end
 	if Constant.isValue(b, 1) then return a end
 
@@ -318,10 +318,10 @@ function Expression.__div(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__div(a,b) end
-	
+
 	if Constant:isa(b) then
 		if b.value == 0 then
 			symmath = symmath or require 'symmath'
@@ -343,10 +343,10 @@ function Expression.__pow(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__pow(a,b) end
-	
+
 	if Constant:isa(a) and a.value == 0 then
 		if Constant:isa(b) then
 			if b.value > 0 then return Constant(0) end
@@ -370,7 +370,7 @@ function Expression.__mod(a,b)
 	Constant = Constant or require 'symmath.Constant'
 	if type(a) == 'number' then a = Constant(a) end
 	if type(b) == 'number' then b = Constant(b) end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__mod(a,b) end
 
@@ -457,7 +457,7 @@ end
 function Expression:diff(...)
 --[=[
 	local Constant = require 'symmath.Constant'
-	
+
 	-- TODO double diff() as differential when no variables are used?
 	-- or should that be a separate operator?
 
@@ -503,10 +503,10 @@ function Expression.wedge(a,b)
 		Constant = Constant or require 'symmath.Constant'
 		b = Constant(b)
 	end
-	
+
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.wedge(a,b) end
-	
+
 	wedge = wedge or require 'symmath.tensor.wedge'
 	return wedge(a,b)
 end
@@ -641,7 +641,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 	repl = clone(repl)	-- in case it's a number ...
 
 	TensorRef = TensorRef or require 'symmath.tensor.Ref'
-	
+
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being
 	Tensor = Tensor or require 'symmath.Tensor'
 	local defaultSymbols = args and args.symbols or Tensor.defaultSymbols
@@ -737,7 +737,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 		local results = table{x:match(findWithWildcards)}
 		if results[1] ~= false then
 --printbr('found', x)
-			
+
 			-- if there were no wildcards then we would've just got back a 'true'
 			-- in that case, no need to replace anything?
 			-- unless there are any sum indexes in the repl.
@@ -770,7 +770,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 			-- repl except remap the indexes to match
 			local from = ' '..wildcardIndexToTensorIndex:mapi(function(i) return i.symbol end):concat' '
 			local to = ' '..results:mapi(function(i) return i.symbol end):concat' '
-			
+
 			-- also, reindex the replSum indexes into unused symbols
 			-- but don't use
 			for i=1,#replSum do
@@ -815,7 +815,7 @@ args =
 function Expression:tidyIndexes(args)
 	-- process each part of an equation independently
 	symmath = symmath or require 'symmath'
-	
+
 	-- TODO or pick default symbols from specifying them somewhere ... I guess Tensor.defaultSymbols for the time being
 	Tensor = Tensor or require 'symmath.Tensor'
 	local defaultSymbols = Tensor.defaultSymbols
@@ -841,14 +841,14 @@ function Expression:tidyIndexes(args)
 	local TensorRef = symmath.Tensor.Ref
 
 	tableCommutativeEqual = tableCommutativeEqual or require 'symmath.tableCommutativeEqual'
-	
+
 	local function tidyTerm(term, checkFixed)
 		local fixed, summed = term:getIndexesUsed()
 --print('term fixed', require 'ext.tolua'(fixed), '<br>')
 --print('term summed', require 'ext.tolua'(summed), '<br>')
 		fixed = fixed:mapi(function(x) return x.symbol end)
 		summed = summed:mapi(function(x) return x.symbol end)
-		
+
 --print('term fixed', require 'ext.tolua'(fixed), '<br>')
 --print('term summed', require 'ext.tolua'(summed), '<br>')
 		if checkFixed then
@@ -856,7 +856,7 @@ function Expression:tidyIndexes(args)
 				error("couldn't tidyIndexes() - two terms had differing fixed indexes")
 			end
 		end
-		
+
 		local allSymbols = table(defaultSymbols)
 		for _,s in ipairs(fixed) do
 			allSymbols:removeObject(s)
@@ -866,7 +866,7 @@ function Expression:tidyIndexes(args)
 				allSymbols:removeObject(s)
 			end
 		end
-		
+
 		local indexMap = {}
 		for i,s in ipairs(summed) do
 			indexMap[' '..s] = ' '..allSymbols[i]
@@ -966,7 +966,7 @@ function Expression:reindex(args, action)
 	for k,v in pairs(args) do
 		local tk = interpretSymbols(k)
 		local tv = interpretSymbols(v)
-		
+
 		if #tk ~= #tv then
 			local tolua = require 'ext.tolua'
 			error("reindex key and value length needs to match.  got "..tolua(tk).." with "..#tk.." entries vs "..tolua(tv).." with "..#tv.." entries")
@@ -1068,7 +1068,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 				return tostring(a.lower) < tostring(b.lower)
 			end)
 --print('indexes, sorted: '..table.mapi(indexObjs, tostring):concat' ')
-		
+
 			if not override then
 				-- don't allow swaps of derivatives with non-derivatives
 				local derivative = indexObjs[1].derivative
@@ -1096,14 +1096,14 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 --print('resulting obj: '..x)
 			return x
 		end
-		
+
 		-- if there's a var^ijk... anywhere in the mul
 		-- then look for matching indexes in any other TensorRef's in the mul
 		mul = mul or require 'symmath.op.mul'
 		if mul:isa(x) then
 			local found
 --print('checking mul: '..x)
-			
+
 			-- rather than only use the first set of symmetrized indexes, how about we re-sort other terms for all symmetrized indexes?
 			-- i.e. g_ab a^bac => g_(ab) => g_ab a^abc
 			-- but  g_ab a^bac g_ef b^feg => g_(ab) .... will only symmetrize the first and not the second (because we are only sorting one per term)
@@ -1130,7 +1130,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 						return tostring(a.lower) < tostring(b.lower)
 					end)
 --print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
-					
+
 					if not override then
 						-- don't allow swaps of derivatives with non-derivatives
 						local derivative = srcIndexObjs[1].derivative
@@ -1155,7 +1155,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 						y[indexes[i]+1].lower = s.lower
 					end
 --print('resulting obj: '..y)
-					
+
 					-- if we found a matching tensor in a mul - and we sorted it - then next we need to sort all associated indexes in other tensors in the mul
 
 --print('checking mul for matching indexes in other terms...')
@@ -1186,7 +1186,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 										--[[ TODO just use recursion?
 										do return z:symmetrizeIndexes(z[1], dstIndexes) end
 										--]]
-										
+
 										indexObjs:sort(function(a,b)
 											if a.symbol ~= b.symbol then
 												return tostring(a.symbol) < tostring(b.symbol)
@@ -1292,7 +1292,7 @@ Expression.simplifyMetricMulRules = {
 			and not t:hasDerivIndex()
 		end,
 	},
-	
+
 	--[[
 	TODO while g^ik * g_kj => δ^i_j,
 	this won't work on g'^i_j':simplifyMetrics() => δ'^i_j' unless you first call ...
@@ -1320,7 +1320,7 @@ Expression.simpifyMetricTensorRules = {
 			return t
 		end
 	end,
-	
+
 	-- δ^i_i => dim
 	-- first use symbol => chart => manifold.dim,
 	-- if that isn't defined then use #chart.coords for the dim
@@ -1412,7 +1412,7 @@ function Expression:simplifyMetrics(mulrules, trules)
 	else
 		mulrules = table(mulrules)
 	end
-	
+
 	-- individual tensor rules
 	if not trules then
 		-- TODO why not iterate?  in what order? store rules as {key=value}, pairs?  sort and insert in some order ? named order?
@@ -1426,7 +1426,7 @@ function Expression:simplifyMetrics(mulrules, trules)
 
 	expr = expr:clone()
 	expr = expr:simplifyAddMulDiv()	-- put it in add-mul-div order
-	
+
 	-- first try the individual tensor rules
 	local anyfound
 	repeat
@@ -1448,14 +1448,14 @@ function Expression:simplifyMetrics(mulrules, trules)
 				end
 			until not found
 		end
-		
+
 		local function checkMul(expr)
 			if not mul:isa(expr) then return expr end
 
 			local found
 			repeat
 				found = false
-				
+
 
 				for ruleIndex,rule in ipairs(mulrules) do
 	--print('checking rule ', rule)
@@ -1480,7 +1480,7 @@ function Expression:simplifyMetrics(mulrules, trules)
 	--print('applying '..g..' to '..t)
 												t[ti].symbol = gReplTensorIndex.symbol
 												t[ti].lower = gReplTensorIndex.lower
-												
+
 												-- hmm, general rule ...
 												-- metric^ik metric_kj = delta^i_j for any metric symbol
 												if g[1] == t[1]
@@ -1570,7 +1570,7 @@ function Expression:getIndexesUsed()
 		or TODO error if you find 3 or more?
 	--]]
 	if TensorRef:isa(self) then
-		
+
 		local indexCounts = table()
 		for i=2,#self do
 			local ti = self[i]
@@ -1596,7 +1596,7 @@ function Expression:getIndexesUsed()
 			end),
 			-- extra
 			table()
-	
+
 	--[[
 	- mul's fixed indexes are the superset of sub-expr fixed-indexes
 		... unless they are matched between sub-exprs, then they are sum indexes
@@ -1664,7 +1664,7 @@ function Expression:getIndexesUsed()
 			fixedCombined = combine(fixedCombined, info[i].fixed)
 			summed = combine(summed, info[i].summed)
 		end
-		
+
 		local fixed = table()
 		local extra = table()
 		for _,index in ipairs(fixedCombined) do
@@ -1703,9 +1703,9 @@ function Expression.replaceWithDense(expr, cache)
 	symmath = symmath or require 'symmath'
 	local Tensor = symmath.Tensor
 	local Variable = symmath.Variable
-	
+
 	cache = cache or Tensor:getDefaultDenseCache()
-	
+
 	local deltaSymbol = Tensor:deltaSymbol()
 	local permutationSymbol = Tensor:permutationSymbol()
 
@@ -1721,7 +1721,7 @@ function Expression.replaceWithDense(expr, cache)
 				index.derivative = nil
 				return index
 			end)
-			
+
 			-- replace any Tensor default symbols
 			if x[1] == deltaSymbol then
 				local nonDerivIndexes = indexes:filter(function(index)
@@ -1875,7 +1875,7 @@ function Expression:dependsOn(x)
 	Variable = Variable or require 'symmath.Variable'
 	TensorRef = TensorRef or require 'symmath.tensor.Ref'
 	map = map or require 'symmath.map'
-	
+
 	local found = false
 	map(self, function(ai)
 		-- x is a sub-expression of the expression
@@ -1983,7 +1983,7 @@ function Expression:insertTransformsToSetVariance(rule)
 	end
 	-- so for now i will choose unnecessarily differing symbols
 	-- just call tidyIndexes() afterwards to fix this
-	
+
 	local handleTerm
 
 	local function fixTensorRef(x)
@@ -2051,10 +2051,10 @@ function Expression:insertMetricsToSetVariance(find, metric)
 	local Tensor = symmath.Tensor
 	local TensorRef = Tensor.Ref
 	local TensorIndex = Tensor.Index
-	
+
 	-- in absence of 'metric', use Tensor:metricSymbol()
 	metric = metric or Tensor:metricSymbol()
-	
+
 	assert(TensorRef:isa(find), "expected 'find' to be a metric")
 	--assert(Variable:isa(find[1]))
 	assert(not find:hasDerivIndex(), "'find' argument cannot have derivative indexes")	-- TODO handle derivs later?  also TODO call splitOffDerivIndexes() first? or expect the caller to do this
@@ -2449,14 +2449,14 @@ end
 --]=]
 --[=[ prevent in-place modifications and prevent overwrites
 function Expression:__index(k)
-	
+
 	-- [[ try the original table.
 	-- shouldn't have anything right?
 	-- except class stuff
 	local v = rawget(self, k)
 	if v ~= nil then return v end
 	--]]
-	
+
 	--[[ try the internal data
 	local internal = rawget(self, 'internal')
 	if internal ~= nil then

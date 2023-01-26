@@ -22,7 +22,7 @@ Mathematica.lookupTable = table(Mathematica.lookupTable):union{
 			predefs = table(predefs, sx2)
 		end
 		s = s:concat', '
-		
+
 		local funcName
 		if not expr.code then
 			funcName = expr:nameForExporter(self)
@@ -57,7 +57,7 @@ Mathematica.lookupTable = table(Mathematica.lookupTable):union{
 Mathematica.generateParams = {
 	lineEnd = ';',
 	funcHeader = function(name, inputs)
-		return 
+		return
 			(name or '')	-- TODO what is Mathematica lambda syntax?
 			..'['..inputs:mapi(function(input)
 				return input.name..'_'
@@ -66,8 +66,8 @@ Mathematica.generateParams = {
 	returnCode = function(outputs)
 		return '\t'
 			..(#outputs > 1 and '[' or '')
-			..outputs:mapi(function(output) 
-				return output.name 
+			..outputs:mapi(function(output)
+				return output.name
 			end):concat', '
 			..(#outputs > 1 and ']' or '')
 			..';'

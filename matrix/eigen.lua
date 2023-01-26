@@ -8,7 +8,7 @@ returns: table with the following fields set:
 		expr = expression of the eigenvalue
 		mult = multiplicity of the eigenvalue
 	defective = true if the matrix is defective (i.e. if an eigenvalue multiplicity is greater than the eigenvector dimension / (A - λ I)-nullspace dimension )
-	
+
 (TODO maybe don't return the rest of these,
 but provide functions for producing them?)
 	allLambdas = table of eigenvalues, with duplicates equal to the eigenvalue multiplicity, in the matching order of 'lambdas' above.
@@ -31,7 +31,7 @@ local function eigen(A, args)
 	local Matrix = symmath.Matrix
 	local var = symmath.var
 	local eigenVerbose = args.verbose or Matrix.eigenVerbose
-	
+
 	local printbr	--debugging
 	if eigenVerbose then
 		printbr = _G.printbr or _G.print
@@ -62,7 +62,7 @@ local function eigen(A, args)
 		if eigenVerbose then
 			printbr((var'A' - lambda * var'I'):eq(AminusLambda))
 		end
-	
+
 		charPoly = AminusLambda:det{dontSimplify=true}:eq(0)
 		if eigenVerbose then
 			printbr('charPoly', charPoly)
@@ -74,11 +74,11 @@ local function eigen(A, args)
 		local didPush = mul:pushRule'Expand/apply'
 		charPoly = charPoly()
 		if didPush then mul:popRule'Expand/apply' end
-		
+
 		if eigenVerbose then
 			printbr('after simplify(), charPoly', charPoly)
 		end
-	
+
 		allLambdas = table{charPoly:solve(lambda)}
 		if eigenVerbose then
 			printbr(allLambdas:mapi(tostring):concat', ')
@@ -134,7 +134,7 @@ local function eigen(A, args)
 						printbr('finding nullspace of (A - I λ)^'..p..' = '..AminusLambdaIToTheP)
 					end
 					local RiP = AminusLambdaIToTheP:nullspace(args.nullspace)
-					
+
 					-- TODO here only add the columns of RiP when they are linearly independent of Ri
 					-- so what's an easy linear independence test?
 					-- i don't have a guaranteed full basis so I can't just use det == 0
@@ -144,7 +144,7 @@ local function eigen(A, args)
 					if eigenVerbose then
 						printbr('which is '..RiP)
 					end
-					
+
 					local n2 = RiP and RiP:dim()[2] or 0	-- should this be the same as n?
 					printbr("nullspace dim of (A - I λ)^"..p.." =", n2)
 					if n2 > 0 then
@@ -158,7 +158,7 @@ local function eigen(A, args)
 						end
 						for j,prodcol in ipairs(bleh:T()) do	-- for each column ...
 							local prodcol = Matrix(prodcol):T()
-							
+
 							-- [[ see if the column vector product with AminusLambdaI is zero
 							printbr('checking new potential vector product', prodcol:T()[1])
 							local allZero = true
@@ -191,7 +191,7 @@ local function eigen(A, args)
 								good = not found
 							end
 							--]]
-							
+
 							if good then
 								if eigenVerbose then
 									printbr('adding col '..j)
@@ -248,7 +248,7 @@ local function eigen(A, args)
 			end
 		end
 	end
-	
+
 	local Lambda = Matrix.diagonal( allLambdas:unpack() )
 	if eigenVerbose then
 		printbr(var'Λ':eq(Lambda))
@@ -261,18 +261,18 @@ local function eigen(A, args)
 	-- only pop rules if they had been pushed
 	if pushMulPruneLogPow then symmath.op.mul:popRule'Prune/logPow' end
 	if pushLogExpandApply then symmath.log:popRule'Expand/apply' end
- 
+
 --assert( (R * Lambda * L - A)() == Matrix:zeros{#A, #A} )
-	
+
 	return {
 		lambdas = lambdas,			-- this holds {expr=, mult=} multiplicity
 		allLambdas = allLambdas,	-- this just holds a list
 		charPoly = charPoly,
-		
+
 		Lambda = Lambda,
 		R = R,
 		L = L,
-	
+
 		defective = defective,
 	}
 end

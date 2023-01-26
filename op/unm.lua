@@ -19,8 +19,8 @@ end
 function unm:getRealRange()
 	if self.cachedSet then return self.cachedSet end
 	local I = self[1]:getRealRange()
-	if I == nil then 
-		self.cachedSet = nil 
+	if I == nil then
+		self.cachedSet = nil
 		return nil
 	end
 	self.cachedSet = -I
@@ -69,12 +69,12 @@ unm.rules = {
 		{apply = function(tidy, expr)
 			symmath = symmath or require 'symmath'
 			local add = symmath.op.add
-			
+
 			-- --x => x
 			if unm:isa(expr[1]) then
 				return tidy:apply(expr[1][1])
 			end
-			
+
 			-- distribute through addition/subtraction
 			if add:isa(expr[1]) then
 				return add(table.mapi(expr[1], function(x) return -x end):unpack())

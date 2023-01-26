@@ -23,7 +23,7 @@ Header.pathToTryToFindMathJax = '.'
 
 function Header:init(title)
 	self.title = title
-	self.pathToTryToFindMathJax = pathToTryToFindMathJax 
+	self.pathToTryToFindMathJax = pathToTryToFindMathJax
 end
 function Header:__tostring()
 --[==[ old header
@@ -60,7 +60,7 @@ function loadScript(args) {
 		console.log("failed to load "+args.src);
 		if (args.fail !== undefined) args.fail();
 	};
-	el.src = args.src; 
+	el.src = args.src;
 }
 function init() {
 	console.log('init...');
@@ -108,7 +108,7 @@ function init() {
 --]==]
 end
 function Header.__concat(a,b)
-	return tostring(a) .. tostring(b) 
+	return tostring(a) .. tostring(b)
 end
 
 -- Header class
@@ -142,7 +142,7 @@ function MathJax.setup(args)
 	args = args or {}
 	local env = args.env or _G
 	for k,v in pairs(args) do
-		if k ~= 'env' 
+		if k ~= 'env'
 		and k ~= 'title'
 		and k ~= 'pathToTryToFindMathJax'
 		then
@@ -151,15 +151,15 @@ function MathJax.setup(args)
 	end
 	symmath = symmath or require 'symmath.namespace'()
 	symmath.tostring = inst
-	
+
 	local title = args.title
-	if not title then 
+	if not title then
 		title = os.getenv'_'
 		if title then title = title:match('^%./(.*)%.lua$') end
 	end
 	if type(inst.header) ~= 'string' then
 		inst.header.title = title
-		inst.header.pathToTryToFindMathJax = args.pathToTryToFindMathJax 
+		inst.header.pathToTryToFindMathJax = args.pathToTryToFindMathJax
 	end
 
 	print(inst.header)

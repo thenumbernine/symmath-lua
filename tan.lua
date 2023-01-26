@@ -33,7 +33,7 @@ function tan:getRealRange()
 
 	symmath = symmath or require 'symmath'
 	local RealSubset = symmath.set.RealSubset
-	
+
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		local startHalf = math.floor((I.start + math.pi) / (2 * math.pi))
 		local finishHalf = math.floor((I.finish + math.pi) / (2 * math.pi))
@@ -64,7 +64,7 @@ tan.rules = {
 			local Constant = symmath.Constant
 			local sin = symmath.sin
 			local cos = symmath.cos
-			
+
 			local th = expr[1]
 
 			if th == symmath.inf

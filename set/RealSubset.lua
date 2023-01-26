@@ -6,17 +6,17 @@ local RealInterval = require 'symmath.set.RealInterval'
 local symmath
 
 -- composites of intervals
--- TODO better term?  
+-- TODO better term?
 -- the math term "subset" could also define things with :nfinite regions, which cannot be defined by this class
 local RealSubset = class(Set)
-RealSubset.name = 'RealSubset' 
+RealSubset.name = 'RealSubset'
 
 RealSubset.last = table.last
 
 function RealSubset:init(start, finish, includeStart, includeFinish)
 	if type(start) == 'table' then
 		for i,entry in ipairs(start) do
-			local m = getmetatable(entry) 
+			local m = getmetatable(entry)
 			if m == nil or m == table then
 				table.insert(self, RealInterval(table.unpack(entry)))
 			else
@@ -47,11 +47,11 @@ function RealSubset:checkMerge()
 	table.sort(self, function(a,b)
 		return a.start < b.start
 	end)
-	
+
 	-- get rid of any redundant sets
 	for i=#self,1,-1 do
 		local I = self[i]
-		if I.start == I.finish 
+		if I.start == I.finish
 		and not (I.includeStart and I.includeFinish)
 		then
 			table.remove(self, i)
@@ -62,7 +62,7 @@ function RealSubset:checkMerge()
 	local i=2
 	while i <= #self do
 		local merge
-		if self[i-1].includeFinish 
+		if self[i-1].includeFinish
 		or self[i].includeStart
 		then
 			if self[i].start <= self[i-1].finish then
@@ -155,12 +155,12 @@ function RealSubset:__tostring()
 	return s
 end
 
-function RealSubset.__concat(a,b) 
-	return tostring(a) .. tostring(b) 
+function RealSubset.__concat(a,b)
+	return tostring(a) .. tostring(b)
 end
 
 function RealSubset:intersects(set)
-	if RealInterval:isa(set) then	
+	if RealInterval:isa(set) then
 		for _,selfi in ipairs(self) do
 			if selfi:intersects(set) then return true end
 		end
@@ -174,7 +174,7 @@ end
 function RealSubset:containsNumber(x)
 	local gotfalse
 	for _,I in ipairs(self) do
-		local containsI = I:containsNumber(x) 
+		local containsI = I:containsNumber(x)
 		if containsI then return true end
 		if containsI == false then gotfalse = false end
 	end
@@ -184,7 +184,7 @@ end
 function RealSubset:containsVariable(x)
 	local gotfalse
 	for _,I in ipairs(self) do
-		local containsI = I:containsVariable(x) 
+		local containsI = I:containsVariable(x)
 		if containsI then return true end
 		if containsI == false then gotfalse = false end
 	end
@@ -193,7 +193,7 @@ end
 
 function RealSubset:isSubsetOf(s)
 	assert(#self > 0)	-- using the empty set? use set.null
-	
+
 	symmath = symmath or require 'symmath'
 	-- real is RealSubset
 	--if symmath.set.real:isSubsetOf(s) then return true end
@@ -207,7 +207,7 @@ function RealSubset:isSubsetOf(s)
 		local result = false
 		for _,sI in ipairs(s) do
 			local containsSI = self:isSubsetOf(sI)
-			if containsSI == true then 
+			if containsSI == true then
 				return true
 			elseif containsSI == nil then
 				result = nil
@@ -223,7 +223,7 @@ function RealSubset:isSubsetOf(s)
 		local alltrue = true
 		local allfalse = true
 		for _,selfI in ipairs(self) do
-			local selfIcontains = selfI:isSubsetOf(s) 
+			local selfIcontains = selfI:isSubsetOf(s)
 			if selfIcontains ~= true then alltrue = false end
 			if selfIcontains ~= false then allfalse = false end
 			if selfIcontains == nil then return nil end
@@ -235,11 +235,11 @@ function RealSubset:isSubsetOf(s)
 	end
 end
 
--- any non-Variable non-Constant Expression 
+-- any non-Variable non-Constant Expression
 function RealSubset:containsExpression(x)
 	local gotfalse
 	for _,I in ipairs(self) do
-		local containsI = I:contains(x) 
+		local containsI = I:contains(x)
 		if containsI then return true end
 		if containsI == false then gotfalse = false end
 	end
@@ -376,9 +376,9 @@ end
 function RealSubset.getRealRange_evenIncreasing(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		x.cachedSet = nil
-		return nil 
+		return nil
 	end
 	x.cachedSet = RealSubset(table.mapi(Is, function(I)
 		if I.finish <= 0 then
@@ -423,17 +423,17 @@ end
 function RealSubset.getRealRange_posInc_negIm(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		x.cachedSet = nil
-		return nil 
+		return nil
 	end
 	-- if the input touches (-inf,0) but is not contained by (-inf,0) then we are uncertain
 	-- but if it is contained then we are an empty set
 	-- either way, nil for now
 	for _,I in ipairs(Is) do
-		if I.start < 0 then 
+		if I.start < 0 then
 			x.cachedSet = nil
-			return nil 
+			return nil
 		end
 	end
 	x.cachedSet = RealSubset(table.mapi(Is, function(I)
@@ -451,15 +451,15 @@ end
 function RealSubset.getRealRange_pmOneInc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		x.cachedSet = nil
-		return nil 
+		return nil
 	end
 	-- not real
 	for _,I in ipairs(Is) do
-		if I.start < -1 or 1 < I.finish then 
+		if I.start < -1 or 1 < I.finish then
 			x.cachedSet = nil
-			return nil 
+			return nil
 		end
 	end
 	x.cachedSet = RealSubset(table.mapi(Is, function(I)
@@ -477,9 +477,9 @@ end
 function RealSubset.getRealRange_inc(x)
 	if x.cachedSet then return x.cachedSet end
 	local Is = x[1]:getRealRange()
-	if Is == nil then 
+	if Is == nil then
 		x.cachedSet = nil
-		return nil 
+		return nil
 	end
 	x.cachedSet = RealSubset(table.mapi(Is, function(I)
 		return RealSubset(

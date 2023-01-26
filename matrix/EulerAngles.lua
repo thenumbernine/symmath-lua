@@ -1,7 +1,7 @@
 --[[
 Euler angles
 TODO 'Euler angles' should refer to the concatenation of all these
-and each of this is an exponential map 
+and each of this is an exponential map
 So think of better names?
 --]]
 local table = require 'ext.table'
