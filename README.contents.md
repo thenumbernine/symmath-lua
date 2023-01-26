@@ -29,11 +29,12 @@ Example used at http://christopheremoore.net/metric
 ## Dependencies
 
 - https://github.com/thenumbernine/lua-ext
+- https://github.com/thenumbernine/complex-lua
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
 - 'utf8' if available.  Used by console-based output methods.
 - 'ffi' if available.
 
-Some tests use:
+Some of the tests depend on these:
 
 - https://github.com/thenumbernine/lua-matrix
 - https://github.com/thenumbernine/solver-lua
@@ -138,9 +139,6 @@ os.rlistdir('.', function(f, isdir)
 	return f ~= '.git' 
 		and f:sub(1,6) ~= 'server'
 		and (isdir or f:sub(-5) == '.html')
-end):mapi(function(f)
-	assert(f:sub(1,2) == './')
-	return f:sub(3)
 end):sort():mapi(function(f)
 	local name = f:sub(1,-6)
 	s:insert('['..name..']('..base..

@@ -19,5 +19,5 @@ Gamma = GammaL'^a_bc'()
 print('Gamma^a_bc:\n'..Gamma)
 dGamma = Gamma'^a_bc,d'():permute'_d^a_bc'
 print('Gamma^a_bc,d:\n'..dGamma)
-Riemann = (Gamma'^a_db,c' - Gamma'^a_cb,d' + Gamma'^a_ce' * Gamma'^e_db' - Gamma'^a_de' * Gamma'^e_cb')():permute'^a_bcd'
+Riemann = (Gamma'^a_db,c' - Gamma'^a_cb,d' + Gamma'^a_ce' * Gamma'^e_db' - Gamma'^a_de' * Gamma'^e_cb')()():permute'^a_bcd'
 print('Riemann^a_bcd:\n'..Riemann)

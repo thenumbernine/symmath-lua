@@ -47,11 +47,11 @@ u^I:
 e_a^I:
                            _a↓^I→                           
 ┌                                                          ┐
-│    cos(φ) * sin(θ)       sin(φ) * sin(θ)        cos(θ)   │
+│    sin(θ) * cos(φ)       sin(θ) * sin(φ)        cos(θ)   │
 │                                                          │
 │  r * cos(θ) * cos(φ)   r * cos(θ) * sin(φ)   - r * sin(θ)│
 │                                                          │
-│ - r * sin(φ) * sin(θ)  r * sin(θ) * cos(φ)        0      │
+│ - r * sin(θ) * sin(φ)  r * sin(θ) * cos(φ)        0      │
 └                                                          ┘
 delta_IJ:
  _I↓_J→  
@@ -93,7 +93,7 @@ g_ab,c:
 ││0  0              0           ││
 ││                              ││
 ││           2                  ││
-││0  0  2 * r  * sin(θ) * cos(θ)││
+││0  0  2 * r  * cos(θ) * sin(θ)││
 │└                              ┘│
 │                                │
 │             _a↓_b→             │
@@ -134,10 +134,10 @@ Gamma_abc:
 ││     0                 0                r * sin(θ)     ││
 ││                                                       ││
 ││                                    2                  ││
-││     0                 0           r  * sin(θ) * cos(θ)││
+││     0                 0           r  * cos(θ) * sin(θ)││
 ││                                                       ││
 ││          2   2                                        ││
-││r * sin(θ)   r  * sin(θ) * cos(θ)            0         ││
+││r * sin(θ)   r  * cos(θ) * sin(θ)            0         ││
 │└                                                       ┘│
 └                                                         ┘
 Gamma^a_bc:
@@ -205,7 +205,7 @@ Gamma^a_bc,d:
 ││                                │  │                     │  │0        0        -        2 ││
 ││0  0               0            │  │0  0         0       │  │                     sin(θ)  ││
 ││                                │  │                     │  │                             ││
-││0  0   - 2 * r * sin(θ) * cos(θ)│  │                    2│  │          1                  ││
+││0  0   - 2 * r * cos(θ) * sin(θ)│  │                    2│  │          1                  ││
 │└                                ┘  │0  0  1 - 2 * cos(θ) │  │      ╶───────╴              ││
 │                                    └                     ┘  │0   -        2         0     ││
 │                                                             │       sin(θ)                ││
@@ -765,6 +765,8 @@ Language exporters have a few extra functions for code generation:
 `args` is the same as `toCode`, with some additions:
 	- `func` - the name of the function that is generated.
 
+`expr:nameForExporter(exporter, name)` = sets the name of this variable / function to `name` but only for the specified exporter.
+When determining a function name, a variable / function will respect an exporter's inheritence.
 
 Some specific options per exporter:
 
@@ -991,6 +993,8 @@ This requires my lua-http project in order to run.
 
 - better polynomial factoring.
 
+- I am thinking my constantly changing sqrts to fraction powers and back is slowing things down.  How about instead a better "isSqrt" or "getEquivPower" test that both sqrt(), cbrt(), and pow() all implement?
+
 - browser interface: "continue" feature, to counter-balance the "stop" cells
 - browser interface: "stop" cells should hide their input box.
 - browser interface: "undo" and "redo" buttons
@@ -1052,6 +1056,8 @@ Output CDN URLs:
 
 [tests/output/Gravitation 16.1 - mixed](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20mixed.html)
 
+[tests/output/KOE](https://thenumbernine.github.io/symmath/tests/output/KOE.html)
+
 [tests/output/Kaluza-Klein - dense](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20dense.html)
 
 [tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
@@ -1068,7 +1074,7 @@ Output CDN URLs:
 
 [tests/output/Kerr-Schild degenerate case](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20degenerate%20case.html)
 
-[tests/output/KOE](https://thenumbernine.github.io/symmath/tests/output/KOE.html)
+[tests/output/Lorentz group](https://thenumbernine.github.io/symmath/tests/output/Lorentz%20group.html)
 
 [tests/output/MHD - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/MHD%20%2d%20flux%20eigenvectors.html)
 
@@ -1084,11 +1090,15 @@ Output CDN URLs:
 
 [tests/output/Platonic Solids](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids.html)
 
+[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
+
 [tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
 
 [tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
 
 [tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
+
+[tests/output/Platonic Solids/600-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell.html)
 
 [tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
 
@@ -1149,6 +1159,8 @@ Output CDN URLs:
 [tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
 
 [tests/output/hyperbolic gamma driver in ADM terms](https://thenumbernine.github.io/symmath/tests/output/hyperbolic%20gamma%20driver%20in%20ADM%20terms.html)
+
+[tests/output/imperial units](https://thenumbernine.github.io/symmath/tests/output/imperial%20units.html)
 
 [tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
 
@@ -1248,6 +1260,8 @@ Output CDN URLs:
 
 [tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/symmath/tests/output/unit/getIndexesUsed.html)
 
+[tests/output/unit/index](https://thenumbernine.github.io/symmath/tests/output/unit/index.html)
+
 [tests/output/unit/index_construction](https://thenumbernine.github.io/symmath/tests/output/unit/index_construction.html)
 
 [tests/output/unit/integral](https://thenumbernine.github.io/symmath/tests/output/unit/integral.html)
@@ -1280,11 +1294,11 @@ Output CDN URLs:
 
 [tests/output/unit/sqrt](https://thenumbernine.github.io/symmath/tests/output/unit/sqrt.html)
 
+[tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/symmetrizeIndexes.html)
+
 [tests/output/unit/tensor sub-assignment](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dassignment.html)
 
 [tests/output/unit/tensor sub-index](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dindex.html)
-
-[tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/symmetrizeIndexes.html)
 
 [tests/output/unit/tensor use case](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20use%20case.html)
 

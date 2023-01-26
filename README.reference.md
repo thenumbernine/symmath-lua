@@ -501,6 +501,8 @@ Language exporters have a few extra functions for code generation:
 `args` is the same as `toCode`, with some additions:
 	- `func` - the name of the function that is generated.
 
+`expr:nameForExporter(exporter, name)` = sets the name of this variable / function to `name` but only for the specified exporter.
+When determining a function name, a variable / function will respect an exporter's inheritence.
 
 Some specific options per exporter:
 
