@@ -132,7 +132,7 @@ args:
 function Language:toCode(args)
 	local input = args.input	-- does it matter if there are explicitly specified inputs?  maybe only if we want a function prototype?
 	local output = assert(args.output)
-	local output, input = self:prepareToCodeArgs(output, input)
+	output, input = self:prepareToCodeArgs(output, input)
 -- TODO seems to be an error, if you use {name=expr} instead of just expr then the order of tmps is backwards
 	assert(input)
 	return self:toCodeInternal(table(args, {
@@ -153,8 +153,9 @@ fixedInputs is a list of variables
 fixedOutputs is a list of {name=string, expr=Expression}
 --]]
 function Language:prepareToCodeArgs(outputs, inputs)
-	local Variable = require 'symmath.Variable'
-	local Expression = require 'symmath.Expression'
+	symmath = symmath or require 'symmath'
+	local Variable = symmath.Variable
+	local Expression = symmath.Expression
 	inputs = inputs or {}
 
 	assert(not Expression:isa(outputs), "prepareToCodeArgs() expects arg 1 to be a non-Expression")
@@ -201,7 +202,7 @@ function Language:prepareToCodeArgs(outputs, inputs)
 				end
 			end
 		else
-			error("compile parameters can only be Expression or {parameter_name = Expression} ... got type "..type(paramInput))
+			error("compile parameters can only be Expression or {parameter_name = Expression} ... got type "..type(inputs))
 		end
 	end
 
@@ -227,9 +228,8 @@ function Language:toCodeInternal(args)
 		return output.expr:clone()
 	end)
 
-	local symmath = require 'symmath'
+	symmath = symmath or require 'symmath'
 	local Expression = symmath.Expression
-	local SingleLine = symmath.export.SingleLine
 	local Variable = symmath.Variable
 	local Constant = symmath.Constant
 
@@ -305,6 +305,7 @@ function Language:toCodeInternal(args)
 
 
 --[=[ exhaustively enumerate all subtrees, then replace duplicates with temp vars
+		local SingleLine = symmath.export.SingleLine
 
 		local allsubexprinfos = table()
 		local function recurse(expr)
@@ -451,6 +452,7 @@ print('RESULTING EXPR '..SingleLine(expr))
 					local tmpvar = Variable(newvarname())
 					local tmpvardef = tmpvar:eq(x)
 --[[
+local SingleLine = symmath.export.SingleLine
 print('REPLACING TMPVAR DEF '..SingleLine(tmpvardef))
 --]]
 					tmpvardefs:insert(1, tmpvardef)
@@ -493,16 +495,16 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 		-- TODO used[] isn't accurate ... if a tree was used several times, and it is a branch of another tree, and the other tree is sepraated into a tmpvar
 		-- then the child of the tmpvar tree will still have a high used[] count but just be used once or so ...
 		-- and TODO because used[] isn't accurate, there are some subexpressions that are just used once but aren't being re-inserted
-		for i=#tmpvardefs,1,-1 do
-			local def = tmpvardefs[i]
+		for k=#tmpvardefs,1,-1 do
+			local def = tmpvardefs[k]
 			if used[def[1].name] == 1 then
-				for j=i+1,#tmpvardefs do
+				for j=k+1,#tmpvardefs do
 					tmpvardefs[j][2] = tmpvardefs[j][2]:subst(def)
 				end
 				for j=1,#exprs do
 					exprs[j] = exprs[j]:subst(def)
 				end
-				tmpvardefs:remove(i)
+				tmpvardefs:remove(k)
 				used[def[1].name] = nil
 			end
 		end
@@ -511,12 +513,11 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 		tmpvardefs = tmpvardefs:reverse()
 
 		-- [[ now reindex ... which invalidates 'used'
-		for i=#tmpvardefs,1,-1 do
-			local oldvar = tmpvardefs[i][1]
-			local oldname = oldvar.name
-			local newname = 'tmp'..(#tmpvardefs-i+1)
+		for k=#tmpvardefs,1,-1 do
+			local oldvar = tmpvardefs[k][1]
+			local newname = 'tmp'..(#tmpvardefs-k+1)
 			local newvar = Variable(newname)
---print('replacing', oldname, 'with', newname)
+--print('replacing', oldvar.name, 'with', newname)
 			for j=1,#tmpvardefs do
 				tmpvardefs[j] = tmpvardefs[j]:replace(oldvar, newvar)
 			end
@@ -580,7 +581,7 @@ function Language:toFuncCode(args)
 
 	local funcHeader
 	if genParams.funcHeader then
-		funcHeader = genParams.funcHeader(name, inputs)
+		funcHeader = genParams.funcHeader(args.func, inputs)
 	else
 		funcHeader =
 			(genParams.funcHeaderStart and genParams.funcHeaderStart(self, args.func, inputs) or '')

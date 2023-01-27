@@ -24,7 +24,6 @@ return function(expr, x, a, n)
 
 	local sum = 0
 	local factorial_i = 1
-	local poly = 1
 	for i=0,n do
 		if i > 0 then
 			expr = expr:diff(x)()

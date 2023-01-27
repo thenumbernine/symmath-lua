@@ -1,5 +1,3 @@
-local range = require 'ext.range'
-
 --[[
 arguments:
 none: returns 1

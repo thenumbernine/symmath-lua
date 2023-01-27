@@ -1,13 +1,12 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local range = require 'ext.range'
 local string = require 'ext.string'
 
 local Expression = class()
 
 -- no circular dependencies, so load as you need these:
 local symmath
-local Array, Constant, Equation, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, div, eval, inverse, map, mod, mul, pow, sub, symmath, tableCommutativeEqual, transpose, unm, wedge
+local Array, Constant, Equation, Tensor, TensorIndex, TensorRef, Variable, Wildcard, add, clone, determinant, div, eval, inverse, map, mod, mul, pow, sub, tableCommutativeEqual, transpose, unm, wedge
 local eq, ne, gt, ge, lt, le
 
 Expression.precedence = 1
@@ -1436,7 +1435,6 @@ function Expression:simplifyMetrics(mulrules, trules)
 			repeat
 				found = false
 				for _,rule in pairs(trules) do
-					local found
 					expr = expr:map(function(...)
 						local result = rule(...)
 						if result then
@@ -2030,7 +2028,6 @@ function Expression:insertTransformsToSetVariance(rule)
 				end
 			end)
 		end
-		return expr
 	end
 	return handleTerm(self)
 end
@@ -2177,7 +2174,6 @@ function Expression:favorTensorVariance(find)
 				end
 			end)
 		end
-		return expr
 	end
 	return handleTerm(self)
 end

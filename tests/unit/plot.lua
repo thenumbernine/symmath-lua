@@ -62,7 +62,7 @@ local x = symmath.var'x'
 print((x^2):plot{
 	title = 'test expression',
 	xrange = {-2,2},
-	{title=GnuPlot(x^2)},	-- the first table is assumed to be associated with the calling expression 
+	{title=GnuPlot(x^2)},	-- the first table is assumed to be associated with the calling expression
 })
 ]]
 

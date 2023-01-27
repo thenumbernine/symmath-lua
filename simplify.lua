@@ -10,7 +10,6 @@ local function simplifyTrig(x, ...)
 	local expand = symmath.expand
 	local prune = symmath.prune
 	local factor = symmath.factor
-	local tidy = symmath.tidy
 
 -- [==[ goes horribly slow
 --[[
@@ -211,10 +210,10 @@ local function simplifyCall(simplifyObj, x, ...)
 --print('reached maxiter', simplifyMaxIter)
 		if stack then
 			local SingleLine = symmath.export.SingleLine
-			for i,kv in ipairs(stack) do
+			for j,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
-				io.stderr:write('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi)..'\n')
---print('simplify stack #'..i..':\t'..op..'\t'..SingleLine(xi))
+				io.stderr:write('simplify stack #'..j..':\t'..op..'\t'..SingleLine(xi)..'\n')
+--print('simplify stack #'..j..':\t'..op..'\t'..SingleLine(xi))
 			end
 		end
 		io.stderr:write("simplification loop\n")

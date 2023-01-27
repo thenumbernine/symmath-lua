@@ -3,6 +3,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
+local tolua = require 'ext.tolua'
 local SingleLine = require 'symmath.export.SingleLine'
 local symmath
 
@@ -24,7 +25,7 @@ local par = {
 	{'╰', '╯'},
 	{'(', ')'},
 }
-local line = {'╶', '─', '╴'}
+local horizontalLine = {'╶', '─', '╴'}
 local intname = {
 	'⌠',
 	'│',
@@ -56,7 +57,7 @@ end
 local function vert(n)
 	if n == 0 then return '' end
 	if n == 1 then return '-' end
-	return line[1]..line[2]:rep(n-2)..line[3]
+	return horizontalLine[1]..horizontalLine[2]:rep(n-2)..horizontalLine[3]
 end
 
 local MultiLine = class(SingleLine.class)
@@ -139,8 +140,6 @@ function MultiLine:matrixBody(parts)
 		parts[i] = table(parts[i])
 	end
 
-	local allparts = table():append(parts:unpack())
-
 	local partwidths = range(matheight):mapi(function(i)
 		return range(matwidth):mapi(function(j)
 			return (table.mapi(parts[i][j], function(l) return strlen(l) end):sup())
@@ -165,7 +164,6 @@ function MultiLine:matrixBody(parts)
 		local row = range(heights[i]):mapi(function() return '' end)
 		local sep = ''
 		for j,part in ipairs(partrow) do
-			local cell = table()
 			local padding = widths[j] - partwidths[i][j]
 			local leftWidth = padding - math.floor(padding/2)
 			local rightWidth = padding - leftWidth
@@ -252,7 +250,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 		return self:fraction(self:apply(expr[1]), self:apply(expr[2]))
 	end,
 	[require 'symmath.op.pow'] = function(self, expr)
-		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..toLua(expr)) end
+		if #expr ~= 2 then error("expected 2 children but found "..#expr.." in "..tolua(expr)) end
 		local lhs = self:wrapStrOfChildWithParenthesis(expr, expr[1])
 		local rhs = self:wrapStrOfChildWithParenthesis(expr, expr[2])
 		local lhswidth = strlen(lhs[1])

@@ -13,6 +13,7 @@ args:
 return function(args)
 	args = args or {}
 	local var = require 'symmath.Variable'
+	local Matrix = require 'symmath.Matrix'
 	local Tensor = require 'symmath.Tensor'
 	local sqrt = require 'symmath.sqrt'
 	local abs = require 'symmath.abs'

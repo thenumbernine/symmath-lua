@@ -157,7 +157,7 @@ local function eigen(A, args)
 							printbr('...times (A - λ I) is '..bleh)
 						end
 						for j,prodcol in ipairs(bleh:T()) do	-- for each column ...
-							local prodcol = Matrix(prodcol):T()
+							prodcol = Matrix(prodcol):T()
 
 							-- [[ see if the column vector product with AminusLambdaI is zero
 							printbr('checking new potential vector product', prodcol:T()[1])

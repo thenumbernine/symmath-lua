@@ -1,6 +1,5 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local range = require 'ext.range'
 local Language = require 'symmath.export.Language'
 
 

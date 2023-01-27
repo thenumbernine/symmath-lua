@@ -137,7 +137,6 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 
 
 -- [[ make expr write-protected
-	local table = require 'ext.table'
 	if not Expression:isa(expr) then
 		error("after clone failed to find an expression:\n"..require 'ext.tolua'(expr))
 	end

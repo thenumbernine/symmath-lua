@@ -708,10 +708,8 @@ div.rules = {
 			symmath = symmath or require 'symmath'
 			local add = symmath.op.add
 			local mul = symmath.op.mul
-			local div = symmath.op.div
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
-			local Wildcard = symmath.Wildcard
 			local p, q = table.unpack(expr)
 			-- match() going too slow? maybe search for sqrt first?
 			if expr:hasChild(function(x)
@@ -730,6 +728,7 @@ div.rules = {
 							-- pick out the c^div(1,2) (this is 'c')
 
 							--[=[ this sure is more convenient to write:
+							local Wildcard = symmath.Wildcard
 							local a, b, c = qi:match(Wildcard(1) + Wildcard(2) * Wildcard(3) ^ div(1,2))
 							--]=]
 
@@ -852,8 +851,6 @@ div.rules = {
 			-- TODO conjugate pairs?
 			local function toProdList(x)
 				symmath = symmath or require 'symmath'
-				local mul = symmath.op.mul
-				local Constant = symmath.Constant
 				if mul:isa(x) then return table(x) end
 				if Constant.isValue(x, 1) then return table() end
 				return table{x}
@@ -861,8 +858,6 @@ div.rules = {
 
 			local function fromProdList(x)
 				symmath = symmath or require 'symmath'
-				local mul = symmath.op.mul
-				local Constant = symmath.Constant
 				return symmath.tableToMul(x)
 			end
 
@@ -916,7 +911,6 @@ div.rules = {
 		-- that builds lists of term=, power= as well
 		{divToPowSub = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local add = symmath.op.add
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
@@ -1171,7 +1165,6 @@ end
 		{apply = function(tidy, expr)
 			symmath = symmath or require 'symmath'
 			local unm = symmath.op.unm
-			local Constant = symmath.Constant
 
 			local a, b = table.unpack(expr)
 			local ua = unm:isa(a)

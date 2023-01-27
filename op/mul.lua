@@ -97,8 +97,8 @@ function mul.match(a, b, matches)
 	symmath = symmath or require 'symmath'
 	local Wildcard = symmath.Wildcard
 	local Constant = symmath.Constant
-local SingleLine = symmath.export.SingleLine
-local Verbose = symmath.export.Verbose
+--local SingleLine = symmath.export.SingleLine
+--local Verbose = symmath.export.Verbose
 --print("mul.match(a="..Verbose(a)..", b="..Verbose(b)..", matches={"..(matches or table()):mapi(Verbose):concat', '..'}) begin')
 
 	matches = matches or table()
@@ -114,8 +114,8 @@ local Verbose = symmath.export.Verbose
 	if getmetatable(a) ~= getmetatable(b) then return false end
 
 	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
-	local a = table(a)
-	local b = table(b)
+	a = table(a)
+	b = table(b)
 
 	-- compare things order-independent, remove as you go
 	-- skip wildcards, do those last
@@ -154,8 +154,8 @@ local Verbose = symmath.export.Verbose
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
 	local function checkWhatsLeft(a, b, matches, indent)
-indent=(indent or 0) + 1
-local tab = (' '):rep(indent)
+--indent=(indent or 0) + 1
+--local tab = (' '):rep(indent)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument
 		local origMatches = matches
@@ -319,8 +319,8 @@ function mul:wildcardMatches(a, matches)
 	local Wildcard = symmath.Wildcard
 	local add = symmath.op.add
 	local pow = symmath.op.pow
-local SingleLine = symmath.export.SingleLine
-local Verbose = symmath.export.Verbose
+--local SingleLine = symmath.export.SingleLine
+--local Verbose = symmath.export.Verbose
 --print("mul.wildcardMatches(self="..Verbose(self)..", a="..Verbose(a)..", matches={"..matches:mapi(Verbose):concat', '..'})')
 
 	-- 'a' is the 'a' in Expression.match(a,b)
@@ -583,7 +583,6 @@ end
 -- lim mul = mul lim
 function mul:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
-	local Constant = symmath.Constant
 	local Limit = symmath.Limit
 
 	-- TODO handle indeterminate forms here?  or outside of limits?
@@ -1127,10 +1126,10 @@ mul.rules = {
 			4) Array, Matrix (doesn't commute)
 			--]]
 
-			local hasBeenCloned
 
 			-- push all Constants to the lhs, mul as we go
 			-- if we get a times 0 then return 0
+			--local hasBeenCloned
 			local cval = 1
 			for i=#expr,1,-1 do
 				local x = expr[i]
@@ -1215,7 +1214,8 @@ mul.rules = {
 						local nb = type(b[j].symbol) == 'number'
 						if na and not nb then return true end
 						if nb and not na then return false end
-						return a[j].symbol < b[j].symbol
+						if a[j].symbol < b[j].symbol then return true end
+						if a[j].symbol > b[j].symbol then return false end
 					end
 					return -- a == b
 				end
@@ -1245,7 +1245,6 @@ mul.rules = {
 -- notice that the rule before and after are important to this one
 		{combinePows = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
 
@@ -1254,6 +1253,7 @@ mul.rules = {
 			--
 			-- Feel like I should timestamp this next comment: I'm not seeing the alleged bug anymore.
 			--
+			local mul = symmath.op.mul
 			if mul:isa(expr)
 			and Constant:isa(expr[1])
 			and expr[1].value < 0
@@ -1452,8 +1452,6 @@ so when we find mul -> pow -> add
 		{combineMulOfLikePow_mulPowAdd = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
-			local div = symmath.op.div
-			local Constant = symmath.Constant
 			local add = symmath.op.add
 			for i=1,#expr-1 do
 				if pow:isa(expr[i])
@@ -1523,7 +1521,6 @@ so when we find mul -> pow -> add
 		{combineMulOfLikePow_constants = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local pow = symmath.op.pow
-			local div = symmath.op.div
 			local Constant = symmath.Constant
 			for i=1,#expr-1 do
 				if pow:isa(expr[i])
@@ -1544,6 +1541,7 @@ so when we find mul -> pow -> add
 								if #expr == 1 then expr = expr[1] end
 								return expr
 							--[=[ if the powers are fractions and the denominator matches
+							local div = symmath.op.div
 							elseif div:isa(expr[i][2])
 							and div:isa(expr[j][2])
 							and expr[i][2][1] == expr[j][2][1]

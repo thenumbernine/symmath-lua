@@ -1,8 +1,5 @@
 local table = require 'ext.table'
-local range = require 'ext.range'
-local add = require 'symmath.op.add'
 local Constant = require 'symmath.Constant'
-local simplify = require 'symmath.simplify'
 local Array = require 'symmath.Array'
 
 local function isZero(x)

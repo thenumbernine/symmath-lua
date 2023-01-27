@@ -266,7 +266,6 @@ end
 -- TODO make it table-based arguments
 -- overload self.verbose to output vars as you go
 function Props:init(g, gU, c, chart)
-	local Tensor = require 'symmath'.Tensor
 	self.chart = chart or assert(Tensor:findChartForSymbol(), "couldn't find default chart")
 	self.chart:setMetric(g, gU)
 	if c then self.chart.commutation = c end

@@ -9,13 +9,15 @@ return {
 	--]]
 	EM = function(args)
 		args = args or {}
+		local symmath = require 'symmath'
+		local frac = symmath.frac
+		local pi = symmath.pi
+		local var = symmath.var
+		local Tensor = symmath.Tensor
 		local basis = args.index and Tensor.metric(nil, nil, args.index)
 		local F = args.F or var'F'
 		local g = args.g or (basis and basis.metric) or var'g'
 		local gU = args.gU or (basis and basis.metricInverse) or var'g'
-		local symmath = require 'symmath'
-		local frac = symmath.frac
-		local pi = symmath.pi
 		return frac(1, 4 * pi) * (F'_ac' * F'_bd'
 			- frac(1, 4) * g'_ab' * F'_ce' * F'_df' * gU'^ef') * gU'^cd'
 	end,

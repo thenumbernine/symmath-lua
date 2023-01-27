@@ -74,9 +74,9 @@ end
 -- [[ trying out something more complex, like radial-remapped spherical coordinates
 local A = var'A'
 local w = var'w'
-	
+
 local rho, theta, phi = vars('ρ', 'θ', 'φ')
-	
+
 local r = A * sinh(rho / sinh(w)) / sinh(frac(1, sinh(w)))
 local x = r * sin(theta) * cos(phi)
 local y = r * sin(theta) * sin(phi)
@@ -86,7 +86,7 @@ print(symmath.export.C:toCode{
 	-- should we do this, or just let the caller replace() them manually?
 	-- "input =" does the same atm
 	--rename = {{rho=rho}, {theta=theta}, {phi=phi}},
-	
+
 	input = {{rho=rho}, {theta=theta}, {phi=phi}},
 	--output = {x, y, z},
 	output = {{x=x}, {y=y}, {z=z}},

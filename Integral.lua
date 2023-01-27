@@ -1,6 +1,5 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
-local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
 local Integral = class(Expression)
@@ -26,12 +25,7 @@ Integral.rules = {
 		{apply = function(prune, expr)
 			local symmath = require 'symmath'
 			local Constant = symmath.Constant
-			local Variable = symmath.Variable
 			local add = symmath.op.add
-			local mul = symmath.op.mul
-			local div = symmath.op.div
-			local pow = symmath.op.pow
-			local map = symmath.map
 			local log = symmath.log
 			local exp = symmath.exp
 			local sqrt = symmath.sqrt
@@ -84,7 +78,6 @@ Integral.rules = {
 			local Wildcard = require 'symmath.Wildcard'
 			local sin = require 'symmath.sin'
 			local cos = require 'symmath.cos'
-			local atan = require 'symmath.atan'
 			local sinh = require 'symmath.sinh'
 			local cosh = require 'symmath.cosh'
 			local div = require 'symmath.op.div'
@@ -116,30 +109,33 @@ Integral.rules = {
 					return (c / 2) * x^2
 				end
 
-				-- int(c * x^n)
-				local n = f:match(x^Wildcard{1, cannotDependOn=x})
-				if n then
-					--int(c * x^-1)
-					if Constant.isValue(n, -1) then
-						return c * log(abs(x))
-					else
-						return (c / (n+1)) * x^(n+1)
+				do	-- int(c * x^n)
+					local n = f:match(x^Wildcard{1, cannotDependOn=x})
+					if n then
+						--int(c * x^-1)
+						if Constant.isValue(n, -1) then
+							return c * log(abs(x))
+						else
+							return (c / (n+1)) * x^(n+1)
+						end
 					end
 				end
 
-				-- int(c / x)
-				local d = f:match(1 / (Wildcard{1, cannotDependOn=x} * x))
-				if d then
-					return (c / d) * log(abs(x))
+				do	-- int(c / x)
+					local d = f:match(1 / (Wildcard{1, cannotDependOn=x} * x))
+					if d then
+						return (c / d) * log(abs(x))
+					end
 				end
 
-				-- int(c / x^n)
-				local d, n = f:match(1 / (Wildcard{1, cannotDependOn=x} * x^Wildcard{2, cannotDependOn=x}))
-				if d then
-					if Constant.isValue(n, 1) then
-						return frac(c, d) * log(abs(x))
-					else
-						return (c / ((1-n) * d)) * x^(1-n)
+				do	-- int(c / x^n)
+					local d, n = f:match(1 / (Wildcard{1, cannotDependOn=x} * x^Wildcard{2, cannotDependOn=x}))
+					if d then
+						if Constant.isValue(n, 1) then
+							return frac(c, d) * log(abs(x))
+						else
+							return (c / ((1-n) * d)) * x^(1-n)
+						end
 					end
 				end
 
@@ -172,40 +168,43 @@ Integral.rules = {
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_rational_functions
 
 
-				-- int(f'(x)/f(x))
-				local dgpat, g = f:match(Wildcard(1) * (1 / Wildcard(2)))
+				do	-- int(f'(x)/f(x))
+					local dgpat, g = f:match(Wildcard(1) * (1 / Wildcard(2)))
 --print('dgpat', dgpat and Verbose(dgpat) or tostring(dgpat))
 --print('g', g and Verbose(g) or tostring(g))
-				if dgpat then
-					local dgcalc = g:diff(x)()
-					if not Constant.isValue(dgcalc, 0) then
-						local ratio = (dgcalc / dgpat)()
+					if dgpat then
+						local dgcalc = g:diff(x)()
+						if not Constant.isValue(dgcalc, 0) then
+							local ratio = (dgcalc / dgpat)()
 --print('ratio', ratio and Verbose(ratio) or tostring(ratio))
-						if not ratio:dependsOn(x) then
-							return frac(c, ratio) * log(abs(g))
+							if not ratio:dependsOn(x) then
+								return frac(c, ratio) * log(abs(g))
+							end
 						end
 					end
 				end
 
-				-- TODO when do we want powers in the denominator and when do we want expanded terms?
-				-- this is 1/(x^2 + W(1)), next is 1/(x*x + x*W(1)), the difference is whether the 'x' could be factored out and then re-distributed
-				local a = f:match(1 / (x^2 + Wildcard{1, cannotDependOn=x}))
-				if a then
---					if symmath.set.negativeReal:contains(a) then
-						local sqrtnega = sqrt(-a)()
-						return frac(c, 2*sqrtnega) * log(abs( (x - sqrtnega)/(x + sqrtnega) ))
---					end
---					local sqrta = sqrt(a)()
---					return frac(c, sqrta) * atan(frac(x, sqrta))
+				do	-- TODO when do we want powers in the denominator and when do we want expanded terms?
+					-- this is 1/(x^2 + W(1)), next is 1/(x*x + x*W(1)), the difference is whether the 'x' could be factored out and then re-distributed
+					local a = f:match(1 / (x^2 + Wildcard{1, cannotDependOn=x}))
+					if a then
+--						if symmath.set.negativeReal:contains(a) then
+							local sqrtnega = sqrt(-a)()
+							return frac(c, 2*sqrtnega) * log(abs( (x - sqrtnega)/(x + sqrtnega) ))
+--						end
+--						local sqrta = sqrt(a)()
+--						return frac(c, sqrta) * atan(frac(x, sqrta))
+					end
 				end
 
-				-- int(1/(x*(a*x+b)))
-				-- if int is :simplify() then this will match:
-				--local a, b = f:match(1 / (x * (Wildcard{1, cannotDependOn=x} * x + Wildcard{2, cannotDependOn=x})))
-				-- but if int is :factorDivision() then this should match:
-				local a, b = f:match(1 / (Wildcard{1, cannotDependOn=x} * x * x + Wildcard{2, cannotDependOn=x} * x))
-				if a then
-					return -frac(c, b) * log(abs((a * x + b) / x))
+				do	-- int(1/(x*(a*x+b)))
+					-- if int is :simplify() then this will match:
+					--local a, b = f:match(1 / (x * (Wildcard{1, cannotDependOn=x} * x + Wildcard{2, cannotDependOn=x})))
+					-- but if int is :factorDivision() then this should match:
+					local a, b = f:match(1 / (Wildcard{1, cannotDependOn=x} * x * x + Wildcard{2, cannotDependOn=x} * x))
+					if a then
+						return -frac(c, b) * log(abs((a * x + b) / x))
+					end
 				end
 
 				--[[ this is an ugly conditional one
@@ -219,34 +218,38 @@ Integral.rules = {
 
 				-- https://en.wikipedia.org/wiki/List_of_integrals_of_exponential_functions
 
-
-				local a = f:match(exp(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return frac(c, a) * exp(a * x)
+				do
+					local a = f:match(exp(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return frac(c, a) * exp(a * x)
+					end
 				end
 
-				-- int( dg/dx * exp(g(x)))
-				local dg, g = f:match(Wildcard(1) * exp(Wildcard(2)))
-				if dg then
-					if Constant.isValue( (g:diff(x) - dg)(), 0) then
-						local expg = exp(g)()
-						--if f() == (dg * f)() then	-- TODO better equality test?
-						if Constant.isValue((f - dg * expg)(), 0) then
-							return c * expg
+				do	-- int( dg/dx * exp(g(x)))
+					local dg, g = f:match(Wildcard(1) * exp(Wildcard(2)))
+					if dg then
+						if Constant.isValue( (g:diff(x) - dg)(), 0) then
+							local expg = exp(g)()
+							--if f() == (dg * f)() then	-- TODO better equality test?
+							if Constant.isValue((f - dg * expg)(), 0) then
+								return c * expg
+							end
 						end
 					end
 				end
 
-				-- int(c / n^x)
-				local n = f:match(1 / Wildcard{1, cannotDependOn=x}^x)
-				if n then
-					return -c / (log(n) * n^x)
+				do	-- int(c / n^x)
+					local n = f:match(1 / Wildcard{1, cannotDependOn=x}^x)
+					if n then
+						return -c / (log(n) * n^x)
+					end
 				end
 
-				-- int(c * n^x)
-				local n = f:match(Wildcard{1, cannotDependOn=x}^x)
-				if n then
-					return (c / log(n)) * n^x
+				do	-- int(c * n^x)
+					local n = f:match(Wildcard{1, cannotDependOn=x}^x)
+					if n then
+						return (c / log(n)) * n^x
+					end
 				end
 
 
@@ -255,92 +258,103 @@ Integral.rules = {
 				-- ...involving only sine
 
 
-				-- int(c*sin(a*x))
-				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return -frac(c,a) * cos(a * x)
+				do	-- int(c*sin(a*x))
+					local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return -frac(c,a) * cos(a * x)
+					end
 				end
 
-				-- int(c*sin(a*x)^2)
-				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x)^2)
-				if a then
-					return c/2 * (x - 1/(2*a) * sin(2*a*x))
-					-- equivalently:
-					--return c/2 * (x - 1/a * sin(a*x) * cos(a*x))
+				do	-- int(c*sin(a*x)^2)
+					local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x)^2)
+					if a then
+						return c/2 * (x - 1/(2*a) * sin(2*a*x))
+						-- equivalently:
+						--return c/2 * (x - 1/a * sin(a*x) * cos(a*x))
+					end
 				end
 
-				-- int(c * x * sin(a * x))
-				local a = f:match(x * sin(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return sin(a * x) / a^2 - (x * cos(a * x)) / a
+				do	-- int(c * x * sin(a * x))
+					local a = f:match(x * sin(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return sin(a * x) / a^2 - (x * cos(a * x)) / a
+					end
 				end
 
-				-- int(sin(b1*x) * sin(b2*x)), b1 != b2
-				local b1, b2 = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * sin(Wildcard{2, cannotDependOn=x} * x))
-				if b1 then
-					-- if b1 == b2 then it would simplify to sin(b1*x)^2 ... right?
-					assert(b1 ~= b2)
-					return sin((b2 - b1) * x)/(2 * (b2 - b1)) - sin((b2 + b1) * x)/(2 * (b2 + b1))
+				do	-- int(sin(b1*x) * sin(b2*x)), b1 != b2
+					local b1, b2 = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * sin(Wildcard{2, cannotDependOn=x} * x))
+					if b1 then
+						-- if b1 == b2 then it would simplify to sin(b1*x)^2 ... right?
+						assert(b1 ~= b2)
+						return sin((b2 - b1) * x)/(2 * (b2 - b1)) - sin((b2 + b1) * x)/(2 * (b2 + b1))
+					end
 				end
 
 
 				-- ...involving only cosine
 
 
-				-- int(c*cos(a*x))
-				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return frac(c,a) * sin(a * x)
+				do	-- int(c*cos(a*x))
+					local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return frac(c,a) * sin(a * x)
+					end
 				end
 
-				-- int(c*cos(a*x)^2)
-				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x)^2)
-				if a then
-					return c/2 * (x + 1/(2*a) * sin(2*a*x))
-					-- equivalently
-					--return c/2 * (x + 1/a * sin(a*x) * cos(a*x))
+				do	-- int(c*cos(a*x)^2)
+					local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x)^2)
+					if a then
+						return c/2 * (x + 1/(2*a) * sin(2*a*x))
+						-- equivalently
+						--return c/2 * (x + 1/a * sin(a*x) * cos(a*x))
+					end
 				end
 
-				-- int(c * x * cos(a * x))
-				local a = f:match(x * cos(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return cos(a * x) / a^2 + (x * sin(a * x)) / a
+				do	-- int(c * x * cos(a * x))
+					local a = f:match(x * cos(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return cos(a * x) / a^2 + (x * sin(a * x)) / a
+					end
 				end
 
-				-- int(cos(a1*x) * cos(a2*x)), a1 != a2
-				local a1, a2 = f:match(cos(Wildcard{1, cannotDependOn=x} * x) * cos(Wildcard{2, cannotDependOn=x} * x))
-				if a1 then
-					-- if a1 == a2 then it would simplify to cos(a1*x)^2 ... right?
-					assert(a1 ~= a2)
-					return sin((a2 - a1) * x)/(2 * (a2 - a1)) + sin((a2 + a1) * x)/(2 * (a2 + a1))
+				do	-- int(cos(a1*x) * cos(a2*x)), a1 != a2
+					local a1, a2 = f:match(cos(Wildcard{1, cannotDependOn=x} * x) * cos(Wildcard{2, cannotDependOn=x} * x))
+					if a1 then
+						-- if a1 == a2 then it would simplify to cos(a1*x)^2 ... right?
+						assert(a1 ~= a2)
+						return sin((a2 - a1) * x)/(2 * (a2 - a1)) + sin((a2 + a1) * x)/(2 * (a2 + a1))
+					end
 				end
 
 
 				-- sine and cosine
 
 
-				-- int(sin(a1*x) * cos(a2*x))
-				local a1, a2 = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * cos(Wildcard{2, cannotDependOn=x} * x))
-				if a1 then
-					if a1 == a2 then
-						return sin(a1 * x)^2 / (2 * a1)
-					else
-						return cos((a1 - a2) * x) / (2 * (a1 - a2)) - cos((a1 + a2) * x) / (2 * (a1 + a2))
+				do	-- int(sin(a1*x) * cos(a2*x))
+					local a1, a2 = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * cos(Wildcard{2, cannotDependOn=x} * x))
+					if a1 then
+						if a1 == a2 then
+							return sin(a1 * x)^2 / (2 * a1)
+						else
+							return cos((a1 - a2) * x) / (2 * (a1 - a2)) - cos((a1 + a2) * x) / (2 * (a1 + a2))
+						end
 					end
 				end
 
-				-- int(tan(a * x))
-				-- int(sin(a * x) / cos(a * x))
-				local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * (1 / cos(Wildcard{1, cannotDependOn=x} * x)))
-				if a then
-					return -frac(c, a) * log(abs(cos(a * x)))
+				do	-- int(tan(a * x))
+					-- int(sin(a * x) / cos(a * x))
+					local a = f:match(sin(Wildcard{1, cannotDependOn=x} * x) * (1 / cos(Wildcard{1, cannotDependOn=x} * x)))
+					if a then
+						return -frac(c, a) * log(abs(cos(a * x)))
+					end
 				end
 
-				-- int(cot(a * x))
-				-- int(cos(a * x) / sin(a * x))
-				local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x) * (1 / sin(Wildcard{1, cannotDependOn=x} * x)))
-				if a then
-					return frac(c, a) * log(abs(sin(a * x)))
+				do	-- int(cot(a * x))
+					-- int(cos(a * x) / sin(a * x))
+					local a = f:match(cos(Wildcard{1, cannotDependOn=x} * x) * (1 / sin(Wildcard{1, cannotDependOn=x} * x)))
+					if a then
+						return frac(c, a) * log(abs(sin(a * x)))
+					end
 				end
 
 
@@ -348,61 +362,66 @@ Integral.rules = {
 				-- hyperbolic sine
 
 
-				-- int(c*sinh(a*x))
-				local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return frac(c,a) * cosh(a * x)
+				do	-- int(c*sinh(a*x))
+					local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return frac(c,a) * cosh(a * x)
+					end
 				end
 
 
 				-- hyperbolic cosine
 
 
-				-- int(c*cosh(a*x))
-				local a = f:match(cosh(Wildcard{1, cannotDependOn=x} * x))
-				if a then
-					return frac(c,a) * sinh(a * x)
+				do	-- int(c*cosh(a*x))
+					local a = f:match(cosh(Wildcard{1, cannotDependOn=x} * x))
+					if a then
+						return frac(c,a) * sinh(a * x)
+					end
 				end
 
 
 				-- hyperbolic sine and hyperbolic cosine
 
 
-				-- int(cosh(a*x)*sinh(b*x))
-				-- = (a*sinh(a*x)*sinh(b*x) - b*cosh(a*x)*cosh(b*x))/(a^2 - b^2) for a != b
-				-- = cosh(a*x)^2 / (2 * a) for a == b
-				local a, b = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * sinh(Wildcard{2, cannotDependOn=x} * x))
-				if a and b then
-					if a == b then
-						return (c / (2 * a)) * cosh(a * x)^2
-					else
-						return (c / (a^2 - b^2)) * (a * sinh(a * x) * sinh(b * x) - b * cosh(a * x) * cosh(b * x))
+				do	-- int(cosh(a*x)*sinh(b*x))
+					-- = (a*sinh(a*x)*sinh(b*x) - b*cosh(a*x)*cosh(b*x))/(a^2 - b^2) for a != b
+					-- = cosh(a*x)^2 / (2 * a) for a == b
+					local a, b = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * sinh(Wildcard{2, cannotDependOn=x} * x))
+					if a and b then
+						if a == b then
+							return (c / (2 * a)) * cosh(a * x)^2
+						else
+							return (c / (a^2 - b^2)) * (a * sinh(a * x) * sinh(b * x) - b * cosh(a * x) * cosh(b * x))
+						end
 					end
 				end
 
-				-- int(tanh(a*x))
-				-- int(sinh(a*x)/cosh(a*x))
-				local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x) * (1 / cosh(Wildcard{1, cannotDependOn=x} * x)))
-				if a then
-					return frac(c, a) * log(abs(cosh(a * x)))
-				end
-
-				-- int(coth(a*x))
-				-- int(cosh(a*x)/sinh(a*x))
-				local a = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * (1 / sinh(Wildcard{1, cannotDependOn=x} * x)))
-				if a then
-					return frac(c, a) * log(abs(sinh(a * x)))
-				end
-
-				-- int(sinh(a*x)^2*cosh(a*x))
-				-- = sinh(a*x)^3 / (3*a) for a = b
-				local a, b = f:match(sinh(Wildcard{2, cannotDependOn=x} * x)^2 * cosh(Wildcard{1, cannotDependOn=x} * x))
-				if a and b then
-					if a == b then
-						return sinh(a*x)^3 / (3 * a)
+				do	-- int(tanh(a*x))
+					-- int(sinh(a*x)/cosh(a*x))
+					local a = f:match(sinh(Wildcard{1, cannotDependOn=x} * x) * (1 / cosh(Wildcard{1, cannotDependOn=x} * x)))
+					if a then
+						return frac(c, a) * log(abs(cosh(a * x)))
 					end
 				end
 
+				do	-- int(coth(a*x))
+					-- int(cosh(a*x)/sinh(a*x))
+					local a = f:match(cosh(Wildcard{1, cannotDependOn=x} * x) * (1 / sinh(Wildcard{1, cannotDependOn=x} * x)))
+					if a then
+						return frac(c, a) * log(abs(sinh(a * x)))
+					end
+				end
+
+				do	-- int(sinh(a*x)^2*cosh(a*x))
+					-- = sinh(a*x)^3 / (3*a) for a = b
+					local a, b = f:match(sinh(Wildcard{2, cannotDependOn=x} * x)^2 * cosh(Wildcard{1, cannotDependOn=x} * x))
+					if a and b then
+						if a == b then
+							return sinh(a*x)^3 / (3 * a)
+						end
+					end
+				end
 			end
 		end},
 	},

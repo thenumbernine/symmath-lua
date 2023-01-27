@@ -39,12 +39,12 @@ simplifyAssertEq((a'^i' * g'_i^j'):simplifyMetrics(), a'^j')
 simplifyAssertEq((g'^ik' * delta'_k^l'):simplifyMetrics(), g'^il')
 simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m'):simplifyMetrics(), g'^im')
 
--- how about simplifying from metrics to deltas? 
+-- how about simplifying from metrics to deltas?
 simplifyAssertEq((g'^ik' * g'_kj'):simplifyMetrics(), delta'^i_j')
 simplifyAssertEq((g'^ik' * delta'_k^l' * g'_lm'):simplifyMetrics(), delta'^i_m')
 simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m' * g'_mn'):simplifyMetrics(), delta'^i_n')
 
--- how about derivatives?  delta should work but g should not.  
+-- how about derivatives?  delta should work but g should not.
 -- TODO technically g should work on the last ... technically ...  but raised partials are awkward to deal with.
 -- and on that note, I might as well lower with the metric
 simplifyAssertEq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')
@@ -62,7 +62,7 @@ simplifyAssertEq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')
 simplifyAssertEq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')
 simplifyAssertEq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')
 
--- TODO someday: 
+-- TODO someday:
 -- allow g_ij to raise/lower the last partial derivative
 -- allow g_ij to raise/lower any covariant derivatives not enclosed in partial derivatives.
 

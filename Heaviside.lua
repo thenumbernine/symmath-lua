@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
+local symmath
 
 local Heaviside = class(Function)
 
@@ -17,9 +18,7 @@ Heaviside.getRealDomain = require 'symmath.set.RealSubset'.getRealDomain_real
 
 function Heaviside:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-
 	symmath = symmath or require 'symmath'
-	local RealSubset = symmath.set.RealSubset
 
 	local Is = self[1]:getRealRange()
 	if Is == nil then

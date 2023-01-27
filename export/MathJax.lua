@@ -23,6 +23,7 @@ Header.pathToTryToFindMathJax = '.'
 
 function Header:init(title)
 	self.title = title
+	-- read from global if it exists?
 	self.pathToTryToFindMathJax = pathToTryToFindMathJax
 end
 function Header:__tostring()

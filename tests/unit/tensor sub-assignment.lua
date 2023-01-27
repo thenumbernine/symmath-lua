@@ -3,7 +3,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath.tests.unit.unit'(env, 'tests/unit/tensor sub-assignment')
 
-t,x,y,z = vars('t','x','y','z') 
+t,x,y,z = vars('t','x','y','z')
 coords = {t,x,y,z}
 spatialCoords = {x,y,z}
 chart = Tensor.Chart{coords=coords}
@@ -17,7 +17,7 @@ timer(nil, function()
 
 for _,line in ipairs(string.split(string.trim([=[
 
-B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end) 
+B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end)
 printbr(Array(B:dim()))
 
 printbr(B'^ix'())
@@ -34,7 +34,7 @@ assert(A[3] == var'a''^y')
 assert(A[4] == var'a''^z')
 
 -- B is from the xyz chart, so it will have 3 elements accordingly
-B = Tensor('^i', function(i) return var'b'('^'..coords[i+1].name) end) 
+B = Tensor('^i', function(i) return var'b'('^'..coords[i+1].name) end)
 printbr('B = '..B)
 assert(B[1] == var'b''^x')
 assert(B[2] == var'b''^y')
@@ -52,11 +52,11 @@ assertEq(A2, Tensor('^a', A[1], B[1], B[2], B[3]))
 
 -- rank-2 subtensor assignment
 
-A = Tensor('^ab', function(a,b) return var'a'('^'..coords[a].name..' '..coords[b].name) end) 
+A = Tensor('^ab', function(a,b) return var'a'('^'..coords[a].name..' '..coords[b].name) end)
 printbr('A = '..A)
 for i=1,4 do for j=1,4 do assertEq(A[i][j], var'a'('^'..coords[i].name..coords[j].name)) end end
 
-B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end) 
+B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end)
 printbr('B = '..B)
 for i=1,3 do for j=1,3 do assertEq(B[i][j], var'b'('^'..spatialCoords[i].name..spatialCoords[j].name)) end end
 

@@ -105,7 +105,7 @@ assert(not (x * y):match(W(1) * W(1)))
 
 simplifyAssertAllEq({(x * x):match(W(1) * W(1))}, {x})
 
--- verify wildcards are greedy with multiple mul matching 
+-- verify wildcards are greedy with multiple mul matching
 -- the first will take all expressions, the second gets the empty set
 simplifyAssertAllEq({(x * y):match(W(1) * W(2))}, {x * y, one})
 

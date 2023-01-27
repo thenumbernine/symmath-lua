@@ -333,7 +333,6 @@ function Array.pruneMul(lhs,rhs)
 	-- My rule of thumb for now is "don't instanciate RowVectors -- instanciate nx1 Matrices instead"
 	-- I'm sure that will change once I start introducing tensors.
 	-- See the tests/alcubierre.lua file for thoughts on this.
-	local result
 	if lhsIsArray then
 		return arrayScalarMul(lhs, rhs)
 	elseif rhsIsArray then

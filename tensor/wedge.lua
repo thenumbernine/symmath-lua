@@ -24,7 +24,7 @@ function wedge:flatten()
 end
 
 
-wedges.rules = {
+wedge.rules = {
 	Prune = {
 		{apply = function(eval, expr)
 			-- TODO sort somehow so db wedge da = -da wedge db

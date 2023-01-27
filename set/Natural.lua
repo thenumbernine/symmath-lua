@@ -6,7 +6,7 @@ local Natural = class(Set)
 
 function Natural:isSubsetOf(s)
 	symmath = symmath or require 'symmath'
-	if natural:isa(s) then return true end
+	if Natural:isa(s) then return true end
 	if symmath.set.integer:isSubsetOf(s) then return true end
 end
 

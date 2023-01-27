@@ -141,7 +141,7 @@ function Export:fixVariableName(name) return name end
 -- TODO looks like a job for lua-ext ...
 local band
 -- [=[ try the operator
-if not band then
+do --if not band then
 	local f, err = load[[return function(a,b) return a & b end]]
 	if f then
 --print'using operator'

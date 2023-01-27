@@ -163,7 +163,7 @@ TODO ... the variables in a function's definition are internal, not external.
 f(x) = x^2, the x in f(x) refers to the x^2, not to any other x's on the worksheet.
 However defining a function as "f = func('f', {x})" would require an externally declared variable ...
 ... however however, you would still need an "x" with a locally shared scope of defining "f(x)" and "x^2",
- 	so techniaclly it would be "external", however it would just be just "local".
+	so techniaclly it would be "external", however it would just be just "local".
 --]]
 
 function UserFunction:evaluateDerivative(deriv, ...)
@@ -177,7 +177,7 @@ function UserFunction:evaluateDerivative(deriv, ...)
 			cl.set	-- will set be the same?
 		)
 	end
-	local x = table.unpack(self):clone()
+	x = table.unpack(self):clone()
 	return deriv(x, ...) * cl.cached_df(x)
 end
 

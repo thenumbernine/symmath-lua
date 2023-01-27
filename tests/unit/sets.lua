@@ -44,7 +44,7 @@ assert(set.evenInteger:isSubsetOf(set.oddInteger) == nil)
 assert(set.oddInteger:isSubsetOf(set.oddInteger) == true)
 
 
--- realinterval 
+-- realinterval
 
 assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(1, 2, true, true)) == false)
 assert(set.RealInterval(-2, -1, true, true):isSubsetOf(set.RealInterval(-1, 2, true, true)) == nil)
@@ -78,16 +78,16 @@ assert(set.nonPositiveReal:contains(-inf) == true)
 assert(set.real:contains(x))
 
 
--- x is in (-inf, inf).  
--- is x in (0, inf)?  
--- maybe.  
--- not certainly yes (subset).  
--- not certainly no (complement intersection / set subtraction is empty).  
+-- x is in (-inf, inf).
+-- is x in (0, inf)?
+-- maybe.
+-- not certainly yes (subset).
+-- not certainly no (complement intersection / set subtraction is empty).
 -- so return nil
 -- if x's set is a subset of this set then return true
 -- if x's set is an intersection of this set then return nil
 -- if x's set does not intersect this set then return false
-assert(set.positiveReal:contains(x) == nil)	
+assert(set.positiveReal:contains(x) == nil)
 
 assert(set.real:contains(sin(x)))
 assert(set.RealSubset(-1,1,true,true):contains(sin(x)))
@@ -150,11 +150,11 @@ assert((1/x):getRealRange():contains(set.positiveReal))
 -- ../../cos.lua:		-- here I'm going to add pi/2 and then just copy the sin:getRealRange() code
 -- ../../sinh.lua:sinh.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_inc
 -- ../../abs.lua:abs.getRealRange = require 'symmath.set.RealSubset'.getRealDomain_evenIncreasing
--- 
+--
 -- ../../Constant.lua:function Constant:getRealRange()
 -- ../../Expression.lua:function Expression:getRealRange()
 -- ../../Variable.lua:function Variable:getRealRange()
--- 
+--
 -- ../../op/mul.lua:function mul:getRealRange()
 -- ../../op/mul.lua:	local I = self[1]:getRealRange()
 -- ../../op/mul.lua:		local I2 = self[i]:getRealRange()
@@ -172,7 +172,7 @@ assert((1/x):getRealRange():contains(set.positiveReal))
 -- ../../op/pow.lua:	local I2 = self[2]:getRealRange()
 -- ../../op/unm.lua:function unm:getRealRange()
 -- ../../op/unm.lua:	local I = self[1]:getRealRange()
--- 
+--
 -- ../../set/RealSubset.lua:-- commonly used versions of the Expression:getRealRange function
 -- ../../set/RealSubset.lua:function RealSubset.getRealDomain_evenIncreasing(x)
 -- ../../set/RealSubset.lua:	local Is = x[1]:getRealRange()

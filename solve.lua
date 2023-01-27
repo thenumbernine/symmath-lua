@@ -1,6 +1,7 @@
 local table = require 'ext.table'
 local symmath
 
+--[[
 local function filterUnique(...)
 	local t = table()
 	for i=1,select('#', ...) do
@@ -8,6 +9,7 @@ local function filterUnique(...)
 	end
 	return t:unpack()
 end
+--]]
 
 --[[
 accepts an equation and a variable
@@ -37,21 +39,22 @@ local function solve(eqn, x, hasSimplified)
 
 	-- count occurrences
 	local count = 0
-	local stack = table()
 	local trace = table()
-	local function recurse(expr)
-		for i,ch in ipairs(expr) do
-			stack:insert{expr=ch,index=i}
-			if ch==x then
-				count = count + 1
-				trace:insert(table(stack))
+	do
+		local stack = table()
+		local function recurse(expr)
+			for i,ch in ipairs(expr) do
+				stack:insert{expr=ch,index=i}
+				if ch==x then
+					count = count + 1
+					trace:insert(table(stack))
+				end
+				recurse(ch)
+				assert(rawequal(stack:remove().expr, ch))
 			end
-			recurse(ch)
-			assert(rawequal(stack:remove().expr, ch))
 		end
+		recurse(eqn)
 	end
-
-	recurse(eqn)
 
 	if count == 0 then
 		return nil, "couldn't find "..x.." in eqn "..eqn

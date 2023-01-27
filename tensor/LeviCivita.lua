@@ -13,7 +13,6 @@ local function makeLeviCivita(symbol, sqrtDetG)
 	local Constant = require 'symmath.Constant'
 	local sqrt = require 'symmath.sqrt'
 	local abs = require 'symmath.abs'
-	local TensorIndex = require 'symmath.tensor.Index'
 
 	local rank
 	local chart

@@ -10,9 +10,9 @@ env.y = symmath.Variable('y')
 
 for _,line in ipairs(string.split(string.trim([=[
 
--- infinite.  
--- using https://en.wikipedia.org/wiki/Limit_of_a_function 
--- TODO should these be valid, or should they always produce 'invalid' 
+-- infinite.
+-- using https://en.wikipedia.org/wiki/Limit_of_a_function
+-- TODO should these be valid, or should they always produce 'invalid'
 -- and only Limit() produce valid operations on infinity?
 
 simplifyAssertEq(inf, inf)

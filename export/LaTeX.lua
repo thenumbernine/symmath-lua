@@ -680,7 +680,7 @@ function LaTeX:applyLaTeX(...)
 			error("don't know how to handle type "..type(result))
 		end
 
-		local omit = result.omit
+		local romit = result.omit
 		local force = result.force
 		local count = #result
 
@@ -698,7 +698,7 @@ function LaTeX:applyLaTeX(...)
 		--result = range(#result):map(function(i) return flatten(result[i]) end):concat' '
 		if force then
 			result = '{' .. result .. '}'
-		elseif count > 1 and not omit then
+		elseif count > 1 and not romit then
 			result = '{' .. result .. '}'
 		else
 			result = ' ' .. result

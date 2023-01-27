@@ -44,15 +44,15 @@ local es = {
 	export.LaTeX,
 	--export.MathJax,	-- identical to LaTeX.
 
-	-- code 
+	-- code
 	export.C,
 	export.JavaScript,
 	export.Lua,
-	
+
 	-- code
 	export.GnuPlot,
 	export.Mathematica,
-	
+
 	-- support
 	export.Verbose,
 	export.SymMath,
@@ -87,42 +87,42 @@ local exprs = {
 	(1+x)^(1+y),
 	2^(1+y),
 	e^(1+y),
-	
+
 	abs(x),
-	
+
 	sqrt(x),
 	cbrt(x),
-	
+
 	exp(x),
 	log(x),
-	
+
 	Heaviside(x),
-	
+
 	sin(x),
 	cos(x),
 	tan(x),
-	
+
 	asin(x),
 	acos(x),
 	atan(x),
 	atan2(x),
-	
+
 	sinh(x),
 	cosh(x),
 	tanh(x),
-	
+
 	asinh(x),
 	acosh(x),
 	atanh(x),
-	
-	x:eq(y),	
+
+	x:eq(y),
 	x:ne(y),
 	x:lt(y),
 	x:le(y),
 	x:gt(y),
 	x:ge(y),
 	x:approx(y),
-	
+
 	y:lim(x, 0),
 	y:lim(x, 0, '+'),
 	y:lim(x, 0, '-'),
@@ -146,12 +146,12 @@ local exprs = {
 	sqrt(1-x^2):integrate(x, -1, 1),
 	(-x):integrate(x, 0, 1),
 	(1+x):integrate(x, 0, 1),
-	
+
 	Array(x,y),				-- should these be row or column display?
 	Matrix({x}, {y}),		-- 2x1 matrix
 	Matrix{x, y},			-- 1x2 matrix
 	Matrix({a, b}, {c,d}),	-- 2x2 matrix
-	
+
 	Tensor('_i', a, b),
 	Tensor('_ij', {a, b}, {c, d}),
 	Tensor('_ijk', {{a, b}, {c, d}}, {{e, f}, {g, h}}),

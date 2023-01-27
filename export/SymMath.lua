@@ -87,7 +87,7 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 	end,
 	[require 'symmath.Expression'] = function(self, expr, indent)
 		local name = expr:nameForExporter(self)
-		return indent..expr:nameForExporter(self)..'(\n'
+		return indent..name..'(\n'
 			..table.mapi(expr, function(xi)
 				return self:apply(xi, indent..tab)
 			end):concat(',\n')..'\n'

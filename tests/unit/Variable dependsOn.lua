@@ -155,8 +155,8 @@ z = symmath.var('z', {y})
 assertEq(true, z:dependsOn(z))
 assertEq(true, z:dependsOn(y))
 -- hmm, how to handle graph dependencies ...
--- I'm not going to evaluate them for now, because they cause 
---  (1) infinite loops (unless I track search state) and 
+-- I'm not going to evaluate them for now, because they cause
+--  (1) infinite loops (unless I track search state) and
 --  (2) {u,v} depends on {t,x} makes a graph search produce u depends on v ...
 --assertEq(true, z:dependsOn(x))
 assertEq(false, y:dependsOn(z))

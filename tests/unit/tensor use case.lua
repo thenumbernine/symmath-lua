@@ -36,7 +36,7 @@ for n=1,maxN do
 		{},
 		-- string indexes
 		{'_i'}, {'^i'},
-		-- index objects 
+		-- index objects
 		{{TensorIndex{symbol='i'}}},
 		{{TensorIndex{symbol='i', lower=true}}},
 	} do
@@ -57,7 +57,7 @@ for n=1,maxN do
 		local function test(t)
 			for i=1,m do
 				for j=1,n do
-					-- if only Lua could overload the compare for primitives of differing types ... 
+					-- if only Lua could overload the compare for primitives of differing types ...
 					assertEqn(t:get{i,j}:eq((i-1)*n+j))
 				end
 			end
@@ -126,7 +126,7 @@ end
 
 -- constructing an index-based tensor without a metric or without data gives an error
 for _,indexes in ipairs{'_i', '^i', '_ij', '^ij', '_ijk', '^ijk'} do
-	-- without named parameters: 
+	-- without named parameters:
 	assert(not pcall(function() Tensor(indexes) end))
 	-- with named parameters:
 	assert(not pcall(function() Tensor{indexes=indexes} end))
@@ -200,7 +200,7 @@ chart:setMetric(Tensor('_ij', {1, 0, 0}, {0, 2, 0}, {0, 0, 3}))
 local t = Tensor('_i', 1,2,3)
 assertEqn(t'^i':eq(Tensor('^i', 1, 1, 1)))
 	-- variance of index doesn't matter -- a^u == a_u is true so long as a^1==a_1 && a^2==a_2 ... etc
-assertEqn(t'^i':eq(Tensor('_i', 1, 1, 1)))	
+assertEqn(t'^i':eq(Tensor('_i', 1, 1, 1)))
 	-- testing lower
 local t = Tensor('^i', 1,2,3)
 assertEqn(t'_i':eq(Tensor('_i', 1, 4, 9)))

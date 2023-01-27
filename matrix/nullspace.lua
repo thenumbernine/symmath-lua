@@ -20,17 +20,17 @@ local function nullspace(A, verbose)
 	if not verbose then
 		_, reduce = A:inverse()
 	else
-		local n = 0
+		local k = 0
 		_, reduce = A:inverse(nil, function(AInv, A, row, i, j, op)
-			n = n + 1
-			verbose('op # '..n
+			k = k + 1
+			verbose('op # '..k
 				..' op = '..op
 				..' row = '..row
 				..' i,j = '..i..','..tostring(j)
 				..' #nodes = '..AInv:countNodes()
 			)
 			--[[
-			do --if n > 100 then
+			do --if k > 100 then
 				verbose('A | AInv = '..Matrix{A, AInv})
 			end
 			--]]

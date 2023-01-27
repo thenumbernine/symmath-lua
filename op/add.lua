@@ -92,8 +92,8 @@ function add.match(a, b, matches)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 
 	-- NOTICE, this shallow copy means that the metatables are lost, so don't use "a" or "b" as expressions (unless you reset its metatable)
-	local a = table(a)
-	local b = table(b)
+	a = table(a)
+	b = table(b)
 
 	-- compare things order-independent, remove as you go
 	-- skip wildcards, do those last
@@ -132,8 +132,8 @@ function add.match(a, b, matches)
 	-- now compare what's left in-order (since it's non-commutative)
 	-- skip wildcards, do those last
 	local function checkWhatsLeft(a, b, matches, indent)
-indent=(indent or 0) + 1
-local tab = (' '):rep(indent)
+--indent=(indent or 0) + 1
+--local tab = (' '):rep(indent)
 		-- save the original here
 		-- upon success, merge the new matches back into the original argument
 		local origMatches = matches
@@ -435,8 +435,8 @@ function add.__eq(a,b)
 	if getmetatable(a) ~= getmetatable(b) then return false end
 
 	-- compare things order-independent, remove as you go
-	local a = table(a)
-	local b = table(b)
+	a = table(a)
+	b = table(b)
 	for i=#a,1,-1 do
 		local ai = a[i]
 		-- non-commutative compare...
@@ -623,10 +623,6 @@ ProdList.find = table.find
 function ProdList:toExpr()
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
-	local Variable = symmath.Variable
-	local Derivative = symmath.Derivative
-	local Verbose = symmath.export.Verbose
-	local TensorRef = symmath.Tensor.Ref
 
 	local list = table.mapi(self, function(x)
 		if Constant.isValue(x.power, 1) then
@@ -685,7 +681,7 @@ ProdList.__concat = defaultConcat
 
 -- for the i'th child of an add ...
 -- return a list of {term=term, power=power}
-function getProductList(x)
+local function getProductList(x)
 	symmath = symmath or require 'symmath'
 	local mul = symmath.op.mul
 	local pow = symmath.op.pow
@@ -838,7 +834,6 @@ add.rules = {
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
-			local Verbose = symmath.export.Verbose
 
 
 			-- [[ x*a + x*b => x * (a + b)

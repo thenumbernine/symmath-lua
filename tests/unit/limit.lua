@@ -216,8 +216,8 @@ difftest(x^2)
 difftest(x^3)
 difftest(1/x)
 
--- can't handle these yet. 
--- TODO give unit tests a 'reach' section? 
+-- can't handle these yet.
+-- TODO give unit tests a 'reach' section?
 -- so console can show that these tests aren't 100% certified.
 -- use infinite taylor expansion?
 -- or just use L'Hospital's rule -- that solves these too, because, basically, that replaces the limit with the derivative, so it will always be equal.

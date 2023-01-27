@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local Function = require 'symmath.Function'
+local symmath
 
 local atanh = class(Function)
 atanh.name = 'atanh'
@@ -11,7 +12,7 @@ end
 
 -- domain: (-1, 1)
 function atanh:evaluateDerivative(deriv, ...)
-	local x = table.unpack(x)
+	local x = table.unpack(self)
 	return deriv(x, ...) / (1 - x^2)
 end
 

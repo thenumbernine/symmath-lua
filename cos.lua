@@ -46,7 +46,7 @@ function cos:getRealRange()
 		local startQ = math.floor(I.start / (math.pi/2))
 		local finishQ = math.floor(I.finish / (math.pi/2))
 		local startQmod4 = startQ % 4
-		local finishQmod4 = finishQ % 4
+		--local finishQmod4 = finishQ % 4
 		local deltaQ = finishQ - startQ
 		local behavior
 		if deltaQ == 0 then
@@ -142,7 +142,6 @@ cos.rules = {
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
-			local Variable = symmath.Variable
 			local unm = symmath.op.unm
 			local mul = symmath.op.mul
 			local div = symmath.op.div

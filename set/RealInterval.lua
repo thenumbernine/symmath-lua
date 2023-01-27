@@ -1,7 +1,6 @@
 local class = require 'ext.class'
 local math = require 'ext.math'
 local Set = require 'symmath.set.Set'
-local complex = require 'complex'
 local symmath
 
 -- in some places I'm using subclasses to represent subsets ...
@@ -117,7 +116,7 @@ end
 function RealInterval.isSubsetOf(subI, supI)
 	symmath = symmath or require 'symmath'
 	-- minimal superset test
-	if symmath.set.complex:isSubsetOf(s) then return true end
+	if symmath.set.complex:isSubsetOf(subI) then return true end	-- TODO typo and I forgot what this should be
 	local RealSubset = symmath.set.RealSubset
 
 	if RealInterval:isa(subI) then
@@ -170,7 +169,7 @@ function RealInterval.isSubsetOf(subI, supI)
 		assert(#supI > 0)
 		local result
 		for _,setI in ipairs(supI) do
-			local containsI = self:isSubsetOf(setI)
+			local containsI = subI:isSubsetOf(setI)	-- TODO typo and I forgot what this should be
 			if containsI == nil then
 				return nil	-- if any are uncertain then return uncertain
 			elseif containsI == false then

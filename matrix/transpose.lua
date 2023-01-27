@@ -1,8 +1,6 @@
-local table = require 'ext.table'
 return function(A)
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
-	local clone = require 'symmath.clone'
 	if not Array:isa(A) then return A end
 	local dim = A:dim()
 	assert(#dim == 2, "expected a rank-2 array")

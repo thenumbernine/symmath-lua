@@ -1,3 +1,5 @@
+local table = require 'ext.table'
+
 --[=[ 2D
 --[[
 Rodrigues rotation formula.
@@ -62,8 +64,8 @@ return function(theta, ...)
 		epsIndexes = epsIndexes .. sym
 	end
 	local i,j = table.unpack(Tensor.defaultSymbols, 1, 2)
-	epsIndex = '_'..i..j..epsIndexes
-	K = (K * eps(epsIndex))()
+	epsIndexes = '_'..i..j..epsIndexes
+	K = (K * eps(epsIndexes))()
 	assert(#K == dim and #K[1] == dim)
 	K = Matrix(K:unpack())
 
@@ -72,8 +74,8 @@ return function(theta, ...)
 
 	if dim == 3 then
 		-- only for 3D, replace the (1 - |n1|^2) with 0
-		K2 = (K2 + Matrix:lambda({dim, dim}, function(i,j)
-			return i <= 3 and i == j and 1 or 0
+		K2 = (K2 + Matrix:lambda({dim, dim}, function(i_,j_)
+			return i_ <= 3 and i_ == j_ and 1 or 0
 		end) * (ns[1]:normSq() - 1))()
 	end
 

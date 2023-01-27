@@ -159,7 +159,6 @@ so that comma using those symbols will simplify based on the letter's variables 
 local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
-local string = require 'ext.string'
 local Expression = require 'symmath.Expression'
 local Array = require 'symmath.Array'
 local symmath
@@ -480,7 +479,6 @@ store the result in dimension i, removing dimension j
 --]]
 function Tensor:trace(i,j)
 	symmath = symmath or require 'symmath.namespace'()
-	local clone = symmath.clone
 
 	if i == j then
 		error("cannot apply contraction across the same index: "..i)
@@ -493,7 +491,7 @@ function Tensor:trace(i,j)
 
 	local newdim = table(dim)
 	-- remove the second index from the new dimension
-	local removedDim = table.remove(newdim,j)
+	table.remove(newdim,j)
 	-- keep track of where the first index is in the new dimension
 	local newdimI = i
 	if j < i then newdimI = newdimI - 1 end
@@ -523,7 +521,6 @@ if it removes the last dim then a number is returned (rather than a 0-degree ten
 --]]
 function Tensor:contraction(i)
 	symmath = symmath or require 'symmath.namespace'()
-	local clone = symmath.clone
 
 	local dim = self:dim()
 	if i < 1 or i > #dim then error("tried to contract dimension "..i.." when we are only degree "..#dim) end
@@ -531,11 +528,11 @@ function Tensor:contraction(i)
 	-- if there's a valid contraction and we're degree-1 then we're summing across everything
 	if #dim == 1 then
 		local result
-		for i=1,dim[1] do
+		for j=1,dim[1] do
 			if not result then
-				result = self[i]
+				result = self[j]
 			else
-				result = result + self[i]
+				result = result + self[j]
 			end
 		end
 		return result
@@ -813,7 +810,6 @@ Tensor.__newindex = function(self, key, value)
 			else
 				-- wrap it in the single-variable index
 --print('from ',value)
-				local TensorIndex = self.Index
 				value = Tensor(table{
 					TensorIndex{
 						lower = v.lower,
@@ -965,7 +961,6 @@ end
 
 function Tensor.pruneMul(lhs, rhs)
 	symmath = symmath or require 'symmath.namespace'()
-	local Array = symmath.Array
 	local lhsIsArray = Array:isa(lhs)
 	local rhsIsArray = Array:isa(rhs)
 	local lhsIsTensor = Tensor:isa(lhs)
@@ -1154,8 +1149,6 @@ end
 function Tensor:print(name)
 	symmath = symmath or require 'symmath.namespace'()
 	local Variable = symmath.Variable
-	local Ref = self.Ref
-	local TensorIndex = self.Index
 	print(self.Ref(Variable(name), table.unpack(self.variance)):eq(self))
 end
 
@@ -1169,7 +1162,6 @@ function Tensor:printElem(name, write, defaultsep)
 	local Variable = symmath.Variable
 	local Constant = symmath.Constant
 	local Ref = self.Ref
-	local TensorIndex = self.Index
 	local sep = ''
 	for index,x in self:iter() do
 		if not Constant.isValue(x, 0) then
@@ -1202,7 +1194,7 @@ end
 
 function Tensor:antisym()
 	-- this is from https://www.lua.org/pil/9.3.html
-	function permgen(a, n, s)
+	local function permgen(a, n, s)
 		if n == 0 then
 			coroutine.yield(a, s)
 		else
@@ -1220,7 +1212,7 @@ function Tensor:antisym()
 			end
 		end
 	end
-	function perm(a)
+	local function perm(a)
 		a = table(a)
 		local n = table.maxn(a)
 		return coroutine.wrap(function()

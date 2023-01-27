@@ -36,7 +36,7 @@ function env.assertIndexesUsed(expr, args)
 		{fixedTensor, expectedFixedTensor},
 		{summedTensor, expectedSummedTensor},
 		{extraTensor, expectedExtraTensor},
-	} do 
+	} do
 		simplifyAssertEq(info[1], info[2])
 	end
 end
@@ -103,9 +103,9 @@ assertIndexesUsed( a'^i' * b'_i' * c'_j', {fixed='_j', summed='^i'})
 
 assertIndexesUsed(a'^i' * b'_i' * c'_j' + d'^i' * e'_i' * f'_j', {fixed='_j', summed='^i'})
 
-assertIndexesUsed(a'^i' * b'_i', {summed='^i'}) 
+assertIndexesUsed(a'^i' * b'_i', {summed='^i'})
 
-assertIndexesUsed(a'^i' * b'_i' + c, {summed='^i'}) 
+assertIndexesUsed(a'^i' * b'_i' + c, {summed='^i'})
 
 assertIndexesUsed(a'^i' * b'_i' + c'^i' * d'_i', {summed='^i'})
 

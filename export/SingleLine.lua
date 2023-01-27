@@ -95,7 +95,7 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		return 'lim_'..self:apply(x)..'→'..self:apply(a)..side..' '..self:apply(f)
 	end,
 	[require 'symmath.Derivative'] = function(self, expr)
-		local symmath = require 'symmath'
+		symmath = symmath or require 'symmath'
 		local d = expr:nameForExporter(self)
 		local topText = d
 		local diffVars = table.sub(expr, 2)

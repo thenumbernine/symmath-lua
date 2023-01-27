@@ -13,7 +13,6 @@ for _,k in ipairs(Console.symbols:keys()) do
 end
 
 function Console:fixVariableName(name)
-local orig = name
 	local i=1
 	while i < #name do
 		for symname,symchar in pairs(Console.symbols) do

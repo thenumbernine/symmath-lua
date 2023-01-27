@@ -26,7 +26,7 @@ for f in file:dir() do
 	-- the following aren't unit test suites
 	-- usually they have no asserts at all
 	-- (except plot or export which have no asserts but still serve a purpose for output of examples)
-	-- maybe some I should redo these into test suits 
+	-- maybe some I should redo these into test suits
 	and f ~= 'determinant_performance.lua'
 	and f ~= 'linear solver.lua'
 	and f ~= 'sub-tensor assignment.lua'

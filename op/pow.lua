@@ -3,7 +3,6 @@ local table = require 'ext.table'
 local range = require 'ext.range'
 local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
-local complex = require 'complex'
 local symmath
 
 local pow = class(Binary)
@@ -147,7 +146,6 @@ end
 
 function pow:reverse(soln, index)
 	symmath = symmath or require 'symmath'
-	local Constant = symmath.Constant
 	local p,q = table.unpack(self)
 	-- y = p(x)^q => y^(1/q) = p(x)
 	if index == 1 then
@@ -165,6 +163,7 @@ function pow:reverse(soln, index)
 				end):unpack()
 			end
 			--[[ here it is for square
+			local Constant = symmath.Constant
 			if Constant.isValue(q, 2) then
 				return soln^(1/q), -soln^(1/q)
 			end
@@ -175,7 +174,7 @@ function pow:reverse(soln, index)
 	-- y = p^q(x) => log(y) / log(p) = q(x)
 	elseif index == 2 then
 		local log = symmath.log
-		return log(y) / log(p)
+		return log(self) / log(p)
 	end
 end
 
@@ -523,6 +522,7 @@ pow.rules = {
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
 			local div = symmath.op.div
+			local frac = symmath.op.frac
 			local i = symmath.i
 
 			if expr[1] == i then
@@ -727,7 +727,6 @@ pow.rules = {
 				then
 					local primes = math.primeFactorization(x.value)
 					local outside = 1
-					local inside = 1
 					for i=#primes-1,1,-1 do
 						if primes[i] == primes[i+1] then
 							outside = outside * primes[i]

@@ -15,7 +15,7 @@ d/dx[a%b] is da/dx, except when a = b * k for some integer k
 --]]
 function mod:evaluateDerivative(deriv, ...)
 	local a, b = table.unpack(self)
-	a, b = a:clone(), b:clone()
+	a = a:clone()
 	return deriv(a, ...)
 end
 

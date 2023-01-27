@@ -1,4 +1,5 @@
 local class = require 'ext.class'
+local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
@@ -28,7 +29,7 @@ end
 -- (0,inf] increasing, [-inf,0) imaginary
 function acosh:getRealRange()
 	if self.cachedSet then return self.cachedSet end
-	local Is = x[1]:getRealRange()
+	local Is = self[1]:getRealRange()
 	if Is == nil then
 		self.cachedSet = nil
 		return nil
@@ -45,8 +46,8 @@ function acosh:getRealRange()
 
 	self.cachedSet = RealSubset(table.mapi(Is, function(I)
 		return RealSubset(
-			x.realFunc(I.start),
-			x.realFunc(I.finish),
+			self.realFunc(I.start),
+			self.realFunc(I.finish),
 			I.includeStart,
 			I.includeFinish)
 	end))

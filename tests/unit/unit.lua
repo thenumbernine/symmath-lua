@@ -3,7 +3,7 @@ local file = require 'ext.file'
 local string = require 'ext.string'
 local fromlua = require 'ext.fromlua'
 local tolua = require 'ext.tolua'
-	
+
 local checkstr = '✓'
 local failstr = '✕'
 
@@ -20,7 +20,7 @@ local function updateMaster()
 	for fn in file(unitTestCachePath):dir() do
 		local title, ext = file(fn):getext()
 		if ext == 'lua' then
-			allTestResults[title] = fromlua(file(unitTestCachePath..'/'..fn):read()) 
+			allTestResults[title] = fromlua(file(unitTestCachePath..'/'..fn):read())
 		end
 	end
 	file(unitTestOutputPath..'/index.html'):write([[
@@ -57,18 +57,18 @@ td, th {
 ..table.keys(allTestResults):sort():mapi(function(title)
 	local rows = allTestResults[title]
 	title = title:match'^tests_unit_(.*)$' or title
-	local numTotal = table.mapi(rows, function(row) 
-		return (row.error or (row.code and #string.trim(row.code) > 0)) and 1 or 0 
+	local numTotal = table.mapi(rows, function(row)
+		return (row.error or (row.code and #string.trim(row.code) > 0)) and 1 or 0
 	end):sum()
-	local numFails = table.mapi(rows, function(row) 
-		return row.error and 1 or 0 
+	local numFails = table.mapi(rows, function(row)
+		return row.error and 1 or 0
 	end):sum()
 	return '<tr><td class="title">\n'
 		.. '<a href="'..title..'.html">' .. title .. '</a>\n'
 		.. '</td><td>' .. (numTotal == 0 and '' or numTotal)
 		.. '</td><td>' .. (numFails == 0 and '' or numFails)
 		.. '</td><td class="content">\n'
-		.. 	table.mapi(rows, function(row) 
+		.. 	table.mapi(rows, function(row)
 				if row.error then
 					return '<span style="color:red">'..failstr..'</span>'
 				elseif row.code and #string.trim(row.code) > 0 then
@@ -226,7 +226,7 @@ return function(env, title)
 		until false
 		code = string.trim(code)
 		local comment = string.trim(comments:concat'\n')
-		
+
 		print'<tr><td>'
 		print('<b>'..comment..'</b><br>')
 		print('<code>'..code..'</code>')
@@ -266,7 +266,7 @@ return function(env, title)
 			)
 		end
 		print'</td></tr>'
-	
+
 		local row = {}
 		row.comment = comment
 		row.code = code

@@ -53,7 +53,6 @@ internal structure:
 
 local class = require 'ext.class'
 local table = require 'ext.table'
-local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 
 local symmath
@@ -74,7 +73,6 @@ Derivative.isTotal = false
 
 function Derivative:init(...)
 	symmath = symmath or require 'symmath'
-	local Variable = symmath.Variable
 	local vars = table{...}
 	local expr = assert(vars:remove(1), "can't differentiate nil")
 	assert(#vars > 0, "can't differentiate against nil")
@@ -110,7 +108,6 @@ Derivative.rules = {
 		-- d/dx d/dy = d/dxy
 		{combine = function(prune, expr)
 			symmath = symmath or require 'symmath'
-			local Derivative = symmath.Derivative
 			if Derivative:isa(expr[1]) then
 				return prune:apply(
 					getmetatable(expr)(
@@ -150,7 +147,7 @@ Derivative.rules = {
 			elseif TensorRef:isa(expr[1])
 			and Variable:isa(expr[1][1])
 			then
-				local tvar = expr[1]	-- tensor-ref of the variable
+				--local tvar = expr[1]	-- tensor-ref of the variable
 				local var = expr[1][1]	-- the variable itself
 				-- dx^I/dx^J = delta^I_J
 				if #expr == 2 then

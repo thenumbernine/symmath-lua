@@ -154,7 +154,7 @@ and define their associated tangentSpaceOperators in the Chart as differentiatin
 					-- c_ab^d = (e^-1)_c^d (e_a^r e_b^c_,r - e_b^r e_a^c_,r)
 					-- TODO put this somewhere else so everyone can use it
 					assert(Constant.isValue(b[1][1], 0))
-					for k,uk in ipairs(coords) do
+					for k,dk in ipairs(self.tangentSpaceOperators) do
 						local coeff = (A[1][k] * dzeta[k] / dk(zeta))()
 						-- assert dphi is nowhere in coeff ...
 						self.commutation[i][j][k] = coeff

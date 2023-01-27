@@ -130,7 +130,7 @@ local function polydivr(a, b, x, verbose)
 	end
 
 	local sum = Constant(0)
-	local keys = table.keys(res):sort(function(a,b) return a > b end)
+	local keys = table.keys(res):sort(function(a_,b_) return a_ > b_ end)
 	for _,k in ipairs(keys) do
 		local v = res[k]
 		if verbose then

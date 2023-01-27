@@ -10,7 +10,6 @@ returns matrices A and b:
 local table = require 'ext.table'
 return function(exprs, factors)
 	local symmath = require 'symmath'
-	local clone = symmath.clone
 	local Matrix = symmath.Matrix
 	local add = symmath.op.add
 	local mul = symmath.op.mul
