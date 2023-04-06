@@ -29,6 +29,7 @@ function tryToFindMathJax(args) {
 	console.log('init...');
 	var urls = [
 		'file:///C:/Users/Chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
+		'file:///home/chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
 		//'http:///localhost:8000/MathJax/es5/tex-svg.js',
 		'/MathJax/es5/tex-svg.js',
 		'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
