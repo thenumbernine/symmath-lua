@@ -431,8 +431,6 @@ div.rules = {
 
 		end},
 --]]
-
-
 	},
 
 	FactorDivision = {
@@ -524,38 +522,49 @@ div.rules = {
 			local mul = symmath.op.mul
 			local Constant = symmath.Constant
 
-			if symmath.simplifyConstantPowers  then
-				-- Constant / Constant => Constant
-				if Constant:isa(expr[1]) and Constant:isa(expr[2]) then
-					return Constant(expr[1].value / expr[2].value)
-				end
+			local p, q = table.unpack(expr)
 
+			-- Constant / Constant => Constant
+			if Constant:isa(p) and Constant:isa(q) then
+				-- only simplify if simplifyConstantPowers is set  ... or if one of them isn't an integer.
+				-- otherwise I go into a runaway loop ...
+				if symmath.simplifyConstantPowers
+				or not (
+					symmath.set.integer:contains(p)
+					and symmath.set.integer:contains(q)
+				)
+				then
+					return Constant(p.value / q.value)
+				end
+			end
+
+			if symmath.simplifyConstantPowers  then
 				-- q / Constant = 1/Constant * q
-				if Constant:isa(expr[2]) then
+				if Constant:isa(q) then
 					return prune:apply(
-						Constant(1/expr[2].value) * expr[1]
+						Constant(1/q.value) * p
 					)
 				end
 
 				-- (c1 * m) / c2 => (c1 / c2) * m
-				if mul:isa(expr[1]) and Constant:isa(expr[1][1]) and Constant:isa(expr[2]) then
-					local rest = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
-					return Constant(expr[1][1].value / expr[2].value) * rest
+				if mul:isa(p) and Constant:isa(p[1]) and Constant:isa(q) then
+					local rest = #p == 2 and p[2] or mul(table.unpack(p, 2))
+					return Constant(p[1].value / q.value) * rest
 				end
 
 				-- c1 / (c2 * m) => (c1/c2) / m
-				if Constant:isa(expr[1]) and mul:isa(expr[2]) and Constant:isa(expr[2][1]) then
-					local rest = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
-					return Constant(expr[1].value / expr[2][1].value) / rest
+				if Constant:isa(p) and mul:isa(q) and Constant:isa(q[1]) then
+					local rest = #q == 2 and q[2] or mul(table.unpack(q, 2))
+					return Constant(p.value / q[1].value) / rest
 				end
 
 				-- (c1 * m1) / (c2 * m2) => ((c1/c2) * m1) / m2
-				if mul:isa(expr[1]) and Constant:isa(expr[1][1])
-				and mul:isa(expr[2]) and Constant:isa(expr[2][1])
+				if mul:isa(p) and Constant:isa(p[1])
+				and mul:isa(q) and Constant:isa(q[1])
 				then
-					local rest1 = #expr[1] == 2 and expr[1][2] or mul(table.unpack(expr[1], 2))
-					local rest2 = #expr[2] == 2 and expr[2][2] or mul(table.unpack(expr[2], 2))
-					return (Constant(expr[1][1].value / expr[2][1].value) * rest1) / rest2
+					local rest1 = #p == 2 and p[2] or mul(table.unpack(p, 2))
+					local rest2 = #q == 2 and q[2] or mul(table.unpack(q, 2))
+					return (Constant(p[1].value / q[1].value) * rest1) / rest2
 				end
 			end
 		end},
