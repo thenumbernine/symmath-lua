@@ -2,7 +2,7 @@
 //
 //alternatively use the bridge for connecting with lua-in-javascript
 
-// remote?
+import {init, fail, serverBase} from '/server/standalone.js';
 
 function RemoteServer() {
 }
@@ -13,10 +13,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	getCells : function(args) {
-		$.ajax({
-			url : "getcells"
-		}).done(args.done)
-		.fail(args.fail);
+		fetch('getcells')
+		.then(response => {
+			if (!response.ok) return Promise.reject('not ok');
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -27,10 +29,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	setOutputType : function(args) {
-		$.ajax({
-			url : "setoutputtype?uid="+args.uid+"&outputtype="+args.outputtype
-		}).done(args.done)
-		.fail(args.fail);
+		fetch("setoutputtype?uid="+args.uid+"&outputtype="+args.outputtype)
+		.then(response => {
+			if (!response.ok) return Promise.reject('not ok');
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -40,10 +44,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	remove : function(args) {
-		$.ajax({
-			url : "remove?uid="+args.uid
-		}).done(args.done)
-		.fail(args.fail);
+		fetch("remove?uid="+args.uid)
+		.then(response => {
+			if (!response.ok) return Promise.reject('not ok');
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -54,15 +60,24 @@ RemoteServer.prototype = {
 		fail
 	*/
 	run : function(args) {
-		$.ajax({
-			type : "POST",
-			url : "run",
-			data : {
+		const data = new FormData();
+		data.set('uid', args.uid);
+		data.set('cellinput', args.cellinput);
+		fetch("run", {
+			method : 'POST',
+			headers : {
+				accept : 'application/json',
+				'content-type' : 'application/json',
+			},
+			body : JSON.stringify({
 				uid : args.uid,
 				cellinput : args.cellinput,
-			}
-		}).done(args.done)
-		.fail(args.fail);
+			}),
+		}).then(response => {
+			if (!response.ok) return Promise.reject('not ok');
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -71,10 +86,13 @@ RemoteServer.prototype = {
 		hidden
 	*/
 	setHidden : function(args) {
-		$.ajax({
-			url : "sethidden?uid="+args.uid+"&hidden="+args.hidden
-		}).done(args.done)
-		.fail(args.fail);
+		fetch("sethidden?uid="+args.uid+"&hidden="+args.hidden)
+		.then(response => {
+			if (!response.ok) return Promise.reject('not ok');
+console.log('sethidden', args.done);
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -84,10 +102,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	newCell : function(args) {
-		$.ajax({
-			url : "newcell" + (args.uid !== undefined ? ("?" + args.uid) : "")
-		}).done(args.done)
-		.fail(args.fail);
+		fetch("newcell" + (args.uid !== undefined ? ("?" + args.uid) : ""))
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => {args.fail?.(e); });
 	},
 
 	/*
@@ -97,14 +117,20 @@ RemoteServer.prototype = {
 		fail
 	*/
 	writeCells : function(args) {
-		$.ajax({
-			type : "POST",
-			url : "writecells",
-			data : {
-				cells : JSON.stringify(cells)
-			}
-		}).done(args.done)
-		.fail(args.fail);
+		fetch("writecells", {
+			method : 'POST',
+			headers : {
+				accept : 'application/json',
+				'content-type' : 'application/json',
+			},
+			body : JSON.stringify({
+				cells : JSON.stringify(serverBase.cells)
+			}),
+		}).then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -113,16 +139,21 @@ RemoteServer.prototype = {
 		fail
 	*/
 	save : function(args) {
-		$.ajax({
-			url : "save"
-		}).done(args.done)
-		.fail(args.fail);
+		fetch('save')
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); })
+		}).catch(e => { args.fail?.(e); });
 	},
 
-	quit : function() {
-		$.ajax({
-			url : "quit"
-		});
+	quit : function(args) {
+		fetch("quit")
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); })
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -131,10 +162,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	newWorksheet : function(args) {
-		$.ajax({
-			url : 'newworksheet'
-		}).done(args.done)
-		.fail(args.fail);
+		fetch('newworksheet')
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -143,10 +176,12 @@ RemoteServer.prototype = {
 		fail
 	*/
 	resetEnv : function(args) {
-		$.ajax({
-			url : 'resetenv'
-		}).done(args.done)
-		.fail(args.fail);
+		fetch('resetenv')
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	},
 
 	/*
@@ -156,11 +191,25 @@ RemoteServer.prototype = {
 		fail
 	*/
 	getWorksheet : function(args) {
-		$.ajax({
-			url : 'getworksheet?filename='+encodeURIComponent(args.filename)
-		}).done(args.done)
-		.fail(args.fail);
+		fetch('getworksheet?filename='+encodeURIComponent(args.filename))
+		.then(response => {
+			if (!response.ok) throw 'not ok';
+			response.text()
+			.then(text => { args.done?.(text); });
+		}).catch(e => { args.fail?.(e); });
 	}
 };
 
-server = new RemoteServer();
+//TODO this is in common with the otehr standalone-bridge
+//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
+import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
+tryToFindMathJax.init({
+	done : () => {
+		init({
+			server : new RemoteServer(),
+			root : document.body,
+			worksheets : window.symmathWorksheets,
+		});
+	},
+	fail : fail,
+});

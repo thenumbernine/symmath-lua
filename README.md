@@ -31,7 +31,7 @@ Gamma = GammaL'^a_bc'()
 print('Gamma^a_bc:\n'..Gamma)
 dGamma = Gamma'^a_bc,d'():permute'_d^a_bc'
 print('Gamma^a_bc,d:\n'..dGamma)
-Riemann = (Gamma'^a_db,c' - Gamma'^a_cb,d' + Gamma'^a_ce' * Gamma'^e_db' - Gamma'^a_de' * Gamma'^e_cb')():permute'^a_bcd'
+Riemann = (Gamma'^a_db,c' - Gamma'^a_cb,d' + Gamma'^a_ce' * Gamma'^e_db' - Gamma'^a_de' * Gamma'^e_cb')()():permute'^a_bcd'
 print('Riemann^a_bcd:\n'..Riemann)
 
 ```
@@ -916,7 +916,7 @@ In the case of multiplication, unmatched wildcards will be assigned a value of 1
 - 'utf8' if available.  Used by console-based output methods.
 - 'ffi' if available.
 
-Some tests use:
+Some of the tests depend on these:
 
 - https://github.com/thenumbernine/lua-matrix
 - https://github.com/thenumbernine/solver-lua
@@ -1022,7 +1022,17 @@ Output CDN URLs:
 
 [tests/output/BSSN - generate - cartesian](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian.html)
 
+[tests/output/BSSN - generate - spherical - LambdaBar 2](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar%202.html)
+
+[tests/output/BSSN - generate - spherical - LambdaBar 3](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar%203.html)
+
+[tests/output/BSSN - generate - spherical - LambdaBar](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar.html)
+
 [tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
+
+[tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
+
+[tests/output/BSSN - index - cache](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
 
 [tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
 
@@ -1086,6 +1096,8 @@ Output CDN URLs:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
 
+[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/MakeTrigLookupTables.html)
+
 [tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
@@ -1101,6 +1113,52 @@ Output CDN URLs:
 [tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
 
 [tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
+
+[tests/output/Platonic Solids/600-cell transforms 1](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%201.html)
+
+[tests/output/Platonic Solids/600-cell transforms 10](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2010.html)
+
+[tests/output/Platonic Solids/600-cell transforms 11](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2011.html)
+
+[tests/output/Platonic Solids/600-cell transforms 12](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2012.html)
+
+[tests/output/Platonic Solids/600-cell transforms 13](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2013.html)
+
+[tests/output/Platonic Solids/600-cell transforms 14](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2014.html)
+
+[tests/output/Platonic Solids/600-cell transforms 15](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2015.html)
+
+[tests/output/Platonic Solids/600-cell transforms 16](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2016.html)
+
+[tests/output/Platonic Solids/600-cell transforms 17](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2017.html)
+
+[tests/output/Platonic Solids/600-cell transforms 18](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2018.html)
+
+[tests/output/Platonic Solids/600-cell transforms 19](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2019.html)
+
+[tests/output/Platonic Solids/600-cell transforms 2](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%202.html)
+
+[tests/output/Platonic Solids/600-cell transforms 20](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2020.html)
+
+[tests/output/Platonic Solids/600-cell transforms 3](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%203.html)
+
+[tests/output/Platonic Solids/600-cell transforms 4](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%204.html)
+
+[tests/output/Platonic Solids/600-cell transforms 5](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%205.html)
+
+[tests/output/Platonic Solids/600-cell transforms 6](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%206.html)
+
+[tests/output/Platonic Solids/600-cell transforms 7](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%207.html)
+
+[tests/output/Platonic Solids/600-cell transforms 8](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%208.html)
+
+[tests/output/Platonic Solids/600-cell transforms 9](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%209.html)
+
+[tests/output/Platonic Solids/600-cell vertex inner products](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20inner%20products.html)
+
+[tests/output/Platonic Solids/600-cell vertex multiplication table](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20multiplication%20table.html)
+
+[tests/output/Platonic Solids/600-cell vertexes](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertexes.html)
 
 [tests/output/Platonic Solids/600-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell.html)
 
@@ -1135,6 +1193,10 @@ Output CDN URLs:
 [tests/output/Shallow Water equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Shallow%20Water%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
+
+[tests/output/Z4 - flux PDE noSource usingOnlyUs](https://thenumbernine.github.io/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource%20usingOnlyUs.html)
+
+[tests/output/Z4 - flux PDE noSource](https://thenumbernine.github.io/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource.html)
 
 [tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
 

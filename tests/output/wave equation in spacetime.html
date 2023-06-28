@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>wave equation in spacetime</title>
+	<head>
+		<meta charset='utf-8'>
+		<title>wave equation in spacetime</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
-    </head>
-	<body onload='tryToFindMathJax();'>
+	</head>
+	<body onload='tryToFindMathJax.init();'>
 
 Sources:<br>
 2010 Alcubierre, Mendez, "Formulations of the 3+1 evolution equations in curvilinear coordinates"<br>
@@ -17,19 +17,19 @@ ADM metric:
 <br>
 
 <br>
-${{{ g}_{\mu}}_{\nu}} = {\left[\begin{matrix}  {-{{\alpha}^{2}}} + {{{{ \beta}^k}} {{{ \beta}_k}}} &  { \beta}_j \\  { \beta}_i &  {{ \gamma}_i}_j\end{matrix}\right]}$
+${{{ g} _{\mu}} _{\nu}} = {\left[\begin{array}{cc} {-{{\alpha}^{2}}} + {{{{ \beta} ^k}} {{{ \beta} _k}}}& { \beta} _j\\ { \beta} _i& {{ \gamma} _i} _j\end{array}\right]}$
 <br>
 
 <br>
-${{{ g}^{\mu}}^{\nu}} = {\left[\begin{matrix}  -{\frac{1}{{\alpha}^{2}}} &  {{\frac{1}{{\alpha}^{2}}}} {{{ \beta}^j}} \\  {{\frac{1}{{\alpha}^{2}}}} {{{ \beta}^i}} &  {{{ \gamma}^i}^j} - {{{{{\frac{1}{{\alpha}^{2}}}} {{{ \beta}^i}}}} {{{ \beta}^j}}}\end{matrix}\right]}$
+${{{ g} ^{\mu}} ^{\nu}} = {\left[\begin{array}{cc} -{\frac{1}{{\alpha}^{2}}}& {{\frac{1}{{\alpha}^{2}}}} {{{ \beta} ^j}}\\ {{\frac{1}{{\alpha}^{2}}}} {{{ \beta} ^i}}& {{{ \gamma} ^i} ^j}{-{{{\frac{1}{{\alpha}^{2}}}} {{{ \beta} ^i}} {{{ \beta} ^j}}}}\end{array}\right]}$
 <br>
 
 <br>
-${{ n}_{\mu}} = {\left[\begin{matrix}  -{\alpha} &  0\end{matrix}\right]}$
+${{ n} _{\mu}} = {\left[\begin{array}{cc} -{\alpha}& 0\end{array}\right]}$
 <br>
 
 <br>
-${{ n}^{\mu}} = {\left[\begin{matrix}  \frac{1}{\alpha} &   {-{\frac{1}{\alpha}}} {{{ \beta}^i}}\end{matrix}\right]}$
+${{ n} ^{\mu}} = {\left[\begin{array}{cc} \frac{1}{\alpha}&  {-{\frac{1}{\alpha}}} {{{ \beta} ^i}}\end{array}\right]}$
 <br>
 
 <br>
@@ -39,9 +39,9 @@ Also let $\frac{d}{dx^0} = \partial_0 - \mathcal{L}_\vec\beta$
 <br>
 From 2008 Alcubierre "Introduction to 3+1 Numerical Relativity" Appendix B
 <br>
-${{ \bar{\Gamma}}^0} = { {-{\frac{1}{{\alpha}^{3}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^m}} {{{ \alpha}_{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}$
+${{ \bar{\Gamma}} ^0} = { {-{\frac{1}{{\alpha}^{3}}}} {{\left({{{ \alpha} _{,0}}{-{{{{ \beta} ^m}} {{{ \alpha} _{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}}\right)}}}$
 <br>
-${{ \bar{\Gamma}}^i} = {{{{ \Gamma}^i} + {{{{{\frac{1}{{\alpha}^{3}}}} {{{ \beta}^i}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^m}} {{{ \alpha}_{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}} - {{{\frac{1}{{\alpha}^{2}}}} {{({{{{{ \beta}^i}_{,0}} - {{{{ \beta}^m}} {{{{ \beta}^i}_{,m}}}}} + {{{{{\alpha}} \cdot {{{ \alpha}_{,j}}}}} {{{{ \gamma}^i}^j}}}})}}}}$
+${{ \bar{\Gamma}} ^i} = {{{{ \Gamma} ^i} + {{{\frac{1}{{\alpha}^{3}}}} {{{ \beta} ^i}} {{\left({{{ \alpha} _{,0}}{-{{{{ \beta} ^m}} {{{ \alpha} _{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}}\right)}}}}{-{{{\frac{1}{{\alpha}^{2}}}} {{\left({{{{ \beta} ^i} _{,0}}{-{{{{ \beta} ^m}} {{{{ \beta} ^i} _{,m}}}}} + {{{\alpha}} \cdot {{{ \alpha} _{,j}}} {{{{ \gamma} ^i} ^j}}}}\right)}}}}}$
 <br>
 
 <br>
@@ -53,99 +53,17 @@ Let $\bar{\Gamma}^\alpha = {\bar{\Gamma}^\alpha}_{\mu\nu} g^{\mu\nu}$
 <br>
 wave equation in spacetime:
 <br>
-${{{ \Phi}_{;\mu}}^{;\mu}} = {f}$
+${{{ \Phi} _{;\mu}} ^{;\mu}} = {f}$
 <br>
-${{{{{ g}^{\mu}}^{\nu}}} {{{{ \Phi}_{;\mu}}_{;\nu}}}} = {f}$
+${{{{{ g} ^{\mu}} ^{\nu}}} {{{{ \Phi} _{;\mu}} _{;\nu}}}} = {f}$
 <br>
-${{{{{ g}^{\mu}}^{\nu}}} {{({{{{ \Phi}_{,\mu}}_{,\nu}} - {{{{{{ \bar{\Gamma}}^{\alpha}}_{\mu}}_{\nu}}} {{{ \Phi}_{,\alpha}}}}})}}} = {f}$
+${{{{{ g} ^{\mu}} ^{\nu}}} {{\left({{{{ \Phi} _{,\mu}} _{,\nu}}{-{{{{{{ \bar{\Gamma}} ^{\alpha}} _{\mu}} _{\nu}}} {{{ \Phi} _{,\alpha}}}}}}\right)}}} = {f}$
 <br>
-${{{{{{ g}^{\mu}}^{\nu}}} {{{{ \Phi}_{,\mu}}_{,\nu}}}} - {{{{ \bar{\Gamma}}^{\alpha}}} {{{ \Phi}_{,\alpha}}}}} = {f}$
+${{{{{{ g} ^{\mu}} ^{\nu}}} {{{{ \Phi} _{,\mu}} _{,\nu}}}}{-{{{{ \bar{\Gamma}} ^{\alpha}}} {{{ \Phi} _{,\alpha}}}}}} = {f}$
 <br>
 split space and time:
 <br>
-${{{{{{{{{ g}^0}^0}} {{{{ \Phi}_{,0}}_{,0}}}} + {{{{{2}} {{{{ g}^0}^i}}}} {{{{ \Phi}_{,0}}_{,i}}}}} + {{{{{ g}^i}^j}} {{{{ \Phi}_{,i}}_{,j}}}}} - {{{{ \bar{\Gamma}}^0}} {{{ \Phi}_{,0}}}}} - {{{{ \bar{\Gamma}}^i}} {{{ \Phi}_{,i}}}}} = {f}$
+${{{{{{{{ g} ^0} ^0}} {{{{ \Phi} _{,0}} _{,0}}}} + {{{2}} {{{{ g} ^0} ^i}} {{{{ \Phi} _{,0}} _{,i}}}} + {{{{{ g} ^i} ^j}} {{{{ \Phi} _{,i}} _{,j}}}}}{-{{{{ \bar{\Gamma}} ^0}} {{{ \Phi} _{,0}}}}}}{-{{{{ \bar{\Gamma}} ^i}} {{{ \Phi} _{,i}}}}}} = {f}$
 <br>
 substitute ADM metric components into wave equation:
-<br>
-${{{{-1}} {{{{ \Phi}_{,0}}_{,0}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{2}} {{{ \beta}^i}} {{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{-1}} {{{ \beta}^i}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{-1}} {{{ \Phi}_{,0}}} {{{ \bar{\Gamma}}^0}}} + {{{{{ \Phi}_{,i}}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{{ \Phi}_{,i}}} {{{ \bar{\Gamma}}^i}}}} = {f}$
-<br>
-solve for $\Phi_{,00}$:
-<br>
-${{{ \Phi}_{,0}}_{,0}} = {{{{{{2}} {{{ \beta}^i}} {{{{ \Phi}_{,0}}_{,i}}}} - {{{{ \beta}^i}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}}} - {{{{\alpha}^{2}}} {{{ \Phi}_{,0}}} {{{ \bar{\Gamma}}^0}}}} + {{{{{{\alpha}^{2}}} {{{{ \Phi}_{,i}}_{,j}}} {{{{ \gamma}^i}^j}}} - {{{{\alpha}^{2}}} {{{ \Phi}_{,i}}} {{{ \bar{\Gamma}}^i}}}} - {{{f}} {{{\alpha}^{2}}}}}}$
-<br>
-
-<br>
-Let 	${\Pi} = {{{{ n}^{\mu}}} {{{ \Phi}_{,\mu}}}}$
-<br>
-${\Pi} = {{{{{ n}^0}} {{{ \Phi}_{,0}}}} + {{{{ n}^i}} {{{ \Phi}_{,i}}}}}$
-<br>
-${\Pi} = {{{{-1}} {{{ \Phi}_{,i}}} {{{ \beta}^i}} {{\frac{1}{\alpha}}}} + {{{{ \Phi}_{,0}}} {{\frac{1}{\alpha}}}}}$	(eqn. 5)
-<br>
-
-<br>
-Let $\Psi_i = \nabla^\perp_i \Phi$ (eqn. 6)
-<br>
-$\Psi_i = {\gamma_i}^\mu \nabla_\mu \Phi$
-<br>
-${{ \Psi}_i} = {{ \Phi}_{,i}}$
-<br>
-
-<br>
-Solve $\Pi$ for $\Phi_{,0}$:
-<br>
-${{ \Phi}_{,0}} = {{{{\Pi}} \cdot {{\alpha}}} + {{{{ \Phi}_{,i}}} {{{ \beta}^i}}}}$	(eqn. 7)
-<br>
-$\frac{d}{dx^0} \Phi = \alpha \Pi$
-<br>
-${{ \Phi}_{,0}} = {{{{\Pi}} \cdot {{\alpha}}} + {{{{ \beta}^i}} {{{ \Psi}_i}}}}$
-<br>
-
-<br>
-Solve $\Pi_{,i}$ for $\Psi_{i,0}$:
-<br>
-${{ \Pi}_{,i}} = {{{{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{{ \Phi}_{,i}}_{,j}}} {{{ \beta}^j}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,j}}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,0}}} {{{ \alpha}_{,i}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{{ \Phi}_{,j}}} {{{ \beta}^j}} {{{ \alpha}_{,i}}} {{\frac{1}{{\alpha}^{2}}}}}}$
-<br>
-substitute	${{ \Phi}_{,0}} = {{{{\Pi}} \cdot {{\alpha}}} + {{{{ \beta}^i}} {{{ \Psi}_i}}}}$	,	${{ \Phi}_{,i}} = {{ \Psi}_i}$	,	${{{ \Phi}_{,0}}_{,i}} = {{{ \Psi}_i}_{,0}}$
-<br>
-${{ \Pi}_{,i}} = {{{{{{ \Psi}_i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\Pi}} \cdot {{{ \alpha}_{,i}}} {{\frac{1}{\alpha}}}}}$
-<br>
-solve for	${{ \Psi}_i}_{,0}$
-<br>
-${{{ \Psi}_i}_{,0}} = {{{{\Pi}} \cdot {{{ \alpha}_{,i}}}} + {{{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}} + {{{{ \Pi}_{,i}}} {{\alpha}}} + {{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}}}$
-<br>
-${{{ \Psi}_i}_{,0}} = {{{{{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}} + {{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}}} + {{\left( {{\alpha}} \cdot {{\Pi}}\right)}_{,i}}}$	(eqn. 8)
-<br>
-$\frac{d}{dx^0} \Psi_i = (\alpha \Pi)_{,i}$
-<br>
-
-<br>
-Solve $\Pi_{,0}$
-<br>
-${{ \Pi}_{,0}} = {{{{{{ \Phi}_{,0}}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{{ \Phi}_{,0}}_{,i}}} {{{ \beta}^i}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,i}}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Phi}_{,0}}} {{{ \alpha}_{,0}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{{ \Phi}_{,i}}} {{{ \beta}^i}} {{{ \alpha}_{,0}}} {{\frac{1}{{\alpha}^{2}}}}}}$
-<br>
-substitute	${{ \Phi}_{,i}} = {{ \Psi}_i}$	,	${{ \Phi}_{,0}} = {{{{\Pi}} \cdot {{\alpha}}} + {{{{ \beta}^i}} {{{ \Psi}_i}}}}$
-<br>
-${{ \Pi}_{,0}} = {{{{{{ \Phi}_{,0}}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^i}} {{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\Pi}} \cdot {{{ \alpha}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \Psi}_i}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}}}}}$
-<br>
-substitute	${{{ \Phi}_{,0}}_{,0}} = {{{{{{2}} {{{ \beta}^i}} {{{{ \Phi}_{,0}}_{,i}}}} - {{{{ \beta}^i}} {{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}}} - {{{{\alpha}^{2}}} {{{ \Phi}_{,0}}} {{{ \bar{\Gamma}}^0}}}} + {{{{{{\alpha}^{2}}} {{{{ \Phi}_{,i}}_{,j}}} {{{{ \gamma}^i}^j}}} - {{{{\alpha}^{2}}} {{{ \Phi}_{,i}}} {{{ \bar{\Gamma}}^i}}}} - {{{f}} {{{\alpha}^{2}}}}}}$	,	${{ \Phi}_{,i}} = {{ \Psi}_i}$	,	${{{ \Phi}_{,i}}_{,j}} = {{{ \Psi}_i}_{,j}}$
-<br>
-${{ \Pi}_{,0}} = {{{{-1}} {{{ \Psi}_i}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{{ \beta}^i}} {{{{ \Phi}_{,0}}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{{ \beta}^i}} {{{ \beta}^j}} {{{{ \Psi}_i}_{,j}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\Pi}} \cdot {{{ \alpha}_{,0}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{\alpha}} \cdot {{{ \Phi}_{,0}}} {{{ \bar{\Gamma}}^0}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \bar{\Gamma}}^i}}} + {{{-1}} {{f}} {{\alpha}}}}$
-<br>
-substitute	${{ \bar{\Gamma}}^0} = { {-{\frac{1}{{\alpha}^{3}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^m}} {{{ \alpha}_{,m}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}$	,	${{ \Phi}_{,0}} = {{{{\Pi}} \cdot {{\alpha}}} + {{{{ \beta}^i}} {{{ \Psi}_i}}}}$	,	${{{ \Phi}_{,0}}_{,i}} = {{{{{ \Pi}_{,i}}} {{\alpha}}} + {{{\Pi}} \cdot {{{ \alpha}_{,i}}}} + {{{{{ \beta}^j}_{,i}}} {{{ \Psi}_j}}} + {{{{ \beta}^j}} {{{{ \Psi}_j}_{,i}}}}}$
-<br>
-${{ \Pi}_{,0}} = {{{{{ \Psi}_i}} {{{ \beta}^i}} {{{ \alpha}_{,0}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{-1}} {{{ \Psi}_i}} {{{ \beta}^i}} {{{ \beta}^j}} {{{ \alpha}_{,j}}} {{\frac{1}{{\alpha}^{2}}}}} + {{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{K}} {{{ \Psi}_i}} {{{ \beta}^i}}} + {{{{ \Pi}_{,i}}} {{{ \beta}^i}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \bar{\Gamma}}^i}}} + {{{-1}} {{{ \Psi}_i}} {{{{ \beta}^i}_{,0}}} {{\frac{1}{\alpha}}}} + {{{{ \Psi}_j}} {{{ \beta}^i}} {{{{ \beta}^j}_{,i}}} {{\frac{1}{\alpha}}}} + {{{-1}} {{f}} {{\alpha}}}}$
-<br>
-substitute	${{ \bar{\Gamma}}^i} = {{{{ \Gamma}^i} + {{{{{\frac{1}{{\alpha}^{3}}}} {{{ \beta}^i}}}} {{({{{{ \alpha}_{,0}} - {{{{ \beta}^j}} {{{ \alpha}_{,j}}}}} + {{{{\alpha}^{2}}} {{K}}}})}}}} - {{{\frac{1}{{\alpha}^{2}}}} {{({{{{{ \beta}^i}_{,0}} - {{{{ \beta}^j}} {{{{ \beta}^i}_{,j}}}}} + {{{{{\alpha}} \cdot {{{ \alpha}_{,j}}}}} {{{{ \gamma}^i}^j}}}})}}}}$
-<br>
-${{ \Pi}_{,0}} = {{{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{{ \Pi}_{,i}}} {{{ \beta}^i}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \Gamma}^i}}} + {{{{ \Psi}_i}} {{{ \alpha}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{f}} {{\alpha}}}}$
-<br>
-$\frac{d}{dx^0} \Pi = $	${{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \Gamma}^i}}} + {{{{ \Psi}_i}} {{{ \alpha}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{f}} {{\alpha}}}$
-<br>
-
-<br>
-collected:
-<br>
-${{ \left[\begin{matrix}  \Phi \\  \Pi \\  { \Psi}_i\end{matrix}\right]}_{,0}} = {\left[\begin{matrix}  {{{\Pi}} \cdot {{\alpha}}} + {{{{ \beta}^i}} {{{ \Psi}_i}}} \\  {{{K}} {{\Pi}} \cdot {{\alpha}}} + {{{{ \Pi}_{,i}}} {{{ \beta}^i}}} + {{{\alpha}} \cdot {{{{ \Psi}_i}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{\alpha}} \cdot {{{ \Psi}_i}} {{{ \Gamma}^i}}} + {{{{ \Psi}_i}} {{{ \alpha}_{,j}}} {{{{ \gamma}^i}^j}}} + {{{-1}} {{f}} {{\alpha}}} \\  {{{{{ \beta}^j}} {{{{ \Phi}_{,i}}_{,j}}}} + {{{{ \Psi}_j}} {{{{ \beta}^j}_{,i}}}}} + {{\left( {{\alpha}} \cdot {{\Pi}}\right)}_{,i}}\end{matrix}\right]}$
-<br>
-
 <br>

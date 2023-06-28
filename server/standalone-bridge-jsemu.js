@@ -1,5 +1,7 @@
 // local / emulated lua in javascript ?
 
+import {init, fail, serverBase} from '/server/standalone.js';
+
 function EmulatedServer() {
 }
 EmulatedServer.prototype = {
@@ -92,10 +94,10 @@ function FakeFile:setvbuf() end
 function FakeFile:write() end
 
 function SymmathHTTP:setupSandbox()
-	
+
 	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
 	self.env = {}
-	
+
 
 	for k,v in pairs(_G) do
 		self.env[k] = v
@@ -131,7 +133,7 @@ function SymmathHTTP:setupSandbox()
 			self.buffer = self.buffer .. tostring((select(i, ...)))
 		end
 	end
-	
+
 	function self.env.io.read(...)
 		return self.env.io.stdin:read(...)
 	end
@@ -139,11 +141,11 @@ function SymmathHTTP:setupSandbox()
 	function self.env.io.write(...)
 		return self.env.io.stdout:write(...)
 	end
-	
+
 	function self.env.io.flush(...)
 		return self.env.io.stdout:flush(...)
 	end
-	
+
 	function self.env.print(...)
 		for i=1,select('#', ...) do
 			if i > 1 then self.env.io.write'\t' end
@@ -174,20 +176,20 @@ function SymmathHTTP:runCell(cell)
 	self:log(2, showcode(cell.input))
 	self.env.io.stdout.buffer = ''
 	cell.haserror = nil
-	
+
 	-- TODO use this in cell env print() and io.write()
-	currentBlockNewLineSymbol = 
+	currentBlockNewLineSymbol =
 		cell.outputtype == 'html' and '<br>\n'
 		or '\n'
-	
+
 	xpcall(function()
 
 		-- put a ; at the end to suppress assignment output.  sound familiar?
 		local suppressOutput = cell.input:sub(-1) == ';'
-	self:log(1, 'suppressOutput = ', suppressOutput) 
-		
+	self:log(1, 'suppressOutput = ', suppressOutput)
+
 		local results
-				
+
 		-- first try loading the code with 'return ' in front - just like lua interpreter
 		-- but don't if we are suppressing output -- because the 'return' is only used for just that
 		if not suppressOutput then
@@ -203,7 +205,7 @@ function SymmathHTTP:runCell(cell)
 		if not results then
 			-- first strip out comments, then search for =
 			local findlhs = cell.input
-			
+
 			-- strip out block comments
 			while true do
 				local before, equals, afterstart = findlhs:match'(.-)%-%-%[(=*)%[(.*)'
@@ -213,7 +215,7 @@ self:log(5, "block comment start equals: "..equals)
 self:log(5, "after block comment start: "..afterstart)
 				local comment, aftercomment = afterstart:match('(.-)%]'..equals..'%](.*)')
 self:log(5, "comment: "..comment)
-self:log(5, "aftercomment: "..aftercomment)				
+self:log(5, "aftercomment: "..aftercomment)
 				if not comment then
 					-- error: unfinished long comment
 				else
@@ -221,7 +223,7 @@ self:log(5, "aftercomment: "..aftercomment)
 self:log(5, "cellinput is now "..findlhs)
 				end
 			end
-			
+
 			-- strip out single-line comments
 			findlhs = findlhs:gsub('%-%-[^\r\n]*', '')
 
@@ -238,7 +240,7 @@ self:log(5, "cellinput is now "..findlhs)
 				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
 				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 				self:log(2, "run() successfully handled assign-stmt")
-			
+
 				if not suppressOutput then
 					--[[ rely on return tostring()
 					-- try to append the lhs's tostring to the output
@@ -256,7 +258,7 @@ self:log(5, "cellinput is now "..findlhs)
 						results = table.pack(assert(load("return "..lhs, nil, nil, self.env))())
 						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
-					end)				
+					end)
 					--]]
 					--[[ rely on print() (handles mult ret better)
 					local pushOutput = self.env.io.stdout.buffer
@@ -273,7 +275,7 @@ self:log(5, "cellinput is now "..findlhs)
 						results = self.env.io.stdout.buffer
 					end, function(err)
 					end)
-				
+
 					self.env.io.stdout.buffer = pushOutput
 					--]]
 				end
@@ -307,7 +309,7 @@ self:log(5, "cellinput is now "..findlhs)
 				)
 			end
 		end
-	
+
 	end, function(err)
 		self:log(0, 'got error '..err)
 		cell.output = err..'\n'..debug.traceback()
@@ -343,7 +345,7 @@ lua.outputBuffer = '';
 		fail
 	*/
 	getCells : function(args) {
-		args.done(JSON.stringify(cells));
+		args.done(JSON.stringify(serverBase.cells));
 	},
 
 	/*
@@ -389,7 +391,7 @@ lua.outputBuffer = '';
 		cell.input = args.cellinput;
 		//here's where the lua interpretter comes in
 
-		
+
 		var output = '';
 		lua.capture({
 			callback : function() {
@@ -419,7 +421,7 @@ console.log("error", s);
 			}
 		});
 		cell.output = output;
-	
+
 		lua.capture({
 			callback : function() {
 				lua.execute("orig_print(currentRunningCell.haserror and 'true' or 'false')");
@@ -534,15 +536,27 @@ console.log("getWorksheet", args);
 			},
 			output : function(s) {
 				result += s + '\n';
-console.log("output", s);			
+console.log("output", s);
 			},
 			error : function(s) {
-console.log("error", s);			
+console.log("error", s);
 			}
 		});
-console.log("getWorksheet results", result);		
+console.log("getWorksheet results", result);
 		args.done(result);
 	}
 };
 
-server = new EmulatedServer();
+//TODO this is in common with the otehr standalone-bridge
+//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
+import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
+tryToFindMathJax.init({
+	done : () => {
+		init({
+			server : new EmulatedServer(),
+			root : document.body,
+			worksheets : window.symmathWorksheets,
+		});
+	},
+	fail : fail,
+});

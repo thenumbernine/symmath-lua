@@ -4,24 +4,11 @@
 		<meta charset='utf8'/>
 		<title>Symmath Worksheet - <?=worksheetFilename?></title>
 		<link rel="stylesheet" href="/server/standalone.css"/>
-		<script type="text/javascript" src="/server/jquery-3.6.0.min.js"></script>
-		<!-- link rel="stylesheet" href="/server/jquery-linedtextarea.css"/ -->
-		<!-- script type="text/javascript" src="/server/jquery-linedtextarea.js"></script -->
 		<script type="text/javascript" src="/server/showdown-1.9.1.min.js"></script>
-		<script type="text/javascript" src="/server/tryToFindMathJax.js"></script>
-		<script type="text/javascript" src="/server/standalone-bridge-ajax.js"></script>
-		<script type="text/javascript" src="/server/standalone.js"></script>
-		<script>
+		<script type="text/javascript">
 worksheetFilename = "<?=worksheetFilename?>";
 symmathDir = '.';	//standalone.lua includes SYMMATH_PATH in its search path
-
-//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
-$(document).ready(function() {
-	tryToFindMathJax.init({
-		done : function() {
-			init({
-				root : document.body,
-				worksheets : [
+symmathWorksheets = [
 <?
 local sep = ''
 local dir = symmathPath..'/tests/'
@@ -32,15 +19,10 @@ for i,f in ipairs(require 'ext.file'(dir):rdir()) do
 	end
 end
 ?>
-				]
-			});
-		},
-		fail : fail
-	});
-});
+];
 		</script>
+		<script type="module" src="/server/standalone-bridge-ajax.js" defer></script>
 	</head>
 	<body>
 	</body>
 </html>
-

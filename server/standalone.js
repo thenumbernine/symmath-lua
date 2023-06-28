@@ -1,32 +1,9 @@
-var mjid = 0;
-var cells = [];
-var ctrls = [];
-var worksheetDiv;
-var lastAddNewCellButton;
+import {DOM, assertExists, removeFromParent, merge, show, hide} from '/js/util.js';
 
-//put all menu buttons here.  or TODO just use jquery?
-var menuButtons = [];
-
-//use this for disable/enable'ing all controls while waiting for ajax responses
-// to prevent the user from issuing multiple commands at once and causing the server/client to go out of sync
-function setAllControlsEnabled(enabled) {
-	$.each(menuButtons, function(i, button) {
-		button.prop('disabled', !enabled);
-	});
-	$.each(ctrls, function(i, ctrl) {
-		ctrl.setEnabled(enabled);
-	});
-	if (lastAddNewCellButton) {
-		lastAddNewCellButton.prop('disabled', !enabled);
-	}
-}
-
-function findCtrlForUID(uid) {
-	for (var i = 0; i < cells.length; ++i) {
-		if (cells[i].uid == uid) {
-			return ctrls[i];
-		}
-	}
+function fail(e) {
+	console.log(arguments);
+	console.log(e);
+	throw 'failed';
 }
 
 // https://docs.mathjax.org/en/latest/web/typeset.html#typeset-async
@@ -38,376 +15,401 @@ function typeset(code) {
 	return MathJax.startup.promise;
 }
 
-function CellControl(
-	cell, 
-	nextSibling
-) {
-	var ctrl = this;
-	ctrl.cell = cell;
+class ServerBase {
+	constructor() {
+		this.mjid = 0;
+		this.cells = [];
+		this.ctrls = [];
+		//this.worksheetDiv;
+		//this.lastAddNewCellButton;
+		//this.server;
+
+		//put all menu buttons here.  or TODO just use jquery?
+		this.menuButtons = [];
+	}
+
+	//use this for disable/enable'ing all controls while waiting for ajax responses
+	// to prevent the user from issuing multiple commands at once and causing the server/client to go out of sync
+	setAllControlsEnabled(enabled) {
+		this.menuButtons.forEach(button => {
+			button.disabled = !enabled;
+		});
+		this.ctrls.forEach(ctrl => {
+			ctrl.setEnabled(enabled);
+		});
+		if (this.lastAddNewCellButton) {
+			this.lastAddNewCellButton.disabled = !enabled;
+		}
+	}
 	
-	ctrl.inputTextArea = $('<textarea>', {
-		//class : 'inputTextArea',
-		text : ctrl.cell.input
-	});
-
-/* can't do this immediatley or the javascript locks up
-ctrl.inputTextArea.linedtextarea();
-*/
-/* looks alright ... adds an extra \n to all text areas ... numbers are an extra column wider than they need to be ...
-... seems numbers overflow when i hide divs 
-... and when i resize textarea rows, there's no way to resize numbers, unless i go through and redo them
-... hmm, making my own number system might be better
-setTimeout(function() {	
-	ctrl.inputTextArea.linedtextarea();
-}, 0);
-*/
-	ctrl.inputTextArea.addClass('inputTextArea');
-	ctrl.inputTextArea.attr('autocapitalize', 'off');		
-	ctrl.inputTextArea.attr('autocomplete', 'off');		
-	ctrl.inputTextArea.attr('autocorrect', 'off');		
-	ctrl.inputTextArea.attr('spellcheck', 'false');
-	var updateTextAreaLines = function() {
-		var numlines = ctrl.inputTextArea.val().split('\n').length;
-		ctrl.inputTextArea.attr('rows', numlines);	// + 1);
-	};
-	if (ctrl.cell.hidden) ctrl.inputTextArea.hide();
-	updateTextAreaLines();
-	ctrl.inputTextArea.keydown(function(e) {
-		if (e.keyCode == 9) {
-			e.preventDefault();
-			if (this.selectionStart == this.selectionEnd) {
-				//I forget what website I got this from, but it's not working in Firefox
-				document.execCommand("insertText", false, '\t');
-				//...so instead...
-       			//https://stackoverflow.com/questions/6140632/how-to-handle-tab-in-textarea
-				// ... but this doesn't work with the undo command ...
-				/*
-				var pos = this.selectionStart;
-				var value = $(this).val();
-				$(this).val(value.substring(0, pos) + "\t" + value.substring(pos));
-				this.selectionStart = this.selectionEnd = pos + 1;
-				*/
-			} else {
-				var selStart = this.selectionStart;
-				var selEnd = this.selectionEnd;
-				var text = $(this).val();
-				while (selStart > 0 && text[selStart-1] != '\n') {
-					selStart--;
-				}
-				while (selEnd > 0 && text[selEnd-1]!='\n' && selEnd < text.length) {
-					selEnd++;
-				}
-
-				var lines = text.substr(selStart, selEnd - selStart).split('\n');
-
-				for (var i=0; i<lines.length; i++) {
-					if (i==lines.length-1 && lines[i].length==0) {
-						continue;
-					}
-
-					if (e.shiftKey)
-					{
-						if (lines[i].startsWith('\t'))
-							lines[i] = lines[i].substr(1);
-						else if (lines[i].startsWith("    "))
-							lines[i] = lines[i].substr(4);
-					} else {
-						lines[i] = "\t" + lines[i];
-					}
-				}
-				lines = lines.join('\n');
-
-				this.selectionStart = selStart;
-				this.selectionEnd = selEnd;
-				document.execCommand("insertText", false, lines);
-				this.selectionStart = selStart;
-				this.selectionEnd = selStart + lines.length;
+	findCtrlForUID(uid) {
+		for (let i = 0; i < this.cells.length; ++i) {
+			if (this.cells[i].uid == uid) {
+				return this.ctrls[i];
 			}
-		} else if (e.keyCode == 13) {
-			if (e.shiftKey) {
+		}
+	}
+}
+
+const serverBase = new ServerBase();
+
+class CellControl {
+	constructor(
+		cell,
+		nextSibling
+	) {
+		let ctrl = this;
+		ctrl.cell = cell;
+		ctrl.inputTextArea = DOM('textarea', {
+			//class : 'inputTextArea',
+			value : ctrl.cell.input,
+		});
+
+	/* can't do this immediatley or the javascript locks up
+	ctrl.inputTextArea.linedtextarea();
+	*/
+	/* looks alright ... adds an extra \n to all text areas ... numbers are an extra column wider than they need to be ...
+	... seems numbers overflow when i hide divs
+	... and when i resize textarea rows, there's no way to resize numbers, unless i go through and redo them
+	... hmm, making my own number system might be better
+	setTimeout(function() {
+		ctrl.inputTextArea.linedtextarea();
+	}, 0);
+	*/
+		ctrl.inputTextArea.classList.add('inputTextArea');
+		ctrl.inputTextArea.autocapitalize = 'off';
+		ctrl.inputTextArea.autocomplete = 'off';
+		ctrl.inputTextArea.autocorrect = 'off';
+		ctrl.inputTextArea.spellcheck = false;
+		let updateTextAreaLines = function() {
+			let numlines = ctrl.inputTextArea.value.split('\n').length;
+			ctrl.inputTextArea.rows = numlines;	// + 1);
+		};
+		if (ctrl.cell.hidden) hide(ctrl.inputTextArea);
+		updateTextAreaLines();
+		ctrl.inputTextArea.addEventListener('keydown', e => {
+			const thiz = ctrl.inputTextArea;
+			if (e.keyCode == 9) {
 				e.preventDefault();
-				
-				setAllControlsEnabled(false);
-				ctrl.run({
-					done : function() {
-						//...annddd... select the next cell
-console.log("after run response");
-console.log("for cell", ctrl.cell);
-						for (var j = 0; j < cells.length; ++j) {
-							if (cells[j].uid == ctrl.cell.uid) {
-								//have to enable before calling jquery.focus()
-								setAllControlsEnabled(true);
-								
-								if (j < cells.length-1) {
-console.log("focusing on inputTextArea after number ", j); 
-									ctrls[j+1].setHidden({hidden:false});
-									ctrls[j+1].inputTextArea.focus();
-								} else {
-									// if it's the last cell then ... create a new cell and highlight it?
-									lastAddNewCellButton.click();
-								}
-								return;
-							}
+				if (thiz.selectionStart == thiz.selectionEnd) {
+					//I forget what website I got this from, but it's not working in Firefox
+					document.execCommand("insertText", false, '\t');
+					//...so instead...
+					//https://stackoverflow.com/questions/6140632/how-to-handle-tab-in-textarea
+					// ... but this doesn't work with the undo command ...
+					/*
+					let pos = thiz.selectionStart;
+					let value = thiz.value;
+					thiz.value = value.substring(0, pos) + "\t" + value.substring(pos);
+					thiz.selectionStart = thiz.selectionEnd = pos + 1;
+					*/
+				} else {
+					let selStart = thiz.selectionStart;
+					let selEnd = thiz.selectionEnd;
+					let text = thiz.value;
+					while (selStart > 0 && text[selStart-1] != '\n') {
+						selStart--;
+					}
+					while (selEnd > 0 && text[selEnd-1]!='\n' && selEnd < text.length) {
+						selEnd++;
+					}
+
+					let lines = text.substr(selStart, selEnd - selStart).split('\n');
+
+					for (let i=0; i<lines.length; i++) {
+						if (i==lines.length-1 && lines[i].length==0) {
+							continue;
 						}
 
-						setAllControlsEnabled(true);
-						//TODO error: couldn't find cell that we just ran
+						if (e.shiftKey)
+						{
+							if (lines[i].startsWith('\t'))
+								lines[i] = lines[i].substr(1);
+							else if (lines[i].startsWith("    "))
+								lines[i] = lines[i].substr(4);
+						} else {
+							lines[i] = "\t" + lines[i];
+						}
+					}
+					lines = lines.join('\n');
+
+					thiz.selectionStart = selStart;
+					thiz.selectionEnd = selEnd;
+					document.execCommand("insertText", false, lines);
+					thiz.selectionStart = selStart;
+					thiz.selectionEnd = selStart + lines.length;
+				}
+			} else if (e.keyCode == 13) {
+				if (e.shiftKey) {
+					e.preventDefault();
+
+					serverBase.setAllControlsEnabled(false);
+					ctrl.run({
+						done : () => {
+							//...annddd... select the next cell
+	console.log("after run response");
+	console.log("for cell", ctrl.cell);
+							for (let j = 0; j < serverBase.cells.length; ++j) {
+								if (serverBase.cells[j].uid == ctrl.cell.uid) {
+									//have to enable before calling jquery.focus()
+									serverBase.setAllControlsEnabled(true);
+
+									if (j < serverBase.cells.length-1) {
+	console.log("focusing on inputTextArea after number ", j);
+										serverBase.ctrls[j+1].setHidden({hidden:false});
+										serverBase.ctrls[j+1].inputTextArea.focus();
+									} else {
+										// if it's the last cell then ... create a new cell and highlight it?
+										serverBase.lastAddNewCellButton.click();
+									}
+									return;
+								}
+							}
+
+							serverBase.setAllControlsEnabled(true);
+							//TODO error: couldn't find cell that we just ran
+						},
+						fail : e => {
+							setAllControlsEnabled(true);
+							fail(e);
+						}
+					});
+					return;
+				}
+			}
+		});
+		ctrl.inputTextArea.addEventListener('keyup', e => {
+			updateTextAreaLines();
+		});
+
+		// this contains the add-new-button, the rhs-ctrls, the input, and the output
+		ctrl.div = DOM('div');
+		ctrl.div.classList.add('ctrlDiv');
+
+		let rhsCtrlDiv = DOM('span');
+		rhsCtrlDiv.classList.add('rhsCtrlDiv');
+
+
+		let addAndRhsDiv = DOM('div', {
+			appendTo : ctrl.div,
+		});
+		addAndRhsDiv.classList.add('addAndRhsDiv');
+
+		// 'add new cell before'
+		ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, addAndRhsDiv);
+		//ctrl.div.append(DOM('hr'));
+
+		//ctrl.div.append(rhsCtrlDiv);
+		addAndRhsDiv.prepend(rhsCtrlDiv);
+
+
+
+		ctrl.toggleHiddenButton = DOM('button', {
+			text : 'v',
+			click : e => {
+				ctrl.toggleHiddenButton.disabled = true;
+				ctrl.setHidden({
+					hidden : !ctrl.cell.hidden,
+					done : () => {
+						ctrl.toggleHiddenButton.disabled = false;
+						// don't bother enable/disable all controls, only this one? or only the expand/collapse ones?
 					},
-					fail : function() {
-						setAllControlsEnabled(true);
+					fail : () => {
+						ctrl.toggleHiddenButton.disabled = false;
 						fail();
 					}
 				});
-				return;
 			}
-		}
-	});
-	ctrl.inputTextArea.keyup(function(e) {
-		updateTextAreaLines();
-	});
+		});
+		rhsCtrlDiv.appendChild(ctrl.toggleHiddenButton);
 
-	// this contains the add-new-button, the rhs-ctrls, the input, and the output
-	ctrl.div = $('<div>', {
-		class : 'ctrlDiv'
-	});
-
-	var rhsCtrlDiv = $('<span>', {
-		class : 'rhsCtrlDiv'
-	});
-
-
-	var addAndRhsDiv = $('<div>', {
-		class : 'addAndRhsDiv'
-	});
-	ctrl.div.append(addAndRhsDiv);
-
-	// 'add new cell before'
-	ctrl.addNewCellButton = createAddNewCellButton(ctrl.cell, addAndRhsDiv);
-	//ctrl.div.append($('<hr>'));
-	
-	//ctrl.div.append(rhsCtrlDiv);
-	addAndRhsDiv.prepend(rhsCtrlDiv);
-
-
-
-	ctrl.toggleHiddenButton = $('<button>', {
-		text : 'v',
-		click : function() {
-			ctrl.toggleHiddenButton.prop('disabled', true);
-			ctrl.setHidden({
-				hidden : !ctrl.cell.hidden,
-				done : function(){
-					ctrl.toggleHiddenButton.prop('disabled', false);
-					// don't bother enable/disable all controls, only this one? or only the expand/collapse ones?
-				},
-				fail : function() {
-					ctrl.toggleHiddenButton.prop('disabled', false);
-					fail();
-				}
-			});
-		}
-	});
-	rhsCtrlDiv.append(ctrl.toggleHiddenButton);
-
-	ctrl.runUntilButton = $('<button>', {
-		text : '...▶',
-		click : function() {
-			var endIndex;
-			for (var i = 0; i < ctrls.length; ++i) {
-				if (ctrls[i] == ctrl) {
-					endIndex = i;
-					break;
-				}
-			}
-			if (!endIndex) throw "can't find this ctrl in the ctrls"
-
-			setAllControlsEnabled(false);
-			writeAllCells({
-				done : function() {
-					var iterate;
-					iterate = function(i) {
-						if (i > endIndex
-							|| ctrls[i].cell.outputtype == 'stop'
-						) {
-							setAllControlsEnabled(true);
-							//done
-						} else {
-							ctrls[i].run({
-								done : function() {
-									iterate(++i);
-								},
-								fail : function() {
-									iterate(++i);
-								}
-							});
-						}
-					};
-					iterate(0);
-				},
-				fail : function() {
-					setAllControlsEnabled(true);
-					//TODO fail
-					fail();
-				}
-			});
-		}
-	});
-	rhsCtrlDiv.append(ctrl.runUntilButton);
-
-	ctrl.runButton = $('<button>', {
-		text : '▶',
-		click : function() {
-			setAllControlsEnabled(false);
-			ctrl.run({
-				fail : function() {
-					setAllControlsEnabled(true);
-					fail();
-				},
-				done : function() {
-					setAllControlsEnabled(true);
-				}
-			});
-		}
-	});
-	rhsCtrlDiv.append(ctrl.runButton);
-
-	ctrl.runAfterButton = $('<button>', {
-		text : '▶...',
-		click : function() {
-			var startIndex;
-			for (var i = 0; i < ctrls.length; ++i) {
-				if (ctrls[i] == ctrl) {
-					startIndex = i;
-					break;
-				}
-			}
-			if (!startIndex) throw "can't find this ctrl in the ctrls"
-
-			setAllControlsEnabled(false);
-			writeAllCells({
-				done : function() {
-					var iterate;
-					iterate = function(i) {
-						if (i >= cells.length
-							|| ctrls[i].cell.outputtype == 'stop'
-						) {
-							setAllControlsEnabled(true);
-							//done
-						} else {
-							ctrls[i].run({
-								done : function() {
-									iterate(++i);
-								},
-								fail : function() {
-									iterate(++i);
-								}
-							});
-						}
-					};
-					iterate(startIndex);
-				},
-				fail : function() {
-					setAllControlsEnabled(true);
-					//TODO fail
-					fail();
-				}
-			});
-		}
-	});
-	rhsCtrlDiv.append(ctrl.runAfterButton);
-
-
-
-	ctrl.setOutputTypeSelect = $('<select>', {
-		html : $.map(['text', 'html', 'latex', 'stop'], function(s,i) {
-			return '<option>'+s+'</option>'
-		}).join(''),
-		change : function(e) {
-			ctrl.setOutputTypeSelect.prop('disabled', true);
-			var val = this.value;
-
-console.log("setting output type to ", val);
-			server.setOutputType({
-				uid : ctrl.cell.uid,
-				outputtype : this.value,
-				done : function(celldata) {
-					//only update this cell
-					// no need to disable controls too? just this control?
-					ctrl.setOutputTypeSelect.prop('disabled', false);
-					
-					ctrl.refreshJustThisCell(celldata);
-console.log("...successfully set output type to ", ctrl.cell.outputtype);
-				},
-				fail : function() {
-					ctrl.setOutputTypeSelect.prop('disabled', false);
-					fail();
-				}
-			});
-		}
-	});
-	ctrl.setOutputTypeSelect.val(ctrl.cell.outputtype);
-	rhsCtrlDiv.append(ctrl.setOutputTypeSelect);
-
-	ctrl.removeCellButton = $('<button>', {
-		text : '-',
-		click : function() {
-			setAllControlsEnabled(false);
-			
-			server.remove({
-				uid : ctrl.cell.uid,
-				done : function() {
-					/* update all? * /
-					getAllCellsFromServerAndRebuildHtml();
-					/**/
-					/* update only client changes... */
-					for (var j = 0; j < cells.length; ++j) {
-						if (cells[j].uid == ctrl.cell.uid) {
-							ctrls[j].div.remove();
-							cells.splice(j, 1);
-							ctrls.splice(j, 1);
-							// after removing ...
-							if (j < cells.length) {
-								ctrls[j].inputTextArea.focus();
-							}
-							
-							setAllControlsEnabled(true);
-							return;
-						}
+		ctrl.runUntilButton = DOM('button', {
+			text : '...▶',
+			click : e => {
+				let endIndex;
+				for (let i = 0; i < serverBase.ctrls.length; ++i) {
+					if (serverBase.ctrls[i] == ctrl) {
+						endIndex = i;
+						break;
 					}
-					//TODO error here, couldn't find the cell
-					setAllControlsEnabled(true);
-					/**/
-				},
-				fail : function() {
-					setAllControlsEnabled(true);
-					fail();
 				}
-			});
-		}
-	});
-	rhsCtrlDiv.append(ctrl.removeCellButton);
+				if (!endIndex) throw "can't find this ctrl in the ctrls"
 
-	var ioDiv = $('<div>', {
-		class : 'ioDiv',
-	});
-	ctrl.div.append(ioDiv);
+				serverBase.setAllControlsEnabled(false);
+				writeAllCells({
+					done : () => {
+						const iterate = i => {
+							if (i > endIndex
+								|| serverBase.ctrls[i].cell.outputtype == 'stop'
+							) {
+								serverBase.setAllControlsEnabled(true);
+								//done
+							} else {
+								serverBase.ctrls[i].run({
+									done : () => { iterate(++i); },
+									fail : () => { iterate(++i); }
+								});
+							}
+						};
+						iterate(0);
+					},
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
+						//TODO fail
+						fail();
+					},
+				});
+			}
+		});
+		rhsCtrlDiv.append(ctrl.runUntilButton);
 
-	ioDiv.append(ctrl.inputTextArea);
+		ctrl.runButton = DOM('button', {
+			text : '▶',
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+				ctrl.run({
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
+						fail();
+					},
+					done : () => {
+						serverBase.setAllControlsEnabled(true);
+					}
+				});
+			}
+		});
+		rhsCtrlDiv.append(ctrl.runButton);
 
-	var outputID = 'mj'+(++mjid);
-	ctrl.outputDiv = $('<div>', {
-		id : outputID,
-		class : 'outputDiv'
-	});
-	ioDiv.append(ctrl.outputDiv);
-	ctrl.refreshOutput();
+		ctrl.runAfterButton = DOM('button', {
+			text : '▶...',
+			click : e => {
+				let startIndex;
+				for (let i = 0; i < serverBase.ctrls.length; ++i) {
+					if (serverBase.ctrls[i] == ctrl) {
+						startIndex = i;
+						break;
+					}
+				}
+				if (!startIndex) throw "can't find this ctrl in the ctrls"
+
+				serverBase.setAllControlsEnabled(false);
+				writeAllCells({
+					done : () => {
+						const iterate = i => {
+							if (i >= serverBase.cells.length
+								|| serverBase.ctrls[i].cell.outputtype == 'stop'
+							) {
+								serverBase.setAllControlsEnabled(true);
+								//done
+							} else {
+								serverBase.ctrls[i].run({
+									done : () => { iterate(++i); },
+									fail : () => { iterate(++i); },
+								});
+							}
+						};
+						iterate(startIndex);
+					},
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
+						//TODO fail
+						fail();
+					}
+				});
+			}
+		});
+		rhsCtrlDiv.appendChild(ctrl.runAfterButton);
+
+
+
+		ctrl.setOutputTypeSelect = DOM('select', {
+			html : ['text', 'html', 'latex', 'stop']
+				.map((s,i) => {
+					return '<option>'+s+'</option>'
+				}).join(''),
+			change : e => {
+				ctrl.setOutputTypeSelect.disabled = true;
+				const val = ctrl.setOutputTypeSelect.value;
+
+	console.log("setting output type to ", val);
+				serverBase.server.setOutputType({
+					uid : ctrl.cell.uid,
+					outputtype : this.value,
+					done : celldata => {
+						//only update this cell
+						// no need to disable controls too? just this control?
+						ctrl.setOutputTypeSelect.disabled = false;
+
+						ctrl.refreshJustThisCell(celldata);
+	console.log("...successfully set output type to ", ctrl.cell.outputtype);
+					},
+					fail : () => {
+						ctrl.setOutputTypeSelect.disabled = false;
+						fail();
+					},
+				});
+			},
+		});
+		ctrl.setOutputTypeSelect.value = ctrl.cell.outputtype;
+		rhsCtrlDiv.append(ctrl.setOutputTypeSelect);
+
+		ctrl.removeCellButton = DOM('button', {
+			text : '-',
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+
+				serverBase.server.remove({
+					uid : ctrl.cell.uid,
+					done : () => {
+						/* update all? * /
+						getAllCellsFromServerAndRebuildHtml();
+						/**/
+						/* update only client changes... */
+						for (let j = 0; j < serverBase.cells.length; ++j) {
+							if (serverBase.cells[j].uid == ctrl.cell.uid) {
+								serverBase.ctrls[j].div.remove();
+								serverBase.cells.splice(j, 1);
+								serverBase.ctrls.splice(j, 1);
+								// after removing ...
+								if (j < serverBase.cells.length) {
+									serverBase.ctrls[j].inputTextArea.focus();
+								}
+
+								serverBase.setAllControlsEnabled(true);
+								return;
+							}
+						}
+						//TODO error here, couldn't find the cell
+						serverBase.setAllControlsEnabled(true);
+						/**/
+					},
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
+						fail();
+					},
+				});
+			},
+		});
+		rhsCtrlDiv.appendChild(ctrl.removeCellButton);
+
+		const ioDiv = DOM('div', {class:'ioDiv', appendTo:ctrl.div});
+
+		ioDiv.append(ctrl.inputTextArea);
+
+		const outputID = 'mj'+(++serverBase.mjid);
+		ctrl.outputDiv = DOM('div', {
+			id : outputID,
+			class : 'outputDiv',
+			appendTo : ioDiv,
+		});
+		ctrl.refreshOutput();
+
+		nextSibling.parentNode.insertBefore(ctrl.div, nextSibling);
+	}
 	
-	ctrl.div.insertBefore(nextSibling);
-}
-CellControl.prototype = {
-	setEnabled : function(enabled) {
-		var ctrl = this;
-		$.each([
+	setEnabled(enabled) {
+		let ctrl = this;
+		[
 			ctrl.addNewCellButton,
 			ctrl.toggleHiddenButton,
 			ctrl.runUntilButton,
@@ -416,74 +418,75 @@ CellControl.prototype = {
 			ctrl.setOutputTypeSelect,
 			ctrl.removeCellButton,
 			ctrl.inputTextArea
-		], function(i, button) {
-			button.prop('disabled', !enabled);
+		].forEach(button => {
+			button.disabled = !enabled;
 		});
-	},
+	}
 
 	//refresh the contents of the ctrl.outputDiv based on the cell.output
-	refreshOutput : function() {
-		var ctrl = this;
+	refreshOutput() {
+		let ctrl = this;
 
-		var outputtype = ctrl.cell.outputtype;
+		let outputtype = ctrl.cell.outputtype;
 		if (outputtype != 'stop' && ctrl.cell.haserror) outputtype = 'text';
-console.log("refreshing output type for", outputtype);
-		
-		var outputstr = ctrl.cell.output;
+//console.log("refreshing output type for", outputtype);
+
+		let outputstr = ctrl.cell.output;
 		if (outputtype == 'html') {
-			ctrl.outputDiv.html(outputstr);
-			typeset(() => ctrl.outputDiv);
+			ctrl.outputDiv.innerHTML = outputstr;
+//console.log('outputting html', ctrl.outputDiv);
+			typeset(() => [ctrl.outputDiv]);
 		//should there even be a 'latex' type? or just 'html' and mathjax?
 		} else if (outputtype == 'latex') {
-			ctrl.outputDiv.html(outputstr);
-			typeset(() => ctrl.outputDiv);
+			ctrl.outputDiv.innerHTML = outputstr;
+//console.log('outputting latex', ctrl.outputDiv);
+			typeset(() => [ctrl.outputDiv]);
 		} else if (outputtype == 'stop') {
 			outputstr = '<hr><hr><hr>';
-			ctrl.outputDiv.html(outputstr);
+			ctrl.outputDiv.innerHTML = outputstr;
 		} else {
-			ctrl.outputDiv.html('');
+			ctrl.outputDiv.innerHTML = '';
 			if (outputtype != 'text') {
 				outputstr = 'UNKNOWN OUTPUT TYPE: '+outputtype+'\n';
 			}
-			ctrl.outputDiv.append($('<pre>', {text : outputstr}));
+			ctrl.outputDiv.append(DOM('pre', {text : outputstr}));
 		}
-	
+
 		if (outputstr.length == 0) {
-			ctrl.outputDiv.hide();
+			hide(ctrl.outputDiv);
 		} else {
-			ctrl.outputDiv.show();
+			show(ctrl.outputDiv);
 		}
-	},
+	}
 
 	//replace the cell in the cells array with the new celldata JSON
 	//and refresh the output
-	refreshJustThisCell : function(celldata) {
-		var ctrl = this;
+	refreshJustThisCell(celldata) {
+		let ctrl = this;
 
-		var newcell = $.parseJSON(celldata);
-		cell = newcell;
+		let newcell = JSON.parse(celldata);
 		ctrl.cell = newcell;
 
-		for (var i = 0; i < cells.length; ++i) {
-			if (cells[i].uid == ctrl.cell.uid) {
-				cells[i] = newcell;
+		for (let i = 0; i < serverBase.cells.length; ++i) {
+			if (serverBase.cells[i].uid == ctrl.cell.uid) {
+				serverBase.cells[i] = newcell;
 			}
 		}
 		ctrl.refreshOutput();
-	},
+	}
 
 	//run the cell: send cell.input to the server, get back cell.output, and build the outputDiv
-	run : function(args) {
+	run(args) {
 		args = args || {};
-		var ctrl = this;
-		
-		ctrl.div.css("border", "3px solid red");
+		let ctrl = this;
 
-		server.run({
+		ctrl.div.style.border = "3px solid red";
+
+		serverBase.server.run({
 			uid : ctrl.cell.uid,
-			cellinput : ctrl.inputTextArea.val(),
+			cellinput : ctrl.inputTextArea.value,
 			done : function(celldata) {
-				ctrl.div.css("border", "");
+				ctrl.div.style.border = "";
 				/* update all? * /
 				getAllCellsFromServerAndRebuildHtml({
 					done : args.done
@@ -495,12 +498,12 @@ console.log("refreshing output type for", outputtype);
 				if (args.done) args.done();
 				/**/
 			},
-			fail : function() {
-				ctrl.div.css("border", "");
-				fail();
+			fail : e => {
+				ctrl.div.style.border = "";
+				fail(e);
 			}
 		});
-	},
+	}
 
 	/*
 	args:
@@ -510,107 +513,107 @@ console.log("refreshing output type for", outputtype);
 
 	TODO wait for callback?
 	*/
-	setHidden : function(args) {
-		var ctrl = this;
+	setHidden(args) {
+		let ctrl = this;
 		ctrl.cell.hidden = args.hidden;
 		if (ctrl.cell.hidden) {
-			ctrl.inputTextArea.hide();
+			hide(ctrl.inputTextArea);
 		} else {
-			ctrl.inputTextArea.show();
+			show(ctrl.inputTextArea);
 		}
-		
+
 		//let the caller setup done or fail if they want
-		server.setHidden({
+		serverBase.server.setHidden({
 			uid : ctrl.cell.uid,
 			hidden : ctrl.cell.hidden,
 			done : args.done,
 			fail : args.fail
 		});
 	}
-};
+}
 
 function createAddNewCellButton(cellToInsertBefore, parentNode) {
-	var addNewCellButton = $('<div>', {
+	let addNewCellButton = DOM('div', {
 		class : 'addNewCellButton',
-		click : function() {
+		click : e => {
 			// write all cell inputTextArea's -> cell inputs -> back to the server
 			writeAllCells({
 				// then insert the new cell
-				done : function() {
-					server.newCell({
+				done : () => {
+					serverBase.server.newCell({
 						uid : cellToInsertBefore ? cellToInsertBefore.uid : undefined,
-						done : function(newcelljson) {
-							var newcell = $.parseJSON(newcelljson);
-							
+						done : newcelljson => {
+							let newcell = JSON.parse(newcelljson);
+
 							/* update everything? * /
 							getAllCellsFromServerAndRebuildHtml({
-								done : function() {
+								done : () => {
 									// TODO focus on the new cell
 									findCtrlForUID(newcell.uid).inputTextArea.focus();
-								}
+								},
 							});
 							/**/
 							/* update just the new cell */
 							// and rebuild the control for it too
-							var newctrl;
+							let newctrl;
 							if (cellToInsertBefore) {
-								
-								//var posToInsertBefore = cells.indexOf(cellToInsertBefore);
+
+								//let posToInsertBefore = cells.indexOf(cellToInsertBefore);
 								//TODO search with comparator? it has to exist somewhere...
-								var posToInsertBefore = -1;
-								for (var j = 0; j < cells.length; ++j) {
-									if (cells[j].uid == cellToInsertBefore.uid) {
+								let posToInsertBefore = -1;
+								for (let j = 0; j < serverBase.cells.length; ++j) {
+									if (serverBase.cells[j].uid == cellToInsertBefore.uid) {
 										posToInsertBefore = j;
 										break;
 									}
 								}
-								
-								if (posToInsertBefore < 0 || posToInsertBefore >= cells.length) {
+
+								if (posToInsertBefore < 0 || posToInsertBefore >= serverBase.cells.length) {
 									console.log("cellToInsertBefore", cellToInsertBefore);
 									throw "failed to find cellToInsertBefore";
 								}
-								var ctrlToInsertBefore = ctrls[posToInsertBefore];
+								let ctrlToInsertBefore = serverBase.ctrls[posToInsertBefore];
 								newctrl = new CellControl(newcell, ctrlToInsertBefore.div);
-								cells.splice(posToInsertBefore, 0, newcell);
-								ctrls.splice(posToInsertBefore, 0, newctrl);
+								serverBase.cells.splice(posToInsertBefore, 0, newcell);
+								serverBase.ctrls.splice(posToInsertBefore, 0, newctrl);
 							} else {
-								newctrl = new CellControl(newcell, lastAddNewCellButton);
-								cells.push(newcell);
-								ctrls.push(newctrl);
+								newctrl = new CellControl(newcell, serverBase.lastAddNewCellButton);
+								serverBase.cells.push(newcell);
+								serverBase.ctrls.push(newctrl);
 							}
-							newctrl.inputTextArea.focus();
+							newctrl.inputTextArea.dispatchEvent(new Event('focus'));
 							/**/
 						},
-						fail : fail
+						fail : fail,
 					});
-				}
+				},
 			});
-		}
+		},
 	});
-	parentNode.append(addNewCellButton);
+	parentNode.appendChild(addNewCellButton);
 
 	return addNewCellButton;
 }
 
 function rebuildHtmlFromCells(args) {
 	//args.cellsjson should exist
-console.log("rebuildHtmlFromCells got", arguments);
-	cells = $.parseJSON(args.cellsjson);
-	ctrls = [];
+console.log("rebuildHtmlFromCells got", args);
+	serverBase.cells = JSON.parse(args.cellsjson);
+	serverBase.ctrls = [];
 
-	worksheetDiv.html('');
+	serverBase.worksheetDiv.innerHTML = '';
 
-console.log("cells", cells);
-console.log("cells.length "+cells.length);
-	
-	lastAddNewCellButton = createAddNewCellButton(null, worksheetDiv);
-	
-	$.each(cells, function(_, cell) {
-		ctrls.push(new CellControl(cell, lastAddNewCellButton));
+console.log("cells", serverBase.cells);
+console.log("cells.length "+serverBase.cells.length);
+
+	serverBase.lastAddNewCellButton = createAddNewCellButton(null, serverBase.worksheetDiv);
+
+	serverBase.cells.forEach(cell => {
+		serverBase.ctrls.push(new CellControl(cell, serverBase.lastAddNewCellButton));
 	});
 
-	if (ctrls.length) {
-		ctrls[0].inputTextArea.focus();
+	if (serverBase.ctrls.length) {
+		serverBase.ctrls[0].inputTextArea.dispatchEvent(new Event('focus'));
 	}
 
 	if (args.done) args.done();
@@ -620,29 +623,23 @@ console.log("cells.length "+cells.length);
 //now this is only run by init(), but can be run from other buttons for debugging / lazy programming
 function getAllCellsFromServerAndRebuildHtml(args) {
 	args = args || {};
-	server.getCells({
-		done : function(cellsjson) {
-			rebuildHtmlFromCells($.extend({
+	serverBase.server.getCells({
+		done : cellsjson => {
+			rebuildHtmlFromCells(merge({
 				cellsjson : cellsjson
 			}, args));
 		},
-		fail : function() {
-			(args.fail || fail).apply(null, arguments);	//you only do this if the first function is not a global/window variable, otherwise it errors.  stupid javascript.
+		fail : (...args2) => {
+			(args.fail || fail).apply(null, args2);	//you only do this if the first function is not a global/window variable, otherwise it errors.  stupid javascript.
 		}
 	});
 }
 
-function fail(e) {
-	console.log(arguments);
-	console.log(e.stack);
-	throw 'failed';
-}
-
 function setCellInputsToTextareaValues() {
-	if (ctrls.length != cells.length) throw "got a mismatch in size between ctrls and cells";
-	$.each(ctrls, function(i,ctrl) {
-		var cell = ctrl.cell;
-		cell.input = ctrl.inputTextArea.val();
+	if (serverBase.ctrls.length != serverBase.cells.length) throw "got a mismatch in size between ctrls and cells";
+	serverBase.ctrls.forEach(ctrl => {
+		const cell = ctrl.cell;
+		cell.input = ctrl.inputTextArea.value;
 	});
 }
 
@@ -654,55 +651,56 @@ function writeAllCells(args) {
 	setCellInputsToTextareaValues();
 
 	//next write to the server
-	server.writeCells({
+	serverBase.server.writeCells({
 		done : args.done,
-		fail : args.fail || fail
+		fail : args.fail || fail,
 	});
 }
 
 /*
 args:
+	server
 	root
 	worksheets
 	done
 */
 function init(args) {
-	var root = args ? args.root : document.body;
+	serverBase.server = assertExists(args, 'server');
+	const root = args ? args.root : document.body;
 
-	var menubar = $('<div>', {
-		class : 'menubar'
+	const menubar = DOM('div', {
+		class : 'menubar',
+		appendTo : root,
 	});
-	$(root).append(menubar);
 
-
-	menubar.append($('<span>', {
-		text : worksheetFilename
+	menubar.appendChild(DOM('span', {
+		text : window.worksheetFilename,
 	}));
-	
-	menubar.append($('<br>'));
 
-	//arguments[0] is the name, arguments[1-n] are the ctors of the buttons
-	var addMenu = function() {
-		var dropdown = $('<div>', {
-			class : 'dropdown'
+	menubar.appendChild(DOM('br'));
+
+	//args[0] is the name, args[1-n] are the ctors of the buttons
+	const addMenu = (...args) => {
+		const dropdown = DOM('div', {
+			class : 'dropdown',
+			appendTo : menubar,
 		});
-		menubar.append(dropdown);
 
-		var menuButton = $('<button>', {
-			text : arguments[0],
+		const menuButton = DOM('button', {
+			text : args[0],
+			appendTo : dropdown,
 		});
-		dropdown.append(menuButton);
-		menuButtons.push(menuButton);
+		serverBase.menuButtons.push(menuButton);
 
-		var contents = $('<div>', {
-			class : 'dropdown-content'
+		const contents = DOM('div', {
+			class : 'dropdown-content',
+			appendTo : dropdown,
 		});
-		dropdown.append(contents);
 
-		for (var i = 1; i < arguments.length; ++i) {
-			var subButton = $('<a>', $.extend({href:'#'}, arguments[i]));
+		for (let i = 1; i < args.length; ++i) {
+			const subButton = DOM('a', merge({href:'#'}, args[i]));
 			contents.append(subButton);
-			menuButtons.push(subButton);
+			serverBase.menuButtons.push(subButton);
 		}
 	};
 
@@ -710,162 +708,157 @@ function init(args) {
 		'File',
 		{
 			text : 'New',
-			click : function() {
-				setAllControlsEnabled(false);
-				server.newWorksheet({
-					done : function() {
-						$.each(ctrls, function(i,ctrl) {
-							ctrl.div.remove();
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+				serverBase.server.newWorksheet({
+					done : () => {
+						serverBase.ctrls.forEach(ctrl => {
+							removeFromParent(ctrl.div);
 						});
-						cells = [];
-						ctrls = [];
-						setAllControlsEnabled(true);
-						lastAddNewCellButton.click();
+						serverBase.cells = [];
+						serverBase.ctrls = [];
+						serverBase.setAllControlsEnabled(true);
+						serverBase.lastAddNewCellButton.dispatchEvent(new Event('click'));
 					},
-					fail : function() {
-						setAllControlsEnabled(true);
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
 						fail();
-						lastAddNewCellButton.click();
-					}
+						serverBase.lastAddNewCellButton.dispatchEvent(new Event('click'));
+					},
 				});
-			}
+			},
 		},
 		{
 			text : 'Save',
-			click : function() {
-console.log("save click, writing cells...");			
-				var scrollTop = $(window).scrollTop();
-				setAllControlsEnabled(false);
-				$(window).scrollTop(scrollTop);
+			click : e => {
+console.log("save click, writing cells...");
+				const scrollTop = window.scrollTop;
+				serverBase.setAllControlsEnabled(false);
+				window.scrollTop = scrollTop;
 				writeAllCells({
-					done : function() {
+					done : () => {
 console.log("..done writing cells, giving save cmd...");
-						server.save({
-							done : function() {
+						serverBase.server.save({
+							done : () => {
 console.log("...done giving save cmd.");
-								setAllControlsEnabled(true);
+								serverBase.setAllControlsEnabled(true);
 								//something is making my scroll position jump around, and maybe it's this?
-								$(window).scrollTop(scrollTop);
+								window.scrollTop = scrollTop;
 							},
-							fail : function() {
+							fail : () => {
 console.log("...failed giving save cmd.");
-								//TODO on fail, popup warning and re-enable controls			
+								//TODO on fail, popup warning and re-enable controls
 								fail();
-							}
+							},
 						});
 					},
-					fail : function() {
+					fail : () => {
 console.log("...failed writing cells.");
 						//TODO on fail, popup warning and re-enable controls
 						fail();
-					}
+					},
 				});
-			}
+			},
 		},
 		{
 			text : 'Quit',
-			click : function() {
-				server.quit();
+			click : e => {
+				serverBase.server.quit();
 				//don't wait for ajax response ... there won't be one
-				setAllControlsEnabled(false);
-				$(root).prepend($('<div>', {
+				serverBase.setAllControlsEnabled(false);
+				root.prepend(DOM('div', {
 					css : {
 						font : 'color:red'
 					},
-					text : "disconnected"
+					text : "disconnected",
 				}));
-				//TODO for some reason when we connect the next time, we get a quit message and the server immediately dies.  only one extra quit message. 
+				//TODO for some reason when we connect the next time, we get a quit message and the server immediately dies.  only one extra quit message.
 				// I guess this is an ajax problem if it is sending the request, the server is receiving it and handling it, and then the next server is still getting another request.
-			}
-		}
+			},
+		},
 	);
 
 	addMenu(
 		'Run',
 		{
 			text : 'Run All',
-			click : function() {
+			click : e => {
 				//TODO all controls except 'break execution' for emergency restarts
-				setAllControlsEnabled(false);
+				serverBase.setAllControlsEnabled(false);
 // no need to write all cells, correct?
 // because we're calling 'run' on each
-// and 'run' itself will write each cell 
+// and 'run' itself will write each cell
 // but ... then again ... what's the harm?
 				writeAllCells({
-					done : function() {
-						var iterate;
-						iterate = function(i) {
-							if (i >= ctrls.length
-								|| ctrls[i].cell.outputtype == 'stop'
+					done : () => {
+						const iterate = i => {
+							if (i >= serverBase.ctrls.length
+								|| serverBase.ctrls[i].cell.outputtype == 'stop'
 							) {
 								//done
-								setAllControlsEnabled(true);
+								serverBase.setAllControlsEnabled(true);
 							} else {
-								ctrls[i].run({
-									done : function() {
-										iterate(++i);
-									},
-									fail : function() {
-										iterate(++i);
-									}
+								serverBase.ctrls[i].run({
+									done : () => { iterate(++i); },
+									fail : () => { iterate(++i); },
 								});
 							}
 						};
 						iterate(0);
 					},
-					fail : function() {
-						setAllControlsEnabled(true);
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
 						//TODO fail
 						fail();
-					}
+					},
 				});
-			}
+			},
 		},
 		{
 			text : 'Reset Env',
-			click : function() {
-				setAllControlsEnabled(false);
-				server.resetEnv({
-					done : function() {
-						setAllControlsEnabled(true);
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+				serverBase.server.resetEnv({
+					done : () => {
+						serverBase.setAllControlsEnabled(true);
 					},
-					fail : function() {
-						setAllControlsEnabled(true);
+					fail : () => {
+						serverBase.setAllControlsEnabled(true);
 						fail();
-					}
+					},
 				});
-			}
-		}
+			},
+		},
 	);
 
 	if (args.worksheets) {
-		var loadWorksheetButtons = ['Worksheets'];
-		$.each(args.worksheets, function(i,filename) {
+		let loadWorksheetButtons = ['Worksheets'];
+		args.worksheets.forEach((filename,i) => {
 			loadWorksheetButtons.push({
 				text : filename,
-				click : function() {
-					setAllControlsEnabled(false);
-					server.getWorksheet({
+				click : e => {
+					serverBase.setAllControlsEnabled(false);
+					serverBase.server.getWorksheet({
 						filename : 'tests/'+filename+'.symmath',
-						done : function(cellsjson) {
+						done : cellsjson => {
 console.log("getWorksheet results", cellsjson);
 							rebuildHtmlFromCells({
 								cellsjson : cellsjson,
-								done : function() {
-									setAllControlsEnabled(true);
+								done : () => {
+									serverBase.setAllControlsEnabled(true);
 								},
-								fail : function() {
-									setAllControlsEnabled(true);
+								fail : () => {
+									serverBase.setAllControlsEnabled(true);
 									fail();
-								}
+								},
 							});
 						},
-						fail : function() {
-							setAllControlsEnabled(true);
+						fail : () => {
+							serverBase.setAllControlsEnabled(true);
 							fail();
-						}
+						},
 					});
-				}
+				},
 			});
 		});
 		addMenu.apply(null, loadWorksheetButtons);
@@ -875,127 +868,127 @@ console.log("getWorksheet results", cellsjson);
 		'View',
 		{
 			text : 'Expand All',
-			click : function() {
-				setAllControlsEnabled(false);
-				var i = 0;
-				var n = ctrls.length;
-				$.each(ctrls, function(i,ctrl) {
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+				let i = 0;
+				let n = serverBase.ctrls.length;
+				serverBase.ctrls.forEach((ctrl,i) => {
 					ctrl.setHidden({
 						hidden : false,
-						done : function() {
+						done : () => {
 							++i;
 							if (i == n) {
-								setAllControlsEnabled(true);
+								serverBase.setAllControlsEnabled(true);
 							}
 						},
-						fail : function() {
-							setAllControlsEnabled(true);
+						fail : () => {
+							serverBase.setAllControlsEnabled(true);
 							fail();
-						}
+						},
 					});
 				});
-			}
+			},
 		},
 		{
 			text : 'Collapse All',
-			click : function() {
-				setAllControlsEnabled(false);
-				var i = 0;
-				var n = ctrls.length;
-				$.each(ctrls, function(i,ctrl) {
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
+				let i = 0;
+				let n = serverBase.ctrls.length;
+				serverBase.ctrls.forEach((ctrl,i) => {
 					ctrl.setHidden({
 						hidden : true,
-						done : function() {
+						done : () => {
 							++i;
 							if (i == n) {
-								setAllControlsEnabled(true);
+								serverBase.setAllControlsEnabled(true);
 							}
 						},
-						fail : function() {
-							setAllControlsEnabled(true);
+						fail : () => {
+							serverBase.setAllControlsEnabled(true);
 							fail();
-						}
+						},
 					});
 				});
-			}
+			},
 		},
 		{
 			text : 'Clear All Output',
-			click : function() {
-				setAllControlsEnabled(false);
+			click : e => {
+				serverBase.setAllControlsEnabled(false);
 
-				for (var i = 0; i < cells.length; ++i) {
-					cells[i].output = '';
-					ctrls[i].refreshOutput();
+				for (let i = 0; i < serverBase.cells.length; ++i) {
+					serverBase.cells[i].output = '';
+					serverBase.ctrls[i].refreshOutput();
 				}
-				
+
 				// TODO writeAllCells re-reads them and rebuilds
 				// don't need to do that here
 				writeAllCells({
-					done : function() {
-						setAllControlsEnabled(true);
+					done : () => {
+						serverBase.setAllControlsEnabled(true);
 					}
 				});
-			}
-		}
+			},
+		},
 	);
 
-	var helpDiv = $('<div>', {
-		class : 'helpDiv'
-	});
-	$(root).append(helpDiv);
-
-	
-	$.ajax({
-		url : symmathDir+'/README.reference.md',
-		dataType : 'text',
-		cache : false,
-	}).fail(function() {
-		console.log("failed to get readme", arguments);
-	}).done(function(text) {
-		console.log("got reference", arguments);
-		var converter = new showdown.Converter();
-		var help = converter.makeHtml(text);
-		helpDiv.append($('<button>', {
-			text : 'x',
-			class : 'closeHelpButton',
-			click : function() {
-				helpDiv.hide();
-			}
-		}));
-		helpDiv.append(help);
+	let helpDiv = DOM('div', {
+		class : 'helpDiv',
+		appendTo : root,
 	});
 
+
+	const readmeURL = window.symmathDir+'/README.reference.md';
+//console.log('getting readme', readmeURL); 
+	fetch(readmeURL)
+	.then(response => {
+		if (!response.ok) return Promise.reject('not ok');
+		response.text()
+		.then(text => {
+//console.log("got reference", text);
+			let converter = new showdown.Converter();
+			let help = converter.makeHtml(text);
+			helpDiv.append(DOM('button', {
+				text : 'x',
+				class : 'closeHelpButton',
+				click : e => { hide(helpDiv); },
+			}));
+			helpDiv.append(DOM('div', {innerHTML : help}));
+		});
+	}).catch(e => {
+		console.log("failed to get readme", e);
+	});
 
 	addMenu(
 		'Help',
 		{
 			text : 'Help',
-			click : function() {
-				helpDiv.show();
-			}
-		}
+			click : e => { show(helpDiv); },
+		},
 	);
 
-	$(root).append(menubar);
+	root.appendChild(menubar);
 
-	worksheetDiv = $('<div>', {
-		class : 'worksheetDiv'
+	serverBase.worksheetDiv = DOM('div', {
+		class : 'worksheetDiv',
+		appendTo : root,
 	});
-	$(root).append(worksheetDiv);
-	$(root).append($('<br>'));
+	root.appendChild(DOM('br'));
 
-	setAllControlsEnabled(false);
+	serverBase.setAllControlsEnabled(false);
 	getAllCellsFromServerAndRebuildHtml({
-		done : function() {
-			setAllControlsEnabled(true);
-			
-			if (ctrls.length == 0) {
+		done : () => {
+			serverBase.setAllControlsEnabled(true);
+
+			if (serverBase.ctrls.length == 0) {
 				//no cells in our file?  at least load the first cell
-				lastAddNewCellButton.click();
+				serverBase.lastAddNewCellButton.click();
 			}
-		
+
 			if (args && args.done) args.done();
 		}
 	});
 }
+
+export {init, fail, serverBase};

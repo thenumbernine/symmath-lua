@@ -1,6 +1,8 @@
+import {DOM} from '/js/util.js';
+
 // mathjax config
 // https://docs.mathjax.org/en/latest/web/configuration.html
-MathJax = {
+window.MathJax = {
 	tex: {
 		inlineMath: [['$', '$'], ['\\(', '\\)']]
 	},
@@ -9,7 +11,7 @@ MathJax = {
 	}
 };
 
-var tryToFindMathJax = {};
+let tryToFindMathJax = {};
 
 tryToFindMathJax.urls = [
 	'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js',
@@ -17,35 +19,37 @@ tryToFindMathJax.urls = [
 ];
 
 
-tryToFindMathJax.loadScript = function(args) {
+tryToFindMathJax.loadScript = args => {
 	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
+	const el = DOM('script', {
+		appendTo : document.body,
+	}, {
+		load : e => {
+console.log('loaded');
+			if (args.done !== undefined) args.done();
+		},
+		error : e => {
+console.log("failed to load "+args.src);
+			if (args.fail !== undefined) args.fail();
+		},
+	});
 	el.src = args.src;
-	//el.setAttr('id', 'MathJax-script');
-	//el.setAttr('async');
+	//el.id = 'MathJax-script';
+	//el.async = true;
 };
 
-tryToFindMathJax.init = function(args) {
+tryToFindMathJax.init = args => {
 	if (args === undefined) args = {};
-	console.log('init...');
-	var i = 0;
-	var loadNext = function() {
+console.log('init...');
+	let i = 0;
+	const loadNext = () => {
 		tryToFindMathJax.loadScript({
 			src : tryToFindMathJax.urls[i],
-			done : function() {
-				console.log("success!");
+			done : () => {
+console.log("success!");
 				if (args.done !== undefined) args.done();
 			},
-			fail : function() {
+			fail : () => {
 				++i;
 				if (i >= tryToFindMathJax.urls.length) {
 					console.log("looks like all our sources have failed!");
@@ -59,7 +63,9 @@ tryToFindMathJax.init = function(args) {
 	loadNext();
 }
 /*
-window.addEventListener('load', function() {
+window.addEventListener('DOMContentLoaded', e => {
 	tryToFindMathJax.init();
 }, false);
 */
+
+export {tryToFindMathJax};
