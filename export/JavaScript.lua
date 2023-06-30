@@ -35,7 +35,7 @@ JavaScript.lookupTable = table(JavaScript.lookupTable):union{
 }:setmetatable(nil)
 
 JavaScript.generateParams = {
-	localType = 'var',
+	localType = 'const',
 	lineEnd = ';',
 
 	funcHeaderStart = function(self, name, inputs)

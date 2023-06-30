@@ -1,30 +1,21 @@
 // local / emulated lua in javascript ?
+import {init, fail, serverBase} from './standalone.js';
 
-import {init, fail, serverBase} from '/server/standalone.js';
+class EmulatedServer {
+	constructor() {
+		this.nextValidUID = 1;
+	}
 
-function EmulatedServer() {
-}
-EmulatedServer.prototype = {
-	onLuaInit : function() {
+	onLuaInit(lua) {
+		this.lua = lua;
 
-		//similar code in metric and symbolic-lua
-		//maybe superclass?
-		lua.capture = function(args) {
-			var oldPrint = lua.print;
-			var oldError = lua.printErr;
-			if (args.output !== undefined) lua.print = args.output;
-			if (args.error !== undefined) lua.printErr = args.error;
-			args.callback();
-			lua.print = oldPrint;
-			lua.printErr = oldError;
-		};
-
-console.log("outputBuffer", lua.outputBuffer);
-lua.outputBuffer = '';
+console.log("does print work?");
+		lua.execute('print"testing"');
+console.log("do errors work?");
+		lua.execute('error"testing"');
 
 console.log("executing lua and defining global symmathhttp")
-		lua.execute(mlstr(function(){/*
-
+		lua.execute(`
 -- embedded-javascript version of standalone.lua
 -- TODO superclass some of this with standalone.lua ?
 
@@ -148,10 +139,10 @@ function SymmathHTTP:setupSandbox()
 
 	function self.env.print(...)
 		for i=1,select('#', ...) do
-			if i > 1 then self.env.io.write'\t' end
+			if i > 1 then self.env.io.write'\\t' end
 			self.env.io.write(tostring((select(i, ...))))
 		end
-		self.env.io.write(currentBlockNewLineSymbol or '\n')
+		self.env.io.write(currentBlockNewLineSymbol or '\\n')
 		self.env.io.flush()
 	end
 	--]]
@@ -179,8 +170,8 @@ function SymmathHTTP:runCell(cell)
 
 	-- TODO use this in cell env print() and io.write()
 	currentBlockNewLineSymbol =
-		cell.outputtype == 'html' and '<br>\n'
-		or '\n'
+		cell.outputtype == 'html' and '<br>\\n'
+		or '\\n'
 
 	xpcall(function()
 
@@ -225,7 +216,7 @@ self:log(5, "cellinput is now "..findlhs)
 			end
 
 			-- strip out single-line comments
-			findlhs = findlhs:gsub('%-%-[^\r\n]*', '')
+			findlhs = findlhs:gsub('%-%-[^\\r\\n]*', '')
 
 			local lhs, rhs = findlhs:match'([^=]-)=(.*)'
 			if lhs then
@@ -302,7 +293,7 @@ self:log(5, "cellinput is now "..findlhs)
 			-- TODO new question to ask, should this be inserted at the top or bottom of the output?
 			for i=1,results.n do
 				if i > 1 then
-					cell.output = cell.output .. '\t'
+					cell.output = cell.output .. '\\t'
 				end
 				cell.output = cell.output .. tostring(
 					results[i]
@@ -312,7 +303,7 @@ self:log(5, "cellinput is now "..findlhs)
 
 	end, function(err)
 		self:log(0, 'got error '..err)
-		cell.output = err..'\n'..debug.traceback()
+		cell.output = err..'\\n'..debug.traceback()
 		cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
 	end)
 end
@@ -322,31 +313,28 @@ end
 -- global:
 symmathhttp = SymmathHTTP()
 
-*/}));
+`);
 
 console.log("querying global symmathhttp")
 		lua.execute("orig_print(symmathhttp)");
 console.log("outputBuffer", lua.outputBuffer);
 lua.outputBuffer = '';
+	}
 
-	},
-
-	nextValidUID : 1,
-
-	getCellForUID : function(uid) {
-		var ctrl = findCtrlForUID(uid);
+	getCellForUID(uid) {
+		let ctrl = serverBase.findCtrlForUID(uid);
 		if (!ctrl) return;
 		return ctrl.cell;
-	},
+	}
 
 	/*
 	args:
 		done : function(cellsjson)
 		fail
 	*/
-	getCells : function(args) {
+	getCells(args) {
 		args.done(JSON.stringify(serverBase.cells));
-	},
+	}
 
 	/*
 	args:
@@ -355,12 +343,12 @@ lua.outputBuffer = '';
 		done
 		fail
 	*/
-	setOutputType : function(args) {
-		var cell = this.getCellForUID(args.uid);
+	setOutputType(args) {
+		let cell = this.getCellForUID(args.uid);
 		if (!cell) args.fail();
 		cell.outputtype = args.outputtype;
 		args.done(JSON.stringify(cell));
-	},
+	}
 
 	/*
 	args:
@@ -368,15 +356,15 @@ lua.outputBuffer = '';
 		done
 		fail
 	*/
-	remove : function(args) {
+	remove(args) {
 		//callback is going to remove the js cell anyways, so
 		args.done();
-	},
+	}
 
-	encodeString : function(s) {
+	encodeString(s) {
 		// TODO search for the # of ='s that isn't used in the string
 		return '[=======[' + s + ']=======]';
-	},
+	}
 
 	/*
 	args:
@@ -385,35 +373,37 @@ lua.outputBuffer = '';
 		done
 		fail
 	*/
-	run : function(args) {
-		var thiz = this;
-		var cell = this.getCellForUID(args.uid);
+	run(args) {
+		const lua = this.lua;
+		let thiz = this;
+		let cell = this.getCellForUID(args.uid);
 		cell.input = args.cellinput;
 		//here's where the lua interpretter comes in
 
 
-		var output = '';
-		lua.capture({
-			callback : function() {
-				lua.execute(
-				""
-				+ "currentRunningCell = {"
-				+ "	uid=" + cell.uid + ",\n"
-				+ "	input=" + thiz.encodeString(cell.input) + ",\n"
-				+ "	output='',\n"
-				+ "	outputtype=" + thiz.encodeString(cell.outputtype) + ",\n"
-				+ "	hidden=" + (cell.hidden ? "true" : "false") + "\n"
-				+ "}\n"
-				+ "symmathhttp:runCell(currentRunningCell)\n"
-				+ "orig_print(currentRunningCell.output)\n"
-				);
+		let output = '';
+		this.lua.capture({
+			callback : () => {
+				thiz.lua.execute(
+`
+currentRunningCell = {
+	uid=` + cell.uid + `,
+	input=` + thiz.encodeString(cell.input) + `,
+	output='',
+	outputtype=` + thiz.encodeString(cell.outputtype) + `,
+	hidden=` + (cell.hidden ? "true" : "false") + `
+}
+symmathhttp:runCell(currentRunningCell)
+orig_print(currentRunningCell.output)
+`
+);
 			},
-			output : function(s) {
+			output : s => {
 				s += '\n';
 console.log("output", s);
 				output += s;
 			},
-			error : function(s) {
+			error : s => {
 				//I don't' think this is ever hit
 				s += '\n';
 console.log("error", s);
@@ -422,33 +412,33 @@ console.log("error", s);
 		});
 		cell.output = output;
 
-		lua.capture({
-			callback : function() {
-				lua.execute("orig_print(currentRunningCell.haserror and 'true' or 'false')");
+		this.lua.capture({
+			callback : () => {
+				thiz.lua.execute("orig_print(currentRunningCell.haserror and 'true' or 'false')");
 			},
-			output : function(s) {
+			output : s => {
 console.log("haserror?", s);
 				cell.haserror = s == 'true';
-			}
+			},
 		});
 
 		//let the browser handle some input
-		setTimeout(function() {
+		setTimeout(() => {
 			args.done(JSON.stringify(cell));
 		}, 0);
-	},
+	}
 
 	/*
 	args:
 		uid
 		hidden
 	*/
-	setHidden : function(args) {
-		var cell = this.getCellForUID(args.uid);
+	setHidden(args) {
+		let cell = this.getCellForUID(args.uid);
 		if (!cell) (args.fail || fail)();
 		cell.hidden = args.hidden;
 		if (args.done) args.done();
-	},
+	}
 
 	/*
 	args:
@@ -456,7 +446,7 @@ console.log("haserror?", s);
 		done : function(celljson),
 		fail
 	*/
-	newCell : function(args) {
+	newCell(args) {
 		//make sure this matches standalone.lua's Cell ctor
 		args.done(JSON.stringify({
 			uid : ++this.nextValidUID,
@@ -465,7 +455,7 @@ console.log("haserror?", s);
 			outputtype : 'html',
 			hidden : false
 		}));
-	},
+	}
 
 	/*
 	args:
@@ -473,41 +463,41 @@ console.log("haserror?", s);
 		done
 		fail
 	*/
-	writeCells : function(args) {
+	writeCells(args) {
 		args.done();
-	},
+	}
 
 	/*
 	args:
 		done
 		fail
 	*/
-	save : function(args) {
+	save(args) {
 		args.done();
-	},
+	}
 
-	quit : function() {
-	},
-
-	/*
-	args:
-		done
-		fail
-	*/
-	newWorksheet : function(args) {
-		lua.execute("symmathhttp:setupSandbox()");
-		args.done();
-	},
+	quit() {
+	}
 
 	/*
 	args:
 		done
 		fail
 	*/
-	resetEnv : function(args) {
-		lua.execute("symmathhttp:setupSandbox()");
+	newWorksheet(args) {
+		this.lua.execute("symmathhttp:setupSandbox()");
 		args.done();
-	},
+	}
+
+	/*
+	args:
+		done
+		fail
+	*/
+	resetEnv(args) {
+		this.lua.execute("symmathhttp:setupSandbox()");
+		args.done();
+	}
 
 	/*
 	args:
@@ -515,48 +505,42 @@ console.log("haserror?", s);
 		done
 		fail
 	*/
-	getWorksheet : function(args) {
+	getWorksheet(args) {
+		const lua = this.lua;
 console.log("getWorksheet", args);
 		//TODO read file from the lua.vm-util.js.lua preloader
 		//and then convert it from a lua object to a json object
 		//and then return it
 		//alright, I might finally need dkjson.lua ...
-		var result = '';
-		lua.capture({
-			callback : function() {
+		let result = '';
+		this.capture({
+			callback : () => {
 				lua.execute(
-""
-+"local data\n"
-+"data = 'symmath/"+args.filename+"'\n"
-+"data = require 'ext.io'.readfile(data)\n"
-+"data = require 'ext.fromlua'(data)\n"
-+"data = require 'dkjson'.encode(data)\n"
-+"orig_print(data)\n"
+`
+local data
+data = 'symmath/`+args.filename+`'
+data = require 'ext.io'.readfile(data)
+data = require 'ext.fromlua'(data)
+data = require 'dkjson'.encode(data)
+orig_print(data)
+`
 );
 			},
-			output : function(s) {
+			output : s => {
 				result += s + '\n';
 console.log("output", s);
 			},
-			error : function(s) {
+			error : s => {
 console.log("error", s);
 			}
 		});
 console.log("getWorksheet results", result);
 		args.done(result);
 	}
-};
 
-//TODO this is in common with the otehr standalone-bridge
-//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
-import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
-tryToFindMathJax.init({
-	done : () => {
-		init({
-			server : new EmulatedServer(),
-			root : document.body,
-			worksheets : window.symmathWorksheets,
-		});
-	},
-	fail : fail,
-});
+	fwdInit(...args) {
+		return init(...args);
+	}
+}
+
+export {EmulatedServer};

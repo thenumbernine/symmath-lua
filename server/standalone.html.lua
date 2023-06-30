@@ -4,7 +4,7 @@
 		<meta charset='utf8'/>
 		<title>Symmath Worksheet - <?=worksheetFilename?></title>
 		<link rel="stylesheet" href="/server/standalone.css"/>
-		<script type="text/javascript" src="/server/showdown-1.9.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js" integrity="sha512-L03kznCrNOfVxOUovR6ESfCz9Gfny7gihUX/huVbQB9zjODtYpxaVtIaAkpetoiyV2eqWbvxMH9fiSv5enX7bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script type="text/javascript">
 worksheetFilename = "<?=worksheetFilename?>";
 symmathDir = '.';	//standalone.lua includes SYMMATH_PATH in its search path
