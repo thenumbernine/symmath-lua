@@ -1,6 +1,6 @@
 // mathjax config
 // https://docs.mathjax.org/en/latest/web/configuration.html
-MathJax = {
+window.MathJax = {
 	tex: {
 		inlineMath: [['$', '$'], ['\\(', '\\)']]
 	},
@@ -9,40 +9,44 @@ MathJax = {
 	}
 };
 
-function loadScript(args) {
-	console.log("loading "+args.src);
-	var el = document.createElement('script');
-	document.body.append(el);
-	el.onload = function() {
-		console.log('loaded');
-		if (args.done !== undefined) args.done();
-	};
-	el.onerror = function() {
-		console.log("failed to load "+args.src);
-		if (args.fail !== undefined) args.fail();
-	};
-	el.src = args.src;
-}
+const tryToFindMathJax = {};
 
-function tryToFindMathJax(args) {
+tryToFindMathJax.urls = [
+	'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js',
+	'/MathJax/es5/tex-svg.js',
+];
+
+
+tryToFindMathJax.loadScript = function(args) {
+console.log("loading "+args.src);
+	const el = document.createElement('script');
+	document.body.appendChild(el);
+	el.addEventListener('load', e => {
+console.log('loaded');
+		if (args.done !== undefined) args.done();
+	});
+	el.addEventListener('error', e => {
+console.log("failed to load "+args.src);
+		if (args.fail !== undefined) args.fail();
+	});
+	el.src = args.src;
+	//el.id = 'MathJax-script';
+	//el.async = true;
+};
+
+tryToFindMathJax.init = function(args) {
+	const urls = tryToFindMathJax.urls;
 	if (args === undefined) args = {};
-	console.log('init...');
-	var urls = [
-		'file:///C:/Users/Chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
-		'file:///home/chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
-		//'http:///localhost:8000/MathJax/es5/tex-svg.js',
-		'/MathJax/es5/tex-svg.js',
-		'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
-	];
-	var i = 0;
-	var loadNext = function() {
-		loadScript({
+console.log('init...');
+	let i = 0;
+	const loadNext = () => {
+		tryToFindMathJax.loadScript({
 			src : urls[i],
-			done : function() {
-				console.log("success!");
+			done : () => {
+console.log("success!");
 				if (args.done !== undefined) args.done();
 			},
-			fail : function() {
+			fail : () => {
 				++i;
 				if (i >= urls.length) {
 					console.log("looks like all our sources have failed!");
@@ -54,4 +58,14 @@ function tryToFindMathJax(args) {
 		});
 	}
 	loadNext();
-}
+};
+
+// if I specify this as a module then I can no longer use it for file:// (without messing with browser config ... bleh)
+/* if it's not a module, use this: */
+window.addEventListener('DOMContentLoaded', e => {
+	tryToFindMathJax.init();
+}, false);
+/**/
+/* if it is a module, use this: * /
+export {tryToFindMathJax};
+/**/
