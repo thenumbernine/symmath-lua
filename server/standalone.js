@@ -147,15 +147,15 @@ class CellControl {
 					ctrl.run({
 						done : () => {
 							//...annddd... select the next cell
-	console.log("after run response");
-	console.log("for cell", ctrl.cell);
+console.log("after run response");
+console.log("for cell", ctrl.cell);
 							for (let j = 0; j < serverBase.cells.length; ++j) {
 								if (serverBase.cells[j].uid == ctrl.cell.uid) {
 									//have to enable before calling jquery.focus()
 									serverBase.setAllControlsEnabled(true);
 
 									if (j < serverBase.cells.length-1) {
-	console.log("focusing on inputTextArea after number ", j);
+console.log("focusing on inputTextArea after number ", j);
 										serverBase.ctrls[j+1].setHidden({hidden:false});
 										serverBase.ctrls[j+1].inputTextArea.focus();
 									} else {
@@ -331,7 +331,7 @@ class CellControl {
 				ctrl.setOutputTypeSelect.disabled = true;
 				const val = ctrl.setOutputTypeSelect.value;
 
-	console.log("setting output type to ", val);
+console.log("setting output type to ", val);
 				serverBase.server.setOutputType({
 					uid : ctrl.cell.uid,
 					outputtype : this.value,
@@ -341,7 +341,7 @@ class CellControl {
 						ctrl.setOutputTypeSelect.disabled = false;
 
 						ctrl.refreshJustThisCell(celldata);
-	console.log("...successfully set output type to ", ctrl.cell.outputtype);
+console.log("...successfully set output type to ", ctrl.cell.outputtype);
 					},
 					fail : () => {
 						ctrl.setOutputTypeSelect.disabled = false;
@@ -367,7 +367,7 @@ class CellControl {
 						/* update only client changes... */
 						for (let j = 0; j < serverBase.cells.length; ++j) {
 							if (serverBase.cells[j].uid == ctrl.cell.uid) {
-								serverBase.ctrls[j].div.remove();
+								removefromParent(serverBase.ctrls[j].div);
 								serverBase.cells.splice(j, 1);
 								serverBase.ctrls.splice(j, 1);
 								// after removing ...
@@ -581,7 +581,7 @@ function createAddNewCellButton(cellToInsertBefore, parentNode) {
 								serverBase.cells.push(newcell);
 								serverBase.ctrls.push(newctrl);
 							}
-							newctrl.inputTextArea.dispatchEvent(new Event('focus'));
+							newctrl.inputTextArea.focus();
 							/**/
 						},
 						fail : fail,
@@ -613,7 +613,7 @@ console.log("cells.length "+serverBase.cells.length);
 	});
 
 	if (serverBase.ctrls.length) {
-		serverBase.ctrls[0].inputTextArea.dispatchEvent(new Event('focus'));
+		serverBase.ctrls[0].inputTextArea.focus();
 	}
 
 	if (args.done) args.done();

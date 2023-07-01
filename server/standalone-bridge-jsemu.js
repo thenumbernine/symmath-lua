@@ -9,11 +9,6 @@ class EmulatedServer {
 	onLuaInit(lua) {
 		this.lua = lua;
 
-console.log("does print work?");
-		lua.execute('print"testing"');
-console.log("do errors work?");
-		lua.execute('error"testing"');
-
 console.log("executing lua and defining global symmathhttp")
 		lua.execute(`
 -- embedded-javascript version of standalone.lua
@@ -543,4 +538,72 @@ console.log("getWorksheet results", result);
 	}
 }
 
-export {EmulatedServer};
+
+//from here down is specific to my website...
+
+import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js.lua';
+import {getIDs, removeFromParent} from '/js/util.js';
+const ids = getIDs();
+
+//Lua is the lua.vm.js compiled-to-js lua
+//lua is my wrapper of it
+document.querySelectorAll('[class="page"]').forEach(page => {
+	removeFromParent(page);	//used for the page title 
+});
+ids.bodydiv.style.paddingLeft = '200px';	//make this match the menu width
+ids.bodydiv.style.width = '100%';
+
+//const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
+
+const lua = new EmbeddedLuaInterpreter({
+	packages : [
+		'complex',
+		'dkjson',
+		'ext',
+		'gnuplot',
+		'template',
+		'symmath'
+	],
+	packageTests : [
+		'symmath'
+	],
+	autoLaunch : true,
+	done : function() {
+		removeFromParent(ids.loading);
+		
+		this.print = s => {console.log(s);};
+		this.printErr = s => {console.log(s);};
+
+		//TODO next:
+		//somehow change the in-lua gnuplot execution to instead call the emscripten lua gnuplot ...
+		//require 'gnuplot'.execute = call js from lua
+		const server = new EmulatedServer();
+
+		//load the standalone.lua equiv in pure js
+		server.onLuaInit(this);
+		//TODO maybe put everything in this function inside here?
+
+		const worksheets = luaVmPackageInfos.symmath.tests.map(info => {
+			if (info.dest.substr(0,14) != 'symmath/tests/') throw "expected all test file prefixes to start with symmath/tests/ but found "+info.dest;
+			return info.dest.substr(14);
+		}).filter(fn => {
+			return fn.substring(fn.length-8) == '.symmath';
+		}).map(fn => {
+			return fn.substring(0, fn.length-8);
+		});
+		worksheets.sort();
+		
+		//init on the standalone html frontend to symmath
+		// TODO give it an object?  so its not just a global?
+		server.fwdInit({
+			server : server,
+			root : ids.bodydiv,
+			done : () => {
+				const worksheetDiv = document.querySelector('[class="worksheetDiv"]');
+				worksheetDiv.style.padding = '10px';
+				worksheetDiv.style.marginRight = '10px';
+			},
+			worksheets : worksheets,
+		});
+	},
+});
