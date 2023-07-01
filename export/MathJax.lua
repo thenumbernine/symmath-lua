@@ -104,7 +104,7 @@ function init() {
 		<title>]=] .. self.title .. [=[</title>
 		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/tryToFindMathJax.js'></script>
 	</head>
-	<body onload='tryToFindMathJax.init();'>
+	<body>
 ]=]
 --]==]
 end
