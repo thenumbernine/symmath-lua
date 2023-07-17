@@ -46,7 +46,7 @@ except args:
 		- set to 'Console' for outputting inline'd text
 --]]
 function GnuPlot:plot(args)
-	local file = require 'ext.file'
+	local path = require 'ext.path'
 	local gnuplot = require 'gnuplot'
 	local var = require 'symmath.Variable'
 	local Expression = require 'symmath.Expression'
@@ -84,12 +84,12 @@ function GnuPlot:plot(args)
 	-- return to be consistent with other exporters
 	-- but Tensor:printElem() is already print()ing ...
 	if outputType == 'MathJax' then
-		local data = file'tmp.svg':read()
-		file'tmp.svg':remove()
+		local data = path'tmp.svg':read()
+		path'tmp.svg':remove()
 		print(data, '<br>')
 	elseif outputType == 'Console' then
-		local data = file'tmp.txt':read()
-		file'tmp.txt':remove()
+		local data = path'tmp.txt':read()
+		path'tmp.txt':remove()
 		print(data)
 	end
 end

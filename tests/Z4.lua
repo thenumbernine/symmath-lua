@@ -3120,7 +3120,7 @@ do
 		dstfn = dstfn .. ' usingOnlyUs'
 	end
 	dstfn = dstfn .. '.lua'
-	file(dstfn):write(export.SymMath(sys))
+	path(dstfn):write(export.SymMath(sys))
 end
 --]]
 

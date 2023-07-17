@@ -8,7 +8,7 @@ the full version would ideally be separate of this, launch one of these per work
 local class = require 'ext.class'
 local string = require 'ext.string'
 local table = require 'ext.table'
-local file = require 'ext.file'
+local path = require 'ext.path'
 local io = require 'ext.io'
 local os = require 'ext.os'
 local tolua = require 'ext.tolua'
@@ -84,7 +84,7 @@ args.log = 10
 	-- single worksheet instance.  TODO make modular:
 	self.cells = table()
 	if self.worksheetFilename then
-		local data = file(self.worksheetFilename):read()
+		local data = path(self.worksheetFilename):read()
 		self:log(5, 'file', self.worksheetFilename,' has data ', data)
 		if data then
 			self:readCellsFromData(data)
@@ -196,7 +196,7 @@ function SymmathHTTP:readCellsFromData(data)
 end
 
 function SymmathHTTP:writeCellsToFile(filename)
-	file(filename):write(tolua(table(self.cells):mapi(function(cell)
+	path(filename):write(tolua(table(self.cells):mapi(function(cell)
 		return table(cell):setmetatable(nil)
 	end):setmetatable(nil)))
 end
@@ -265,7 +265,7 @@ function SymmathHTTP:handleRequest(...)
 			name = name .. '.' .. suffix
 		end
 		local destfn = self.docroot .. filename .. '/' .. name
-		if file(destfn):exists() then
+		if path(destfn):exists() then
 			return '404 Not Found', coroutine.wrap(function() coroutine.yield"file already exists" end)
 		end
 
@@ -631,7 +631,7 @@ function SymmathHTTP:handleRequest(...)
 		self:log(5, "getworksheet "..gt.filename)
 
 		-- TODO search dir based on symmath dir
-		local data = assert(file(self.symmathPath..'/'..gt.filename):read())
+		local data = assert(path(self.symmathPath..'/'..gt.filename):read())
 		data = assert(fromlua(data))
 		local cellsjson = json.encode(data)
 		self:log(5, "getworksheet returning "..cellsjson)
@@ -644,7 +644,7 @@ function SymmathHTTP:handleRequest(...)
 			coroutine.yield(
 				template(
 					-- TODO just call this 'index.html.lua' , but index to what, considering it is in a separate search path.
-					file(self.symmathPath..'/server/standalone.html.lua'):read(),
+					path(self.symmathPath..'/server/standalone.html.lua'):read(),
 					self
 				)
 			)

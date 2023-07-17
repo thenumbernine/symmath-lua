@@ -12,7 +12,7 @@ symmathWorksheets = [
 <?
 local sep = ''
 local dir = symmathPath..'/tests/'
-for i,f in ipairs(require 'ext.file'(dir):rdir()) do
+for i,f in ipairs(require 'ext.path'(dir):rdir()) do
 	if f:sub(-8) == '.symmath' then
 		?><?=sep?><?=require 'ext.tolua'(f:sub(#dir+2,-9))?>
 <?		sep = ','

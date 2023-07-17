@@ -1586,7 +1586,7 @@ printbr'<hr>'
 printHeader'writing results...'
 
 -- now save them, and write them out for specific coordinate systems
-file'BSSN - index - cache.lua':write(
+path'BSSN - index - cache.lua':write(
 	table{
 		[[
 local env = setmetatable({}, {__index=_G})

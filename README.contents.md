@@ -10,13 +10,13 @@ http://christopheremoore.net/symbolic-lua
 ## TLDR
 
 ```
-<?=file'tests/console_spherical_metric.lua':read()?>
+<?=path'tests/console_spherical_metric.lua':read()?>
 ```
 
 ...makes this...
 
 ```
-<?=file'tests/output/console_spherical_metric.txt':read()?>
+<?=path'tests/output/console_spherical_metric.txt':read()?>
 ```
 
 ## Goals
@@ -28,7 +28,7 @@ Online demo and API at http://christopheremoore.net/symbolic-lua
 Example used at http://christopheremoore.net/metric  
 	and http://christopheremoore.net/gravitational-wave-simulation  
 
-<?=file'README.reference.md':read()?>
+<?=path'README.reference.md':read()?>
 
 ## Dependencies
 

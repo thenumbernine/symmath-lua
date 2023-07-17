@@ -13,9 +13,9 @@ const tryToFindMathJax = {};
 
 tryToFindMathJax.urls = [
 	'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js',
+	'file:///home/chris/Projects/christopheremoore.net/MathJax/es5/tex-svg.js',
 	'/MathJax/es5/tex-svg.js',
 ];
-
 
 tryToFindMathJax.loadScript = function(args) {
 console.log("loading "+args.src);

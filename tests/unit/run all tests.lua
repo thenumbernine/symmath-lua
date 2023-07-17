@@ -19,7 +19,7 @@ local function exec(cmd)
 	return os.execute(cmd)
 end
 
-for f in file:dir() do
+for f in path:dir() do
 	if f:sub(-4) == '.lua'
 	and f ~= 'run all tests.lua'
 	and f ~= 'unit.lua'
@@ -33,14 +33,14 @@ for f in file:dir() do
 	and f ~= 'tensor use case.lua'
 	then
 		local target = '../output/unit/'..f:sub(1,-5)..'.html'
-		local fileattr = file(f):attr()
-		local targetattr = file(target):attr()
+		local fileattr = path(f):attr()
+		local targetattr = path(target):attr()
 		if fileattr and targetattr then
 			print('comparing '..os.date(nil, targetattr.change)..' vs '..os.date(nil, fileattr.change))
 		end
 		if not targetattr or targetattr.change < fileattr.change or force then
-			if not file'../output':isdir() then file'../output':mkdir() end
-			if not file'../output/unit':isdir() then file'../output/unit':mkdir() end
+			if not path'../output':isdir() then path'../output':mkdir() end
+			if not path'../output/unit':isdir() then path'../output/unit':mkdir() end
 			exec(lua..' "'..f..'" > "'..target..'"')
 			io.stderr:write'\n'
 		else

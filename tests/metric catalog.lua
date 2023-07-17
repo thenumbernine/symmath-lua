@@ -680,7 +680,7 @@ local MathJax = symmath.export.MathJax
 MathJax.header.pathToTryToFindMathJax = '..'
 symmath.tostring = MathJax
 
-file'output/metric catalog':mkdir()
+path'output/metric catalog':mkdir()
 -- [[
 for _,info in ipairs(spacetimes) do
 	printbr('<a href="metric catalog/'..info.title..'.html">'..info.title..'</a>')
@@ -694,7 +694,7 @@ for _,info in ipairs(spacetimes) do
 
 	MathJax.header.title = info.title
 
-	local f = assert(file('output/metric catalog/'..info.title..'.html'):open'w')
+	local f = assert(path('output/metric catalog/'..info.title..'.html'):open'w')
 	local function write(...)
 		return f:write(...)
 	end

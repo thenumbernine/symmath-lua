@@ -585,7 +585,7 @@ local MathJax = symmath.export.MathJax
 MathJax.header.pathToTryToFindMathJax = '..'
 symmath.tostring = MathJax
 
-file'output/Platonic Solids':mkdir()
+path'output/Platonic Solids':mkdir()
 for _,shape in ipairs(shapes) do
 	printbr('<a href="Platonic Solids/'..shape.name..'.html">'..shape.name..'</a> ('..shape.dim..' dim)'
 		..(shape.dual and (', dual to '..shape.dual) or ''))
@@ -599,18 +599,18 @@ end
 
 local cache = {}
 local cacheFilename = 'Platonic Solids - cache.lua'
-if file(cacheFilename):exists() then
+if path(cacheFilename):exists() then
 	printerr'reading cache...'
-	cache = load('return '..file(cacheFilename):read(), nil, nil, env)()
+	cache = load('return '..path(cacheFilename):read(), nil, nil, env)()
 	printerr'...done reading cache'
 end
 
 local function writeShapeCaches()
 	-- can symmath.export.SymMath export Lua tables?
-	--file(cacheFilename):write(symmath.export.SymMath(cache))
-	file(cacheFilename):write(tolua(cache, {
+	--path(cacheFilename):write(symmath.export.SymMath(cache))
+	path(cacheFilename):write(tolua(cache, {
 		serializeForType = {
-			table = function(state, x, tab, path, keyRef, ...)
+			table = function(state, x, tab, pathstr, keyRef, ...)
 				local mt = getmetatable(x)
 				if mt and (
 					Expression:isa(mt)
@@ -618,7 +618,7 @@ local function writeShapeCaches()
 				) then
 					return symmath.export.SymMath(x):gsub('%s+', ' ')
 				end
-				return tolua.defaultSerializeForType.table(state, x, tab, path, keyRef, ...)
+				return tolua.defaultSerializeForType.table(state, x, tab, pathstr, keyRef, ...)
 			end,
 		}
 	}))
@@ -631,7 +631,7 @@ for _,shape in ipairs(shapes) do
 
 	MathJax.header.title = shape.name
 
-	local f = assert(file('output/Platonic Solids/'..shape.name..'.html'):open'w')
+	local f = assert(path('output/Platonic Solids/'..shape.name..'.html'):open'w')
 	local function write(...)
 		return f:write(...)
 	end
@@ -1147,7 +1147,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 --]=]
 
 --[=[ not sure if this is useful.  can't seem to visualize anything useful from it.
-	file'tmp.dot':write(
+	path'tmp.dot':write(
 		table{
 			'digraph {',
 		}:append(edges:mapi(function(e)
@@ -1158,7 +1158,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 	)
 
 	os.execute('circo tmp.dot -Tsvg > "Platonic Solids/'..shape.name..'.svg"')
-	file'tmp.dot':remove()
+	path'tmp.dot':remove()
 
 	printbr("<img src='"..shape.name..".svg'>/")
 --]=]
@@ -1193,7 +1193,7 @@ for k,v in pairs(cache) do
 	
 end
 s:insert'}'
-file(cacheFilename):write(s:concat'\n')
+path(cacheFilename):write(s:concat'\n')
 --]]
 
 print(export.MathJax.footer)
