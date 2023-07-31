@@ -12,7 +12,7 @@ Use this if you want to copy the symmath namespace into the global namespace.
 		Assign `MathJax` to a table to override specific values within the `symmath.export.MathJax` singleton variable.
 
 Using `symmath` without `symmath.setup()`.  
-```
+``` lua
 local symmath = require 'symmath'
 local a, r, theta, rho, M, Q, Delta = symmath.vars('a','r','\\theta','\\rho','M','Q','\\Delta')
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
@@ -20,7 +20,7 @@ print((Delta - (r^2 + a^2)) * a * symmath.sin(theta)^2 / rho^2)
 ```
 
 Using `symmath` with `symmath.setup()` but without `implicitVars` removes the need to reference the `symmath` namespace, but still requires explicit creation of variables.  
-```
+``` lua
 require 'symmath'.setup()
 local a, r, theta, rho, M, Q, Delta = vars('a','r','\\theta','\\rho','M','Q','\\Delta')
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
@@ -29,7 +29,7 @@ print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 
 Using `symmath` with `symmath.setup{implicitVars=true}` removes the need for `symmath` namespace references and the need for explicit creation of variables.  
 Notice that underscores and Greek letters are automatically converted to appropriate TeX/unicode symbols.
-```
+``` lua
 require 'symmath'.setup{implicitVars=true, fixVariableNames=true}
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
@@ -547,7 +547,7 @@ Notice that subclasses are copied upon construction rather than referenced by dy
 
 Examples of exporters:
 
-```
+``` lua
 > export.Lua:toCode{output={x^3/3}}
 local out1 = ((x * (x * x)) / 3.0)
 
@@ -609,7 +609,7 @@ This constructs a Wildcard object for Expression matching.
 - - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
 
 Matching works something like this:
-```
+``` lua
 local i = (x + y):match(x + Wildcard(1))
 assert(i == y)
 ```
@@ -621,13 +621,13 @@ but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
 
 Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
 For example:
-```
+``` lua
 local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
 assert(i == x + y)
 assert(j == zero)
 ```
 The first wildcard will greedily match both sub-expressions, unless stated otherwise:
-```
+``` lua
 local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
 assert(i == x)
 assert(j == y)

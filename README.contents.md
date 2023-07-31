@@ -9,7 +9,7 @@ http://christopheremoore.net/symbolic-lua
 
 ## TLDR
 
-```
+``` lua
 <?=path'tests/console_spherical_metric.lua':read()?>
 ```
 
@@ -62,7 +62,7 @@ How to get around this:
 If you want to run this as a command-line with the API in global namespace:
 
 ` symmath.sh `:
-```
+``` bash
 #!/usr/bin/env sh
 if [ $# = 0 ]
 then
@@ -73,7 +73,7 @@ fi
 ```
 
 ` symmath.bat `:
-```
+``` batch
 @echo off
 if not [%1]==[] goto interactive
 lua -lext -lsymmath.setup
@@ -84,7 +84,7 @@ lua -lext -lsymmath.setup -e %*
 
 Then run with
 
-```
+``` sh
 symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
 

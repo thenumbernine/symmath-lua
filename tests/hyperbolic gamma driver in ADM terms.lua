@@ -13,16 +13,7 @@ print(MathJax.header)
 -- os.time() is second-resolution.  
 -- os.clock() has higher resolution, but counts time x # cores afaik
 -- nope.  looks like os.clock() matches gettimeofday() pretty closely
-local timer = os.clock
-local result, ffi = pcall(require, 'ffi')
-if result and ffi then
-	require 'ffi.c.sys.time'
-	local tv = ffi.new'struct timeval[1]'
-	timer = function()
-		ffi.C.gettimeofday(tv, nil)
-		return tonumber(tv[0].tv_sec) + 1e-6 * tonumber(tv[0].tv_usec)
-	end
-end
+local timer = require 'ext.timer'.getTime
 
 local startTime = timer()
 local lastTime = startTime
