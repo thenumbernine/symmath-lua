@@ -367,7 +367,7 @@ console.log("...successfully set output type to ", ctrl.cell.outputtype);
 						/* update only client changes... */
 						for (let j = 0; j < serverBase.cells.length; ++j) {
 							if (serverBase.cells[j].uid == ctrl.cell.uid) {
-								removefromParent(serverBase.ctrls[j].div);
+								removeFromParent(serverBase.ctrls[j].div);
 								serverBase.cells.splice(j, 1);
 								serverBase.ctrls.splice(j, 1);
 								// after removing ...
