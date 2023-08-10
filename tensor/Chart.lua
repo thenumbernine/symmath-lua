@@ -46,7 +46,7 @@ function Chart:init(args)
 		end
 	end
 
-	-- TODO makek use of this
+	-- TODO make use of this
 	-- in fact, if .manifold is provided, then this shouldn't be needed (instead use embedded.signature? or embedded.innerProduct?)
 	if args.signature or self.symbols then
 		local clone = require 'symmath.clone'
@@ -126,38 +126,42 @@ and define their associated tangentSpaceOperators in the Chart as differentiatin
 
 	-- previously in tests/metric catalog.lua
 	-- now in hydro-cl/hydro/coord/coord.lua
-	local a,b,c = 'a', 'b', 'c'
-	if self.symbols then
-		if #self.symbols >= 3 then
-			a,b,c = table.unpack(self.symbols, 1, 3)
-		else
-			a,b,c = nil,nil, nil	-- silent fail.  TODO how about a warning somehow?
+	if args.commutation then
+		self.commutation = args.commutation()
+	else
+		local a,b,c = 'a', 'b', 'c'
+		if self.symbols then
+			if #self.symbols >= 3 then
+				a,b,c = table.unpack(self.symbols, 1, 3)
+			else
+				a,b,c = nil,nil, nil	-- silent fail.  TODO how about a warning somehow?
+			end
 		end
-	end
-	if a then
-		self.commutation = self:Tensor{indexes=' _'..a..' _'..b..' ^'..c}
-		local Constant = require 'symmath.Constant'
-		local Variable = require 'symmath.Variable'
-		local factorLinearSystem = require 'symmath.factorLinearSystem'
-		local zeta = Variable('\\zeta', self.coords)
-		local dzeta = table.mapi(self.coords, function(xk) return zeta:diff(xk) end)
-		for i,di in ipairs(self.tangentSpaceOperators) do
-			for j,dj in ipairs(self.tangentSpaceOperators) do
-				local diff = di(dj(zeta)) - dj(di(zeta))
-				local diffEval = diff()
-				if not Constant.isValue(diffEval, 0) then
-					local A,b = factorLinearSystem({diff}, dzeta)
-					-- now extract zeta:diff(uk)
-					-- and divide by e_k to get the correct coefficient
-					-- TODO this assumes that e_a is only a function of partial_a
-					-- if e_a is a linear combination of e_a^b partial_b then you can work it out to find
-					-- c_ab^d = (e^-1)_c^d (e_a^r e_b^c_,r - e_b^r e_a^c_,r)
-					-- TODO put this somewhere else so everyone can use it
-					assert(Constant.isValue(b[1][1], 0))
-					for k,dk in ipairs(self.tangentSpaceOperators) do
-						local coeff = (A[1][k] * dzeta[k] / dk(zeta))()
-						-- assert dphi is nowhere in coeff ...
-						self.commutation[i][j][k] = coeff
+		if a then
+			self.commutation = self:Tensor{indexes=' _'..a..' _'..b..' ^'..c}
+			local Constant = require 'symmath.Constant'
+			local Variable = require 'symmath.Variable'
+			local factorLinearSystem = require 'symmath.factorLinearSystem'
+			local zeta = Variable('\\zeta', self.coords)
+			local dzeta = table.mapi(self.coords, function(xk) return zeta:diff(xk) end)
+			for i,di in ipairs(self.tangentSpaceOperators) do
+				for j,dj in ipairs(self.tangentSpaceOperators) do
+					local diff = di(dj(zeta)) - dj(di(zeta))
+					local diffEval = diff()
+					if not Constant.isValue(diffEval, 0) then
+						local A,b = factorLinearSystem({diff}, dzeta)
+						-- now extract zeta:diff(uk)
+						-- and divide by e_k to get the correct coefficient
+						-- TODO this assumes that e_a is only a function of partial_a
+						-- if e_a is a linear combination of e_a^b partial_b then you can work it out to find
+						-- c_ab^d = (e^-1)_c^d (e_a^r e_b^c_,r - e_b^r e_a^c_,r)
+						-- TODO put this somewhere else so everyone can use it
+						assert(Constant.isValue(b[1][1], 0))
+						for k,dk in ipairs(self.tangentSpaceOperators) do
+							local coeff = (A[1][k] * dzeta[k] / dk(zeta))()
+							-- assert dphi is nowhere in coeff ...
+							self.commutation[i][j][k] = coeff
+						end
 					end
 				end
 			end
