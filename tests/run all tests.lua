@@ -1,4 +1,5 @@
 #!/usr/bin/env lua
+local force = ... == 'force'
 require 'ext'
 local function exec(cmd)
 	print('>'..cmd)
@@ -12,7 +13,7 @@ for f in path:dir() do
 		if fileattr and targetattr then
 			print('comparing '..os.date(nil, targetattr.change)..' vs '..os.date(nil, fileattr.change))
 		end
-		if not targetattr or targetattr.change < fileattr.change then
+		if force or not targetattr or targetattr.change < fileattr.change then
 			if not path'output':isdir() then path'output':mkdir() end
 			exec('"./'..f..'" > "'..target..'"')
 		else
