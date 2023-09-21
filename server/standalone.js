@@ -334,7 +334,7 @@ console.log("focusing on inputTextArea after number ", j);
 console.log("setting output type to ", val);
 				serverBase.server.setOutputType({
 					uid : ctrl.cell.uid,
-					outputtype : this.value,
+					outputtype : val,
 					done : celldata => {
 						//only update this cell
 						// no need to disable controls too? just this control?
