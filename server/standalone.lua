@@ -211,7 +211,7 @@ function SymmathHTTP:handleDirectoryTemplate()
 	code = code:gsub('</head>', [[
 		<script type="text/javascript">
 function addnewworksheet() {
-	var name = prompt("what's the name?");
+	let name = prompt("what's the name?");
 	if (name === null) return;
 
 	// TODO ajax request to a url that the server interprets as 'create a doc'

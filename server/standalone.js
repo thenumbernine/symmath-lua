@@ -323,7 +323,7 @@ console.log("focusing on inputTextArea after number ", j);
 
 
 		ctrl.setOutputTypeSelect = DOM('select', {
-			html : ['text', 'html', 'latex', 'stop']
+			innerHTML : ['text', 'html', 'latex', 'stop']
 				.map((s,i) => {
 					return '<option>'+s+'</option>'
 				}).join(''),
