@@ -385,6 +385,8 @@ function TensorRef:makeDense()
 		-- TODO how to specify names per exporter?
 
 		local name_SingleLine = symmath.export.SingleLine:apply(thisRef)
+		
+		-- TODO this breaks when used with 'fixVariableNames'
 		local name_LaTeX = symmath.export.LaTeX:applyLaTeX(thisRef)
 
 		local v = Variable(name_LaTeX, dependentVars)
