@@ -10,7 +10,7 @@ But here I'm putting both singletones and classes in the table, exposed.
 
 Which is better design?
 --]]
-return {
+local sets = {
 	-- classes
 	Universal = require 'symmath.set.Universal',
 	Null = require 'symmath.set.Null',
@@ -77,3 +77,7 @@ so how do we evaluate whether the expression is true?
 	-- TODO make natural just a reference
 	natural = require 'symmath.set.Natural'(),
 }
+
+sets.default = sets.real
+
+return sets 

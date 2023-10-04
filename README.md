@@ -9,7 +9,7 @@ http://christopheremoore.net/symbolic-lua
 
 ## TLDR
 
-```
+``` lua
 #!/usr/bin/env lua
 require 'ext'
 require 'symmath'.setup{implicitVars=true, fixVariableNames=true}
@@ -280,7 +280,7 @@ Use this if you want to copy the symmath namespace into the global namespace.
 		Assign `MathJax` to a table to override specific values within the `symmath.export.MathJax` singleton variable.
 
 Using `symmath` without `symmath.setup()`.  
-```
+``` lua
 local symmath = require 'symmath'
 local a, r, theta, rho, M, Q, Delta = symmath.vars('a','r','\\theta','\\rho','M','Q','\\Delta')
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
@@ -288,7 +288,7 @@ print((Delta - (r^2 + a^2)) * a * symmath.sin(theta)^2 / rho^2)
 ```
 
 Using `symmath` with `symmath.setup()` but without `implicitVars` removes the need to reference the `symmath` namespace, but still requires explicit creation of variables.  
-```
+``` lua
 require 'symmath'.setup()
 local a, r, theta, rho, M, Q, Delta = vars('a','r','\\theta','\\rho','M','Q','\\Delta')
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
@@ -297,7 +297,7 @@ print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
 
 Using `symmath` with `symmath.setup{implicitVars=true}` removes the need for `symmath` namespace references and the need for explicit creation of variables.  
 Notice that underscores and Greek letters are automatically converted to appropriate TeX/unicode symbols.
-```
+``` lua
 require 'symmath'.setup{implicitVars=true, fixVariableNames=true}
 print(Delta:eq(r^2 + a^2 + Q^2 - 2 * M * r))
 print((Delta - (r^2 + a^2)) * a * sin(theta)^2 / rho^2)
@@ -328,10 +328,14 @@ There are a few common constants in the symmath namespace:
 
 ### Variables
 
-`var = symmath.Variable(name[, dependencies])`  
+`var = symmath.Variable(name[, dependencies[, value[, set]]])`  
 `var = symmath.var(name[, dependencies])`  
 `var1, var2, ... = symmath.vars(name1, name2, ...)`  
-Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
+Create a variable.
+- name = The variable's given name.
+- dependencies = A list of which variables it is dependent on for differentiation.  By default variables of different names have a derivative of zero.
+- value = You can also specify a value to be inserted during code generation.
+- set = Which set the variable belongs to.  By default this is `symmath.set.default`, which is assigned to `symmath.set.real`.  An easier way to create variables from sets is using the `symmath.set.X:var(...)` function.
 
 `var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
@@ -520,6 +524,10 @@ Returns the determinant of A.
 `At = A:transpose()`  
 `At = A:T()`  
 Returns the transpose of A
+
+`Ah = A:hermitian()`  
+`Ah = A:H()`  
+Returns the Hermitian of A
 
 `I = Matrix.identity([m, n])`  
 Returns 1 if no arguments are provided.  
@@ -714,6 +722,8 @@ returns nil if the answer is indeterminate.
 
 `expr:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
 
+`symmath.set.default` = The default set that Variables are associated with.  This is initialized to `symmath.set.real`.
+
 
 ### Plotting
 
@@ -815,7 +825,7 @@ Notice that subclasses are copied upon construction rather than referenced by dy
 
 Examples of exporters:
 
-```
+``` lua
 > export.Lua:toCode{output={x^3/3}}
 local out1 = ((x * (x * x)) / 3.0)
 
@@ -877,7 +887,7 @@ This constructs a Wildcard object for Expression matching.
 - - cannotDependOn = The wildcard must not depend on the specified variable.  See 'Expression:dependsOn()' for more information.
 
 Matching works something like this:
-```
+``` lua
 local i = (x + y):match(x + Wildcard(1))
 assert(i == y)
 ```
@@ -889,13 +899,13 @@ but `(x + x):match(Wildcard(1) + Wildcard(1))` will succeed and return `x`.
 
 Wildcards are greedy-matching and will match zero-or-more expressions unless stated otherwise.
 For example:
-```
+``` lua
 local i,j = (x + y):match(Wildcard(1) + Wildcard(2))
 assert(i == x + y)
 assert(j == zero)
 ```
 The first wildcard will greedily match both sub-expressions, unless stated otherwise:
-```
+``` lua
 local i,j = (x + y):match(W{1, atMost=1} + W{2, atMost=1})
 assert(i == x)
 assert(j == y)
@@ -940,7 +950,7 @@ How to get around this:
 If you want to run this as a command-line with the API in global namespace:
 
 ` symmath.sh `:
-```
+``` bash
 #!/usr/bin/env sh
 if [ $# = 0 ]
 then
@@ -951,7 +961,7 @@ fi
 ```
 
 ` symmath.bat `:
-```
+``` batch
 @echo off
 if not [%1]==[] goto interactive
 lua -lext -lsymmath.setup
@@ -962,7 +972,7 @@ lua -lext -lsymmath.setup -e %*
 
 Then run with
 
-```
+``` sh
 symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
 
@@ -1195,8 +1205,6 @@ Output CDN URLs:
 [tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
 
 [tests/output/Z4 - flux PDE noSource usingOnlyUs](https://thenumbernine.github.io/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource%20usingOnlyUs.html)
-
-[tests/output/Z4 - flux PDE noSource](https://thenumbernine.github.io/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource.html)
 
 [tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
 

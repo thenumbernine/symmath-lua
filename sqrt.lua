@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
-local sqrt = class(Function)
+local sqrt = Function:subclass()
 
 sqrt.name = 'sqrt'
 sqrt.nameForExporterTable = {}

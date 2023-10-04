@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'
 local Set = require 'symmath.set.Set'
@@ -8,7 +7,7 @@ local symmath
 -- composites of intervals
 -- TODO better term?
 -- the math term "subset" could also define things with :nfinite regions, which cannot be defined by this class
-local RealSubset = class(Set)
+local RealSubset = Set:subclass()
 RealSubset.name = 'RealSubset'
 
 RealSubset.last = table.last

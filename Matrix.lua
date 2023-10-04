@@ -22,6 +22,9 @@ Matrix.identity = require 'symmath.matrix.identity'
 Matrix.transpose = require 'symmath.matrix.transpose'
 Matrix.T = Matrix.transpose	-- shorthand
 
+Matrix.hermitian = require 'symmath.matrix.hermitian'
+Matrix.H = Matrix.hermitian -- shorthand
+
 Matrix.diagonal = require 'symmath.matrix.diagonal'
 Matrix.trace = require 'symmath.matrix.trace'
 Matrix.pseudoInverse = require 'symmath.matrix.pseudoInverse'

@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local complex = require 'complex'
@@ -12,7 +11,7 @@ what about infinite precision numbers?
 I'll let .value hold whatever is essential to the constant - whatever class of constant it is.
 --]]
 
-local Constant = class(Expression)
+local Constant = Expression:subclass()
 Constant.precedence = 10	-- high since it can't have child nodes
 Constant.name = 'Constant'
 

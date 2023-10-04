@@ -75,7 +75,7 @@ function Variable:init(name, dependentVars, value, set)
 			set = require 'symmath.set.sets'.real
 		else
 			-- default set ... Real or Universal?
-			set = require 'symmath.set.sets'.real
+			set = require 'symmath.set.sets'.default
 		end
 	end
 	self.set = set

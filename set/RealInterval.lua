@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local math = require 'ext.math'
 local Set = require 'symmath.set.Set'
 local symmath
 
 -- in some places I'm using subclasses to represent subsets ...
-local RealInterval = class(Set)
+local RealInterval = Set:subclass()
 RealInterval.name = 'RealInterval'
 
 function RealInterval:init(start, finish, includeStart, includeFinish)

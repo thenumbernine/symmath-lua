@@ -212,6 +212,7 @@ symmath.sqrt = require 'symmath.sqrt'
 symmath.tan = require 'symmath.tan'
 symmath.tanh = require 'symmath.tanh'
 symmath.Heaviside = require 'symmath.Heaviside'
+symmath.conj = require 'symmath.conj'
 
 symmath.op = {
 	Binary = require 'symmath.op.Binary',

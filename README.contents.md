@@ -119,8 +119,6 @@ This requires my lua-http project in order to run.
 
 - better polynomial factoring.
 
-- error with this: `(Constant(1.1) / Constant(1.2) * x )()`
-
 - I am thinking my constantly changing sqrts to fraction powers and back is slowing things down.  How about instead a better "isSqrt" or "getEquivPower" test that both sqrt(), cbrt(), and pow() all implement?
 
 - browser interface: "continue" feature, to counter-balance the "stop" cells

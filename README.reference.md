@@ -60,10 +60,14 @@ There are a few common constants in the symmath namespace:
 
 ### Variables
 
-`var = symmath.Variable(name[, dependencies])`  
+`var = symmath.Variable(name[, dependencies[, value[, set]]])`  
 `var = symmath.var(name[, dependencies])`  
 `var1, var2, ... = symmath.vars(name1, name2, ...)`  
-Create a variable with given name, and optionally a list of which variables it is dependent on for differentiation. By default variables of different names have a derivative of zero.
+Create a variable.
+- name = The variable's given name.
+- dependencies = A list of which variables it is dependent on for differentiation.  By default variables of different names have a derivative of zero.
+- value = You can also specify a value to be inserted during code generation.
+- set = Which set the variable belongs to.  By default this is `symmath.set.default`, which is assigned to `symmath.set.real`.  An easier way to create variables from sets is using the `symmath.set.X:var(...)` function.
 
 `var:setDependentVars(var1, var2, ...)`  
 Specify the variables that var is dependent on for differentiation.
@@ -252,6 +256,10 @@ Returns the determinant of A.
 `At = A:transpose()`  
 `At = A:T()`  
 Returns the transpose of A
+
+`Ah = A:hermitian()`  
+`Ah = A:H()`  
+Returns the Hermitian of A
 
 `I = Matrix.identity([m, n])`  
 Returns 1 if no arguments are provided.  
@@ -445,6 +453,8 @@ returns nil if the answer is indeterminate.
 `expr:getRealDomain()` = Returns the RealSubset object for the domain of this expression, specifying what possible values it can contain.
 
 `expr:getRealRange()` = Returns the RealSubset object for the range of this expression, specifying what possible values it can contain.
+
+`symmath.set.default` = The default set that Variables are associated with.  This is initialized to `symmath.set.real`.
 
 
 ### Plotting
