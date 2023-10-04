@@ -1,3 +1,5 @@
+-- https://en.wikipedia.org/wiki/Pauli_matrices
+-- https://en.wikipedia.org/wiki/Gamma_matrices
 local Matrix = require 'symmath.Matrix'
 local i = require 'symmath'.i
 local s0 = Matrix({1,0},{0,1})
@@ -19,4 +21,7 @@ return {
 	Pauli = Pauli,
 	Pauli4 = Pauli4,
 	Dirac = Dirac,
+	-- WeylBasis
+	-- WeylBasisAlt
+	-- MajornaBasis
 }
