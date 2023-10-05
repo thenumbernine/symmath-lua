@@ -30,11 +30,14 @@ Im.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 Im.rules = table(Im.rules, {
 	Prune = {
 		{apply = function(prune, expr)
+--print('prune Im ', expr)			
 			local x = expr[1]
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant
+			local unm = symmath.op.unm
 			local add = symmath.op.add
 			local sub = symmath.op.sub
+			local mul = symmath.op.mul
 			
 			if symmath.set.real:contains(x) then
 				return Constant(0)
@@ -53,7 +56,8 @@ Im.rules = table(Im.rules, {
 				end
 			end
 				
-			if add:isa(x)
+			if unm:isa(x)
+			or add:isa(x)
 			or sub:isa(x)
 			then
 				return prune(getmetatable(x)(table.mapi(x, function(xi)
@@ -61,6 +65,38 @@ Im.rules = table(Im.rules, {
 				end):unpack()))
 			end
 			
+			-- special case for prune()'s of -x
+			if mul:isa(x) then
+				--[[ only works for reals on the left or right side of the muls
+				local function prod(...)
+					if select('#', ...) == 1 then return ... end
+					return mul(...)
+				end
+				-- TODO this won't get any in the middle ...
+				
+				-- Im(a * b) = a * Im(b) so long as a is real
+				-- ofc that means they're just a * b anyways so ...
+				if symmath.set.real:contains(x[1]) then
+					return prune(x[1] * Im(prod(table.unpack(x, 2))))
+				end
+				-- same with right-multiply
+				if symmath.set.real:contains(x[#x]) then
+					return prune(Im(prod(table.unpack(x, 1, #x-1))) * x[#x])
+				end
+				--]]
+				-- [[ more flexible, but costs more operations ...
+				local a, b
+				if #x == 2 then
+					a, b = table.unpack(x)
+				else
+					a = x[1]
+					b = mul(table.unpack(x, 2))
+				end
+				local Im = symmath.Im
+				return prune(Re(a) * Re(b) - Im(a) * Im(b))
+				--]]
+			end
+
 			-- TODO more 
 		end},
 	},
