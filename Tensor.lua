@@ -654,9 +654,22 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 		end
 
 		symmath = symmath or require 'symmath.namespace'()
+		
+		oldVariance[i].lower = tensorIndex.lower
+		
 		t = symmath.simplify(t)
-		t.variance = oldVariance
-		t.variance[i].lower = tensorIndex.lower
+		-- ...now apply the new variance to all sub-tensors
+		local function applyVariance(t, variance)
+			t.variance = table(variance):mapi(function(var) return var:clone() end)
+			if Tensor:isa(t[1]) then
+				local subVariance = t.variance:sub(2)
+				assert(#subVariance > 0, "somehow tensor .variance isn't as big as tensor degree")
+				for i,ti in ipairs(t) do
+					applyVariance(ti, subVariance)
+				end
+			end
+		end
+		applyVariance(t, oldVariance)
 	end
 
 	return t
