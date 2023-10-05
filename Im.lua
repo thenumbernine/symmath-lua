@@ -92,7 +92,7 @@ Im.rules = table(Im.rules, {
 					a = x[1]
 					b = mul(table.unpack(x, 2))
 				end
-				local Im = symmath.Im
+				local Re = symmath.Re
 				return prune(Re(a) * Re(b) - Im(a) * Im(b))
 				--]]
 			end
