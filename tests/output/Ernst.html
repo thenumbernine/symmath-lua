@@ -8,8 +8,8 @@
 	<body>
 
 <hr>
-${{{ g} _t} _t} = {-{{\Lambda}^{2}}}$;
-${{{ g} _r} _r} = {{\Lambda}^{2}}$;
+${{{ g} _t} _t} = { {-{{\Lambda}^{2}}} {{\left({{1}{-{\frac{0}{r}}}}\right)}}}$;
+${{{ g} _r} _r} = {\frac{{\Lambda}^{2}}{{1}{-{\frac{0}{r}}}}}$;
 ${{{ g} _{\theta}} _{\theta}} = {{{{\Lambda}^{2}}} {{{r}^{2}}}}$;
 ${{{ g} _{\phi}} _{\phi}} = {\frac{{{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}{{\Lambda}^{2}}}$
 
@@ -18,7 +18,7 @@ ${{{ g} _{\phi}} _{\phi}} = {\frac{{{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}
 ${{{ g} ^t} ^t} = {-{\frac{1}{{\Lambda}^{2}}}}$;
 ${{{ g} ^r} ^r} = {\frac{1}{{\Lambda}^{2}}}$;
 ${{{ g} ^{\theta}} ^{\theta}} = {\frac{1}{{{{\Lambda}^{2}}} {{{r}^{2}}}}}$;
-${{{ g} ^{\phi}} ^{\phi}} = {\frac{{\Lambda}^{2}}{{{{r}^{2}}} {{\left({{1} - {\cos\left(  \theta\right)}}\right)}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}}}}$
+${{{ g} ^{\phi}} ^{\phi}} = {\frac{{\Lambda}^{2}}{{{{r}^{2}}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}}}}$
 
 <br>
 <hr>
@@ -31,7 +31,7 @@ ${{{{ \Gamma} ^t} _r} _r} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\parti
 ${{{{ \Gamma} ^t} _{\theta}} _t} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \theta}}}$;
 ${{{{ \Gamma} ^t} _{\theta}} _{\theta}} = {{\frac{1}{\Lambda}} {{{{r}^{2}}} {{\frac{\partial \Lambda}{\partial t}}}}}$;
 ${{{{ \Gamma} ^t} _{\phi}} _t} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \phi}}}$;
-${{{{ \Gamma} ^t} _{\phi}} _{\phi}} = {\frac{{{\frac{\partial \Lambda}{\partial t}}} {{\left({{{{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} - {{r}^{2}}}\right)}}}{{\Lambda}^{5}}}$;
+${{{{ \Gamma} ^t} _{\phi}} _{\phi}} = {\frac{{{\frac{\partial \Lambda}{\partial t}}} {{\left({{-{{r}^{2}}} + {{{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}\right)}}}{{\Lambda}^{5}}}$;
 ${{{{ \Gamma} ^r} _t} _t} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial r}}}$;
 ${{{{ \Gamma} ^r} _t} _r} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}$;
 ${{{{ \Gamma} ^r} _r} _t} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}$;
@@ -41,24 +41,26 @@ ${{{{ \Gamma} ^r} _r} _{\phi}} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\
 ${{{{ \Gamma} ^r} _{\theta}} _r} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \theta}}}$;
 ${{{{ \Gamma} ^r} _{\theta}} _{\theta}} = {-{{\frac{1}{\Lambda}} {{{r}} {{\left({{\Lambda} + {{{r}} {{\frac{\partial \Lambda}{\partial r}}}}}\right)}}}}}$;
 ${{{{ \Gamma} ^r} _{\phi}} _r} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \phi}}}$;
-${{{{ \Gamma} ^r} _{\phi}} _{\phi}} = {\frac{{{{{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}} - {{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}} - {{{r}} {{{\Lambda}^{2}}}}} + {{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}{{\Lambda}^{6}}}$;
+${{{{ \Gamma} ^r} _{\phi}} _{\phi}} = {\frac{{-{{{r}} {{{\Lambda}^{2}}}}} + {{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}} + {{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}{-{{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}}}{{\Lambda}^{6}}}$;
 ${{{{ \Gamma} ^{\theta}} _t} _t} = {\frac{\frac{\partial \Lambda}{\partial \theta}}{{{\Lambda}} \cdot {{{r}^{2}}}}}$;
 ${{{{ \Gamma} ^{\theta}} _t} _{\theta}} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}$;
 ${{{{ \Gamma} ^{\theta}} _r} _r} = {-{\frac{\frac{\partial \Lambda}{\partial \theta}}{{{\Lambda}} \cdot {{{r}^{2}}}}}}$;
-${{{{ \Gamma} ^{\theta}} _r} _{\theta}} = {\frac{{{{r}} {{\frac{\partial \Lambda}{\partial r}}}} + {\Lambda}}{{{\Lambda}} \cdot {{r}}}}$;
+${{{{ \Gamma} ^{\theta}} _r} _{\theta}} = {\frac{{\Lambda} + {{{r}} {{\frac{\partial \Lambda}{\partial r}}}}}{{{\Lambda}} \cdot {{r}}}}$;
 ${{{{ \Gamma} ^{\theta}} _{\theta}} _t} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}$;
-${{{{ \Gamma} ^{\theta}} _{\theta}} _r} = {\frac{{{{r}} {{\frac{\partial \Lambda}{\partial r}}}} + {\Lambda}}{{{\Lambda}} \cdot {{r}}}}$;
+${{{{ \Gamma} ^{\theta}} _{\theta}} _r} = {\frac{{\Lambda} + {{{r}} {{\frac{\partial \Lambda}{\partial r}}}}}{{{\Lambda}} \cdot {{r}}}}$;
 ${{{{ \Gamma} ^{\theta}} _{\theta}} _{\theta}} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \theta}}}$;
 ${{{{ \Gamma} ^{\theta}} _{\theta}} _{\phi}} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \phi}}}$;
 ${{{{ \Gamma} ^{\theta}} _{\phi}} _{\theta}} = {{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \phi}}}$;
-${{{{ \Gamma} ^{\theta}} _{\phi}} _{\phi}} = {\frac{{{\sin\left(  \theta\right)}} {{\left({{-{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}}} + {{{\sin\left(  \theta\right)}} {{\frac{\partial \Lambda}{\partial \theta}}}}}\right)}}}{{\Lambda}^{5}}}$;
-${{{{ \Gamma} ^{\phi}} _t} _t} = {\frac{{{{\Lambda}^{3}}} {{\frac{\partial \Lambda}{\partial \phi}}}}{{{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1} - {\cos\left(  \theta\right)}}\right)}}}}$;
+${{{{ \Gamma} ^{\theta}} _{\phi}} _{\phi}} = {\frac{{{\sin\left(  \theta\right)}} {{\left({{{{\frac{\partial \Lambda}{\partial \theta}}} {{\sin\left(  \theta\right)}}}{-{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}}}}\right)}}}{{\Lambda}^{5}}}$;
+${{{{ \Gamma} ^{\phi}} _t} _t} = {\frac{{{{\Lambda}^{3}}} {{\frac{\partial \Lambda}{\partial \phi}}}}{{{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}}}}$;
 ${{{{ \Gamma} ^{\phi}} _t} _{\phi}} = {-{{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}}$;
-${{{{ \Gamma} ^{\phi}} _r} _r} = {-{\frac{{{{\Lambda}^{3}}} {{\frac{\partial \Lambda}{\partial \phi}}}}{{{{r}^{2}}} {{\left({{1} - {\cos\left(  \theta\right)}}\right)}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}}}}}$;
-${{{{ \Gamma} ^{\phi}} _r} _{\phi}} = {\frac{{-{{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}} + {{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}} + {{{{r}} {{{\Lambda}^{2}}}} - {{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}}{{{{\Lambda}^{2}}} {{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}$;
+${{{{ \Gamma} ^{\phi}} _r} _r} = {-{\frac{{{{\Lambda}^{3}}} {{\frac{\partial \Lambda}{\partial \phi}}}}{{{{r}^{2}}} {{\left({{1} + {\cos\left(  \theta\right)}}\right)}} {{\left({{1}{-{\cos\left(  \theta\right)}}}\right)}}}}}$;
+${{{{ \Gamma} ^{\phi}} _r} _{\phi}} = {\frac{{{{r}} {{{\Lambda}^{2}}}}{-{{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}{-{{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}} + {{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}}{{{{\Lambda}^{2}}} {{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}$;
 ${{{{ \Gamma} ^{\phi}} _{\theta}} _{\theta}} = {-{\frac{{{{\Lambda}^{3}}} {{\frac{\partial \Lambda}{\partial \phi}}}}{{\sin\left(  \theta\right)}^{2}}}}$;
-${{{{ \Gamma} ^{\phi}} _{\theta}} _{\phi}} = {\frac{{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}} - {{{\sin\left(  \theta\right)}} {{\frac{\partial \Lambda}{\partial \theta}}}}}{{{\Lambda}} \cdot {{\sin\left(  \theta\right)}}}}$;
+${{{{ \Gamma} ^{\phi}} _{\theta}} _{\phi}} = {\frac{{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}}{-{{{\sin\left(  \theta\right)}} {{\frac{\partial \Lambda}{\partial \theta}}}}}}{{{\Lambda}} \cdot {{\sin\left(  \theta\right)}}}}$;
 ${{{{ \Gamma} ^{\phi}} _{\phi}} _t} = {-{{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial t}}}}$;
-${{{{ \Gamma} ^{\phi}} _{\phi}} _r} = {\frac{{-{{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}} + {{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}} + {{{{r}} {{{\Lambda}^{2}}}} - {{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}}{{{{\Lambda}^{2}}} {{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}$;
-${{{{ \Gamma} ^{\phi}} _{\phi}} _{\theta}} = {\frac{{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}} - {{{\sin\left(  \theta\right)}} {{\frac{\partial \Lambda}{\partial \theta}}}}}{{{\Lambda}} \cdot {{\sin\left(  \theta\right)}}}}$;
+${{{{ \Gamma} ^{\phi}} _{\phi}} _r} = {\frac{{{{r}} {{{\Lambda}^{2}}}}{-{{{r}} {{{\Lambda}^{2}}} {{{\cos\left(  \theta\right)}^{2}}}}}{-{{{\Lambda}} \cdot {{{r}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}} + {{{\Lambda}} \cdot {{{r}^{2}}} {{{\cos\left(  \theta\right)}^{2}}} {{\frac{\partial \Lambda}{\partial r}}}}}{{{{\Lambda}^{2}}} {{{r}^{2}}} {{{\sin\left(  \theta\right)}^{2}}}}}$;
+${{{{ \Gamma} ^{\phi}} _{\phi}} _{\theta}} = {\frac{{{{\Lambda}} \cdot {{\cos\left(  \theta\right)}}}{-{{{\sin\left(  \theta\right)}} {{\frac{\partial \Lambda}{\partial \theta}}}}}}{{{\Lambda}} \cdot {{\sin\left(  \theta\right)}}}}$;
 ${{{{ \Gamma} ^{\phi}} _{\phi}} _{\phi}} = {-{{\frac{1}{\Lambda}} {\frac{\partial \Lambda}{\partial \phi}}}}$
+
+<br>

@@ -53,3 +53,19 @@ ${{ U} ^i} = {\left[\begin{array}{c} {{\rho}} \cdot {{W}}\\ {{\rho}} \cdot {{h}}
 <br>
 ${{ U} ^i} = {\left[\begin{array}{c} {{\rho}} \cdot {{\frac{1}{\sqrt{{1}{-{{{v^x}}^{2}}}}}}}\\ {{\rho}} \cdot {{{\left({\frac{1}{\sqrt{{1}{-{{{v^x}}^{2}}}}}}\right)}^{2}}} {{{v^x}}} \cdot {{\left({{1} + {{e_{int}}} + {{\frac{1}{\rho}} {{{\left({{\gamma}{-{1}}}\right)}} {{\rho}} \cdot {{{e_{int}}}}}}}\right)}}\\ {{{\rho}} \cdot {{{\left({\frac{1}{\sqrt{{1}{-{{{v^x}}^{2}}}}}}\right)}^{2}}} {{\left({{1} + {{e_{int}}} + {{\frac{1}{\rho}} {{{\left({{\gamma}{-{1}}}\right)}} {{\rho}} \cdot {{{e_{int}}}}}}}\right)}}}{-{{{\left({{\gamma}{-{1}}}\right)}} {{\rho}} \cdot {{{e_{int}}}}}}{-{{{\rho}} \cdot {{\frac{1}{\sqrt{{1}{-{{{v^x}}^{2}}}}}}}}}\end{array}\right]}$
 <br>
+change in conservative vars wrt primitives:
+<br>
+${\frac{\partial {U^i}}{\partial {w^j}}} = {\left[\begin{array}{ccc} W& {{\rho}} \cdot {{{v^x}}} \cdot {{{W}^{3}}}& 0\\ {{h}} {{{v^x}}} \cdot {{{W}^{2}}}& \frac{{{\rho}} \cdot {{h}} {{\left({{-{1}} + {{{2}} {{{W}^{2}}}}}\right)}}}{{2}{-{{W}^{2}}} + {{{{W}^{2}}} {{{{v^x}}^{4}}}}}& {{\gamma}} \cdot {{\rho}} \cdot {{{v^x}}} \cdot {{{W}^{2}}}\\ {\frac{1}{\gamma}}{\left({{-{1}} + {\gamma} + {h}{-{{{W}} {{\gamma}}}}{-{{{\gamma}} \cdot {{h}}}} + {{{\gamma}} \cdot {{h}} {{{W}^{2}}}}}\right)}& \frac{{{W}} {{\rho}} \cdot {{{v^x}}} \cdot {{\left({{-{1}} + {{{2}} {{W}} {{h}}}}\right)}}}{{2}{-{{W}^{2}}} + {{{{W}^{2}}} {{{{v^x}}^{4}}}}}& {{\rho}} \cdot {{\left({{1}{-{\gamma}} + {{{\gamma}} \cdot {{{W}^{2}}}}}\right)}}\end{array}\right]}$
+<br>
+flux in terms of conservative variables:
+<br>
+${{ F} ^i} = {\left[\begin{array}{c} {{D}} {{{v^x}}}\\ {{{{S^x}}} \cdot {{{v^x}}}}{-{P}}\\ {{S^x}}{-{{{D}} {{{v^x}}}}}\end{array}\right]}$
+<br>
+flux in terms of primitive variables:
+<br>
+${{ F} ^i} = {\left[\begin{array}{c} \frac{{{\rho}} \cdot {{{v^x}}}}{\sqrt{{1}{-{{{v^x}}^{2}}}}}\\ \frac{{{\rho}} \cdot {{\left({{{e_{int}}} + {{{v^x}}^{2}}{-{{{\gamma}} \cdot {{{e_{int}}}}}}{-{{{{e_{int}}}} \cdot {{{{v^x}}^{2}}}}} + {{{2}} {{\gamma}} \cdot {{{e_{int}}}} \cdot {{{{v^x}}^{2}}}}}\right)}}}{{1}{-{{{v^x}}^{2}}}}\\ \frac{{{\rho}} \cdot {{{v^x}}} \cdot {{\left({{1}{-{\sqrt{{1}{-{{{v^x}}^{2}}}}}} + {{{\gamma}} \cdot {{{e_{int}}}}}}\right)}}}{{1}{-{{{v^x}}^{2}}}}\end{array}\right]}$
+<br>
+change in flux wrt primitives:
+<br>
+${\frac{\partial {F^i}}{\partial {w^j}}} = {\left[\begin{array}{ccc} {{W}} {{{v^x}}}& {{\rho}} \cdot {{{W}^{3}}}& 0\\ {\frac{1}{\gamma}}{\left({{-{1}} + {\gamma} + {h}{-{{{2}} {{\gamma}} \cdot {{h}}}} + {{{\gamma}} \cdot {{h}} {{{W}^{2}}}}}\right)}& \frac{{{2}} {{\rho}} \cdot {{h}} {{{v^x}}} \cdot {{{W}^{2}}}}{{2}{-{{W}^{2}}} + {{{{W}^{2}}} {{{{v^x}}^{4}}}}}& {{\rho}} \cdot {{\left({{1}{-{{{2}} {{\gamma}}}} + {{{\gamma}} \cdot {{{W}^{2}}}}}\right)}}\\ {{W}} {{{v^x}}} \cdot {{\left({{-{1}} + {{{W}} {{h}}}}\right)}}& \frac{{{\rho}} \cdot {{\left({{1} + {{W}^{4}}{-{{{{W}^{4}}} {{{{v^x}}^{4}}}}}{-{{{3}} {{{W}^{2}}}}}{-{{{W}} {{h}}}} + {{{2}} {{h}} {{{W}^{3}}}}}\right)}}}{{{W}} {{\left({{2}{-{{W}^{2}}} + {{{{W}^{2}}} {{{{v^x}}^{4}}}}}\right)}}}& {{\gamma}} \cdot {{\rho}} \cdot {{{v^x}}} \cdot {{{W}^{2}}}\end{array}\right]}$
+<br>

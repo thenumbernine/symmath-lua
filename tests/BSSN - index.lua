@@ -362,7 +362,7 @@ local simplifyMetricGammaBarRule = {
 }
 
 local function simplifyBarMetrics(expr)
-	return expr:simplifyMetrics{simplifyMetricGammaBarRule, Tensor.simplifyMetricsRules.delta}
+	return expr:simplifyMetrics{simplifyMetricGammaBarRule, Tensor.simplifyMetricMulRules.delta}
 end
 
 local simplifyMetricGammaBarOnlyRule = {
@@ -378,7 +378,7 @@ local simplifyMetricGammaBarOnlyRule = {
 
 -- only simplify gammaBar^ij gammaBar_jk -> delta^i_k and delta^i_k t^k_j -> t^i_j
 function simplifyOnlyBarMetrics(expr)
-	return expr:simplifyMetrics{simplifyMetricGammaBarOnlyRule, Tensor.simplifyMetricsRules.delta}
+	return expr:simplifyMetrics{simplifyMetricGammaBarOnlyRule, Tensor.simplifyMetricMulRules.delta}
 end
 
 

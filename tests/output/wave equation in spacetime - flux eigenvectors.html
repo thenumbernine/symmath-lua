@@ -9,134 +9,134 @@
 
 $x = \{$	$x$, $y$, $z$	$\}$
 <br>
-${{ \beta} ^i} = {\overset{i\downarrow}{\left[ \begin{matrix} {\beta^x} \\ {\beta^y} \\ {\beta^z}\end{matrix} \right]}}$
+${{ \beta} ^i} = {\overset{i\downarrow}{\left[\begin{matrix} {\beta^x} \\ {\beta^y} \\ {\beta^z}\end{matrix}\right]}}$
 <br>
 <hr>
-${{ A} _x} = {\left[ \begin{matrix}  -{{\beta^x}} &   {-{\alpha}} {{{\gamma^{xx}}}} &   {-{\alpha}} {{{\gamma^{xy}}}} &   {-{\alpha}} {{{\gamma^{xz}}}} \\  -{\alpha} &  -{{\beta^x}} &  0 &  0 \\  0 &  0 &  -{{\beta^x}} &  0 \\  0 &  0 &  0 &  -{{\beta^x}}\end{matrix} \right]}$
+${{ A} _x} = {\left[\begin{array}{cccc} -{{\beta^x}}&  {-{\alpha}} {{{\gamma^{xx}}}}&  {-{\alpha}} {{{\gamma^{xy}}}}&  {-{\alpha}} {{{\gamma^{xz}}}}\\ -{\alpha}& -{{\beta^x}}& 0& 0\\ 0& 0& -{{\beta^x}}& 0\\ 0& 0& 0& -{{\beta^x}}\end{array}\right]}$
 <br>
 char poly:
 <br>
-${{{{4}} {{\lambda}} \cdot {{{{\beta^x}}^{3}}}} + {{{\beta^x}}^{4}} + {{{{6}} {{{{\beta^x}}^{2}}} {{{\lambda}^{2}}}} - {{{{\gamma^{xx}}}} \cdot {{{\alpha}^{2}}} {{{{\beta^x}}^{2}}}}} + {{{{4}} {{{\beta^x}}} \cdot {{{\lambda}^{3}}}} - {{{2}} {{{\beta^x}}} \cdot {{{\gamma^{xx}}}} \cdot {{\lambda}} \cdot {{{\alpha}^{2}}}}} + {{{\lambda}^{4}} - {{{{\gamma^{xx}}}} \cdot {{{\alpha}^{2}}} {{{\lambda}^{2}}}}}} = {0}$
+${{{{\left({{{\beta^x}} + {\lambda}}\right)}^{2}}} {{\left({{{\left({{{\beta^x}} + {\lambda}}\right)}^{2}}{-{{{{\gamma^{xx}}}} \cdot {{{\alpha}^{2}}}}}}\right)}}} = {0}$
 <br>
-lambdas	${-{{\beta^x}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}$, $-{{\beta^x}}$, ${-{{\beta^x}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}$
+lambdas	${-{{\beta^x}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}}$, $-{{\beta^x}}$, ${-{{\beta^x}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}$
 <br>
-for eigenvalue	${\lambda} = {{-{{\beta^x}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}}$
+for eigenvalue	${\lambda} = {{-{{\beta^x}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{xx}}} \\  1 \\  0 \\  0\end{matrix} \right]$
+$\left[\begin{array}{c} \sqrt{{\gamma^{xx}}}\\ 1\\ 0\\ 0\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {-{{\beta^x}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  0 &  0 \\  -{{\frac{1}{{\gamma^{xx}}}} {{\gamma^{xy}}}} &  -{{\frac{1}{{\gamma^{xx}}}} {{\gamma^{xz}}}} \\  1 &  0 \\  0 &  1\end{matrix} \right]$
+$\left[\begin{array}{cc} 0& 0\\ -{{\frac{1}{{\gamma^{xx}}}} {{\gamma^{xy}}}}& -{{\frac{1}{{\gamma^{xx}}}} {{\gamma^{xz}}}}\\ 1& 0\\ 0& 1\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {{-{{\beta^x}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  -{\sqrt{{\gamma^{xx}}}} \\  1 \\  0 \\  0\end{matrix} \right]$
+$\left[\begin{array}{c} -{\sqrt{{\gamma^{xx}}}}\\ 1\\ 0\\ 0\end{array}\right]$
 <br>
 multiplicities	1, 2, 1
 <br>
 $\Lambda$:
 <br>
-$\left[ \begin{matrix}  {-{{\beta^x}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}} &  0 &  0 &  0 \\  0 &  -{{\beta^x}} &  0 &  0 \\  0 &  0 &  -{{\beta^x}} &  0 \\  0 &  0 &  0 &  {-{{\beta^x}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}\end{matrix} \right]$
+$\left[\begin{array}{cccc} {-{{\beta^x}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}}& 0& 0& 0\\ 0& -{{\beta^x}}& 0& 0\\ 0& 0& -{{\beta^x}}& 0\\ 0& 0& 0& {-{{\beta^x}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{xx}}}}}}\end{array}\right]$
 <br>
 R:
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{xx}}} &  0 &  0 &  -{\sqrt{{\gamma^{xx}}}} \\  1 &  -{{\gamma^{xy}}} &  -{{\gamma^{xz}}} &  1 \\  0 &  {\gamma^{xx}} &  0 &  0 \\  0 &  0 &  {\gamma^{xx}} &  0\end{matrix} \right]$
+$\left[\begin{array}{cccc} \sqrt{{\gamma^{xx}}}& 0& 0& -{\sqrt{{\gamma^{xx}}}}\\ 1& -{{\gamma^{xy}}}& -{{\gamma^{xz}}}& 1\\ 0& {\gamma^{xx}}& 0& 0\\ 0& 0& {\gamma^{xx}}& 0\end{array}\right]$
 <br>
 L:
 <br>
-$\left[ \begin{matrix}  {\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{xx}}}}} &  \frac{1}{2} &  \frac{{\gamma^{xy}}}{{{2}} {{{\gamma^{xx}}}}} &  \frac{{\gamma^{xz}}}{{{2}} {{{\gamma^{xx}}}}} \\  0 &  0 &  \frac{1}{{\gamma^{xx}}} &  0 \\  0 &  0 &  0 &  \frac{1}{{\gamma^{xx}}} \\  -{{\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{xx}}}}}} &  \frac{1}{2} &  \frac{{\gamma^{xy}}}{{{2}} {{{\gamma^{xx}}}}} &  \frac{{\gamma^{xz}}}{{{2}} {{{\gamma^{xx}}}}}\end{matrix} \right]$
+$\left[\begin{array}{cccc} \frac{1}{{{2}} {{\sqrt{{\gamma^{xx}}}}}}& \frac{1}{2}& \frac{{\gamma^{xy}}}{{{2}} {{{\gamma^{xx}}}}}& \frac{{\gamma^{xz}}}{{{2}} {{{\gamma^{xx}}}}}\\ 0& 0& \frac{1}{{\gamma^{xx}}}& 0\\ 0& 0& 0& \frac{1}{{\gamma^{xx}}}\\ -{\frac{1}{{{2}} {{\sqrt{{\gamma^{xx}}}}}}}& \frac{1}{2}& \frac{{\gamma^{xy}}}{{{2}} {{{\gamma^{xx}}}}}& \frac{{\gamma^{xz}}}{{{2}} {{{\gamma^{xx}}}}}\end{array}\right]$
 <br>
-A check:	$\left[ \begin{matrix}  -{{\beta^x}} &  -{{{\alpha}} \cdot {{{\gamma^{xx}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{xy}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{xz}}}}} \\  -{\alpha} &  -{{\beta^x}} &  0 &  0 \\  0 &  0 &  -{{\beta^x}} &  0 \\  0 &  0 &  0 &  -{{\beta^x}}\end{matrix} \right]$
-A diff:	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
+A check:	$\left[\begin{array}{cccc} -{{\beta^x}}& -{{{\alpha}} \cdot {{{\gamma^{xx}}}}}& -{{{\alpha}} \cdot {{{\gamma^{xy}}}}}& -{{{\alpha}} \cdot {{{\gamma^{xz}}}}}\\ -{\alpha}& -{{\beta^x}}& 0& 0\\ 0& 0& -{{\beta^x}}& 0\\ 0& 0& 0& -{{\beta^x}}\end{array}\right]$
+A diff:	$\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]$
 <hr>
-${{ A} _y} = {\left[ \begin{matrix}  -{{\beta^y}} &   {-{\alpha}} {{{\gamma^{yx}}}} &   {-{\alpha}} {{{\gamma^{yy}}}} &   {-{\alpha}} {{{\gamma^{yz}}}} \\  0 &  -{{\beta^y}} &  0 &  0 \\  -{\alpha} &  0 &  -{{\beta^y}} &  0 \\  0 &  0 &  0 &  -{{\beta^y}}\end{matrix} \right]}$
+${{ A} _y} = {\left[\begin{array}{cccc} -{{\beta^y}}&  {-{\alpha}} {{{\gamma^{yx}}}}&  {-{\alpha}} {{{\gamma^{yy}}}}&  {-{\alpha}} {{{\gamma^{yz}}}}\\ 0& -{{\beta^y}}& 0& 0\\ -{\alpha}& 0& -{{\beta^y}}& 0\\ 0& 0& 0& -{{\beta^y}}\end{array}\right]}$
 <br>
 char poly:
 <br>
-${{{{4}} {{\lambda}} \cdot {{{{\beta^y}}^{3}}}} + {{{\beta^y}}^{4}} + {{{{6}} {{{{\beta^y}}^{2}}} {{{\lambda}^{2}}}} - {{{{\gamma^{yy}}}} \cdot {{{\alpha}^{2}}} {{{{\beta^y}}^{2}}}}} + {{{{4}} {{{\beta^y}}} \cdot {{{\lambda}^{3}}}} - {{{2}} {{{\beta^y}}} \cdot {{{\gamma^{yy}}}} \cdot {{\lambda}} \cdot {{{\alpha}^{2}}}}} + {{{\lambda}^{4}} - {{{{\gamma^{yy}}}} \cdot {{{\alpha}^{2}}} {{{\lambda}^{2}}}}}} = {0}$
+${{{{\left({{{\beta^y}} + {\lambda}}\right)}^{2}}} {{\left({{{\left({{{\beta^y}} + {\lambda}}\right)}^{2}}{-{{{{\gamma^{yy}}}} \cdot {{{\alpha}^{2}}}}}}\right)}}} = {0}$
 <br>
-lambdas	${-{{\beta^y}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}$, $-{{\beta^y}}$, ${-{{\beta^y}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}$
+lambdas	${-{{\beta^y}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}}$, $-{{\beta^y}}$, ${-{{\beta^y}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}$
 <br>
-for eigenvalue	${\lambda} = {{-{{\beta^y}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}}$
+for eigenvalue	${\lambda} = {{-{{\beta^y}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{yy}}} \\  0 \\  1 \\  0\end{matrix} \right]$
+$\left[\begin{array}{c} \sqrt{{\gamma^{yy}}}\\ 0\\ 1\\ 0\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {-{{\beta^y}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  0 &  0 \\  -{{\frac{1}{{\gamma^{yx}}}} {{\gamma^{yy}}}} &  -{{\frac{1}{{\gamma^{yx}}}} {{\gamma^{yz}}}} \\  1 &  0 \\  0 &  1\end{matrix} \right]$
+$\left[\begin{array}{cc} 0& 0\\ -{{\frac{1}{{\gamma^{yx}}}} {{\gamma^{yy}}}}& -{{\frac{1}{{\gamma^{yx}}}} {{\gamma^{yz}}}}\\ 1& 0\\ 0& 1\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {{-{{\beta^y}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  -{\sqrt{{\gamma^{yy}}}} \\  0 \\  1 \\  0\end{matrix} \right]$
+$\left[\begin{array}{c} -{\sqrt{{\gamma^{yy}}}}\\ 0\\ 1\\ 0\end{array}\right]$
 <br>
 multiplicities	1, 2, 1
 <br>
 $\Lambda$:
 <br>
-$\left[ \begin{matrix}  {-{{\beta^y}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}} &  0 &  0 &  0 \\  0 &  -{{\beta^y}} &  0 &  0 \\  0 &  0 &  -{{\beta^y}} &  0 \\  0 &  0 &  0 &  {-{{\beta^y}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}\end{matrix} \right]$
+$\left[\begin{array}{cccc} {-{{\beta^y}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}}& 0& 0& 0\\ 0& -{{\beta^y}}& 0& 0\\ 0& 0& -{{\beta^y}}& 0\\ 0& 0& 0& {-{{\beta^y}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{yy}}}}}}\end{array}\right]$
 <br>
 R:
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{yy}}} &  0 &  0 &  -{\sqrt{{\gamma^{yy}}}} \\  0 &  -{{\gamma^{yy}}} &  -{{\gamma^{yz}}} &  0 \\  1 &  {\gamma^{yx}} &  0 &  1 \\  0 &  0 &  {\gamma^{yx}} &  0\end{matrix} \right]$
+$\left[\begin{array}{cccc} \sqrt{{\gamma^{yy}}}& 0& 0& -{\sqrt{{\gamma^{yy}}}}\\ 0& -{{\gamma^{yy}}}& -{{\gamma^{yz}}}& 0\\ 1& {\gamma^{yx}}& 0& 1\\ 0& 0& {\gamma^{yx}}& 0\end{array}\right]$
 <br>
 L:
 <br>
-$\left[ \begin{matrix}  {\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{yy}}}}} &  \frac{{\gamma^{yx}}}{{{2}} {{{\gamma^{yy}}}}} &  \frac{1}{2} &  \frac{{\gamma^{yz}}}{{{2}} {{{\gamma^{yy}}}}} \\  0 &  -{\frac{1}{{\gamma^{yy}}}} &  0 &  -{\frac{{\gamma^{yz}}}{{{{\gamma^{yx}}}} \cdot {{{\gamma^{yy}}}}}} \\  0 &  0 &  0 &  \frac{1}{{\gamma^{yx}}} \\  -{{\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{yy}}}}}} &  \frac{{\gamma^{yx}}}{{{2}} {{{\gamma^{yy}}}}} &  \frac{1}{2} &  \frac{{\gamma^{yz}}}{{{2}} {{{\gamma^{yy}}}}}\end{matrix} \right]$
+$\left[\begin{array}{cccc} \frac{1}{{{2}} {{\sqrt{{\gamma^{yy}}}}}}& \frac{{\gamma^{yx}}}{{{2}} {{{\gamma^{yy}}}}}& \frac{1}{2}& \frac{{\gamma^{yz}}}{{{2}} {{{\gamma^{yy}}}}}\\ 0& -{\frac{1}{{\gamma^{yy}}}}& 0& -{\frac{{\gamma^{yz}}}{{{{\gamma^{yx}}}} \cdot {{{\gamma^{yy}}}}}}\\ 0& 0& 0& \frac{1}{{\gamma^{yx}}}\\ -{\frac{1}{{{2}} {{\sqrt{{\gamma^{yy}}}}}}}& \frac{{\gamma^{yx}}}{{{2}} {{{\gamma^{yy}}}}}& \frac{1}{2}& \frac{{\gamma^{yz}}}{{{2}} {{{\gamma^{yy}}}}}\end{array}\right]$
 <br>
-A check:	$\left[ \begin{matrix}  -{{\beta^y}} &  -{{{\alpha}} \cdot {{{\gamma^{yx}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{yy}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{yz}}}}} \\  0 &  -{{\beta^y}} &  0 &  0 \\  -{\alpha} &  0 &  -{{\beta^y}} &  0 \\  0 &  0 &  0 &  -{{\beta^y}}\end{matrix} \right]$
-A diff:	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
+A check:	$\left[\begin{array}{cccc} -{{\beta^y}}& -{{{\alpha}} \cdot {{{\gamma^{yx}}}}}& -{{{\alpha}} \cdot {{{\gamma^{yy}}}}}& -{{{\alpha}} \cdot {{{\gamma^{yz}}}}}\\ 0& -{{\beta^y}}& 0& 0\\ -{\alpha}& 0& -{{\beta^y}}& 0\\ 0& 0& 0& -{{\beta^y}}\end{array}\right]$
+A diff:	$\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]$
 <hr>
-${{ A} _z} = {\left[ \begin{matrix}  -{{\beta^z}} &   {-{\alpha}} {{{\gamma^{zx}}}} &   {-{\alpha}} {{{\gamma^{zy}}}} &   {-{\alpha}} {{{\gamma^{zz}}}} \\  0 &  -{{\beta^z}} &  0 &  0 \\  0 &  0 &  -{{\beta^z}} &  0 \\  -{\alpha} &  0 &  0 &  -{{\beta^z}}\end{matrix} \right]}$
+${{ A} _z} = {\left[\begin{array}{cccc} -{{\beta^z}}&  {-{\alpha}} {{{\gamma^{zx}}}}&  {-{\alpha}} {{{\gamma^{zy}}}}&  {-{\alpha}} {{{\gamma^{zz}}}}\\ 0& -{{\beta^z}}& 0& 0\\ 0& 0& -{{\beta^z}}& 0\\ -{\alpha}& 0& 0& -{{\beta^z}}\end{array}\right]}$
 <br>
 char poly:
 <br>
-${{{{4}} {{\lambda}} \cdot {{{{\beta^z}}^{3}}}} + {{{\beta^z}}^{4}} + {{{{6}} {{{{\beta^z}}^{2}}} {{{\lambda}^{2}}}} - {{{{\gamma^{zz}}}} \cdot {{{\alpha}^{2}}} {{{{\beta^z}}^{2}}}}} + {{{{4}} {{{\beta^z}}} \cdot {{{\lambda}^{3}}}} - {{{2}} {{{\beta^z}}} \cdot {{{\gamma^{zz}}}} \cdot {{\lambda}} \cdot {{{\alpha}^{2}}}}} + {{{\lambda}^{4}} - {{{{\gamma^{zz}}}} \cdot {{{\alpha}^{2}}} {{{\lambda}^{2}}}}}} = {0}$
+${{{{\left({{{\beta^z}} + {\lambda}}\right)}^{2}}} {{\left({{{\left({{{\beta^z}} + {\lambda}}\right)}^{2}}{-{{{{\gamma^{zz}}}} \cdot {{{\alpha}^{2}}}}}}\right)}}} = {0}$
 <br>
-lambdas	${-{{\beta^z}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}$, $-{{\beta^z}}$, ${-{{\beta^z}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}$
+lambdas	${-{{\beta^z}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}}$, $-{{\beta^z}}$, ${-{{\beta^z}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}$
 <br>
-for eigenvalue	${\lambda} = {{-{{\beta^z}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}}$
+for eigenvalue	${\lambda} = {{-{{\beta^z}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{zz}}} \\  0 \\  0 \\  1\end{matrix} \right]$
+$\left[\begin{array}{c} \sqrt{{\gamma^{zz}}}\\ 0\\ 0\\ 1\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {-{{\beta^z}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  0 &  0 \\  -{{\frac{1}{{\gamma^{zx}}}} {{\gamma^{zy}}}} &  -{{\frac{1}{{\gamma^{zx}}}} {{\gamma^{zz}}}} \\  1 &  0 \\  0 &  1\end{matrix} \right]$
+$\left[\begin{array}{cc} 0& 0\\ -{{\frac{1}{{\gamma^{zx}}}} {{\gamma^{zy}}}}& -{{\frac{1}{{\gamma^{zx}}}} {{\gamma^{zz}}}}\\ 1& 0\\ 0& 1\end{array}\right]$
 <br>
 for eigenvalue	${\lambda} = {{-{{\beta^z}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}}$
 <br>
 eigenvectors are
 <br>
-$\left[ \begin{matrix}  -{\sqrt{{\gamma^{zz}}}} \\  0 \\  0 \\  1\end{matrix} \right]$
+$\left[\begin{array}{c} -{\sqrt{{\gamma^{zz}}}}\\ 0\\ 0\\ 1\end{array}\right]$
 <br>
 multiplicities	1, 2, 1
 <br>
 $\Lambda$:
 <br>
-$\left[ \begin{matrix}  {-{{\beta^z}}} - {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}} &  0 &  0 &  0 \\  0 &  -{{\beta^z}} &  0 &  0 \\  0 &  0 &  -{{\beta^z}} &  0 \\  0 &  0 &  0 &  {-{{\beta^z}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}\end{matrix} \right]$
+$\left[\begin{array}{cccc} {-{{\beta^z}}}{-{{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}}& 0& 0& 0\\ 0& -{{\beta^z}}& 0& 0\\ 0& 0& -{{\beta^z}}& 0\\ 0& 0& 0& {-{{\beta^z}}} + {{{\alpha}} \cdot {{\sqrt{{\gamma^{zz}}}}}}\end{array}\right]$
 <br>
 R:
 <br>
-$\left[ \begin{matrix}  \sqrt{{\gamma^{zz}}} &  0 &  0 &  -{\sqrt{{\gamma^{zz}}}} \\  0 &  -{{\gamma^{zy}}} &  -{{\gamma^{zz}}} &  0 \\  0 &  {\gamma^{zx}} &  0 &  0 \\  1 &  0 &  {\gamma^{zx}} &  1\end{matrix} \right]$
+$\left[\begin{array}{cccc} \sqrt{{\gamma^{zz}}}& 0& 0& -{\sqrt{{\gamma^{zz}}}}\\ 0& -{{\gamma^{zy}}}& -{{\gamma^{zz}}}& 0\\ 0& {\gamma^{zx}}& 0& 0\\ 1& 0& {\gamma^{zx}}& 1\end{array}\right]$
 <br>
 L:
 <br>
-$\left[ \begin{matrix}  {\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{zz}}}}} &  \frac{{\gamma^{zx}}}{{{2}} {{{\gamma^{zz}}}}} &  \frac{{\gamma^{zy}}}{{{2}} {{{\gamma^{zz}}}}} &  \frac{1}{2} \\  0 &  0 &  \frac{1}{{\gamma^{zx}}} &  0 \\  0 &  -{\frac{1}{{\gamma^{zz}}}} &  -{\frac{{\gamma^{zy}}}{{{{\gamma^{zx}}}} \cdot {{{\gamma^{zz}}}}}} &  0 \\  -{{\frac{1}{2}} {\frac{1}{\sqrt{{\gamma^{zz}}}}}} &  \frac{{\gamma^{zx}}}{{{2}} {{{\gamma^{zz}}}}} &  \frac{{\gamma^{zy}}}{{{2}} {{{\gamma^{zz}}}}} &  \frac{1}{2}\end{matrix} \right]$
+$\left[\begin{array}{cccc} \frac{1}{{{2}} {{\sqrt{{\gamma^{zz}}}}}}& \frac{{\gamma^{zx}}}{{{2}} {{{\gamma^{zz}}}}}& \frac{{\gamma^{zy}}}{{{2}} {{{\gamma^{zz}}}}}& \frac{1}{2}\\ 0& 0& \frac{1}{{\gamma^{zx}}}& 0\\ 0& -{\frac{1}{{\gamma^{zz}}}}& -{\frac{{\gamma^{zy}}}{{{{\gamma^{zx}}}} \cdot {{{\gamma^{zz}}}}}}& 0\\ -{\frac{1}{{{2}} {{\sqrt{{\gamma^{zz}}}}}}}& \frac{{\gamma^{zx}}}{{{2}} {{{\gamma^{zz}}}}}& \frac{{\gamma^{zy}}}{{{2}} {{{\gamma^{zz}}}}}& \frac{1}{2}\end{array}\right]$
 <br>
-A check:	$\left[ \begin{matrix}  -{{\beta^z}} &  -{{{\alpha}} \cdot {{{\gamma^{zx}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{zy}}}}} &  -{{{\alpha}} \cdot {{{\gamma^{zz}}}}} \\  0 &  -{{\beta^z}} &  0 &  0 \\  0 &  0 &  -{{\beta^z}} &  0 \\  -{\alpha} &  0 &  0 &  -{{\beta^z}}\end{matrix} \right]$
-A diff:	$\left[ \begin{matrix}  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0 \\  0 &  0 &  0 &  0\end{matrix} \right]$
+A check:	$\left[\begin{array}{cccc} -{{\beta^z}}& -{{{\alpha}} \cdot {{{\gamma^{zx}}}}}& -{{{\alpha}} \cdot {{{\gamma^{zy}}}}}& -{{{\alpha}} \cdot {{{\gamma^{zz}}}}}\\ 0& -{{\beta^z}}& 0& 0\\ 0& 0& -{{\beta^z}}& 0\\ -{\alpha}& 0& 0& -{{\beta^z}}\end{array}\right]$
+A diff:	$\left[\begin{array}{cccc} 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\\ 0& 0& 0& 0\end{array}\right]$
