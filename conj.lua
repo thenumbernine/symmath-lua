@@ -31,6 +31,21 @@ conj.evaluateLimit = require 'symmath.Limit'.evaluateLimit_continuousFunction
 
 conj.rules = table(conj.rules, {
 	Prune = {
+	
+		-- same as in Derivative, Re, Im
+		-- f({y_i}) = {f(y_i)}
+		{arrays = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local Array = symmath.Array
+			if Array:isa(expr[1]) then
+				local res = expr[1]:clone()
+				for i=1,#res do
+					res[i] = prune:apply(getmetatable(expr)(res[i], table.unpack(expr, 2)))
+				end
+				return res
+			end
+		end},
+
 		{apply = function(prune, expr)
 			local x = expr[1]
 			symmath = symmath or require 'symmath'

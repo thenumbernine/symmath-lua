@@ -112,6 +112,7 @@ This requires my lua-http project in order to run.
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: `g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})`
+-	- This is mixed because you can already accomplish this by making a separate chart that just has the collection of coordinates you want to represent, assign it to those indexes, and use those in your dense Tensor construction.  I started on sub-tensors but I don't know that I'll finish them, and maybe someday I'll remove them.
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
@@ -121,11 +122,16 @@ This requires my lua-http project in order to run.
 
 - I am thinking my constantly changing sqrts to fraction powers and back is slowing things down.  How about instead a better "isSqrt" or "getEquivPower" test that both sqrt(), cbrt(), and pow() all implement?
 
-- browser interface: "continue" feature, to counter-balance the "stop" cells
-- browser interface: "stop" cells should hide their input box.
-- browser interface: "undo" and "redo" buttons
-- browser interface: "find" function
-- browser interface: line numbers, better line wrap detection, syntax highlighting
+- browser interface:
+- - "continue" feature, to counter-balance the "stop" cells
+- - "stop" cells should hide their input box.
+- - "undo" and "redo" buttons
+- - "find" function
+- - line numbers, better line wrap detection, syntax highlighting
+
+- favor() function or something that lets you pick between representations of sin/cos or tan, between re/im vs conj, sqrt vs pow, etc.
+
+- rename dense-Tensor permute() to something more appropriate like permuteIndexes, reshapeIndexes, permuteStorage, etc...
 
 <?
 require 'ext'
@@ -139,7 +145,7 @@ local s = table{[[
 Output CDN URLs:
 ]]}
 
-os.rlistdir('.', function(f, isdir)
+path:rdir(function(f, isdir)
 	return f ~= '.git' 
 		and f:sub(1,6) ~= 'server'
 		and (isdir or f:sub(-5) == '.html')

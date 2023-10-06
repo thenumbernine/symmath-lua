@@ -83,7 +83,8 @@ end
 Derivative.rules = {
 	Prune = {
 
-		-- d/dx{y_i} = {dy_i/dx}
+		-- same as in conj, Re, Im
+		-- f({y_i}) = {f(y_i)}
 		{arrays = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Array = symmath.Array
