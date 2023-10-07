@@ -14,11 +14,11 @@ return function(exprs, factors)
 	local add = symmath.op.add
 	local mul = symmath.op.mul
 
-	local A = Matrix(table.map(exprs, function()
-		return table.map(factors, function() return 0 end)
+	local A = Matrix(table.mapi(exprs, function()
+		return table.mapi(factors, function() return 0 end)
 	end):unpack())
 
-	local S = Matrix(table.map(exprs, function()
+	local S = Matrix(table.mapi(exprs, function()
 		return {0}
 	end):unpack())
 

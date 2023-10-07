@@ -125,13 +125,20 @@ This requires my lua-http project in order to run.
 - browser interface:
 - - "continue" feature, to counter-balance the "stop" cells
 - - "stop" cells should hide their input box.
-- - "undo" and "redo" buttons
-- - "find" function
+- - "undo" and "redo" buttons ... though the browser itself does do this for text edits.
+- - "find" function ... once again, browser builtin has this.
 - - line numbers, better line wrap detection, syntax highlighting
 
 - favor() function or something that lets you pick between representations of sin/cos or tan, between re/im vs conj, sqrt vs pow, etc.
 
+- flag for whether to show the outermost Tensor as col-vs-row depending on valence (instead of always as a col, which Matrix does)
+- - oh and fix Matrix degree-3 LaTeX errors.
+
 - rename dense-Tensor permute() to something more appropriate like permuteIndexes, reshapeIndexes, permuteStorage, etc...
+- :outer() for Matrix / Array
+- - :complexify() / :decomplexify()
+- - basis elements / basis vectors and dual associated with tangentSpace of Charts of Manifolds
+- :reshape() or :mergeIndex() or ravel/unravel(), I need this to 1) reshape n-degree matrixes/tensors to vectors (for factorLinearSystem) and 2) to take odd/even indexes of matrix-outer-complex-2x2-basis to (de)complexify.
 
 <?
 require 'ext'
