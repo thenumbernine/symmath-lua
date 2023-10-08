@@ -111,7 +111,7 @@ function Equation:simplify()
 	return expr
 end
 
--- convert from array equations to a table of equations
+-- convert from equation-of-Arrays to a table of Equations
 function Equation:unravel()
 	local Array = require 'symmath.Array'
 	local lhs, rhs = table.unpack(self)

@@ -419,4 +419,39 @@ function Array.cross(a, b)
 		a[1] * b[2] - a[2] * b[1])()
 end
 
+--[[
+merge each set of dimensions into one dimension by interleaving
+How to specify?
+	mergeDims({i1,...}, {j1,...}, ...)
+	so mergeDims({1,3},{2,4}) is for 2x2x2x2 => 4x4
+	to specify which groups of dims to merge
+	and in what interleaved order
+	but this doesn't allow specifying where to put them
+	and we'd need an extra test to make sure a dimension isn't specified twice
+
+	should I reverse the arg map?
+	mergeDims(1,1,2,2)
+	then no need to check if no dims are duplicated - just require as many args as dims
+	and we can now specify exactly the interleaved dim's destinations
+	but we lose the ability to change the order of interleaving
+
+-- TODO the name, Equation already has :unravel()
+-- also maybe call this reshape() like matlab, but matlab reshape works different
+--]]
+--[=[
+function Array:mergeDims(...)
+	local merges = table{...}
+
+	local dim = self:dim()
+	
+	-- new dims = old dims, remove each grouping, replace the first 
+	-- mapping from old dim index to new dim index
+	local newDimMap = range(#dim)
+	
+	local newDims = dim:mapi(function(n,i) return dim[newDimMap[i]] end)
+	
+	error'TODO'
+end
+--]=]
+
 return Array

@@ -3,7 +3,23 @@
 local Matrix = require 'symmath.Matrix'
 local i = require 'symmath'.i
 
-local I2x2 = Matrix({1,0},{0,1})
+local i2x2 = Matrix({0,-1}, {1,0})
+local I2x2 = Matrix({1,0}, {0,1})
+
+-- TODO make this for Matrix, or Array, or something,
+-- and make it with split/merge dimensions / reshape / outer product
+-- also TODO, when do we want to conjugate?
+local function complexify(src)
+	local dim = src:dim()
+	assert(#dim == 2)
+	return Matrix:lambda({2*dim[1], 2*dim[2]}, function(i,j)
+		local c = src[math.floor((i-1)/2+1)][math.floor((j-1)/2+1)]
+		local u = (i-1)%2+1
+		local v = (j-1)%2+1
+		return (I2x2[u][v] * Re(c) + i2x2[u][v] * Im(c))()
+	end)
+end
+
 
 local qex = Matrix({i, 0}, {0, -i})
 local qey = Matrix({0, 1}, {-1, 0})
@@ -31,7 +47,7 @@ local Dirac4 = Matrix(gamma0,gamma1,gamma2,gamma3)
 
 return {
 	QuaternionC2 = QuaternionC2,
-	--QuaternionR4 = QuaternionC2:complexify(),	-- TODO 
+	QuaternionR4 = Matrix( table.mapi(QuaternionC2, function(m) return complexify(m) end):unpack() ),
 	
 	Pauli = Pauli,	-- TODO make this PauliC2, and make PauliR4
 	Pauli4 = Pauli4,
