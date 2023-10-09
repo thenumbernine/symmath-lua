@@ -1,7 +1,12 @@
 -- https://en.wikipedia.org/wiki/Pauli_matrices
 -- https://en.wikipedia.org/wiki/Gamma_matrices
+local table = require 'ext.table'
 local Matrix = require 'symmath.Matrix'
-local i = require 'symmath'.i
+
+local symmath = require 'symmath'
+local i = symmath.i
+local Re = symmath.Re
+local Im = symmath.Im
 
 local i2x2 = Matrix({0,-1}, {1,0})
 local I2x2 = Matrix({1,0}, {0,1})
