@@ -14,6 +14,7 @@ local I2x2 = Matrix({1,0}, {0,1})
 -- TODO make this for Matrix, or Array, or something,
 -- and make it with split/merge dimensions / reshape / outer product
 -- also TODO, when do we want to conjugate?
+-- TODO: return src:outer(i2x2):mergeDims({1,3},{2,4})
 local function complexify(src)
 	local dim = src:dim()
 	assert(#dim == 2)
@@ -43,12 +44,16 @@ local Pauli4 = Matrix(I2x2,sigmax,sigmay,sigmaz)
 
 
 local gamma0 = Matrix({1,0,0,0},{0,1,0,0},{0,0,-1,0},{0,0,0,-1})
+local gamma0Chiral = Matrix({0,0,1,0},{0,0,0,1},{1,0,0,0},{0,1,0,0})
+-- should be -matrixOuter(i2x2, sigma1)
 local gamma1 = Matrix({0,0,0,1},{0,0,1,0},{0,-1,0,0},{-1,0,0,0})
+-- should be -matrixOuter(i2x2, sigma2)
 local gamma2 = Matrix({0,0,0,-i},{0,0,i,0},{0,i,0,0},{-i,0,0,0})
+-- should be -matrixOuter(i2x2, sigma3)
 local gamma3 = Matrix({0,0,1,0},{0,0,0,-1},{-1,0,0,0},{0,1,0,0})
 
-local Dirac4 = Matrix(gamma0,gamma1,gamma2,gamma3)
-
+local Dirac = Matrix(gamma0,gamma1,gamma2,gamma3)
+local DiracChiral = Matrix(gamma0Chiral,gamma1,gamma2,gamma3)
 
 return {
 	QuaternionC2 = QuaternionC2,
@@ -57,6 +62,7 @@ return {
 	Pauli = Pauli,	-- TODO make this PauliC2, and make PauliR4
 	Pauli4 = Pauli4,
 	Dirac = Dirac,
+	DiracChiral = DiracChiral,
 	-- WeylBasis
 	-- WeylBasisAlt
 	-- MajornaBasis
