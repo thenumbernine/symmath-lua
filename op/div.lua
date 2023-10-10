@@ -460,6 +460,7 @@ div.rules = {
 		-- => (a*(p - i*q))/(p^2 + q^2)
 		{complex = function(prune, expr)
 			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
 			local i = symmath.i
 			local Wildcard = symmath.Wildcard
 			local a, b = table.unpack(expr)
