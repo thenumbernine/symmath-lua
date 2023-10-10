@@ -455,6 +455,36 @@ div.rules = {
 	},
 
 	Prune = {
+		-- a / (p + i*q)
+		-- => (a*(p - i*q))/((p + i*q)*(p - i*q))
+		-- => (a*(p - i*q))/(p^2 + q^2)
+		{complex = function(prune, expr)
+			symmath = symmath or require 'symmath'
+			local i = symmath.i
+			local Wildcard = symmath.Wildcard
+			local a, b = table.unpack(expr)
+			-- [[ wildcards, but try to avoid default patterns infinite recursion
+			local p, q = b:match(
+				Wildcard{index=1, cannotDependOn=i}
+				+ symmath.i * Wildcard{index=2, cannotDependOn=i, atLeast=1}
+			)
+			-- TODO why is #2 matching to a default of 0 when atLeast=1 is set ...
+			-- how to get the match() to avoid matching to reals ...
+			if p
+			and q
+			then
+				if not Constant.isValue(q, 0) then
+					return prune(a * (p - symmath.i * q) / (p^2 + q^2))
+				end
+			end
+			--]]
+			--[[ non-wildcards ... should run faster but takes a lot more if-conditions
+			if b == i then
+				return prune(-i * a)
+			end
+			--]]
+		end},
+
 		{matrixScalar = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local Array = symmath.Array
