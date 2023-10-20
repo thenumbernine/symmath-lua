@@ -939,7 +939,7 @@ console.log("getWorksheet results", cellsjson);
 	});
 
 
-	const readmeURL = window.symmathDir+'/README.reference.md';
+	const readmeURL = window.symmathPath+'/README.reference.md';
 //console.log('getting readme', readmeURL); 
 	fetch(readmeURL)
 	.then(response => {

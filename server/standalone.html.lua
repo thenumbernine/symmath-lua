@@ -7,9 +7,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js" integrity="sha512-L03kznCrNOfVxOUovR6ESfCz9Gfny7gihUX/huVbQB9zjODtYpxaVtIaAkpetoiyV2eqWbvxMH9fiSv5enX7bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script type="text/javascript">
 worksheetFilename = "<?=worksheetFilename?>";
-symmathDir = '.';	//standalone.lua includes SYMMATH_PATH in its search path
+symmathPath = '.';	//standalone.lua includes SYMMATH_PATH in its search path
 symmathWorksheets = [
 <?
+local symmathPath = assert(os.getenv'SYMMATH_PATH', 'SYMMATH_PATH not defined')
 local sep = ''
 local dir = symmathPath..'/tests/'
 for i,f in ipairs(require 'ext.path'(dir):rdir()) do
