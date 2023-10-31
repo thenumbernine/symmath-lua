@@ -1016,7 +1016,7 @@ This requires my lua-http project in order to run.
 - browser interface: line numbers, better line wrap detection, syntax highlighting
 
 
-Output CDN URLs:
+Output Examples:
 
 [tests/output/ADM Levi-Civita](https://thenumbernine.github.io/symmath/tests/output/ADM%20Levi%2dCivita.html)
 

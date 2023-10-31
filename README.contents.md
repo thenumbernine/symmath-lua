@@ -149,7 +149,7 @@ local url = require 'socket.url'
 local base = [[https://thenumbernine.github.io/symmath/]]
 
 local s = table{[[
-Output CDN URLs:
+Output Examples:
 ]]}
 
 path:rdir(function(f, isdir)
