@@ -936,6 +936,12 @@ make\_README.lua uses (for building the README.md):
 
 - LuaSocket, for its URL building functions.
 
+The browser interface + server backend uses:
+
+- https://github.com/thenumbernine/http-lua
+- LuaSocket
+- dkjson
+
 ## Environment / Lua Path
 
 You will notice that, if you use the repository as-is, that the 'symmath.lua' file is out of place.
