@@ -25,7 +25,7 @@ local g = Tensor('_uv', function(u,v)
 		})[u] 
 end) 
 
-local Props = class(require 'symmath.physics.diffgeom')
+local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true
 Props.fields = table(Props.fields)
 Props.fields:append{

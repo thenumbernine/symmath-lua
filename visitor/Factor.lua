@@ -1,5 +1,4 @@
-local class = require 'ext.class'
 local Visitor = require 'symmath.visitor.Visitor'
-local Factor = class(Visitor)
+local Factor = Visitor:subclass()
 Factor.name = 'Factor'
 return Factor

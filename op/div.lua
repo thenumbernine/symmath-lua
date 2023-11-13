@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local math = require 'ext.math'
@@ -6,7 +5,7 @@ local Binary = require 'symmath.op.Binary'
 
 local symmath
 
-local div = class(Binary)
+local div = Binary:subclass()
 div.precedence = 3.5
 div.name = '/'
 

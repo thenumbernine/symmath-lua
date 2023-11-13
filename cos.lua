@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Function = require 'symmath.Function'
@@ -6,7 +5,7 @@ local frac = require 'symmath.op.div'
 local sqrt = require 'symmath.sqrt'
 local symmath
 
-local cos = class(Function)
+local cos = Function:subclass()
 
 cos.name = 'cos'
 cos.realFunc = math.cos

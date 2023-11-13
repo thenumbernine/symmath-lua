@@ -60,10 +60,10 @@ for dim=2,5 do
 	local phis = range(dim):mapi(function(i) return var('\\phi_'..(i-1)) end)
 	coords:append(phis:sub(2))
 
-	local RotFunc = class(require 'symmath.Function')
+	local RotFunc = require 'symmath.Function':subclass()
 	local rotFuncs = range(dim):mapi(function(i)
 		return range(dim):mapi(function(j)
-			local rotFunc = class(RotFunc)
+			local rotFunc = RotFunc:subclass()
 			rotFunc.name = 'R_{'..i..','..j..'}'
 			rotFunc.i = i
 			rotFunc.j = j

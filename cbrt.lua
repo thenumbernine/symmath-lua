@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'	-- cbrt
 local Function = require 'symmath.Function'
 local symmath
 
-local cbrt = class(Function)
+local cbrt = Function:subclass()
 
 cbrt.name = 'cbrt'
 cbrt.nameForExporterTable = {}

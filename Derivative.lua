@@ -51,14 +51,13 @@ internal structure:
 	all subsequent children are variables
 --]]
 
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
 local symmath
 
 
-local Derivative = class(Expression)
+local Derivative = Expression:subclass()
 Derivative.precedence = 6
 
 -- default is for Verbose and SymMath output

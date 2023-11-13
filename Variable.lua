@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local complex = require 'complex'
 local Expression = require 'symmath.Expression'
@@ -24,7 +23,7 @@ dependentVars = table of...
 	So I am going to consider TensorRef(Variable) different from Variable
 	But for now I'm not going to consider variance of TensorRef
 --]]
-local Variable = class(Expression)
+local Variable = Expression:subclass()
 
 Variable.precedence = 10	-- high since it will never have nested members
 

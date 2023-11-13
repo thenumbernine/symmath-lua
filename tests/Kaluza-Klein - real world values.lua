@@ -292,7 +292,7 @@ printbr(solns:mapi(tostring):concat',')
 --printbr(unitVelEqn)
 
 printbr('Solve quadratic for', u'^5', ':')
-local plusminus = class(require 'symmath.op.sub', {name='\\pm'})
+local plusminus = require 'symmath.op.sub':subclass{name='\\pm'}
 plusminus.rules = nil
 local u5_for_A5_def = u'^5':eq(
 	frac(1,A'_5') * (

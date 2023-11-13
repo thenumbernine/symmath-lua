@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Function = require 'symmath.Function'
 local symmath
 
-local sin = class(Function)
+local sin = Function:subclass()
 sin.name = 'sin'
 sin.realFunc = math.sin
 sin.cplxFunc = require 'complex'.sin

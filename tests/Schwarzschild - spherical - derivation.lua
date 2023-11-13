@@ -18,7 +18,7 @@ local A = var('A', {r})
 local B = var('B', {r})
 local g = Tensor('_uv', function(u,v) return u == v and ({-A, B, r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
 
-local Props = class(require 'symmath.physics.diffgeom')
+local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true
 local props = Props(g)
 

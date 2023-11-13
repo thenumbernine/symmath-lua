@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
-local mul = class(Binary)
+local mul = Binary:subclass()
 mul.precedence = 3
 mul.name = '*'
 mul.nameForExporterTable = {}

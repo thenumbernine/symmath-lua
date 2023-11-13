@@ -1,12 +1,11 @@
 local table = require 'ext.table'
-local class = require 'ext.class'
 local Language = require 'symmath.export.Language'
 
 -- TODO JavaScript is a Java derivative, which is a C++ derivative, which is a C derivative
 -- so should JavaScript inherit from C?
 
 -- convert to JavaScript code.  use :toCode to wrap in a function
-local JavaScript = class(Language)
+local JavaScript = Language:subclass()
 
 JavaScript.name = 'JavaScript'
 

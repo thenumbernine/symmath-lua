@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
-local acos = class(Function)
+local acos = Function:subclass()
 acos.name = 'acos'
 acos.realFunc = math.acos
 acos.cplxFunc = require 'complex'.acos

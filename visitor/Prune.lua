@@ -13,8 +13,7 @@ maybe all Expressions should have .visit = {[Prune] = function() ...} ?
 this way these files don't explode in size as the number of objects do
 and this way extensions don't have to modify the original symmath package
 --]]
-local class = require 'ext.class'
 local Visitor = require 'symmath.visitor.Visitor'
-local Prune = class(Visitor)
+local Prune = Visitor:subclass()
 Prune.name = 'Prune'
 return Prune

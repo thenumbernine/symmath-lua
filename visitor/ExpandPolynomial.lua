@@ -10,8 +10,7 @@ simplify() shouldn't need to expand powers of polys itself -- unless those power
 NOTICE now that I've switched from visitor.lookupTable[expr.class] to expr.rules[visitor.name]
 all exprs' Expand entries should be ExpandPolynomial's as well
 --]]
-local class = require 'ext.class'
 local Expand = require 'symmath.visitor.Expand'
-local ExpandPolynomial = class(Expand)
+local ExpandPolynomial = Expand:subclass()
 ExpandPolynomial.name = 'ExpandPolynomial'
 return ExpandPolynomial

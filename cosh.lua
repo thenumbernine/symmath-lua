@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local symmath
 
-local cosh = class(Function)
+local cosh = Function:subclass()
 cosh.name = 'cosh'
 cosh.realFunc = math.cosh
 cosh.cplxFunc = require 'complex'.cosh

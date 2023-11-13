@@ -1,11 +1,10 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 -- single-line strings
 local Console = require 'symmath.export.Console'
 local symmath
 
 
-local SingleLine = class(Console)
+local SingleLine = Console:subclass()
 
 SingleLine.name = 'SingleLine'
 

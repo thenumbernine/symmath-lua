@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local string = require 'ext.string'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
 
-local Console = class(Export)
+local Console = Export:subclass()
 
 Console.name = 'Console'
 

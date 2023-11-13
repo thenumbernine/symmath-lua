@@ -1,11 +1,10 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
-local pow = class(Binary)
+local pow = Binary:subclass()
 pow.omitSpace = true
 pow.precedence = 5
 pow.name = '^'

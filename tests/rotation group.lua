@@ -6,7 +6,7 @@ require 'symmath'.setup{env=env, implicitVars=true, MathJax={title='rotation gro
 
 local function cot(...) return cos(...) / sin(...) end
 
-local Props = class(require 'symmath.physics.diffgeom', {print=printbr, verbose=true})
+local Props = require 'symmath.physics.diffgeom':subclass{print=printbr, verbose=true}
 
 printbr[[
 <h3>Rotation Groups</h3><br>

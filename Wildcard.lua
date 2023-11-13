@@ -1,7 +1,6 @@
-local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
-local Wildcard = class(Expression)
+local Wildcard = Expression:subclass()
 Wildcard.name = 'Wildcard'
 Wildcard.mutable = true
 

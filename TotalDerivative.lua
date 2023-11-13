@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Derivative = require 'symmath.Derivative'
 
-local TotalDerivative = class(Derivative)
+local TotalDerivative = Derivative:subclass()
 
 TotalDerivative.name = 'TotalDerivative'
 TotalDerivative.nameForExporterTable = table(TotalDerivative.nameForExporterTable)

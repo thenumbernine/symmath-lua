@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Language = require 'symmath.export.Language'
 
 local symmath
 
-local Lua = class(Language)
+local Lua = Language:subclass()
 
 Lua.name = 'Lua'
 

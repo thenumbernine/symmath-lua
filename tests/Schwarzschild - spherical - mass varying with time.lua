@@ -21,7 +21,7 @@ local R = var('R', coords)
 -- schwarzschild metric in cartesian coordinates
 local g = Tensor('_uv', function(u,v) return u == v and ({-(1-R/r), 1/(1-R/r), r^2, r^2 * symmath.sin(theta)^2})[u] or 0 end) 
 
-local Props = class(require 'symmath.physics.diffgeom')
+local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true
 local props = Props(g)
 local Gamma = props.Gamma

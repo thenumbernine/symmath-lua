@@ -3,14 +3,13 @@ n-dimensional array
 basis of all vectors, matrices, tensors, etc
 --]]
 
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local tolua = require 'ext.tolua'
 local Expression = require 'symmath.Expression'
 local symmath
 
-local Array = class(Expression)
+local Array = Expression:subclass()
 Array.name = 'Array'
 Array.mulNonCommutative = true
 Array.precedence = 10

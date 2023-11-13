@@ -1,6 +1,5 @@
 -- multi-line strings
 -- TODO subclass SingleLine, rewrite the apply() to handle string results (implicitly wrap in {}, and viola. win.)
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local tolua = require 'ext.tolua'
@@ -60,7 +59,7 @@ local function vert(n)
 	return horizontalLine[1]..horizontalLine[2]:rep(n-2)..horizontalLine[3]
 end
 
-local MultiLine = class(SingleLine.class)
+local MultiLine = SingleLine.class:subclass()
 
 MultiLine.name = 'MultiLine'
 

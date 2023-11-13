@@ -65,7 +65,6 @@ I really like the 'def' definition - more like maxima / gnuplot
 but something tells me I should unify __call, TensorIndex, and Variable first before moving on to the :def() definition of UserFunction
 
 --]]
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local Function = require 'symmath.Function'
@@ -73,7 +72,7 @@ local Variable = require 'symmath.Variable'
 
 --[===[ UserFunction based on Variable :
 
-local UserFunction = class(Variable)
+local UserFunction = Variable:subclass()
 
 --[[
 static (weak) table of all user functions
@@ -103,7 +102,7 @@ function UserFunction:defeq()
 end
 
 function UserFunction:printEqn()
-	local TempFn = class(Function)
+	local TempFn = Function:subclass()
 	TempFn.name = self.name
 	TempFn.nameForExporterTable = table(self.nameForExporterTable)
 	local args = self.dependentVars and self.dependentVars:mapi(function(var)
@@ -118,7 +117,7 @@ end
 -- UserFunction based on Variable ]===]
 -- [===[ UserFunction based on Function:
 
-local UserFunction = class(Function)
+local UserFunction = Function:subclass()
 
 --[[
 static (weak) table of all user functions
@@ -132,7 +131,7 @@ Call with Class:makeSubclass(name, args, def, set).
 Another option is to make UserFunction() produce objects and for the objects to have their respective __call operators.
 --]]
 function UserFunction:makeSubclass(name, args, def, set)
-	local f = class(self)
+	local f = self:subclass()
 	f.name = assert(name)
 	f.args = table(args)	-- optional
 	f.set = set or require 'symmath.set.sets'.real

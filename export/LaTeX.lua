@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local string = require 'ext.string'
@@ -20,7 +19,7 @@ local function tableConcat(t, mid)
 end
 
 
-local LaTeX = class(Export)
+local LaTeX = Export:subclass()
 
 LaTeX.name = 'LaTeX'
 

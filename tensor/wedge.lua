@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Binary = require 'symmath.op.Binary'
 
-local wedge = class(Binary)
+local wedge = Binary:subclass()
 wedge.precedence = 4
 wedge.name = '/\\'
 

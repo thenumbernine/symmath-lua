@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
-local Integral = class(Expression)
+local Integral = Expression:subclass()
 
 Integral.name = 'Integral'
 Integral.nameForExporterTable = {}

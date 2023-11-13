@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
-local sub = class(Binary)
+local sub = Binary:subclass()
 sub.precedence = 2
 sub.name = '-'
 

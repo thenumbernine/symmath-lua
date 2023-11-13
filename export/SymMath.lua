@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
 local tolua = require 'ext.tolua'
 
-local SymMath = class(Export)
+local SymMath = Export:subclass()
 
 SymMath.name = 'SymMath'
 

@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local symmath
 
-local unm = class(Expression)
+local unm = Expression:subclass()
 unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
 unm.name = 'unm'	-- hmm, same name as sub ... is that a problem?
 

@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 local symmath
 
-local Natural = class(Set)
+local Natural = Set:subclass()
 
 function Natural:isSubsetOf(s)
 	symmath = symmath or require 'symmath'

@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 local symmath
 
@@ -12,7 +11,7 @@ esp the operators
 how about a separate Real class,
 which always contains any RealSubset / RealInterval
 --]]
-local Integer = class(Set)
+local Integer = Set:subclass()
 
 function Integer:isSubsetOf(s)
 	symmath = symmath or require 'symmath'

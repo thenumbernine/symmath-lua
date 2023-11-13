@@ -2,7 +2,6 @@
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Finite Volume', usePartialLHSForDerivative=true}}
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local matrix = require 'matrix'
@@ -10,7 +9,7 @@ local matrix = require 'matrix'
 local Function = require 'symmath.Function'
 
 local function makefunc(name)
-	local cl = class(Function)
+	local cl = Function:subclass()
 	cl.name = name
 	return cl
 end

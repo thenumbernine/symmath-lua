@@ -1,7 +1,6 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 
-local Null = class(Set)
+local Null = Set:subclass()
 Null.name = 'Null'
 
 -- is the null set a subset of itself?

@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 
 -- the set of all things
-local Universal = class(Set)
+local Universal = Set:subclass()
 
 --[[
 so this is 'true'

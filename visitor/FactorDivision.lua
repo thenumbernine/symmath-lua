@@ -1,8 +1,7 @@
 -- converts to add -> mul -> div
 
-local class = require 'ext.class'
 local Visitor = require 'symmath.visitor.Visitor'
-local FactorDivision = class(Visitor)
+local FactorDivision = Visitor:subclass()
 FactorDivision.name = 'FactorDivision'
 
 function FactorDivision:__call(expr, ...)

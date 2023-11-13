@@ -52,7 +52,7 @@ function Cell:init()
 end
 
 
-local SymmathHTTP = class(HTTP)
+local SymmathHTTP = HTTP:subclass()
 
 function SymmathHTTP:init(args)
 

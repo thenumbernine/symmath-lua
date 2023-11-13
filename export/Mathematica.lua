@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Language = require 'symmath.export.Language'
 
-local Mathematica = class(Language)
+local Mathematica = Language:subclass()
 
 Mathematica.name = 'Mathematica'
 

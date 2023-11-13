@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Binary = require 'symmath.op.Binary'
 
-local mod = class(Binary)
+local mod = Binary:subclass()
 
 mod.precedence = 3
 

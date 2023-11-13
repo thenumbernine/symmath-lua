@@ -1,10 +1,11 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local string = require 'ext.string'
 local math = require 'ext.math'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
-local add = class(Binary)
+local add = Binary:subclass()
 add.precedence = 2
 add.name = '+'
 
@@ -507,10 +508,6 @@ function add:evaluateLimit(x, a, side)
 	)
 end
 
-local function defaultConcat(a,b)
-	return tostring(a) .. tostring(b)
-end
-
 --[[
 this is a single term^power
 
@@ -529,7 +526,7 @@ function ProdTerm:__tostring()
 	local SingleLine = symmath.export.SingleLine
 	return SingleLine(self.term)..'^('..SingleLine(self.power)..')'
 end
-ProdTerm.__concat = defaultConcat
+ProdTerm.__concat = string.defaultConcat
 
 
 local function compare(a,b)
@@ -676,7 +673,7 @@ function ProdList:__tostring()
 	if #self == 0 then return '1' end
 	return table.mapi(self, tostring):concat' * '
 end
-ProdList.__concat = defaultConcat
+ProdList.__concat = string.defaultConcat
 
 
 -- for the i'th child of an add ...
@@ -823,7 +820,7 @@ function ProdLists:__tostring()
 	if #self == 0 then return '0' end
 	return table.mapi(self, tostring):concat'  +  '
 end
-ProdLists.__concat = defaultConcat
+ProdLists.__concat = string.defaultConcat
 
 add.rules = {
 	Factor = {

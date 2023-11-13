@@ -1,4 +1,3 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 local symmath
 
@@ -8,7 +7,7 @@ for p > 1 in Naturals
 for 0 <= q < p in Naturals
 --]]
 
-local EvenInteger = class(Set)
+local EvenInteger = Set:subclass()
 
 function EvenInteger:isSubsetOf(s)
 	symmath = symmath or require 'symmath'

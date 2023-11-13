@@ -84,7 +84,7 @@ RiemannUULL:printElem'R' printbr()
 os.exit()
 
 
-local Props = class(require 'symmath.physics.diffgeom')
+local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true	-- print as you go
 Props.fields = table(Props.fields)
 -- replace Gamma^a_bc calculation to 

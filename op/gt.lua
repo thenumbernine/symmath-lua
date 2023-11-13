@@ -1,7 +1,6 @@
-local class = require 'ext.class'
 local Equation = require 'symmath.op.Equation'
 
-local gt = class(Equation)
+local gt = Equation:subclass()
 
 gt.name = '>'
 gt.nameForExporterTable = {}

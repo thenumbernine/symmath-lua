@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Heaviside = require 'symmath.Heaviside'
 local Function = require 'symmath.Function'
 local symmath
 
-local abs = class(Function)
+local abs = Function:subclass()
 abs.name = 'abs'
 abs.realFunc = math.abs
 abs.cplxFunc = require 'complex'.abs

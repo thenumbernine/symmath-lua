@@ -2,12 +2,11 @@
 parent class of all language-specific Export child classes
 --]]
 
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Export = require 'symmath.export.Export'
 local symmath
 
-local Language = class(Export)
+local Language = Export:subclass()
 
 Language.name = 'Language'
 

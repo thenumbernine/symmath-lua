@@ -156,7 +156,6 @@ so that comma using those symbols will simplify based on the letter's variables 
 
 --]]
 
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
@@ -167,7 +166,7 @@ local symmath
 general-purpose degree-1 (successive nesting for degree-n) structure
 to be used as vectors, vectors of them as matrices, etc ...
 --]]
-local Tensor = class(Array)
+local Tensor = Array:subclass()
 
 Tensor.name = 'Tensor'
 

@@ -7,7 +7,7 @@ if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - spherical - derivation - varying time', useCommaDerivative=true}}
 
 
-local Props = class(require 'symmath.physics.diffgeom')
+local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true
 Props.fields = Props.fields:filter(function(f) return f.name ~= 'Riemann' and f.name ~= 'Ricci' and f.name ~= 'Gaussian' and f.name ~= 'Einstein' end)
 Props.fields:insert{

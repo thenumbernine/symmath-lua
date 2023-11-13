@@ -46,10 +46,9 @@ local gU = Tensor('^ab', table.unpack(Matrix.diagonal(-1/alpha^2, alpha^2, r^-2,
 g:print'g'
 gU:print'g'
 
-local props = class(
-	require 'symmath.physics.diffgeom'
-	--{print=printbr}
-)(g, gU)
+local props = require 'symmath.physics.diffgeom':subclass{
+	--print=printbr,
+}(g, gU)
 --props:print()
 
 printbr()

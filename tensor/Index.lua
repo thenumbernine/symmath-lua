@@ -1,11 +1,10 @@
 -- TensorIndex represents an entry in the Tensor.variance list
-local class = require 'ext.class'
 local table = require 'ext.table'
 local string = require 'ext.string'
 local Expression = require 'symmath.Expression'
 
 
-local TensorIndex = class(Expression)
+local TensorIndex = Expression:subclass()
 
 TensorIndex.name = 'Tensor.Index'
 

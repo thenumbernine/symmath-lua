@@ -1,10 +1,9 @@
-local class = require 'ext.class'
 local Set = require 'symmath.set.Set'
 local symmath
 
 -- TODO IntegerQuotientRingCoset to hold {p n + q}
 
-local OddInteger = class(Set)
+local OddInteger = Set:subclass()
 
 function OddInteger:isSubsetOf(s)
 	symmath = symmath or require 'symmath'

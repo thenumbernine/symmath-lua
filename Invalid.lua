@@ -9,11 +9,10 @@ TODO how about replacing this all with a builtin Variable with value NaN ?
 then copy the same nameForExporterTable across to it upon symmath init
 
 --]]
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 
-local Invalid = class(Expression)
+local Invalid = Expression:subclass()
 Invalid.name = 'Invalid'
 Invalid.nameForExporterTable = setmetatable(table(Invalid.nameForExporterTable), nil)
 Invalid.nameForExporterTable.C = 'NAN'

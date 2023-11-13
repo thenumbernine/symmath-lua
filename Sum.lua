@@ -1,6 +1,5 @@
-local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
-local Sum = class(Expression)
+local Sum = Expression:subclass()
 Sum.name = 'Sum'
 
 -- Sum:init(expr, var, start, finish)

@@ -6,7 +6,7 @@ local LaTeX = require 'symmath.export.LaTeX'	-- returns a singleton object
 local symmath
 
 
-local MathJax = class(LaTeX.class)
+local MathJax = LaTeX.class:subclass()
 
 MathJax.name = 'MathJax'
 

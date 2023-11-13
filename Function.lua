@@ -1,7 +1,6 @@
-local class = require 'ext.class'
 local Expression = require 'symmath.Expression'
 
-local Function = class(Expression)
+local Function = Expression:subclass()
 Function.precedence = 10	-- high since it will always show parenthesis
 Function.name = 'Function'
 

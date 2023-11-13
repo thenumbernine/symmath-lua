@@ -950,7 +950,7 @@ for _,info in ipairs(spacetimes) do
 	-- TODO just put this once in the intro?
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))
 	
-	local Props = class(require 'symmath.physics.diffgeom')
+	local Props = require 'symmath.physics.diffgeom':subclass()
 	function Props:doPrint(field)
 		print(field.title..':')
 		local t = self[field.name]

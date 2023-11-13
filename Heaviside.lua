@@ -1,9 +1,8 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
-local Heaviside = class(Function)
+local Heaviside = Function:subclass()
 
 Heaviside.name = 'Heaviside'
 Heaviside.nameForExporterTable = {}

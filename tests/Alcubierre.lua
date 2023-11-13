@@ -58,10 +58,10 @@ local udef = u:eq(vs * f)
 --]]
 --[[ using Function subclass, and inserting in my own derivative evaluation
 -- TODO how would I insert the derivative evaluation into symmath/Function.lua ?
-local f = class(Function, {name='f'})
+local f = Function:subclass{name='f'}
 function f:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
-	return deriv(x, ...) * class(Function, {name="f'"})(x)
+	return deriv(x, ...) * Function:subclass{name="f'"}(x)
 end
 printbr(f(rs):eq(fdefrhs), '= shape of bubble')
 local udef = u:eq(vs * f(rs))

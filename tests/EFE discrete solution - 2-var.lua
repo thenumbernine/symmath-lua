@@ -39,10 +39,9 @@ local gU = Tensor('^ab', table.unpack(Matrix.diagonal(1/A, 1/B, 1/B, 1/B)))
 g:print'g'
 gU:print'g'
 
-local props = class(
-	require 'symmath.physics.diffgeom'
-	--{print=printbr}
-)(g, gU)
+local props = require 'symmath.physics.diffgeom':subclass{
+	--print=printbr
+}(g, gU)
 --props:print()
 local EinsteinLL = props.Einstein'_ab'()
 printbr(EinsteinLL:print'G')

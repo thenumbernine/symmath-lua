@@ -1,8 +1,7 @@
-local class = require 'ext.class'
 local Function = require 'symmath.Function'
 local symmath
 
-local asinh = class(Function)
+local asinh = Function:subclass()
 asinh.name = 'asinh'
 
 -- domain: reals

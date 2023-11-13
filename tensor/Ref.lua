@@ -1,11 +1,10 @@
-local class = require 'ext.class'
 local table = require 'ext.table'
 local range = require 'ext.range'
 local Expression = require 'symmath.Expression'
 local Wildcard = require 'symmath.Wildcard'
 local symmath
 
-local TensorRef = class(Expression)
+local TensorRef = Expression:subclass()
 TensorRef.name = 'Tensor.Ref'
 TensorRef.precedence = 10	-- stop wrapping tensor reps in parenthesis ...
 

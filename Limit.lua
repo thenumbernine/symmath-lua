@@ -4,13 +4,12 @@ formal mathematicaal definition of limit:
 lim x→c+ f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. ( 0 < x − c < δ) => |f(x) − L| < ε
 lim x→c- f(x) = L <=> for all ε > 0 there exists δ > 0 s.t. (-δ < x - c < 0) => |f(x) − L| < ε
 --]]
-local class = require 'ext.class'
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local symmath
 
 
-local Side = class(Expression)
+local Side = Expression:subclass()
 Side.name = 'Side'
 Side.plus = setmetatable({name='+'}, Side)
 Side.minus = setmetatable({name='-'}, Side)
@@ -32,7 +31,7 @@ function Side.__eq(a,b)
 end
 --]]
 
-local Limit = class(Expression)
+local Limit = Expression:subclass()
 
 Limit.name = 'Limit'
 Limit.nameForExporterTable = {}
