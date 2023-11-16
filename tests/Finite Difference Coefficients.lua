@@ -121,26 +121,38 @@ for _,order in ipairs{2,4} do
 		printbr(pfunc:diff(x):approx(frac(1,h) * A * yvecval)) 
 	end
 end
+
+printbr'<h3>Numericaly:</h3>'
 local matrix = require 'matrix'
+local big = require 'bignumber'
 local math = require 'ext.math'
-for _,n in ipairs{2, 4} do	-- order of accuracy
+for _,n in ipairs{2, 4, 6} do	-- order of accuracy
+	printbr('<h3>...'..n..' order</h3>')
 	local m = 1	-- m'th derivative
 	local p = math.floor((m + 1) / 2) - 1 + n / 2
 	local A = matrix{n+1,n+1}:lambda(function(i,j)
-		return (-p+j-1)^(i-1)
+		return big(-p+i-1)^(j-1)
 	end)
+	local detA = A:det()
+	-- [[
 	printbr(var'A':eq(Matrix:lambda({n+1,n+1}, function(i,j)
-		return A[i][j]
-	end)))
-	local AInv = A:inv()
-	--[[
-	printbr((var'A'^-1):eq(Matrix:lambda({n+1,n+1}, function(i,j)
-		return AInv[i][j]
+		return var(tostring(A[i][j]))
 	end)))
 	--]]
+	local AInv = A:inv()
+	local AInv_detA = AInv * detA
 	-- [[
+	printbr((var'A'^-1):eq(frac(1, detA) * Matrix:lambda({n+1,n+1}, function(i,j)
+		return var(tostring(AInv_detA[i][j]))
+	end)))
+	--]]
+	--[[
 	printbr((var'A'^-1 * var'x'):eq(Matrix:lambda({1,n+1}, function(i,j)
-		return frac(AInv[m+1][j], factorial(m))
+		-- TODO why is only half rationalizing and the other half turning into decimals?
+		return frac(
+			Constant(AInv_detA[m+1][j])(),
+			Constant(detA * math.factorial(m))()
+		)
 	end)))
 	--]]
 	--[[
