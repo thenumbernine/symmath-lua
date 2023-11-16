@@ -7,53 +7,63 @@
 	</head>
 	<body>
 
+$f(x) = $ the function we are approximating the derivative of.
+<br>
+$\bar{x} =$ the point at which we are approximating the derivative.
+<br>
+h = the step size of our finite difference grid.
+<br>
+$y_k = f(\bar{x}_0 + k h) =$ the function, evaluated along our evenly spaced samples.
+<br>
+$p(x) = c_i x^i =$ the polynomial approximation of the derivative.
+<br>
+
+<br>
+$A_{ij} = [ (\bar{x}_0 + i \cdot h)^{j-1} ]$
+<br>
+${\vec{y}} = {{{\mathbf{A}}} \cdot {{\vec{c}}}}$
+<br>
+
+<br>
+${\vec{c}} = {{{{\mathbf{A}}^{-1}}} {{\vec{y}}}}$
+<br>
+
+<br>
+
+<br>
 <h3>Central Difference, 1st deriv, 2nd order</h3>
 <br>
-${A} = {\left[\begin{array}{ccc} {\left({{\bar{x}}{-{h}}}\right)}^{2}& {\bar{x}}{-{h}}& 1\\ {\bar{x}}^{2}& \bar{x}& 1\\ {\left({{\bar{x}} + {h}}\right)}^{2}& {\bar{x}} + {h}& 1\end{array}\right]}$
+${\mathbf{A}} = {\left[\begin{array}{ccc} 1& {\bar{x}}{-{h}}& {\left({{\bar{x}}{-{h}}}\right)}^{2}\\ 1& \bar{x}& {\bar{x}}^{2}\\ 1& {\bar{x}} + {h}& {\left({{\bar{x}} + {h}}\right)}^{2}\end{array}\right]}$
 <br>
 
 <br>
-${{f_i}} = {{{{A_{ij}}}} \cdot {{{p_j}}}}$
+${\left[\begin{array}{c} {y_1}\\ {y_2}\\ {y_3}\end{array}\right]} = {{{\left[\begin{array}{ccc} 1& {\bar{x}}{-{h}}& {\left({{\bar{x}}{-{h}}}\right)}^{2}\\ 1& \bar{x}& {\bar{x}}^{2}\\ 1& {\bar{x}} + {h}& {\left({{\bar{x}} + {h}}\right)}^{2}\end{array}\right]}} {{\left[\begin{array}{c} {c_0}\\ {c_1}\\ {c_2}\end{array}\right]}}}$
 <br>
 
 <br>
-${\left[\begin{array}{c} {f_1}\\ {f_2}\\ {f_3}\end{array}\right]} = {{{\left[\begin{array}{ccc} {\left({{\bar{x}}{-{h}}}\right)}^{2}& {\bar{x}}{-{h}}& 1\\ {\bar{x}}^{2}& \bar{x}& 1\\ {\left({{\bar{x}} + {h}}\right)}^{2}& {\bar{x}} + {h}& 1\end{array}\right]}} {{\left[\begin{array}{c} {p_1}\\ {p_2}\\ {p_3}\end{array}\right]}}}$
+${{\vec{c}} = {{{{\mathbf{A}}^{-1}}} {{{y_i}}}}} = {{{\left[\begin{array}{ccc} \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}} + {h}}\right)}}}{{{2}} {{{h}^{2}}}}& \frac{{-{{\bar{x}}^{2}}} + {{h}^{2}}}{{h}^{2}}& \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}}{-{h}}}\right)}}}{{{2}} {{{h}^{2}}}}\\ -{\frac{{h} + {{{2}} {{\bar{x}}}}}{{{2}} {{{h}^{2}}}}}& \frac{{{2}} {{\bar{x}}}}{{h}^{2}}& \frac{{h}{-{{{2}} {{\bar{x}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{1}{{{2}} {{{h}^{2}}}}& -{\frac{1}{{h}^{2}}}& \frac{1}{{{2}} {{{h}^{2}}}}\end{array}\right]}} {{\left[\begin{array}{c} {y_1}\\ {y_2}\\ {y_3}\end{array}\right]}}}$
 <br>
 
 <br>
-${det(A)} = {-{{{2}} {{{h}^{3}}}}}$
+${{p(x)} = {{{{x^j}}} \cdot {{{\mathbf{A}}^{-1}}} {{{y_i}}}}} = {{{\left[\begin{array}{ccc} 1& x& {x}^{2}\end{array}\right]}} {{\left[\begin{array}{ccc} \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}} + {h}}\right)}}}{{{2}} {{{h}^{2}}}}& \frac{{-{{\bar{x}}^{2}}} + {{h}^{2}}}{{h}^{2}}& \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}}{-{h}}}\right)}}}{{{2}} {{{h}^{2}}}}\\ -{\frac{{h} + {{{2}} {{\bar{x}}}}}{{{2}} {{{h}^{2}}}}}& \frac{{{2}} {{\bar{x}}}}{{h}^{2}}& \frac{{h}{-{{{2}} {{\bar{x}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{1}{{{2}} {{{h}^{2}}}}& -{\frac{1}{{h}^{2}}}& \frac{1}{{{2}} {{{h}^{2}}}}\end{array}\right]}} {{\left[\begin{array}{c} {y_1}\\ {y_2}\\ {y_3}\end{array}\right]}}}$
 <br>
 
 <br>
-${{A}^{-1}} = {\left[\begin{array}{ccc} \frac{1}{{{2}} {{{h}^{2}}}}& -{\frac{1}{{h}^{2}}}& \frac{1}{{{2}} {{{h}^{2}}}}\\ -{\frac{{h} + {{{2}} {{\bar{x}}}}}{{{2}} {{{h}^{2}}}}}& \frac{{{2}} {{\bar{x}}}}{{h}^{2}}& \frac{{h}{-{{{2}} {{\bar{x}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}} + {h}}\right)}}}{{{2}} {{{h}^{2}}}}& \frac{{-{{\bar{x}}^{2}}} + {{h}^{2}}}{{h}^{2}}& \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}}{-{h}}}\right)}}}{{{2}} {{{h}^{2}}}}\end{array}\right]}$
+${p(x)} = {\frac{{{{{y_1}}} \cdot {{{\bar{x}}^{2}}}} + {{{{y_1}}} \cdot {{{x}^{2}}}} + {{{{y_3}}} \cdot {{{\bar{x}}^{2}}}} + {{{{y_3}}} \cdot {{{x}^{2}}}}{-{{{2}} {{{y_2}}} \cdot {{{\bar{x}}^{2}}}}} + {{{2}} {{{y_2}}} \cdot {{{h}^{2}}}}{-{{{2}} {{{y_2}}} \cdot {{{x}^{2}}}}} + {{{\bar{x}}} \cdot {{h}} {{{y_1}}}}{-{{{\bar{x}}} \cdot {{h}} {{{y_3}}}}}{-{{{h}} {{x}} {{{y_1}}}}} + {{{h}} {{x}} {{{y_3}}}}{-{{{2}} {{\bar{x}}} \cdot {{x}} {{{y_1}}}}}{-{{{2}} {{\bar{x}}} \cdot {{x}} {{{y_3}}}}} + {{{4}} {{\bar{x}}} \cdot {{x}} {{{y_2}}}}}{{{2}} {{{h}^{2}}}}}$
 <br>
 
 <br>
-${{{{A}^{-1}}} {{{f_i}}}} = {{{\left[\begin{array}{ccc} \frac{1}{{{2}} {{{h}^{2}}}}& -{\frac{1}{{h}^{2}}}& \frac{1}{{{2}} {{{h}^{2}}}}\\ -{\frac{{h} + {{{2}} {{\bar{x}}}}}{{{2}} {{{h}^{2}}}}}& \frac{{{2}} {{\bar{x}}}}{{h}^{2}}& \frac{{h}{-{{{2}} {{\bar{x}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}} + {h}}\right)}}}{{{2}} {{{h}^{2}}}}& \frac{{-{{\bar{x}}^{2}}} + {{h}^{2}}}{{h}^{2}}& \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}}{-{h}}}\right)}}}{{{2}} {{{h}^{2}}}}\end{array}\right]}} {{\left[\begin{array}{c} {f_1}\\ {f_2}\\ {f_3}\end{array}\right]}}}$
-<br>
-
-<br>
-${{{{A}^{-1}}} {{{f_i}}}} = {\left[\begin{array}{c} \frac{{{f_1}} + {{f_3}}{-{{{2}} {{{f_2}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{{-{{{{f_1}}} \cdot {{h}}}} + {{{{f_3}}} \cdot {{h}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_1}}}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_3}}}}} + {{{4}} {{\bar{x}}} \cdot {{{f_2}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{{{{{f_1}}} \cdot {{{\bar{x}}^{2}}}} + {{{{f_3}}} \cdot {{{\bar{x}}^{2}}}}{-{{{2}} {{{f_2}}} \cdot {{{\bar{x}}^{2}}}}} + {{{2}} {{{f_2}}} \cdot {{{h}^{2}}}} + {{{\bar{x}}} \cdot {{{f_1}}} \cdot {{h}}}{-{{{\bar{x}}} \cdot {{{f_3}}} \cdot {{h}}}}}{{{2}} {{{h}^{2}}}}\end{array}\right]}$
-<br>
-
-<br>
-${{{{x^j}}} \cdot {{{A}^{-1}}} {{{f_i}}}} = {{{\left[\begin{array}{ccc} {x}^{2}& x& 1\end{array}\right]}} {{\left[\begin{array}{ccc} \frac{1}{{{2}} {{{h}^{2}}}}& -{\frac{1}{{h}^{2}}}& \frac{1}{{{2}} {{{h}^{2}}}}\\ -{\frac{{h} + {{{2}} {{\bar{x}}}}}{{{2}} {{{h}^{2}}}}}& \frac{{{2}} {{\bar{x}}}}{{h}^{2}}& \frac{{h}{-{{{2}} {{\bar{x}}}}}}{{{2}} {{{h}^{2}}}}\\ \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}} + {h}}\right)}}}{{{2}} {{{h}^{2}}}}& \frac{{-{{\bar{x}}^{2}}} + {{h}^{2}}}{{h}^{2}}& \frac{{{\bar{x}}} \cdot {{\left({{\bar{x}}{-{h}}}\right)}}}{{{2}} {{{h}^{2}}}}\end{array}\right]}} {{\left[\begin{array}{c} {f_1}\\ {f_2}\\ {f_3}\end{array}\right]}}}$
-<br>
-
-<br>
-${{{{x^j}}} \cdot {{{A}^{-1}}} {{{f_i}}}} = {\frac{{{{{f_1}}} \cdot {{{\bar{x}}^{2}}}} + {{{{f_1}}} \cdot {{{x}^{2}}}} + {{{{f_3}}} \cdot {{{\bar{x}}^{2}}}} + {{{{f_3}}} \cdot {{{x}^{2}}}}{-{{{2}} {{{f_2}}} \cdot {{{\bar{x}}^{2}}}}} + {{{2}} {{{f_2}}} \cdot {{{h}^{2}}}}{-{{{2}} {{{f_2}}} \cdot {{{x}^{2}}}}} + {{{\bar{x}}} \cdot {{{f_1}}} \cdot {{h}}}{-{{{\bar{x}}} \cdot {{{f_3}}} \cdot {{h}}}}{-{{{{f_1}}} \cdot {{h}} {{x}}}} + {{{{f_3}}} \cdot {{h}} {{x}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_1}}} \cdot {{x}}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_3}}} \cdot {{x}}}} + {{{4}} {{\bar{x}}} \cdot {{{f_2}}} \cdot {{x}}}}{{{2}} {{{h}^{2}}}}}$
-<br>
-
-<br>
-${{\frac{\partial}{\partial x}}\left({{{{x^j}}} \cdot {{{A}^{-1}}} {{{f_i}}}}\right)} = {\frac{{-{{{{f_1}}} \cdot {{h}}}} + {{{{f_3}}} \cdot {{h}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_1}}}}}{-{{{2}} {{\bar{x}}} \cdot {{{f_3}}}}} + {{{2}} {{{f_1}}} \cdot {{x}}} + {{{2}} {{{f_3}}} \cdot {{x}}} + {{{4}} {{\bar{x}}} \cdot {{{f_2}}}}{-{{{4}} {{{f_2}}} \cdot {{x}}}}}{{{2}} {{{h}^{2}}}}}$
+${\frac{\partial p(x)}{\partial x}} = {\frac{{-{{{h}} {{{y_1}}}}} + {{{h}} {{{y_3}}}}{-{{{2}} {{\bar{x}}} \cdot {{{y_1}}}}}{-{{{2}} {{\bar{x}}} \cdot {{{y_3}}}}} + {{{2}} {{x}} {{{y_1}}}} + {{{2}} {{x}} {{{y_3}}}} + {{{4}} {{\bar{x}}} \cdot {{{y_2}}}}{-{{{4}} {{x}} {{{y_2}}}}}}{{{2}} {{{h}^{2}}}}}$
 <br>
 
 <br>
 let	${\bar{x}} = {x}$
 <br>
-${{\frac{\partial}{\partial x}}\left({{{{x^j}}} \cdot {{{A}^{-1}}} {{{f_i}}}}\right)} = {\frac{{-{{f_1}}} + {{f_3}}}{{{2}} {{h}}}}$
+${\frac{\partial p(x)}{\partial x}} \approx {\frac{{-{{y_1}}} + {{y_3}}}{{{2}} {{h}}}}$
 <br>
 
+<br>
+${\frac{\partial p(x)}{\partial x}} \approx {{{\left[\begin{array}{ccc} -{\frac{1}{{{2}} {{h}}}}& 0& \frac{1}{{{2}} {{h}}}\end{array}\right]}} {{\left[\begin{array}{c} {y_1}\\ {y_2}\\ {y_3}\end{array}\right]}}}$
 <br>
 	</body>
 </html>
