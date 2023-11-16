@@ -215,6 +215,7 @@ symmath.Heaviside = require 'symmath.Heaviside'
 symmath.conj = require 'symmath.conj'
 symmath.Re = require 'symmath.Re'
 symmath.Im = require 'symmath.Im'
+symmath.factorial = require 'symmath.factorial'
 
 symmath.op = {
 	Binary = require 'symmath.op.Binary',

@@ -64,6 +64,7 @@ build = {
 		["symmath.export.SymMath"] = "export/SymMath.lua",
 		["symmath.export.Verbose"] = "export/Verbose.lua",
 		["symmath.factor"] = "factor.lua",
+		["symmath.factorial"] = "factorial.lua",
 		["symmath.factorDivision"] = "factorDivision.lua",
 		["symmath.factorLinearSystem"] = "factorLinearSystem.lua",
 		["symmath.hasChild"] = "hasChild.lua",

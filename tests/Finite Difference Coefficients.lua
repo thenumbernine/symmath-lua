@@ -9,6 +9,7 @@ local printbr = MathJax.print
 MathJax.header.title = 'Finite Difference Coefficients'
 print(MathJax.header)
 
+
 --[[
 a_{-1} f(x - h) + a_0 f(x) + a_1 f(h) ~ f'(x)
 a_{-1} f'(x - h) + a_0 f'(x) + a_1 f'(h) ~ f''(x)
@@ -42,7 +43,7 @@ printbr'<h3>Central Difference, 1st deriv</h3>'
 
 -- https://en.wikipedia.org/wiki/Finite_difference_coefficient
 -- ... they only go up to order 8
-for _,order in ipairs{2,4,6,8,10,12} do
+for _,order in ipairs{2,4} do
 	printbr('<h3>...'..order..' order</h3>')
 	local n = order + 1
 
@@ -90,7 +91,7 @@ for _,order in ipairs{2,4,6,8,10,12} do
 	--]]
 
 	local pfunc = var'p(x)'
-	local xval = Matrix:lambda({1,n}, function(i,j) return x^(j-1) end)
+	local xval = Matrix:lambda({1,n}, function(i,j) return x^(j-1) end)()
 	local x_invA_fval = xval * invA * yvecval
 	printbr(pfunc:eq(var'x^j' * Amatvar^-1 * var'y_i'):eq(x_invA_fval))
 	printbr()
@@ -100,25 +101,52 @@ for _,order in ipairs{2,4,6,8,10,12} do
 	printbr()
 	--]]
 
-	local d_x_A_f = x_invA_fval:diff(x)() 
+	local d_x_A_f_h = (x_invA_fval:diff(x) * h)() 
 	--[[
-	printbr(pfunc:diff(x):eq(d_x_A_f))
+	printbr(pfunc:diff(x):eq(frac(1,h) * d_x_A_f_h))
 	printbr()
 	--]]
 
 	local let = xBar:eq(x)
 	printbr('let', let)
-	d_x_A_f = d_x_A_f:subst(let)()
-	printbr(pfunc:diff(x):approx(d_x_A_f))
+	d_x_A_f_h = d_x_A_f_h:subst(let)()
+	printbr(pfunc:diff(x):approx(frac(1,h) * d_x_A_f_h))
 	printbr()
 
-	local A, b = factorLinearSystem({d_x_A_f}, yvars)
+	local A, b = factorLinearSystem({d_x_A_f_h}, yvars)
 	if not Constant.isValue(b[1][1], 0) then
 		printbr'!!! DANGER DANGER !!! something went wrong'
-		printbr(pfunc:diff(x):approx(A * yvecval + b[1][1]))
+		printbr(pfunc:diff(x):approx(frac(1,h) * A * yvecval + b[1][1]))
 	else
-		printbr(pfunc:diff(x):approx(A * yvecval)) 
+		printbr(pfunc:diff(x):approx(frac(1,h) * A * yvecval)) 
 	end
 end
-
+local matrix = require 'matrix'
+local math = require 'ext.math'
+for _,n in ipairs{2, 4} do	-- order of accuracy
+	local m = 1	-- m'th derivative
+	local p = math.floor((m + 1) / 2) - 1 + n / 2
+	local A = matrix{n+1,n+1}:lambda(function(i,j)
+		return (-p+j-1)^(i-1)
+	end)
+	printbr(var'A':eq(Matrix:lambda({n+1,n+1}, function(i,j)
+		return A[i][j]
+	end)))
+	local AInv = A:inv()
+	--[[
+	printbr((var'A'^-1):eq(Matrix:lambda({n+1,n+1}, function(i,j)
+		return AInv[i][j]
+	end)))
+	--]]
+	-- [[
+	printbr((var'A'^-1 * var'x'):eq(Matrix:lambda({1,n+1}, function(i,j)
+		return frac(AInv[m+1][j], factorial(m))
+	end)))
+	--]]
+	--[[
+	local AInv_x = AInv * matrix{n+1}:lambda(function(i)
+		return i == m+1 and math.factorial(m) or 0
+	end)
+	--]]
+end
 print(MathJax.footer)

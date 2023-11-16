@@ -85,6 +85,9 @@ SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 		end
 		return res:concat()
 	end,
+	[require 'symmath.factorial'] = function(self, expr)
+		return self:apply(expr[1])..'!'
+	end,
 	[require 'symmath.Wildcard'] = function(self, expr)
 		return '$'..expr.index
 	end,

@@ -1,3 +1,4 @@
+local symmath
 --[[
 I'll have this immediately evaluate for now
 Maybe later I'll make it deferrable
@@ -8,6 +9,7 @@ args:
 	n = how many iterations to expand.  default is infinite.  though I can't handle infinite sums yet.
 --]]
 return function(expr, x, a, n)
+	symmath = symmath or require 'symmath'
 --	n = n or symmath.inf
 	a = a or 0
 	-- x = x or whatever the first var of 'x' is
@@ -23,13 +25,11 @@ return function(expr, x, a, n)
 	--]]
 
 	local sum = 0
-	local factorial_i = 1
 	for i=0,n do
 		if i > 0 then
 			expr = expr:diff(x)()
 		end
-		factorial_i = factorial_i * math.max(i, 1)
-		sum = sum + expr:replace(x,a) * (x - a)^i / factorial_i
+		sum = sum + expr:replace(x,a) * (x - a)^i / symmath.factorial(i)
 	end
 	return sum
 end

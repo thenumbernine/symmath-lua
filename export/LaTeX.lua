@@ -331,6 +331,9 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 
 		return res
 	end,
+	[require 'symmath.factorial'] = function(self, expr)
+		return table{self:apply(expr[1]), '!'}
+	end,
 	[require 'symmath.Variable'] = function(self, expr)
 		symmath = symmath or require 'symmath'
 		local name = expr:nameForExporter(self)
