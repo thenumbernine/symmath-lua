@@ -148,28 +148,13 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 	local detA = A:det()
 	printbr(var'det(A)':eq(detA))
 	local AInv = A:inv(detA)
-for i=1,#AInv do
-	for j=1,#AInv[i] do
-		assert(bignumber:isa(AInv[i][j]))
-	end
-end
 	printbr((var'A'^-1):eq(Matrix:lambda({n+1,n+1}, function(i,j)
 		return Constant(AInv[i][j])
 	end)))
 	local AInv_detA = AInv * detA
-for i=1,#AInv do
-	for j=1,#AInv[i] do
-		assert(bignumber:isa(AInv_detA[i][j]))
-	end
-end
 	-- [[ put the determinant as denominator of fraction out front
 	printbr((var'A'^-1):eq(frac(1, detA) * Matrix:lambda({n+1,n+1}, function(i,j)
-		local x = AInv_detA[i][j]
-		print(x)
-		print(type(x))
-		print(bignumber:isa(x))
-		print(matrix:isa(x))
-		return Constant(x)
+		return Constant(AInv_detA[i][j])
 	end)))
 	--]]
 	-- [[ simplify fractions
