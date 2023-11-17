@@ -147,6 +147,10 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			return table{prepareName(expr.symbol)}
 		end
 		local value = expr.value
+		local bignumber = require 'bignumber'
+		if bignumber:isa(value) then
+			return explode(tostring(value))
+		end
 		local fv = math.floor(value)
 		if value == fv then value = fv end	-- get rid of decimal place in tostring() on lua 5.3
 		local s = tostring(value)

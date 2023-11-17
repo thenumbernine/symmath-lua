@@ -162,8 +162,8 @@ for _,op in ipairs{
 } do
 	Equation[op.field] = function(a,b)
 		local Constant = require 'symmath.Constant'
-		if type(a) == 'number' then a = Constant(a) end
-		if type(b) == 'number' then b = Constant(b) end
+		if Constant.isNumber(a) then a = Constant(a) end
+		if Constant.isNumber(b) then b = Constant(b) end
 		if Equation:isa(a) and not Equation:isa(b) then
 			a = a:clone()
 			for i=1,#a do

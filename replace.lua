@@ -9,12 +9,12 @@ TODO rewrite to use symmath.match() ?  But match() returns matched objects ... I
 --]]
 local function replaceRecurse(expr, find, repl, cond)
 	local Constant = require 'symmath.Constant'
-	if type(find) == 'number' then
+	if Constant.isNumber(find) then
 		find = Constant(find)
 	end
 	if repl == nil then
 		error("expected to have something to replace, got nil")
-	elseif type(repl) == 'number' then
+	elseif Constant.isNumber(repl) then
 		repl = Constant(repl)
 	end
 

@@ -10,7 +10,7 @@ return function(...)
 			local el
 			if i == j then
 				el = select(i, ...)
-				if type(el) == 'number' then el = Constant(el) end
+				if Constant.isNumber(el) then el = Constant(el) end
 			else
 				el = Constant(0)
 			end

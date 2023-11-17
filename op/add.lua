@@ -1102,7 +1102,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			--[[ new ... causes simplification loops
 			local terms = table()
 			for i=1,#minProds do
-				if type(minProds[i].power) == 'number'
+				if Constant.isNumber(minProds[i].power)
 				and minProds[i].power > 0
 				then
 					terms:insert(minProds[i].term ^ minProds[i].power)
@@ -1373,7 +1373,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					local didntFind
 					for _,mul in ipairs(muls) do
 						local nonConstTerms = table.filter(mul, function(x,k)
-							if type(k) ~= 'number' then return end
+							if not Constant.isNumber(k) then return end
 							return not Constant:isa(x)
 						end)
 						if not baseTerms then
@@ -1385,7 +1385,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 							end
 						end
 						local constTerms = table.filter(mul, function(x,k)
-							if type(k) ~= 'number' then return end
+							if not Constant.isNumber(k) then return end
 							return Constant:isa(x)
 						end)
 

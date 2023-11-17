@@ -19,6 +19,24 @@ Array.mutable = true
 
 Array.unpack = table.unpack
 
+-- static method
+function Array:fixctorargs(...)
+	local n = select('#', ...)
+	if n == 0 then return end
+	local x = ...
+	local mt = getmetatable(self)
+
+	-- same as in Expression:init but for regular tables, wrap them with this class type
+	local Constant = require 'symmath.Constant'
+	if Constant.isNumber(x) then
+		x = Constant(x)
+	elseif not Expression:isa(x) then
+		x = mt(table.unpack(x))
+	end
+	
+	return x, self:fixctorargs(select(2, ...))
+end
+
 --[[
 valid ctors:
 	Array(x1, x2, ..., xN)
@@ -28,17 +46,7 @@ TODO if I instead required a table constructor, it would make passing Arrays as 
 	as well as easier for subclasses (Matrix, Tensor, etc)
 --]]
 function Array:init(...)
-	Array.super.init(self, ...)
-	local mt = getmetatable(self)
-
-	for i=1,#self do
-		local x = self[i]
-		assert(type(x) == 'table', "arrays can only be constructed with Expressions or tables of Expressions")
-		if not Expression:isa(x) then
-			-- then assume it's meant to be a sub-array
-			self[i] = mt(table.unpack(x))
-		end
-	end
+	Array.super.init(self, self:fixctorargs(...))
 end
 
 Array.__index = function(self, key)
@@ -347,7 +355,7 @@ function Array:zeros(dims)
 	local Constant = symmath.Constant
 	dims = range(#dims):map(function(i)
 		local x = dims[i]
-		if type(x) == 'number' then return x end
+		if Constant.isNumber(x) then return x end
 		if Constant:isa(x) then return x.value end
 		return x
 	end)

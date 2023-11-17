@@ -1,6 +1,6 @@
 return function(obj, ...)
-	if type(obj) == 'number' then
-		local Constant = require 'symmath.Constant'
+	local Constant = require 'symmath.Constant'
+	if Constant.isNumber(obj) then
 		return Constant(obj)
 	end
 

@@ -1,6 +1,12 @@
+--[[				
+TODO maybe get rid of 'complex' in Constant
+instead just let symmath.i be some special value
+and then change element-within-set test to look for add(const, mul(i, const))
+--]]
 local table = require 'ext.table'
 local Expression = require 'symmath.Expression'
 local complex = require 'complex'
+local bignumber = require 'bignumber'
 local symmath
 
 --[[
@@ -14,6 +20,12 @@ I'll let .value hold whatever is essential to the constant - whatever class of c
 local Constant = Expression:subclass()
 Constant.precedence = 10	-- high since it can't have child nodes
 Constant.name = 'Constant'
+
+-- helper function
+function Constant.isNumber(x)
+	return type(x) == 'number'
+	or bignumber:isa(x)
+end
 
 -- [[ override 'new' operator and fall back on caching
 -- saves 25% of time on the 'metric catalog' test
@@ -42,12 +54,14 @@ value = value of your constant
 symbol = override display of the constant (i.e. 'pi', 'e', etc)
 --]]
 function Constant:init(value, symbol)
-	if type(value) ~= 'number'
-	and not complex:isa(value)
-	then
-		error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
+	if not bignumber:isa(value) then
+		if type(value) ~= 'number'
+		and not complex:isa(value)
+		then
+			error('tried to init constant with non-number type '..type(value)..' value '..tostring(value))
+		end
+		value = value * 1.0	-- convert from long to double
 	end
-	value = value * 1.0	-- convert from long to double
 -- [[ read/write original behavior:
 	self.value = value
 	self.symbol = symbol
@@ -187,14 +201,24 @@ end
 Constant.rules = {
 	Tidy = {
 		{apply = function(tidy, expr)
-			-- for formatting's sake ...
-			if expr.value == 0 then	-- which could possibly be -0 ...
-				return Constant(0)
-			end
+			if bignumber:isa(expr.value) then
+				if expr.value:isZero() then
+					return Constant(bignumber(0))
+				end
+			
+				if expr.value < 0 then
+					return tidy:apply(-Constant(-expr.value))
+				end
+			else
+				-- for formatting's sake ...
+				if expr.value == 0 then	-- which could possibly be -0 ...
+					return Constant(0)
+				end
 
-			-- (-c) => -(c)
-			if complex.unpack(expr.value) < 0 then
-				return tidy:apply(-Constant(-expr.value))
+				-- (-c) => -(c)
+				if complex.unpack(expr.value) < 0 then
+					return tidy:apply(-Constant(-expr.value))
+				end
 			end
 		end},
 	},

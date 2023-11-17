@@ -15,8 +15,8 @@ Expression.name = 'Expression'
 function Expression:init(...)
 	for i=1,select('#', ...) do
 		local x = select(i, ...)
-		if type(x) == 'number' then
-			Constant = Constant or require 'symmath.Constant'
+		Constant = Constant or require 'symmath.Constant'
+		if Constant.isNumber(x) then
 			self[i] = Constant(x)
 		elseif type(x) == 'nil' then
 			error("can't initialize an expression with a nil child")
@@ -24,6 +24,13 @@ function Expression:init(...)
 		-- if I allow them to be constructed here, we'll have non-Expression stuff in the trees
 		-- and then things like the exporters will break
 		else
+			-- [[ TODO would be nice but ... Array & subclasses need to allow arbitrary table assignment
+			-- I could make them transform args into their own class
+			-- but then they'd have to determine what should be cloned/wrapped vs what should be turned into themselves...
+			if not Expression:isa(x) then
+				error("idk what this is: "..require 'ext.tolua'(x))
+			end
+			--]]
 			self[i] = x
 		end
 	end
@@ -236,7 +243,7 @@ end
 -- make sure to require Expression and then require the ops
 function Expression.__unm(a)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
+	if Constant.isNumber(a) then a = Constant(a) end
 	unm = unm or require 'symmath.op.unm'
 --	if unm:isa(a) then return a[1] end
 	return unm(a)
@@ -247,8 +254,8 @@ function Expression.__add(a,b)
 	if b == 0 then return a end
 
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 	if Constant.isValue(a, 0) then return b end
 	if Constant.isValue(b, 0) then return a end
 
@@ -261,8 +268,8 @@ end
 
 function Expression.__sub(a,b)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__sub(a,b) end
@@ -283,8 +290,8 @@ end
 
 function Expression.__mul(a,b)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__mul(a,b) end
@@ -315,8 +322,8 @@ end
 
 function Expression.__div(a,b)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__div(a,b) end
@@ -340,8 +347,8 @@ end
 
 function Expression.__pow(a,b)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__pow(a,b) end
@@ -367,8 +374,8 @@ end
 
 function Expression.__mod(a,b)
 	Constant = Constant or require 'symmath.Constant'
-	if type(a) == 'number' then a = Constant(a) end
-	if type(b) == 'number' then b = Constant(b) end
+	if Constant.isNumber(a) then a = Constant(a) end
+	if Constant.isNumber(b) then b = Constant(b) end
 
 	Equation = Equation or require 'symmath.op.Equation'
 	if Equation:isa(b) then return b.__mod(a,b) end
@@ -378,7 +385,11 @@ function Expression.__mod(a,b)
 end
 
 function Expression:flatten()
+if require 'symmath.Constant':isa(self) then assert(#self == 0) end
 	for i=1,#self do
+if not self[i].flatten then
+	error("no flatten in child of class type "..tostring(self.name).." with child of type "..tostring(self[i].name))
+end
 		self[i]:flatten()
 	end
 	return self
@@ -498,8 +509,8 @@ Expression.taylor = function(...)
 end
 
 function Expression.wedge(a,b)
-	if type(b) == 'number' then
-		Constant = Constant or require 'symmath.Constant'
+	Constant = Constant or require 'symmath.Constant'
+	if Constant.isNumber(b) then
 		b = Constant(b)
 	end
 

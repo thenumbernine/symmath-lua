@@ -124,35 +124,51 @@ end
 
 printbr'<h3>Numericaly:</h3>'
 local matrix = require 'matrix'
+-- TODO make all constants bignumbers
+-- but first I gotta finish specific-precision mul and div math for bignumbers ...
 local big = require 'bignumber'
 local math = require 'ext.math'
-for _,n in ipairs{2, 4, 6} do	-- order of accuracy
+for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 	printbr('<h3>...'..n..' order</h3>')
 	local m = 1	-- m'th derivative
 	local p = math.floor((m + 1) / 2) - 1 + n / 2
 	local A = matrix{n+1,n+1}:lambda(function(i,j)
+		--[[ lua doubles
+		return (-p+i-1)^(j-1)
+		--]]
+		-- [[ bignumber
 		return big(-p+i-1)^(j-1)
+		--]]
 	end)
 	local detA = A:det()
 	-- [[
 	printbr(var'A':eq(Matrix:lambda({n+1,n+1}, function(i,j)
-		return var(tostring(A[i][j]))
+		return Constant(A[i][j])
 	end)))
 	--]]
 	local AInv = A:inv()
 	local AInv_detA = AInv * detA
-	-- [[
+	-- [[ put the determinant as denominator of fraction out front
 	printbr((var'A'^-1):eq(frac(1, detA) * Matrix:lambda({n+1,n+1}, function(i,j)
-		return var(tostring(AInv_detA[i][j]))
+		return Constant(AInv_detA[i][j])
 	end)))
 	--]]
-	--[[
+	-- [[ simplify fractions
 	printbr((var'A'^-1 * var'x'):eq(Matrix:lambda({1,n+1}, function(i,j)
 		-- TODO why is only half rationalizing and the other half turning into decimals?
+		-- maybe some near-ints pop out of the inverse?
+		--[=[
 		return frac(
 			Constant(AInv_detA[m+1][j])(),
 			Constant(detA * math.factorial(m))()
+		)()
+		--]=]
+		-- [=[ bignumber - write it as a var
+		return frac(
+			Constant(AInv_detA[m+1][j]),
+			Constant(detA * big(m):factorial())
 		)
+		--]=]
 	end)))
 	--]]
 	--[[
