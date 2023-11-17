@@ -1,7 +1,46 @@
 local table = require 'ext.table'
 local range = require 'ext.range'
 local math = require 'ext.math'
+local bignumber = require 'bignumber'
 local Binary = require 'symmath.op.Binary'
+
+local function bignumber_floor(n)
+	n = bignumber(n)
+	while n.minExp < 0 do
+		n[n.minExp] = 0
+		n.minExp = n.minExp + 1
+		if n.minExp > n.maxExp then return bignumber() end
+	end
+end
+
+-- TODO this but more flexible
+local function primeFactorization(n)
+	if type(n) == 'number' then return math.primeFactorization(n) end
+	assert(bignumber:isa(n))
+	
+	local table = require 'ext.table'
+	n = bignumber_floor(n)
+	local f = table()
+	while n > 1 do
+		local found = false
+		for i=2,n do
+			if i*i > n then break end
+			if n % i == 0 then
+				n = bignumber_floor(n/i)
+				f:insert(i)
+				found = true
+				break
+			end
+		end
+		if not found then
+			f:insert(n)
+			break
+		end
+	end
+	return f
+end
+
+
 
 local symmath
 
@@ -559,16 +598,18 @@ div.rules = {
 				-- only simplify if simplifyConstantPowers is set  ... or if one of them isn't an integer.
 				-- otherwise I go into a runaway loop ...
 				if symmath.simplifyConstantPowers
+				--[[
 				or not (
 					symmath.set.integer:contains(p)
 					and symmath.set.integer:contains(q)
 				)
+				--]]
 				then
 					return Constant(p.value / q.value)
 				end
 			end
 
-			if symmath.simplifyConstantPowers  then
+			if symmath.simplifyConstantPowers then
 				-- q / Constant = 1/Constant * q
 				if Constant:isa(q) then
 					return prune:apply(
@@ -1030,7 +1071,7 @@ end
 							bases:insert(i, Constant(1))
 							powers:insert(i, power:clone())
 						else
-							local fs = math.primeFactorization(value)	-- 1 returns a nil list
+							local fs = primeFactorization(value)	-- 1 returns a nil list
 							for _,f in ipairs(fs) do
 								bases:insert(i, f)
 								powers:insert(i, power:clone())

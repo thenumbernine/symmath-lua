@@ -123,7 +123,6 @@ for _,order in ipairs{2,4} do
 end
 
 printbr'<h3>Numericaly:</h3>'
-local matrix = require 'matrix'
 -- TODO make all constants bignumbers
 -- but first I gotta finish specific-precision mul and div math for bignumbers ...
 local bignumber = require 'bignumber'
@@ -132,6 +131,8 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 	printbr('<h3>...'..n..' order</h3>')
 	local m = 1	-- m'th derivative
 	local p = math.floor((m + 1) / 2) - 1 + n / 2
+	--[==[ using matrix + bignumber
+	local matrix = require 'matrix'
 	local A = matrix{n+1,n+1}:lambda(function(i,j)
 		--[[ lua doubles
 		return (-p+i-1)^(j-1)
@@ -180,5 +181,19 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 		return i == m+1 and math.factorial(m) or 0
 	end)
 	--]]
+	--]==]
+	-- [==[ using symmath Matrix + bignumber
+	local A = Matrix:lambda({n+1,n+1}, function(i,j)
+		return bignumber(-p+i-1)^(j-1)
+	end)
+	printbr(var'A':eq(A))
+	local detA = A:det()
+	printbr(var'det(A)':eq(detA))
+	local AInv = A:inv()
+	printbr((var'A'^-1):eq(AInv))
+	printbr((var'A'^-1 * var'x'):eq(Matrix:lambda({1,n+1}, function(i,j)
+		return frac(AInv[m+1][j], bignumber(m):factorial())()
+	end)))
+	--]==]
 end
 print(MathJax.footer)

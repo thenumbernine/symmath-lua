@@ -1271,7 +1271,10 @@ mul.rules = {
 
 				-- [=[ I have a weird bug where 4 * 2^(-1/2) won't simplify to 2 sqrt(2)
 				if Constant:isa(x) then
-					if x.value > 1 then
+					-- TODO get this to work for bignumber ...
+					if type(x.value) == 'number'
+					and x.value > 1 
+					then
 						local sqrtx = math.sqrt(x.value)
 						-- TODO set integer test?
 						if sqrtx == math.floor(sqrtx) then

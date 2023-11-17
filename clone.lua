@@ -11,4 +11,3 @@ return function(obj, ...)
 
 	return obj
 end
-
