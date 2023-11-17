@@ -4,6 +4,7 @@ local math = require 'ext.math'
 local bignumber = require 'bignumber'
 local Binary = require 'symmath.op.Binary'
 
+-- TODO move to bignumber
 local function bignumber_floor(n)
 	n = bignumber(n)
 	while n.minExp < 0 do
@@ -1073,7 +1074,7 @@ end
 						else
 							local fs = primeFactorization(value)	-- 1 returns a nil list
 							for _,f in ipairs(fs) do
-								bases:insert(i, f)
+								bases:insert(i, Constant(f))
 								powers:insert(i, power:clone())
 							end
 						end
@@ -1107,7 +1108,7 @@ end
 				-- can I construct these even if they have no terms?
 				local num
 				if #numBases > 0 then
-					num = numBases:map(function(v,i)
+					num = numBases:mapi(function(v,i)
 						return v ^ numPowers[i]
 					end)
 					assert(#num > 0)
@@ -1119,7 +1120,7 @@ end
 				end
 				local denom
 				if #denomBases > 0 then
-					denom = denomBases:map(function(v,i)
+					denom = denomBases:mapi(function(v,i)
 						return v ^ denomPowers[i]
 					end)
 					assert(#denom > 0)
