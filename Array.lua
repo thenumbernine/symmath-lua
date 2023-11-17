@@ -31,9 +31,11 @@ function Array:fixctorargs(...)
 	if Constant.isNumber(x) then
 		x = Constant(x)
 	elseif not Expression:isa(x) then
+		local prevmt = getmetatable(x)
+		assert(prevmt == nil or prevmt == table)
 		x = mt(table.unpack(x))
 	end
-	
+
 	return x, self:fixctorargs(select(2, ...))
 end
 
@@ -450,13 +452,13 @@ function Array:mergeDims(...)
 	local merges = table{...}
 
 	local dim = self:dim()
-	
-	-- new dims = old dims, remove each grouping, replace the first 
+
+	-- new dims = old dims, remove each grouping, replace the first
 	-- mapping from old dim index to new dim index
 	local newDimMap = range(#dim)
-	
+
 	local newDims = dim:mapi(function(n,i) return dim[newDimMap[i]] end)
-	
+
 	error'TODO'
 end
 --]=]
