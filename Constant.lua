@@ -190,7 +190,12 @@ end
 -- static method
 -- Constant:isa(x) and x.value == value, combined
 function Constant.isValue(x, value)
-	return Constant:isa(x) and x.value == value
+	if not Constant:isa(x) then return false end
+	if bignumber:isa(x.value) or bignumber:isa(value) then
+		return bignumber(x.value) == bignumber(value)
+	else
+		return x.value == value
+	end
 end
 
 -- lim x->a c => c
