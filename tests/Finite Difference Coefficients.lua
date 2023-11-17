@@ -126,7 +126,7 @@ printbr'<h3>Numericaly:</h3>'
 local matrix = require 'matrix'
 -- TODO make all constants bignumbers
 -- but first I gotta finish specific-precision mul and div math for bignumbers ...
-local big = require 'bignumber'
+local bignumber = require 'bignumber'
 local math = require 'ext.math'
 for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 	printbr('<h3>...'..n..' order</h3>')
@@ -137,7 +137,7 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 		return (-p+i-1)^(j-1)
 		--]]
 		-- [[ bignumber
-		return big(-p+i-1)^(j-1)
+		return bignumber(-p+i-1)^(j-1)
 		--]]
 	end)
 	-- [[
@@ -147,15 +147,29 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 	--]]
 	local detA = A:det()
 	printbr(var'det(A)':eq(detA))
-	local AInv = A:inv()
-	print(AInv)
+	local AInv = A:inv(detA)
+for i=1,#AInv do
+	for j=1,#AInv[i] do
+		assert(bignumber:isa(AInv[i][j]))
+	end
+end
 	printbr((var'A'^-1):eq(Matrix:lambda({n+1,n+1}, function(i,j)
 		return Constant(AInv[i][j])
 	end)))
 	local AInv_detA = AInv * detA
+for i=1,#AInv do
+	for j=1,#AInv[i] do
+		assert(bignumber:isa(AInv_detA[i][j]))
+	end
+end
 	-- [[ put the determinant as denominator of fraction out front
 	printbr((var'A'^-1):eq(frac(1, detA) * Matrix:lambda({n+1,n+1}, function(i,j)
-		return Constant(AInv_detA[i][j])
+		local x = AInv_detA[i][j]
+		print(x)
+		print(type(x))
+		print(bignumber:isa(x))
+		print(matrix:isa(x))
+		return Constant(x)
 	end)))
 	--]]
 	-- [[ simplify fractions
@@ -171,7 +185,7 @@ for _,n in ipairs{2, 4, 6, 8, 10, 12} do	-- order of accuracy
 		-- [=[ bignumber - write it as a var
 		return frac(
 			Constant(AInv_detA[m+1][j]),
-			Constant(detA * big(m):factorial())
+			Constant(detA * bignumber(m):factorial())
 		)
 		--]=]
 	end)))
