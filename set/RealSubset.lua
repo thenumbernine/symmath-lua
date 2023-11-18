@@ -180,6 +180,16 @@ function RealSubset:containsNumber(x)
 	return gotfalse
 end
 
+function RealSubset:containsBigNumber(x)
+	local gotfalse
+	for _,I in ipairs(self) do
+		local containsI = I:containsBigNumber(x)
+		if containsI then return true end
+		if containsI == false then gotfalse = false end
+	end
+	return gotfalse
+end
+
 function RealSubset:containsVariable(x)
 	local gotfalse
 	for _,I in ipairs(self) do

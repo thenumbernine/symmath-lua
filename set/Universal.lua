@@ -13,6 +13,7 @@ TODO replace with lookup/rules and just have Universal.rules['*'] = return true
 then do rules based on Lua type or based on symmath class
 --]]
 function Universal:containsNumber(x) return true end
+function Universal:containsBigNumber(x) return true end
 function Universal:containsComplex(x) return true end
 function Universal:containsConstant(x) return true end
 function Universal:containsSet(x) return true end

@@ -34,6 +34,7 @@ Example used at http://christopheremoore.net/metric
 
 - https://github.com/thenumbernine/lua-ext
 - https://github.com/thenumbernine/complex-lua
+- https://github.com/thenumbernine/lua-bignumber
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
 - 'utf8' if available.  Used by console-based output methods.
 - 'ffi' if available.
@@ -61,7 +62,6 @@ How to get around this:
 1. Use the rockspec with luarocks to install this as a luarock.  This will put correct files in correct locations.  Problem solved.
 2. Move symmath.lua into the parent directory.  This clutters things but also solves the problem.
 3. Modify your LUA\_PATH / package.path to also include `"?/?.lua"`.
-4. ... profit?
 
 ## SymMath Interpreter
 

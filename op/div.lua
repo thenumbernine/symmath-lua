@@ -4,44 +4,13 @@ local math = require 'ext.math'
 local bignumber = require 'bignumber'
 local Binary = require 'symmath.op.Binary'
 
--- TODO move to bignumber
-local function bignumber_floor(n)
-	n = bignumber(n)
-	while n.minExp < 0 do
-		n[n.minExp] = 0
-		n.minExp = n.minExp + 1
-		if n.minExp > n.maxExp then return bignumber() end
-	end
-end
-
--- TODO this but more flexible
+-- TODO can this be in ext.math but more flexible
 local function primeFactorization(n)
 	if type(n) == 'number' then return math.primeFactorization(n) end
-	assert(bignumber:isa(n))
-	
-	local table = require 'ext.table'
-	n = bignumber_floor(n)
-	local f = table()
-	while n > 1 do
-		local found = false
-		for i=2,n do
-			if i*i > n then break end
-			if n % i == 0 then
-				n = bignumber_floor(n/i)
-				f:insert(i)
-				found = true
-				break
-			end
-		end
-		if not found then
-			f:insert(n)
-			break
-		end
-	end
-	return f
+	if bignumber:isa(n) then return n:primeFactorization() end
+	--error"idk what kind of Constant this is.  probably complex?"
+	return table{n}
 end
-
-
 
 local symmath
 
@@ -1057,18 +1026,19 @@ end
 				for i=#bases,1,-1 do
 					local b = bases[i]
 					if symmath.set.integer:contains(b)
-					and b.value ~= 0
+					and not Constant.isValue(b, 0)
 					then
 						bases:remove(i)
 						local value = b.value
 						local power = powers:remove(i)
-
 						if value < 0 then	-- insert -1 if necessary
 							bases:insert(i, Constant(-1))
 							powers:insert(i, power:clone())
 							value = -value
 						end
-						if value == 1 then
+						if value == 1
+						or bignumber.__eq(value, 1)	-- hmm I got a feeling that all my equalities are going to be replaced with bignumber calls ...
+						then
 							bases:insert(i, Constant(1))
 							powers:insert(i, power:clone())
 						else

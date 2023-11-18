@@ -22,4 +22,10 @@ function Complex:containsComplex(x)
 	return true
 end
 
+local bignumber = require 'bignumber'
+function Complex:containsBigNumber(x)
+	assert(bignumber:isa(x))
+	return true
+end
+
 return Complex

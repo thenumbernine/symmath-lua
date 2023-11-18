@@ -19,4 +19,14 @@ function OddInteger:containsNumber(x)
 	return x % 2 == 1
 end
 
+local bignumber = require 'bignumber'
+function OddInteger:containsBigNumber(x)
+	assert(bignumber:isa(x))
+	symmath = symmath or require 'symmath'
+	local isInteger = symmath.set.integer:containsBigNumber(x)
+	if isInteger ~= true then return isInteger end
+	return bignumber.__eq(x % 2, 1)
+end
+
+
 return OddInteger

@@ -1,5 +1,6 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
+local bignumber = require 'bignumber'
 local symmath
 
 -- abstract parent class
@@ -27,6 +28,10 @@ end
 
 function Set:containsNumber(x)
 	assert(type(x) == 'number')
+end
+
+function Set:containsBigNumber(x)
+	assert(bignumber:isa(x))
 end
 
 local complex = require 'complex'
@@ -105,6 +110,9 @@ function Set:contains(x)
 
 	if type(x) == 'number' then
 		return self:containsNumber(x)
+	end
+	if bignumber:isa(x) then
+		return self:containsBigNumber(x)
 	end
 
 	-- TODO

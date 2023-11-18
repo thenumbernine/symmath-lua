@@ -111,6 +111,22 @@ function RealInterval:containsNumber(x)
 	return result
 end
 
+-- == fails with dif types, > >= < <= calls the metatable (right?)
+function RealInterval:containsBigNumber(x)
+	local result = true
+	if self.includeStart then
+		result = result and self.start <= x
+	else
+		result = result and self.start < x
+	end
+	if self.includeFinish then
+		result = result and x <= self.finish
+	else
+		result = result and x < self.finish
+	end
+	return result
+end
+
 -- A:isSubsetOf(B) == A ⊆ B
 function RealInterval.isSubsetOf(subI, supI)
 	symmath = symmath or require 'symmath'

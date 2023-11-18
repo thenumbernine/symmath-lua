@@ -24,4 +24,13 @@ function EvenInteger:containsNumber(x)
 	return x % 2 == 0
 end
 
+local bignumber = require 'bignumber'
+function EvenInteger:containsBigNumber(x)
+	assert(bignumber:isa(x))
+	symmath = symmath or require 'symmath'
+	local isInteger = symmath.set.integer:containsBigNumber(x)
+	if isInteger ~= true then return isInteger end
+	return (x % 2):isZero()
+end
+
 return EvenInteger

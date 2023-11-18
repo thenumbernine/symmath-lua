@@ -21,4 +21,13 @@ function Natural:containsNumber(x)
 	return x > 0
 end
 
+local bignumber = require 'bignumber'
+function Natural:containsBigNumber(x)
+	assert(bignumber:isa(x))
+	symmath = symmath or require 'symmath'
+	local isInteger = symmath.integer:containsBigNumber(x)
+	if isInteger ~= true then return isInteger end
+	return x > 0
+end
+
 return Natural

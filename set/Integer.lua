@@ -31,4 +31,13 @@ function Integer:containsNumber(x)
 	if x == math.floor(x) then return true end
 end
 
+local bignumber = require 'bignumber'
+function Integer:containsBigNumber(x)
+	assert(bignumber:isa(x))
+	symmath = symmath or require 'symmath'
+	local isReal = symmath.set.real:containsBigNumber(x)
+	if isReal ~= true then return isReal end
+	if x == x:floor() then return true end
+end
+
 return Integer
