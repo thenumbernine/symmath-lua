@@ -466,13 +466,7 @@ MultiLine.lookupTable = table(MultiLine.lookupTable):union{
 
 		local s = self:apply(t)
 		if not (Variable:isa(t) or Array:isa(t) or TensorRef:isa(t)) then
-			s = self:combine(
-				range(#s):mapi(function() return '(' end),
-				self:combine(
-					s,
-					range(#s):mapi(function() return ')' end)
-				)
-			)
+			wrap(s, nil, par)
 		end
 
 		--[[ trusting the TensorIndex for proper generation
