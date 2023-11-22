@@ -202,6 +202,7 @@ function Variable:dependsOn(x)
 				if TensorRef:isa(wrt)
 				and TensorRef:isa(x)
 				and #wrt == #x
+				and wrt[1] == x[1]
 				then
 					return true
 				end
