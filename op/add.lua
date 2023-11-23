@@ -526,7 +526,7 @@ function ProdTerm:__tostring()
 	local SingleLine = symmath.export.SingleLine
 	return SingleLine(self.term)..'^('..SingleLine(self.power)..')'
 end
-ProdTerm.__concat = string.defaultConcat
+ProdTerm.__concat = string.concat
 
 
 local function compare(a,b)
@@ -673,7 +673,7 @@ function ProdList:__tostring()
 	if #self == 0 then return '1' end
 	return table.mapi(self, tostring):concat' * '
 end
-ProdList.__concat = string.defaultConcat
+ProdList.__concat = string.concat
 
 
 -- for the i'th child of an add ...
@@ -820,7 +820,7 @@ function ProdLists:__tostring()
 	if #self == 0 then return '0' end
 	return table.mapi(self, tostring):concat'  +  '
 end
-ProdLists.__concat = string.defaultConcat
+ProdLists.__concat = string.concat
 
 add.rules = {
 	Factor = {

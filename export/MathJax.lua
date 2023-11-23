@@ -147,7 +147,7 @@ window.addEventListener('load', () => {
 ]=]
 --]==]
 end
-Header.__concat = string.defaultConcat
+Header.__concat = string.concat
 
 -- Header class
 MathJax.Header = Header
