@@ -147,6 +147,9 @@ Derivative.rules = {
 			elseif TensorRef:isa(expr[1])
 			and Variable:isa(expr[1][1])
 			then
+				-- very ugly fix to try to make sure to insert the - sign so that d/dg_ab (g^pq) = -g^pa g^qb
+				local numLowersMatch = 0
+				
 				--local tvar = expr[1]	-- tensor-ref of the variable
 				local var = expr[1][1]	-- the variable itself
 				-- dx^I/dx^J = delta^I_J
@@ -163,13 +166,33 @@ Derivative.rules = {
 						local prod = table()
 						for k=2,#expr[1] do
 							-- dx^i/dx^j = delta^i_j, so swap the raise/lower on all the wrt indexes
-							local symbol = (not not expr[1][k].lower) == (not not expr[2][k].lower) and deltaSymbol or metricSymbol
+							local lowersMatch = (not not expr[1][k].lower) == (not not expr[2][k].lower) 
+							local symbol = lowersMatch and deltaSymbol or metricSymbol
 							local index1 = expr[1][k]:clone()
 							local index2 = expr[2][k]:clone()
 							index2.lower = not index2.lower
-							prod:insert(TensorRef(symbol, index1, index2))
+							if lowersMatch then
+								prod:insert(TensorRef(symbol, index1, index2))
+							else
+								--[[ TODO
+								-- hack for d/dg_ab (g^pq) = -g^pa g^qb
+								-- for any other tensor this would just insert the metric itself, no sign change ...
+								-- TODO think about this for degree other than 2 ...
+								if var == metricSymbol 
+								and #expr[1] == 3
+								then
+									numLowersMatch = numLowersMatch + 1
+								end
+								--]]
+								prod:insert(TensorRef(symbol, index1, index2))
+							end
 						end
 
+						if numLowersMatch > 0 
+						and (numLowersMatch / 2) % 2 == 1 then
+							prod:insert(1, Constant(-1))
+						end
+						
 						return symmath.tableToMul(prod)
 					end
 				-- d/dy dx^I/dx^J = 0
