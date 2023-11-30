@@ -167,18 +167,30 @@ Derivative.rules = {
 						for k=2,#expr[1] do
 							-- dx^i/dx^j = delta^i_j, so swap the raise/lower on all the wrt indexes
 							local lowersMatch = (not not expr[1][k].lower) == (not not expr[2][k].lower) 
-							local symbol = lowersMatch and deltaSymbol or metricSymbol
+							local symbol
+							if lowersMatch then
+								symbol = deltaSymbol
+							else
+								if var.isMetric then
+									symbol = var		-- hack to allow T_ac T^cb = delta_a^b for symbols other than the :metricSymbol()
+								else
+									symbol = metricSymbol
+								end
+							end
 							local index1 = expr[1][k]:clone()
 							local index2 = expr[2][k]:clone()
 							index2.lower = not index2.lower
 							if lowersMatch then
 								prod:insert(TensorRef(symbol, index1, index2))
 							else
-								--[[ TODO
+								-- [[ TODO
 								-- hack for d/dg_ab (g^pq) = -g^pa g^qb
 								-- for any other tensor this would just insert the metric itself, no sign change ...
 								-- TODO think about this for degree other than 2 ...
-								if var == metricSymbol 
+								if (
+									var == metricSymbol
+									or var.isMetric			-- hmm cheap hack for the time being ... how to allow other tensors who have the property T_ac T^cb = delta_a^b to differentiate correctly
+								)
 								and #expr[1] == 3
 								then
 									numLowersMatch = numLowersMatch + 1
