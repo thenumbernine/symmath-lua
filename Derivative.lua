@@ -191,7 +191,7 @@ Derivative.rules = {
 									var == metricSymbol
 									or var.isMetric			-- hmm cheap hack for the time being ... how to allow other tensors who have the property T_ac T^cb = delta_a^b to differentiate correctly
 								)
-								and #expr[1] == 3
+								and #expr[1] == 3	-- only metrics, so only 2 indexes + var = 3 elements in the table
 								then
 									numLowersMatch = numLowersMatch + 1
 								end
@@ -200,9 +200,14 @@ Derivative.rules = {
 							end
 						end
 
-						if numLowersMatch > 0 
-						and (numLowersMatch / 2) % 2 == 1 then
-							prod:insert(1, Constant(-1))
+						-- if we had a metric tensor ...
+						if numLowersMatch > 0 then
+							if numLowersMatch == 1 then	-- only one raised index?  means it's g_a^b = delta_a^b whose derivatives are zero
+							-- TODO this is assuming i'm differentiating wrt g_ab (or maybe g^ab) ... TODO also consider what if we are differentiating wrt g_a^b = delta_a^b in which case .... .... is everything zero?
+								return Constant(0)
+							elseif numLowersMatch == 2 then
+								prod:insert(1, Constant(-1))
+							end
 						end
 						
 						return symmath.tableToMul(prod)
