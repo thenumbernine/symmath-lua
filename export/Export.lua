@@ -106,6 +106,8 @@ local function precedence(x)
 	return x.precedence or 10
 end
 
+-- favor ()'s for div
+-- all single-line and language-exporters will want this
 function Export:testWrapStrOfChildWithParenthesis(parent, child)
 	symmath = symmath or require 'symmath'
 	local div = symmath.op.div
@@ -127,6 +129,26 @@ function Export:testWrapStrOfChildWithParenthesis(parent, child)
 	--]]
 	-- [[
 	return childPrecedence < parentPrecedence
+	--]]
+end
+
+-- don't favor () for div
+-- assign this to testWrapStrOfChildWithParenthesis for your desired exporter
+-- used with MultiLine and LaTeX
+-- because we have spacing to do this for us, we don't need to wrap as often ...
+function Export:testWrapStrOfChildWithParenthesis_MultiLine(parent, child)
+	--[[ hmm, can't do this if I'm using parent/child objects
+	-- which I'm using because I've turned the sub's into add+unm's
+	-- so maybe I won't need it?
+	local sub = require 'symmath.op.sub'
+	if sub:isa(parent) and child > 1 then
+		return precedence(parent[child]) <= precedence(parent)
+	else
+		return precedence(parent[child]) < precedence(parent)
+	end
+	--]]
+	-- [[
+	return precedence(child) < precedence(parent)
 	--]]
 end
 

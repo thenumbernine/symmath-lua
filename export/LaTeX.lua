@@ -64,6 +64,8 @@ LaTeX.powWrapExpInParenthesis = false
 -- I grew up with the 1st, but lots of physics texts I see use the 2nd
 LaTeX.integralDxBeforeExpr = false
 
+LaTeX.testWrapStrOfChildWithParenthesis = LaTeX.testWrapStrOfChildWithParenthesis_MultiLine
+
 -- just like super except uses a table combine
 function LaTeX:wrapStrOfChildWithParenthesis(parent, child)
 	-- tostring() needed to call MultiLine's conversion to tables ...
