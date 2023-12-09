@@ -107,18 +107,26 @@ local function precedence(x)
 end
 
 function Export:testWrapStrOfChildWithParenthesis(parent, child)
+	symmath = symmath or require 'symmath'
+	local div = symmath.op.div
+	local childPrecedence = precedence(child)
+	local parentPrecedence = precedence(parent)
+	if div:isa(parent) then parentPrecedence = parentPrecedence + .5 end
+	--[[ with this, it doesn't wrap (a/b)/(c/d) correctly. remind me again why I had it?
+	if div:isa(child) then childPrecedence = childPrecedence + .5 end
+	--]]
 	--[[ hmm, can't do this if I'm using parent/child objects
 	-- which I'm using because I've turned the sub's into add+unm's
 	-- so maybe I won't need it?
 	local sub = require 'symmath.op.sub'
-	if sub:isa(parent) and child > 1 then
-		return precedence(parent[child]) <= precedence(parent)
+	if sub:isa(parent) and childIndex > 1 then
+		return childPrecedence <= parentPrecedence
 	else
-		return precedence(parent[child]) < precedence(parent)
+		return childPrecedence < parentPrecedence
 	end
 	--]]
 	-- [[
-	return precedence(child) < precedence(parent)
+	return childPrecedence < parentPrecedence
 	--]]
 end
 

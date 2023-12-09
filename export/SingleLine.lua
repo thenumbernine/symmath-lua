@@ -14,28 +14,6 @@ local function precedence(x)
 	return x.precedence or 10
 end
 
-function SingleLine:testWrapStrOfChildWithParenthesis(parent, child)
-	symmath = symmath or require 'symmath'
-	local div = symmath.op.div
-	local childPrecedence = precedence(child)
-	local parentPrecedence = precedence(parent)
-	if div:isa(parent) then parentPrecedence = parentPrecedence + .5 end
-	if div:isa(child) then childPrecedence = childPrecedence + .5 end
-	--[[ hmm, can't do this if I'm using parent/child objects
-	-- which I'm using because I've turned the sub's into add+unm's
-	-- so maybe I won't need it?
-	local sub = require 'symmath.op.sub'
-	if sub:isa(parent) and childIndex > 1 then
-		return childPrecedence <= parentPrecedence
-	else
-		return childPrecedence < parentPrecedence
-	end
-	--]]
-	-- [[
-	return childPrecedence < parentPrecedence
-	--]]
-end
-
 SingleLine.lookupTable = table(SingleLine.lookupTable):union{
 	--[[
 	[require 'symmath.Expression'] = function(self, expr)

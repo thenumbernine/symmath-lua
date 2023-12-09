@@ -123,6 +123,23 @@ function MultiLine:fraction(top, bottom)
 	return res
 end
 
+-- because we have spacing to do this for us, we don't need to wrap as often ...
+function MultiLine:testWrapStrOfChildWithParenthesis(parent, child)
+	--[[ hmm, can't do this if I'm using parent/child objects
+	-- which I'm using because I've turned the sub's into add+unm's
+	-- so maybe I won't need it?
+	local sub = require 'symmath.op.sub'
+	if sub:isa(parent) and child > 1 then
+		return precedence(parent[child]) <= precedence(parent)
+	else
+		return precedence(parent[child]) < precedence(parent)
+	end
+	--]]
+	-- [[
+	return precedence(child) < precedence(parent)
+	--]]
+end
+
 function MultiLine:wrapStrOfChildWithParenthesis(parent, child)
 	local res = self:apply(child)
 	if self:testWrapStrOfChildWithParenthesis(parent, child) then
