@@ -17,9 +17,9 @@ GnuPlot.lookupTable = table(GnuPlot.lookupTable):union{
 		if expr[1] == require 'symmath'.e then
 			return '(exp('..self:apply(expr[2])..'))'
 		else
-			return '('..table.mapi(expr, function(x)
+			return '(('..table.mapi(expr, function(x)
 				return (self:apply(x))
-			end):concat' ** '..')'
+			end):concat') ** ('..'))'
 		end
 	end,
 	[require 'symmath.Heaviside'] = function(self, expr)
