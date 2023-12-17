@@ -20,7 +20,7 @@ local function updateMaster()
 	for fn in path(unitTestCachePath):dir() do
 		local title, ext = path(fn):getext()
 		if ext == 'lua' then
-			allTestResults[title] = fromlua(path(unitTestCachePath..'/'..fn):read())
+			allTestResults[title.path] = fromlua(path(unitTestCachePath..'/'..fn):read())
 		end
 	end
 	path(unitTestOutputPath..'/index.html'):write([[
