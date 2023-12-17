@@ -6,6 +6,7 @@ local function exec(cmd)
 	return os.execute(cmd)
 end
 for f in path:dir() do
+	f = f.path
 	if f:sub(-4) == '.lua' then
 		local target = 'output/'..f:sub(1,-5)..'.html'
 		local fileattr = path(f):attr()

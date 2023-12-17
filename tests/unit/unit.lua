@@ -10,20 +10,20 @@ local failstr = '✕'
 local symmathPath = os.getenv'SYMMATH_PATH'		-- I have it set to HOME/Projects/lua/symmath
 assert(symmathPath, "expected environment variable SYMMATH_PATH to be set")
 local unitTestPath = symmathPath..'/tests/unit'
-local unitTestCachePath = symmathPath..'/tests/unit-cache'
-local unitTestOutputPath = symmathPath..'/tests/output/unit'
-path(unitTestCachePath):mkdir(true)
-path(unitTestOutputPath):mkdir(true)
+local unitTestCachePath = path(symmathPath)/'tests/unit-cache'
+local unitTestOutputPath = path(symmathPath)/'tests/output/unit'
+unitTestCachePath:mkdir(true)
+unitTestOutputPath:mkdir(true)
 
 local function updateMaster()
 	local allTestResults = {}
-	for fn in path(unitTestCachePath):dir() do
-		local title, ext = path(fn):getext()
+	for fn in unitTestCachePath:dir() do
+		local title, ext = fn:getext()
 		if ext == 'lua' then
-			allTestResults[title.path] = fromlua(path(unitTestCachePath..'/'..fn):read())
+			allTestResults[title.path] = fromlua((unitTestCachePath/fn):read())
 		end
 	end
-	path(unitTestOutputPath..'/index.html'):write([[
+	(unitTestOutputPath/'index.html'):write([[
 <!doctype html>
 <html>
 	<head>
@@ -277,7 +277,7 @@ return function(env, title)
 	end
 
 	env.done = function()
-		assert(path(unitTestCachePath..'/'..title:gsub('/', '_')..'.lua'):write(tolua(testRows)))
+		assert((unitTestCachePath/(title:gsub('/', '_')..'.lua')):write(tolua(testRows)))
 		updateMaster()
 	end
 

@@ -20,6 +20,7 @@ local function exec(cmd)
 end
 
 for f in path:dir() do
+	f = f.path
 	if f:sub(-4) == '.lua'
 	and f ~= 'run all tests.lua'
 	and f ~= 'unit.lua'
