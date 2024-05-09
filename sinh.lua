@@ -1,3 +1,4 @@
+local table = require 'ext.table'
 local Function = require 'symmath.Function'
 local symmath
 
