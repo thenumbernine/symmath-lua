@@ -380,6 +380,10 @@ div.rules = {
 --print('from', symmath.Verbose(expr))
 			local np, nq = candivide(expr[1], expr[2])
 			if np then
+				-- TODO DANGER
+				-- this is sometimes inserting denominator variables that we are in the middle of solving for
+				-- and that introduces extra x=0 solutions ...
+				-- NOT GOOD
 				return np / nq
 				--return factor:apply(np / nq)
 			end

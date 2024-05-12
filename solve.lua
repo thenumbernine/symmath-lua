@@ -1,6 +1,18 @@
 local table = require 'ext.table'
 local symmath
 
+local solveObj = {}
+
+solveObj.debug = false
+
+local function debugPrint(...)
+	symmath = symmath or require 'symmath'
+	local push = symmath.tostring
+	symmath.tostring = symmath.export.SingleLine
+	print('solve:', ...)
+	symmath.tostring = push
+end
+
 --[[
 local function filterUnique(...)
 	local t = table()
@@ -15,7 +27,7 @@ end
 accepts an equation and a variable
 returns an equation with that variable on the lhs and the rest on the rhs
 --]]
-local function solve(eqn, x, hasSimplified)
+local function solveCall(eqn, x, hasSimplified)
 	symmath = symmath or require 'symmath'
 	local unm = symmath.op.unm
 	local div = symmath.op.div
@@ -30,12 +42,30 @@ local function solve(eqn, x, hasSimplified)
 		error("expected the expression to be an equation or inequality: "..eqn)
 	end
 
+	if solveObj.debug then
+		debugPrint('solving for',x)
+		debugPrint('in eqn',eqn)
+	end
+
 	-- should I solve as-is at first
 	-- or should I try to move everything to one side first?
 	-- should I then simplify()
 	-- 		which cross-multiplies fractions and potentially changes denominators, and therefore solution sets
 	-- 		but also groups terms and therefore could reduce the # of variables in the equation
-	eqn = eqn:prune():factor()	-- or should I do this per-part?
+	eqn = eqn:prune()
+	if solveObj.debug then
+		debugPrint('eqn = eqn:prune()')
+		debugPrint(eqn)
+	end
+	-- TODO what is :factor() even supposed to be doing at this point?  factoring out polynomial multilpications?
+	-- cuz ... it's also inserting x/x's at random, and that's screwing things up here ...
+	eqn = eqn:factor()
+	if solveObj.debug then
+		debugPrint('eqn = eqn:factor()')
+		debugPrint(eqn)
+	end
+	-- or should I do this per-part?
+
 
 	-- count occurrences
 	local count = 0
@@ -55,39 +85,50 @@ local function solve(eqn, x, hasSimplified)
 		end
 		recurse(eqn)
 	end
+	if solveObj.debug then
+		debugPrint('found', count, 'occurrence')
+	end
 
 	if count == 0 then
 		return nil, "couldn't find "..x.." in eqn "..eqn
 	end
 
 	-- in this case, find the variable, reverse each operation above it
---print('solving for ',x)
 	if count == 1 then
---print('found 1 occurrence')
 		local stack = trace[1]
---print('our stack is',stack:map(function(q) return q.expr end):unpack())
+		if solveObj.debug then
+			debugPrint('our stack is',stack:map(function(q) return q.expr end):unpack())
+		end
 		-- trace[1] holds the stack to the var, so we can find parents that way
 		local solns
 		local side = stack[1].index
---print('our variable is on side',side)
+		if solveObj.debug then
+			debugPrint('our variable is on side',side)
+		end
 		if side == 1 then
 			solns = table{eqn[2]:clone()}
 		elseif side == 2 then
 			solns = table{eqn[1]:clone()}
 		end
---print('starting with',solns:unpack())
+		if solveObj.debug then
+			debugPrint('starting with',solns:unpack())
+		end
 		assert(stack[#stack].expr == x)
 		for j=1,#stack-1 do
 			local expr = stack[j].expr
 			local index = stack[j+1].index
---print('solving for index',index,'of expr',expr)
+			if solveObj.debug then
+				debugPrint('solving for index',index,'of expr',expr)
+			end
 			local nextsolns = table()
 			for _,soln in ipairs(solns) do
 				local exprsolns = table{expr:reverse(soln, index)}
 				nextsolns:append(exprsolns)
 			end
 			solns = nextsolns
---print('got',solns:unpack())
+			if solveObj.debug then
+				debugPrint('got',solns:unpack())
+			end
 		end
 
 		-- fwiw here's the pathway that (x^2):eq(0) uses
@@ -103,9 +144,13 @@ local function solve(eqn, x, hasSimplified)
 
 	local eq = getmetatable(eqn)
 		-- move everything to one side of the equation
---print'subtracting lhs from rhs...'
+	if solveObj.debug then
+		debugPrint'subtracting lhs from rhs...'
+	end
 	local lhs = eqn[1] - eqn[2]
---print('...got',lhs)
+	if solveObj.debug then
+		debugPrint('...got',lhs)
+	end
 
 	-- -x = 0 => x = 0
 	if unm:isa(lhs) then lhs = lhs[1] end
@@ -144,7 +189,9 @@ local function solve(eqn, x, hasSimplified)
 		--)
 	end
 
---print('looking for coeffs wrt',x)
+	if solveObj.debug then
+		debugPrint('looking for coeffs wrt',x)
+	end
 	local coeffs = polyCoeffs(lhs, x)
 
 	local function getCoeff(n)
@@ -157,13 +204,17 @@ local function solve(eqn, x, hasSimplified)
 	if not coeffs.extra then
 		if n == 0 then return end	-- a = 0 <=> no solutions
 		if n == 1 then		-- c1 x + c0 = 0 <=> x = -c0/c1
---print('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
+			if solveObj.debug then
+				debugPrint('coeffs',table.map(coeffs[1],tostring):concat('\n'),'\nend coeffs')
+			end
 			return eq(x, -getCoeff(0) / getCoeff(1))()
 		end
 		-- quadratic solution
 		-- this is where factor() comes in handy ...
 		if n == 2 then
---print('solving poly n==2')
+			if solveObj.debug then
+				debugPrint('solving poly n==2')
+			end
 			local a,b,c = getCoeff(2), getCoeff(1), getCoeff(0)
 			local res1 = eq(x, (-b-sqrt(b^2-4*a*c))/(2*a))()
 			local res2 = eq(x, (-b+sqrt(b^2-4*a*c))/(2*a))()
@@ -175,7 +226,9 @@ local function solve(eqn, x, hasSimplified)
 		-- and on ...
 
 		if n == 4 then
---print('solving poly n==4')
+			if solveObj.debug then
+				debugPrint('solving poly n==4')
+			end
 			if not coeffs[1] and not coeffs[3] then
 				-- ax^4 + bx^2 + c
 				local a,b,c = getCoeff(4), getCoeff(2), getCoeff(0)
@@ -206,4 +259,8 @@ local function solve(eqn, x, hasSimplified)
 	return result:eq(0)
 end
 
-return solve
+setmetatable(solveObj, {
+	__call = function(self, ...) return solveCall(...) end,
+})
+
+return solveObj
