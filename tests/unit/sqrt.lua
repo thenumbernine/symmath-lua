@@ -87,7 +87,7 @@ simplifyAssertEq(sqrt(frac(15,16)) * sqrt(frac(2,3)), sqrt(5)/(2*sqrt(2)))
 
 -- simplify() was introducing an unflattened mul where there originally was none
 -- TODO NOTICE - if there's just sqrt(2)*sqrt(3) then the sqrts will merge ... so should they merge if that extra 2 is out front?
-local expr = 2*sqrt(2)*sqrt(3) local sexpr = expr() printbr(symmath.op.eq(Verbose(expr), Verbose(sexpr))) simplifyAssertEq(expr,sexpr)
+local expr = 2*sqrt(2)*sqrt(3) local sexpr = expr() printbr(Verbose(expr), '=', Verbose(sexpr)) simplifyAssertEq(expr,sexpr)
 
 
 -- these go bad when I don't have mul/Prune/combineMulOfLikePow_mulPowAdd
