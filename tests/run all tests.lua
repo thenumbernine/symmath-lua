@@ -1,10 +1,6 @@
 #!/usr/bin/env lua
 local force = ... == 'force'
 require 'ext'
-local function exec(cmd)
-	print('>'..cmd)
-	return os.execute(cmd)
-end
 for f in path:dir() do
 	f = f.path
 	if f:sub(-4) == '.lua' then
@@ -16,7 +12,7 @@ for f in path:dir() do
 		end
 		if force or not targetattr or targetattr.change < fileattr.change then
 			if not path'output':isdir() then path'output':mkdir() end
-			exec('"./'..f..'" > "'..target..'"')
+			assert(os.exec('"./'..f..'" > "'..target..'"'))
 		else
 			print(f..' is up-to-date.')
 		end

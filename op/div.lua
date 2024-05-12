@@ -382,8 +382,10 @@ div.rules = {
 			if np then
 				-- TODO DANGER
 				-- this is sometimes inserting denominator variables that we are in the middle of solving for
-				-- and that introduces extra x=0 solutions ...
+				-- and that introduces extra x=0 solutions ... 
 				-- NOT GOOD
+				-- but easy fix, solve() no longer calls factor() when preparing the equation for searching out number of solved-variables present.
+				-- however, solve() does call simplify() after that step so the danger still exists...
 				return np / nq
 				--return factor:apply(np / nq)
 			end

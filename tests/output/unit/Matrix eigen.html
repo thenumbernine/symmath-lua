@@ -81,7 +81,7 @@ ${\left[\begin{array}{cc} -{7}& 0\\ 0& 6\end{array}\right]} = {\left[\begin{arra
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 61.081000ms<br>
+time: 63.789000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -115,7 +115,7 @@ ${\left[\begin{array}{ccc} 2& 0& 0\\ 0& -{1}& 0\\ 0& 0& 8\end{array}\right]} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 52.471000ms<br>
+time: 53.722000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -146,17 +146,17 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</code>
 </td><td>
 <b>without generalization:</b>
 <br>
-charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+allLambdas	=	table: 0x70b33a63cf50
 <br>
-allLambdas	=	table: 0x7302503e1c00
+lambdas	=	table: 0x70b33a63ce68
 <br>
-lambdas	=	table: 0x7302503e1b50
-<br>
-Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
+R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
 defective	=	true
 <br>
-R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
 <br>
 ${\left[\begin{array}{c} 1\\ 0\end{array}\right]} = {\left[\begin{array}{c} 1\\ 0\end{array}\right]}$
 <br>
@@ -220,19 +220,19 @@ verify:
 <br>
 ${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+allLambdas	=	table: 0x70b33a51bd18
 <br>
-allLambdas	=	table: 0x7302501f1a28
-<br>
-lambdas	=	table: 0x7302501f1738
-<br>
-Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+lambdas	=	table: 0x70b33a51ba28
 <br>
 L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+<br>
 defective	=	true
 <br>
-R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 #allLambdas	2
 <br>
@@ -247,6 +247,6 @@ ${\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]} = {\left[\begin{array}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.695000ms<br>
+time: 13.345000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

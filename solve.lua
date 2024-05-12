@@ -57,13 +57,18 @@ local function solveCall(eqn, x, hasSimplified)
 		debugPrint('eqn = eqn:prune()')
 		debugPrint(eqn)
 	end
-	-- TODO what is :factor() even supposed to be doing at this point?  factoring out polynomial multilpications?
+	--[[ TODO what is :factor() even supposed to be doing at this point?  factoring out polynomial multilpications?
 	-- cuz ... it's also inserting x/x's at random, and that's screwing things up here ...
+	-- it is via the op.div/Factor/polydiv rule
+	-- for now I'll disable it here.  no tests seem to fail as a result
+	-- however INTERMITTANTLY some solve()'s do fail with this on
+	-- soo ... something is still relying on pairs() iteration in the solve() or factor() step.
 	eqn = eqn:factor()
 	if solveObj.debug then
 		debugPrint('eqn = eqn:factor()')
 		debugPrint(eqn)
 	end
+	--]]
 	-- or should I do this per-part?
 
 

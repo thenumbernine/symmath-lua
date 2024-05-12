@@ -37,7 +37,7 @@ for f in path:dir() do
 		if not targetattr or targetattr.change < fileattr.change or force then
 			if not path'../output':isdir() then path'../output':mkdir() end
 			if not path'../output/unit':isdir() then path'../output/unit':mkdir() end
-			os.exec(lua..' "'..f..'" > "'..target..'"')
+			assert(os.exec(lua..' "'..f..'" > "'..target..'"'))
 			io.stderr:write'\n'
 		else
 			print(f..' is up-to-date.')
