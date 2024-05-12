@@ -384,19 +384,19 @@ function Tensor:init(...)
 				local subVariance = table(self.variance)
 				table.remove(subVariance, 1)
 
-				Expression.init(self, table.unpack(args))
-
-				-- matches below
-				for i=1,#self do
-					local x = self[i]
+				-- convert-to-tensor before Expression.init, because now Expression.init can't handle non-Expression vanilla tables
+				for i=1,#args do
+					local x = args[i]
 					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 					if not Expression:isa(x) then
 						-- then assume it's meant to be a sub-tensor
 						x = Tensor(subVariance, table.unpack(x))
-						self[i] = x
+						args[i] = x
 					end
 				end
 
+				-- TODO if Tensor is constructed with Lua tables then Expression.init will complain
+				Expression.init(self, table.unpack(args))
 			else
 				-- construct content from default of zeroes
 				local subVariance = table(self.variance)

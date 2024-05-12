@@ -4,6 +4,45 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/replace</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	
+		<style>
+:root {
+	--font-color: #000000;
+	--bg-color: rgb(243,243,243);
+}
+[data-theme="dark"] {
+	--font-color: #ffffff;
+	--bg-color: #000000;
+}
+
+body {
+	overflow : scroll;
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+input {
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+		</style>
+		<script type='text/javascript'>
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+window.addEventListener('load', () => {
+	let darkMode = false;
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		darkMode = true;
+	}
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+});
+		</script>
+
+
 	</head>
 	<body>
 
@@ -15,7 +54,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.057000ms<br>
+time: 0.018000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -25,7 +64,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.061000ms<br>
+time: 0.007000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -41,7 +80,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.200000ms<br>
+time: 0.347000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -51,7 +90,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.715000ms<br>
+time: 0.283000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -61,7 +100,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.827000ms<br>
+time: 0.315000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -71,7 +110,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.538000ms<br>
+time: 0.384000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -81,7 +120,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.577000ms<br>
+time: 0.091000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -91,7 +130,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.342000ms<br>
+time: 0.187000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -101,7 +140,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.766000ms<br>
+time: 0.117000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -111,7 +150,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.383000ms<br>
+time: 0.129000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -121,6 +160,6 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.268000ms<br>
+time: 0.085000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

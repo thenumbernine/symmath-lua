@@ -4,6 +4,45 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/plot</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	
+		<style>
+:root {
+	--font-color: #000000;
+	--bg-color: rgb(243,243,243);
+}
+[data-theme="dark"] {
+	--font-color: #ffffff;
+	--bg-color: #000000;
+}
+
+body {
+	overflow : scroll;
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+input {
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+		</style>
+		<script type='text/javascript'>
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+window.addEventListener('load', () => {
+	let darkMode = false;
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		darkMode = true;
+	}
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+});
+		</script>
+
+
 	</head>
 	<body>
 
@@ -31,7 +70,7 @@ GnuPlot:plot{
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.4 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 6.0 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -243,7 +282,7 @@ GnuPlot:plot{
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.4 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 6.0 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -373,10 +412,10 @@ GnuPlot:plot{
 	<path stroke='black'  d='M37.75,54.01 L37.75,564.00 L774.82,564.00 L774.82,54.01 L37.75,54.01 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
-	<g id="gnuplot_plot_1" ><title>(x ** 2.)</title>
+	<g id="gnuplot_plot_1" ><title>((x) ** (2.))</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(707.09,75.91)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text><tspan font-family="Arial" >(x ** 2.)</tspan></text>
+		<text><tspan font-family="Arial" >((x) ** (2.))</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -394,10 +433,10 @@ GnuPlot:plot{
 		L678.03,239.68 L685.48,235.83 L692.92,231.88 L700.37,227.82 L707.81,223.66 L715.26,219.39 L722.70,215.02 L730.15,210.54
 		L737.59,205.96 L745.04,201.28 L752.48,196.49 L759.93,191.60 L767.37,186.61 L774.82,181.51  '/></g>
 	</g>
-	<g id="gnuplot_plot_2" ><title>(x ** 3.)</title>
+	<g id="gnuplot_plot_2" ><title>((x) ** (3.))</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(707.09,93.91)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text><tspan font-family="Arial" >(x ** 3.)</tspan></text>
+		<text><tspan font-family="Arial" >((x) ** (3.))</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -456,7 +495,7 @@ print((x^2):plot{
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.4 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 6.0 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -586,10 +625,10 @@ print((x^2):plot{
 	<path stroke='black'  d='M54.53,54.01 L54.53,564.00 L774.82,564.00 L774.82,54.01 L54.53,54.01 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
-	<g id="gnuplot_plot_1" ><title>(x ** 2.)</title>
+	<g id="gnuplot_plot_1" ><title>((x) ** (2.))</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(707.09,75.91)" stroke="none" fill="black" font-family="Arial" font-size="12.00"  text-anchor="end">
-		<text><tspan font-family="Arial" >(x ** 2.)</tspan></text>
+		<text><tspan font-family="Arial" >((x) ** (2.))</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -655,7 +694,7 @@ GnuPlot:plot{
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.4 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 6.0 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 
@@ -907,7 +946,7 @@ GnuPlot:plot{
 >
 
 <title>Gnuplot</title>
-<desc>Produced by GNUPLOT 5.4 patchlevel 4 </desc>
+<desc>Produced by GNUPLOT 6.0 patchlevel 0 </desc>
 
 <g id="gnuplot_canvas">
 

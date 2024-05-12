@@ -4,6 +4,45 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/match</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
+	
+		<style>
+:root {
+	--font-color: #000000;
+	--bg-color: rgb(243,243,243);
+}
+[data-theme="dark"] {
+	--font-color: #ffffff;
+	--bg-color: #000000;
+}
+
+body {
+	overflow : scroll;
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+input {
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+		</style>
+		<script type='text/javascript'>
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+window.addEventListener('load', () => {
+	let darkMode = false;
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		darkMode = true;
+	}
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+});
+		</script>
+
+
 	</head>
 	<body>
 
@@ -17,7 +56,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.530000ms<br>
+time: 0.157000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -29,7 +68,7 @@ ${x} \ne {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.502000ms<br>
+time: 0.145000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -45,7 +84,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.070000ms<br>
+time: 0.005000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -55,7 +94,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.047000ms<br>
+time: 0.006000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -89,7 +128,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.440000ms<br>
+time: 0.572000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -105,7 +144,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.569000ms<br>
+time: 0.422000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -117,18 +156,13 @@ ${1} = {1}$
 lhs:	1=false	<br>
 rhs:	1=$1$	<br>
 when comparing key 1	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/export/Export.lua:106: attempt to index local 'x' (a boolean value)<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:31: idk what this is: false<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:181: in function '__index'<br>
-	/home/chris/Projects/lua/symmath/export/Export.lua:106: in function 'precedence'<br>
-	/home/chris/Projects/lua/symmath/export/Export.lua:121: in function 'testWrapStrOfChildWithParenthesis'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:74: in function 'wrapStrOfChildWithParenthesis'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:209: in function 'apply'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:664: in function '__call'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:672: in function 'applyLaTeX'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:715: in function </home/chris/Projects/lua/symmath/export/LaTeX.lua:714><br>
-	[C]: in function 'print'<br>
-	/home/chris/Projects/lua/symmath/export/MathJax.lua:127: in function 'printbr'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:181: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:174><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:31: in function 'init'<br>
+	/home/chris/Projects/lua/symmath/op/Binary.lua:7: in function 'init'<br>
+	/home/chris/Projects/lua/ext/class.lua:7: in function 'eq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:171: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:167><br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:167: in function 'simplifyAssertAllEq'<br>
@@ -137,9 +171,9 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0	21
+	[C]: at 0x5dda3962d380	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:183: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:246: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:245><br>
@@ -150,11 +184,11 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0
+	[C]: at 0x5dda3962d380
 </td><td>
-time: 1.252000ms<br>
+time: 0.314000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -166,18 +200,13 @@ ${1} = {1}$
 lhs:	1=false	<br>
 rhs:	1=$2$	<br>
 when comparing key 1	<br>
-<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/export/Export.lua:106: attempt to index local 'x' (a boolean value)<br>
+<span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/Expression.lua:31: idk what this is: false<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:181: in function '__index'<br>
-	/home/chris/Projects/lua/symmath/export/Export.lua:106: in function 'precedence'<br>
-	/home/chris/Projects/lua/symmath/export/Export.lua:121: in function 'testWrapStrOfChildWithParenthesis'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:74: in function 'wrapStrOfChildWithParenthesis'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:209: in function 'apply'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:664: in function '__call'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:672: in function 'applyLaTeX'<br>
-	/home/chris/Projects/lua/symmath/export/LaTeX.lua:715: in function </home/chris/Projects/lua/symmath/export/LaTeX.lua:714><br>
-	[C]: in function 'print'<br>
-	/home/chris/Projects/lua/symmath/export/MathJax.lua:127: in function 'printbr'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:181: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:174><br>
+	[C]: in function 'error'<br>
+	/home/chris/Projects/lua/symmath/Expression.lua:31: in function 'init'<br>
+	/home/chris/Projects/lua/symmath/op/Binary.lua:7: in function 'init'<br>
+	/home/chris/Projects/lua/ext/class.lua:7: in function 'eq'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:171: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:167><br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:167: in function 'simplifyAssertAllEq'<br>
@@ -186,9 +215,9 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0	21
+	[C]: at 0x5dda3962d380	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:183: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:246: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:245><br>
@@ -199,11 +228,11 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0
+	[C]: at 0x5dda3962d380
 </td><td>
-time: 0.778000ms<br>
+time: 0.242000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -237,7 +266,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.875000ms<br>
+time: 0.283000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -265,7 +294,7 @@ ${{{2}} {{x}}} = {{{2}} {{x}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.732000ms<br>
+time: 2.111000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -287,7 +316,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.835000ms<br>
+time: 0.199000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -319,7 +348,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.958000ms<br>
+time: 1.716000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -335,7 +364,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.151000ms<br>
+time: 0.242000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -373,7 +402,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.600000ms<br>
+time: 0.219000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -385,7 +414,7 @@ ${{x} + {y}} = {{x} + {y}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.227000ms<br>
+time: 1.121000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -395,7 +424,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.071000ms<br>
+time: 0.018000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -423,7 +452,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.193000ms<br>
+time: 0.224000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -451,7 +480,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.119000ms<br>
+time: 0.234000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -479,7 +508,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.041000ms<br>
+time: 0.213000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -507,7 +536,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.012000ms<br>
+time: 0.228000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -529,7 +558,7 @@ ${{x} + {y}} = {{x} + {y}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.848000ms<br>
+time: 1.261000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -551,7 +580,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.925000ms<br>
+time: 0.239000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -579,7 +608,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.659000ms<br>
+time: 0.140000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -611,7 +640,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.506000ms<br>
+time: 0.227000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -643,7 +672,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.974000ms<br>
+time: 1.294000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -669,7 +698,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.979000ms<br>
+time: 0.223000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -701,7 +730,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.569000ms<br>
+time: 0.236000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -727,7 +756,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.141000ms<br>
+time: 0.172000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -753,7 +782,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.072000ms<br>
+time: 0.190000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -779,7 +808,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.312000ms<br>
+time: 0.854000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -815,7 +844,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.786000ms<br>
+time: 0.454000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -847,7 +876,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.980000ms<br>
+time: 0.379000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -873,7 +902,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.431000ms<br>
+time: 0.290000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -913,7 +942,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.386000ms<br>
+time: 0.145000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -935,7 +964,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.004000ms<br>
+time: 0.412000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -957,7 +986,7 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.358000ms<br>
+time: 0.787000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -973,7 +1002,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.823000ms<br>
+time: 0.253000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -995,7 +1024,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.612000ms<br>
+time: 0.094000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1033,7 +1062,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.898000ms<br>
+time: 0.475000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1065,7 +1094,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.073000ms<br>
+time: 0.113000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1097,7 +1126,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.549000ms<br>
+time: 0.158000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1123,7 +1152,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.704000ms<br>
+time: 0.231000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1139,7 +1168,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.038000ms<br>
+time: 0.031000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1149,7 +1178,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.074000ms<br>
+time: 0.008000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1167,7 +1196,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.288000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1177,7 +1206,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.068000ms<br>
+time: 0.013000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1195,7 +1224,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.184000ms<br>
+time: 0.062000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1213,7 +1242,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.181000ms<br>
+time: 0.023000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1231,7 +1260,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.690000ms<br>
+time: 0.101000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1249,7 +1278,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.221000ms<br>
+time: 0.102000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1293,7 +1322,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.185000ms<br>
+time: 0.175000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1319,7 +1348,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.505000ms<br>
+time: 0.437000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1345,7 +1374,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.029000ms<br>
+time: 0.162000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1371,7 +1400,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.577000ms<br>
+time: 0.357000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1397,7 +1426,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.004000ms<br>
+time: 0.316000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1457,7 +1486,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.363000ms<br>
+time: 0.121000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1493,7 +1522,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.375000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1515,7 +1544,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.700000ms<br>
+time: 0.169000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1535,7 +1564,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.603000ms<br>
+time: 0.169000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1555,7 +1584,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.653000ms<br>
+time: 0.168000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1587,7 +1616,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.940000ms<br>
+time: 1.522000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1607,7 +1636,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.271000ms<br>
+time: 2.267000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1633,7 +1662,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.514000ms<br>
+time: 0.244000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1659,7 +1688,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.406000ms<br>
+time: 0.261000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1685,7 +1714,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.773000ms<br>
+time: 0.306000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1711,7 +1740,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.641000ms<br>
+time: 0.481000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1747,7 +1776,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.305000ms<br>
+time: 0.022000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1765,7 +1794,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.636000ms<br>
+time: 0.032000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1783,7 +1812,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.391000ms<br>
+time: 0.032000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1799,7 +1828,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.094000ms<br>
+time: 0.010000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1817,7 +1846,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.122000ms<br>
+time: 0.105000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1835,7 +1864,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.345000ms<br>
+time: 0.145000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1855,7 +1884,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.900000ms<br>
+time: 1.254000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1875,7 +1904,7 @@ ${4} = {4}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.562000ms<br>
+time: 0.223000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1895,7 +1924,7 @@ ${4} = {4}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 30.551000ms<br>
+time: 4.935000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>*:FactorDivision:apply<br><li>*:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1929,7 +1958,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.465000ms<br>
+time: 0.144000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1945,7 +1974,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.333000ms<br>
+time: 0.153000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1965,7 +1994,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.810000ms<br>
+time: 0.134000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1987,7 +2016,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.587000ms<br>
+time: 0.164000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2003,7 +2032,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.269000ms<br>
+time: 0.062000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2023,7 +2052,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.706000ms<br>
+time: 0.159000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2052,7 +2081,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.807000ms<br>
+time: 0.055000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -2063,7 +2092,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.527000ms<br>
+time: 0.084000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -2095,7 +2124,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.055000ms<br>
+time: 0.551000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2133,7 +2162,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.079000ms<br>
+time: 0.683000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2203,9 +2232,9 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0	14
+	[C]: at 0x5dda3962d380	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:183: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:246: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:245><br>
@@ -2216,11 +2245,11 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0
+	[C]: at 0x5dda3962d380
 </td><td>
-time: 9.692000ms<br>
+time: 1.916000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2252,7 +2281,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.512000ms<br>
+time: 2.709000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2284,7 +2313,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 21.006000ms<br>
+time: 6.723000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2348,9 +2377,9 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0	14
+	[C]: at 0x5dda3962d380	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:183: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:246: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:245><br>
@@ -2361,11 +2390,11 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:237: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
-	/home/chris/Projects/lua/ext/timer.lua:54: in function 'timer'<br>
+	/home/chris/Projects/lua/ext/timer.lua:58: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x5602f61ee3e0
+	[C]: at 0x5dda3962d380
 </td><td>
-time: 24.731000ms<br>
+time: 9.424000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2395,6 +2424,6 @@ ${^i} = {^i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.992000ms<br>
+time: 0.159000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
