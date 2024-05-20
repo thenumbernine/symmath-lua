@@ -4,6 +4,45 @@
 		<meta charset='utf-8'>
 		<title>Maxwell hyperbolic conservation law</title>
 		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+	
+		<style>
+:root {
+	--font-color: #000000;
+	--bg-color: rgb(243,243,243);
+}
+[data-theme="dark"] {
+	--font-color: #ffffff;
+	--bg-color: #000000;
+}
+
+body {
+	overflow : scroll;
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+input {
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+		</style>
+		<script type='text/javascript'>
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+window.addEventListener('load', () => {
+	let darkMode = false;
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		darkMode = true;
+	}
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+});
+		</script>
+
+
 	</head>
 	<body>
 
@@ -98,4 +137,138 @@ or in lowered form:
 ${{{ \left[\begin{array}{c} { D} _i\\ { B} _i\end{array}\right]} _{,t}} + {{{\left[\begin{array}{cc} 0&  {-{\frac{1}{\mu}}} {{{{ g} _i} _m}} {{{{{ \epsilon} ^m} ^l} ^j}} {{{ n} _l}}\\ {{\frac{1}{\epsilon}}} {{{{ g} _i} _m}} {{{{{ \epsilon} ^m} ^l} ^j}} {{{ n} _l}}& 0\end{array}\right]}} {{{ \left[\begin{array}{c} { D} _j\\ { B} _j\end{array}\right]} _{,k}}} {{{ n} ^k}}}} = {\left[\begin{array}{c} { J} ^i\\ 0\end{array}\right]}$
 <br>
 
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {\left[\begin{array}{cccccc} 0& 0& 0& \frac{{{{{ {(n_1)}} _2}} {{{{ g} _1} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _1} _2}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _1} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _1} _1}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _1} _2}}}{-{{{{ {(n_1)}} _2}} {{{{ g} _1} _1}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}\\ 0& 0& 0& \frac{{{{{ {(n_1)}} _2}} {{{{ g} _2} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _2} _2}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _2} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _1} _2}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _2} _2}}}{-{{{{ {(n_1)}} _2}} {{{{ g} _1} _2}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}\\ 0& 0& 0& \frac{{{{{ {(n_1)}} _2}} {{{{ g} _3} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _2} _3}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _3} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _1} _3}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _2} _3}}}{-{{{{ {(n_1)}} _2}} {{{{ g} _1} _3}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}\\ \frac{{-{{{{ {(n_1)}} _2}} {{{{ g} _1} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _1} _2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _1} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _1} _1}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _1} _2}}}} + {{{{ {(n_1)}} _2}} {{{{ g} _1} _1}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0\\ \frac{{-{{{{ {(n_1)}} _2}} {{{{ g} _2} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _2} _2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _2} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _1} _2}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _2} _2}}}} + {{{{ {(n_1)}} _2}} {{{{ g} _1} _2}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0\\ \frac{{-{{{{ {(n_1)}} _2}} {{{{ g} _3} _3}}}} + {{{{ {(n_1)}} _3}} {{{{ g} _2} _3}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_1)}} _1}} {{{{ g} _3} _3}}}{-{{{{ {(n_1)}} _3}} {{{{ g} _1} _3}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{-{{{{ {(n_1)}} _1}} {{{{ g} _2} _3}}}} + {{{{ {(n_1)}} _2}} {{{{ g} _1} _3}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0\end{array}\right]}$
+<br>
+
+<br>
+with a Cartesian metric:
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {\left[\begin{array}{cccccc} 0& 0& 0& 0& {\frac{1}{\mu}} {{ {(n_1)}} _3}& -{{\frac{1}{\mu}} {{ {(n_1)}} _2}}\\ 0& 0& 0& -{{\frac{1}{\mu}} {{ {(n_1)}} _3}}& 0& {\frac{1}{\mu}} {{ {(n_1)}} _1}\\ 0& 0& 0& {\frac{1}{\mu}} {{ {(n_1)}} _2}& -{{\frac{1}{\mu}} {{ {(n_1)}} _1}}& 0\\ 0& -{{\frac{1}{\epsilon}} {{ {(n_1)}} _3}}& {\frac{1}{\epsilon}} {{ {(n_1)}} _2}& 0& 0& 0\\ {\frac{1}{\epsilon}} {{ {(n_1)}} _3}& 0& -{{\frac{1}{\epsilon}} {{ {(n_1)}} _1}}& 0& 0& 0\\ -{{\frac{1}{\epsilon}} {{ {(n_1)}} _2}}& {\frac{1}{\epsilon}} {{ {(n_1)}} _1}& 0& 0& 0& 0\end{array}\right]}$
+<br>
+
+<br>
+${{{\frac{\partial { F} ^I}{\partial { U} ^J}}} {{{ U} ^J}}} = {\left[\begin{array}{c} {\frac{1}{\mu}}{\left({{-{{{{ {(n_1)}} _2}} {{{ B} _3}}}} + {{{{ {(n_1)}} _3}} {{{ B} _2}}}}\right)}\\ {\frac{1}{\mu}}{\left({{{{{ {(n_1)}} _1}} {{{ B} _3}}}{-{{{{ {(n_1)}} _3}} {{{ B} _1}}}}}\right)}\\ {\frac{1}{\mu}}{\left({{-{{{{ {(n_1)}} _1}} {{{ B} _2}}}} + {{{{ {(n_1)}} _2}} {{{ B} _1}}}}\right)}\\ {\frac{1}{\epsilon}}{\left({{{{{ {(n_1)}} _2}} {{{ D} _3}}}{-{{{{ {(n_1)}} _3}} {{{ D} _2}}}}}\right)}\\ {\frac{1}{\epsilon}}{\left({{-{{{{ {(n_1)}} _1}} {{{ D} _3}}}} + {{{{ {(n_1)}} _3}} {{{ D} _1}}}}\right)}\\ {\frac{1}{\epsilon}}{\left({{{{{ {(n_1)}} _1}} {{{ D} _2}}}{-{{{{ {(n_1)}} _2}} {{{ D} _1}}}}}\right)}\end{array}\right]}$
+<br>
+
+<br>
+So the flux jacobian is linear wrt the state vector, therefore 	${{{\frac{\partial { F} ^I}{\partial { U} ^J}}} {{{ U} ^J}}} = {{ U} ^I}$	.  Remember, this is not always the case, esp with nonlinear terms.
+<br>
+
+<br>
+with the normal aligned to the x-axis:
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {\left[\begin{array}{cccccc} 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& \frac{1}{\mu}\\ 0& 0& 0& 0& -{\frac{1}{\mu}}& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& -{\frac{1}{\epsilon}}& 0& 0& 0\\ 0& \frac{1}{\epsilon}& 0& 0& 0& 0\end{array}\right]}$
+<br>
+
+<br>
+I think my formulation is wrong, and that's why I am getting $|n|^2 = \Sigma_i (n_i)^2$ instead of $(n_i n^i)$.
+
+<br>
+${{|n|}^{2}} = {{{{ {(n_1)}} _1}^{2}} + {{{ {(n_1)}} _2}^{2}} + {{{ {(n_1)}} _3}^{2}}}$
+<br>
+
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {{{\left[\begin{array}{cccccc} 0& 0& 1& 0& 0& 0\\ 0& -{\frac{\sqrt{\epsilon}}{\sqrt{\mu}}}& 0& 0& 0& \frac{\sqrt{\epsilon}}{\sqrt{\mu}}\\ \frac{\sqrt{\epsilon}}{\sqrt{\mu}}& 0& 0& 0& -{\frac{\sqrt{\epsilon}}{\sqrt{\mu}}}& 0\\ 0& 0& 0& 1& 0& 0\\ 1& 0& 0& 0& 1& 0\\ 0& 1& 0& 0& 0& 1\end{array}\right]}} {{\left[\begin{array}{cccccc} -{{{\frac{1}{\sqrt{\epsilon}}}} {{\frac{1}{\sqrt{\mu}}}}}& 0& 0& 0& 0& 0\\ 0& -{{{\frac{1}{\sqrt{\epsilon}}}} {{\frac{1}{\sqrt{\mu}}}}}& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& {{\frac{1}{\sqrt{\epsilon}}}} {{\frac{1}{\sqrt{\mu}}}}& 0\\ 0& 0& 0& 0& 0& {{\frac{1}{\sqrt{\epsilon}}}} {{\frac{1}{\sqrt{\mu}}}}\end{array}\right]}} {{\left[\begin{array}{cccccc} 0& 0& \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}& 0& \frac{1}{2}& 0\\ 0& -{\frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}}& 0& 0& 0& \frac{1}{2}\\ 1& 0& 0& 0& 0& 0\\ 0& 0& 0& 1& 0& 0\\ 0& 0& -{\frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}}& 0& \frac{1}{2}& 0\\ 0& \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}& 0& 0& 0& \frac{1}{2}\end{array}\right]}}}$
+<br>
+
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {\left[\begin{array}{cccccc} 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& \frac{1}{\mu}\\ 0& 0& 0& 0& -{\frac{1}{\mu}}& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& -{\frac{1}{\epsilon}}& 0& 0& 0\\ 0& \frac{1}{\epsilon}& 0& 0& 0& 0\end{array}\right]}$
+<br>
+
+<br>
+now in the frame of the normal:
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {{{\left[\begin{array}{cccccc} { {(n_1)}} _1& { {(n_2)}} _1& { {(n_3)}} _1& 0& 0& 0\\ { {(n_1)}} _2& { {(n_2)}} _2& { {(n_3)}} _2& 0& 0& 0\\ { {(n_1)}} _3& { {(n_2)}} _3& { {(n_3)}} _3& 0& 0& 0\\ 0& 0& 0& { {(n_1)}} _1& { {(n_2)}} _1& { {(n_3)}} _1\\ 0& 0& 0& { {(n_1)}} _2& { {(n_2)}} _2& { {(n_3)}} _2\\ 0& 0& 0& { {(n_1)}} _3& { {(n_2)}} _3& { {(n_3)}} _3\end{array}\right]}} {{\left[\begin{array}{cccccc} 0& 0& 1& 0& 0& 0\\ 0& -{\frac{\sqrt{\epsilon}}{\sqrt{\mu}}}& 0& 0& 0& \frac{\sqrt{\epsilon}}{\sqrt{\mu}}\\ \frac{\sqrt{\epsilon}}{\sqrt{\mu}}& 0& 0& 0& -{\frac{\sqrt{\epsilon}}{\sqrt{\mu}}}& 0\\ 0& 0& 0& 1& 0& 0\\ 1& 0& 0& 0& 1& 0\\ 0& 1& 0& 0& 0& 1\end{array}\right]}} {{\left[\begin{array}{cccccc} -{\frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}}& 0& 0& 0& 0& 0\\ 0& -{\frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}}& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& \frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}& 0\\ 0& 0& 0& 0& 0& \frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}\end{array}\right]}} {{\left[\begin{array}{cccccc} 0& 0& \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}& 0& \frac{1}{2}& 0\\ 0& -{\frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}}& 0& 0& 0& \frac{1}{2}\\ 1& 0& 0& 0& 0& 0\\ 0& 0& 0& 1& 0& 0\\ 0& 0& -{\frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}}& 0& \frac{1}{2}& 0\\ 0& \frac{\sqrt{\mu}}{{{2}} {{\sqrt{\epsilon}}}}& 0& 0& 0& \frac{1}{2}\end{array}\right]}} {{\left[\begin{array}{cccccc} { {(n_1)}} _1& { {(n_1)}} _2& { {(n_1)}} _3& 0& 0& 0\\ { {(n_2)}} _1& { {(n_2)}} _2& { {(n_2)}} _3& 0& 0& 0\\ { {(n_3)}} _1& { {(n_3)}} _2& { {(n_3)}} _3& 0& 0& 0\\ 0& 0& 0& { {(n_1)}} _1& { {(n_1)}} _2& { {(n_1)}} _3\\ 0& 0& 0& { {(n_2)}} _1& { {(n_2)}} _2& { {(n_2)}} _3\\ 0& 0& 0& { {(n_3)}} _1& { {(n_3)}} _2& { {(n_3)}} _3\end{array}\right]}}}$
+<br>
+
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {{{\left[\begin{array}{cccccc} \frac{{{{ {(n_3)}} _1}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}& -{\frac{{{{ {(n_2)}} _1}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& { {(n_1)}} _1& 0& -{\frac{{{{ {(n_3)}} _1}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& \frac{{{{ {(n_2)}} _1}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}\\ \frac{{{{ {(n_3)}} _2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}& -{\frac{{{{ {(n_2)}} _2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& { {(n_1)}} _2& 0& -{\frac{{{{ {(n_3)}} _2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& \frac{{{{ {(n_2)}} _2}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}\\ \frac{{{{ {(n_3)}} _3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}& -{\frac{{{{ {(n_2)}} _3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& { {(n_1)}} _3& 0& -{\frac{{{{ {(n_3)}} _3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}}& \frac{{{{ {(n_2)}} _3}} {{\sqrt{\epsilon}}}}{\sqrt{\mu}}\\ { {(n_2)}} _1& { {(n_3)}} _1& 0& { {(n_1)}} _1& { {(n_2)}} _1& { {(n_3)}} _1\\ { {(n_2)}} _2& { {(n_3)}} _2& 0& { {(n_1)}} _2& { {(n_2)}} _2& { {(n_3)}} _2\\ { {(n_2)}} _3& { {(n_3)}} _3& 0& { {(n_1)}} _3& { {(n_2)}} _3& { {(n_3)}} _3\end{array}\right]}} {{\left[\begin{array}{cccccc} -{\frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}}& 0& 0& 0& 0& 0\\ 0& -{\frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}}& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& 0& 0\\ 0& 0& 0& 0& \frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}& 0\\ 0& 0& 0& 0& 0& \frac{\frac{1}{\sqrt{\mu}}}{{{\sqrt{|g|}}} \cdot {{\sqrt{\epsilon}}}}\end{array}\right]}} {{\left[\begin{array}{cccccc} \frac{{{{ {(n_3)}} _1}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& \frac{{{{ {(n_3)}} _2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& \frac{{{{ {(n_3)}} _3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& {\frac{1}{2}} {{ {(n_2)}} _1}& {\frac{1}{2}} {{ {(n_2)}} _2}& {\frac{1}{2}} {{ {(n_2)}} _3}\\ -{\frac{{{{ {(n_2)}} _1}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& -{\frac{{{{ {(n_2)}} _2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& -{\frac{{{{ {(n_2)}} _3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& {\frac{1}{2}} {{ {(n_3)}} _1}& {\frac{1}{2}} {{ {(n_3)}} _2}& {\frac{1}{2}} {{ {(n_3)}} _3}\\ { {(n_1)}} _1& { {(n_1)}} _2& { {(n_1)}} _3& 0& 0& 0\\ 0& 0& 0& { {(n_1)}} _1& { {(n_1)}} _2& { {(n_1)}} _3\\ -{\frac{{{{ {(n_3)}} _1}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& -{\frac{{{{ {(n_3)}} _2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& -{\frac{{{{ {(n_3)}} _3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}}& {\frac{1}{2}} {{ {(n_2)}} _1}& {\frac{1}{2}} {{ {(n_2)}} _2}& {\frac{1}{2}} {{ {(n_2)}} _3}\\ \frac{{{{ {(n_2)}} _1}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& \frac{{{{ {(n_2)}} _2}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& \frac{{{{ {(n_2)}} _3}} {{\sqrt{\mu}}}}{{{2}} {{\sqrt{\epsilon}}}}& {\frac{1}{2}} {{ {(n_3)}} _1}& {\frac{1}{2}} {{ {(n_3)}} _2}& {\frac{1}{2}} {{ {(n_3)}} _3}\end{array}\right]}}}$
+<br>
+
+<br>
+${\frac{\partial { F} ^I}{\partial { U} ^J}} = {\left[\begin{array}{cccccc} 0& 0& 0& 0& \frac{{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _2}}}{-{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _1}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _3}}}{-{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _1}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}\\ 0& 0& 0& \frac{{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _1}}}{-{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _2}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& 0& \frac{{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _3}}}{-{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _2}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}\\ 0& 0& 0& \frac{{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _1}}}{-{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _3}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _2}}}{-{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _3}}}}}{{{\mu}} \cdot {{\sqrt{|g|}}}}& 0\\ 0& \frac{{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _1}}}{-{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _2}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _1}}}{-{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _3}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0\\ \frac{{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _2}}}{-{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _1}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& \frac{{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _2}}}{-{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _3}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0\\ \frac{{{{{ {(n_2)}} _1}} {{{ {(n_3)}} _3}}}{-{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _1}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& \frac{{{{{ {(n_2)}} _2}} {{{ {(n_3)}} _3}}}{-{{{{ {(n_2)}} _3}} {{{ {(n_3)}} _2}}}}}{{{\epsilon}} \cdot {{\sqrt{|g|}}}}& 0& 0& 0& 0\end{array}\right]}$
+<br>
+
+<br>
+R(v) = 	$\left[\begin{array}{c} {{{{v_1}}} \cdot {{{ {(n_3)}} _1}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}{-{{{{v_2}}} \cdot {{{ {(n_2)}} _1}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_3}}} \cdot {{{ {(n_1)}} _1}}}{-{{{{v_5}}} \cdot {{{ {(n_3)}} _1}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_6}}} \cdot {{{ {(n_2)}} _1}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}\\ {{{{v_1}}} \cdot {{{ {(n_3)}} _2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}{-{{{{v_2}}} \cdot {{{ {(n_2)}} _2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_3}}} \cdot {{{ {(n_1)}} _2}}}{-{{{{v_5}}} \cdot {{{ {(n_3)}} _2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_6}}} \cdot {{{ {(n_2)}} _2}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}\\ {{{{v_1}}} \cdot {{{ {(n_3)}} _3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}{-{{{{v_2}}} \cdot {{{ {(n_2)}} _3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_3}}} \cdot {{{ {(n_1)}} _3}}}{-{{{{v_5}}} \cdot {{{ {(n_3)}} _3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}} + {{{{v_6}}} \cdot {{{ {(n_2)}} _3}} {{\sqrt{\epsilon}}} {{\frac{1}{\sqrt{\mu}}}}}\\ {{{{v_1}}} \cdot {{{ {(n_2)}} _1}}} + {{{{v_2}}} \cdot {{{ {(n_3)}} _1}}} + {{{{v_4}}} \cdot {{{ {(n_1)}} _1}}} + {{{{v_5}}} \cdot {{{ {(n_2)}} _1}}} + {{{{v_6}}} \cdot {{{ {(n_3)}} _1}}}\\ {{{{v_1}}} \cdot {{{ {(n_2)}} _2}}} + {{{{v_2}}} \cdot {{{ {(n_3)}} _2}}} + {{{{v_4}}} \cdot {{{ {(n_1)}} _2}}} + {{{{v_5}}} \cdot {{{ {(n_2)}} _2}}} + {{{{v_6}}} \cdot {{{ {(n_3)}} _2}}}\\ {{{{v_1}}} \cdot {{{ {(n_2)}} _3}}} + {{{{v_2}}} \cdot {{{ {(n_3)}} _3}}} + {{{{v_4}}} \cdot {{{ {(n_1)}} _3}}} + {{{{v_5}}} \cdot {{{ {(n_2)}} _3}}} + {{{{v_6}}} \cdot {{{ {(n_3)}} _3}}}\end{array}\right]$
+<br>
+
+<br>
+L(v) = 	$\left[\begin{array}{c} {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_3)}} _1}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}} _2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_3)}} _3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}} _1}}} + {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_2)}} _2}}} + {{{\frac{1}{2}}} {{{v_6}}} \cdot {{{ {(n_2)}} _3}}}\\ {-{{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}} _1}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}}{-{{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_2)}} _2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}}{-{{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_2)}} _3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_3)}} _1}}} + {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}} _2}}} + {{{\frac{1}{2}}} {{{v_6}}} \cdot {{{ {(n_3)}} _3}}}\\ {{{{v_1}}} \cdot {{{ {(n_1)}} _1}}} + {{{{v_2}}} \cdot {{{ {(n_1)}} _2}}} + {{{{v_3}}} \cdot {{{ {(n_1)}} _3}}}\\ {{{{v_4}}} \cdot {{{ {(n_1)}} _1}}} + {{{{v_5}}} \cdot {{{ {(n_1)}} _2}}} + {{{{v_6}}} \cdot {{{ {(n_1)}} _3}}}\\ {-{{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_3)}} _1}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}}{-{{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_3)}} _2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}}{-{{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_3)}} _3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_2)}} _1}}} + {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_2)}} _2}}} + {{{\frac{1}{2}}} {{{v_6}}} \cdot {{{ {(n_2)}} _3}}}\\ {{{\frac{1}{2}}} {{{v_1}}} \cdot {{{ {(n_2)}} _1}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_2}}} \cdot {{{ {(n_2)}} _2}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_3}}} \cdot {{{ {(n_2)}} _3}} {{\sqrt{\mu}}} {{\frac{1}{\sqrt{\epsilon}}}}} + {{{\frac{1}{2}}} {{{v_4}}} \cdot {{{ {(n_3)}} _1}}} + {{{\frac{1}{2}}} {{{v_5}}} \cdot {{{ {(n_3)}} _2}}} + {{{\frac{1}{2}}} {{{v_6}}} \cdot {{{ {(n_3)}} _3}}}\end{array}\right]$
+<br>
+
+<br>
+left transform code:
+<br>
+<pre>real const tmp1 = 1. / (eig)->sqrt_1_mu;
+real const tmp2 = n3_l.$x$ * tmp1;
+real const tmp3 = (eig)->sqrt_1_eps * tmp2;
+real const tmp4 = 1. / 2.;
+real const tmp5 = (X)->ptr[0] * tmp3;
+real const tmp6 = n3_l.$y$ * tmp1;
+real const tmp7 = (eig)->sqrt_1_eps * tmp6;
+real const tmp8 = (X)->ptr[1] * tmp7;
+real const tmp9 = n3_l.$z$ * tmp1;
+real const tmp10 = (eig)->sqrt_1_eps * tmp9;
+real const tmp11 = (X)->ptr[2] * tmp10;
+real const tmp12 = (X)->ptr[3] * n2_l.$x$;
+real const tmp13 = (X)->ptr[4] * n2_l.$y$;
+real const tmp14 = (X)->ptr[5] * n2_l.$z$;
+real const tmp15 = tmp4 * tmp13;
+real const tmp16 = tmp4 * tmp14;
+real const tmp17 = tmp4 * tmp12;
+real const tmp18 = tmp15 + tmp16;
+real const tmp19 = tmp4 * tmp11;
+real const tmp20 = tmp17 + tmp18;
+real const tmp21 = tmp4 * tmp8;
+real const tmp22 = tmp4 * tmp5;
+real const tmp23 = n2_l.$x$ * tmp1;
+real const tmp24 = (eig)->sqrt_1_eps * tmp23;
+real const tmp25 = (X)->ptr[0] * tmp24;
+real const tmp26 = tmp4 * tmp25;
+real const tmp27 = n2_l.$y$ * tmp1;
+real const tmp28 = (eig)->sqrt_1_eps * tmp27;
+real const tmp29 = (X)->ptr[1] * tmp28;
+real const tmp30 = tmp4 * tmp29;
+real const tmp31 = n2_l.$z$ * tmp1;
+real const tmp32 = (eig)->sqrt_1_eps * tmp31;
+real const tmp33 = (X)->ptr[2] * tmp32;
+real const tmp34 = tmp4 * tmp33;
+real const tmp35 = (X)->ptr[3] * n3_l.$x$;
+real const tmp36 = (X)->ptr[4] * n3_l.$y$;
+real const tmp37 = (X)->ptr[5] * n3_l.$z$;
+real const tmp38 = tmp4 * tmp36;
+real const tmp39 = tmp4 * tmp37;
+real const tmp40 = tmp4 * tmp35;
+real const tmp41 = tmp38 + tmp39;
+real const tmp42 = tmp40 + tmp41;
+real const (Y)->ptr[0] = tmp19 + tmp20 + tmp21 + tmp22;
+real const (Y)->ptr[1] = -tmp26 + -tmp30 + -tmp34 + tmp42;
+real const (Y)->ptr[2] = (X)->ptr[0] * n_l.$x$ + (X)->ptr[2] * n_l.$z$ + (X)->ptr[1] * n_l.$y$;
+real const (Y)->ptr[3] = (X)->ptr[3] * n_l.$x$ + (X)->ptr[5] * n_l.$z$ + (X)->ptr[4] * n_l.$y$;
+real const (Y)->ptr[4] = -tmp22 + -tmp21 + -tmp19 + tmp20;
+real const (Y)->ptr[5] = tmp26 + tmp30 + tmp34 + tmp42;</pre>
+<br>
+right transform code:
+<br>
+<pre>real const tmp1 = 1. / (eig)->sqrt_1_eps;
+real const tmp2 = n3_l.$x$ * tmp1;
+real const tmp3 = (eig)->sqrt_1_mu * tmp2;
+real const tmp4 = n2_l.$x$ * tmp1;
+real const tmp5 = (eig)->sqrt_1_mu * tmp4;
+real const tmp6 = n3_l.$y$ * tmp1;
+real const tmp7 = (eig)->sqrt_1_mu * tmp6;
+real const tmp8 = n2_l.$y$ * tmp1;
+real const tmp9 = (eig)->sqrt_1_mu * tmp8;
+real const tmp10 = n3_l.$z$ * tmp1;
+real const tmp11 = (eig)->sqrt_1_mu * tmp10;
+real const tmp12 = n2_l.$z$ * tmp1;
+real const tmp13 = (eig)->sqrt_1_mu * tmp12;
+real const (Y)->ptr[0] = (X)->ptr[0] * tmp3 + -(X)->ptr[1] * tmp5 + (X)->ptr[2] * n_l.$x$ + (X)->ptr[5] * tmp5 + -(X)->ptr[4] * tmp3;
+real const (Y)->ptr[1] = (X)->ptr[0] * tmp7 + -(X)->ptr[1] * tmp9 + (X)->ptr[2] * n_l.$y$ + (X)->ptr[5] * tmp9 + -(X)->ptr[4] * tmp7;
+real const (Y)->ptr[2] = (X)->ptr[0] * tmp11 + -(X)->ptr[1] * tmp13 + (X)->ptr[2] * n_l.$z$ + (X)->ptr[5] * tmp13 + -(X)->ptr[4] * tmp11;
+real const (Y)->ptr[3] = (X)->ptr[0] * n2_l.$x$ + (X)->ptr[1] * n3_l.$x$ + (X)->ptr[3] * n_l.$x$ + (X)->ptr[5] * n3_l.$x$ + (X)->ptr[4] * n2_l.$x$;
+real const (Y)->ptr[4] = (X)->ptr[0] * n2_l.$y$ + (X)->ptr[1] * n3_l.$y$ + (X)->ptr[3] * n_l.$y$ + (X)->ptr[5] * n3_l.$y$ + (X)->ptr[4] * n2_l.$y$;
+real const (Y)->ptr[5] = (X)->ptr[0] * n2_l.$z$ + (X)->ptr[1] * n3_l.$z$ + (X)->ptr[3] * n_l.$z$ + (X)->ptr[5] * n3_l.$z$ + (X)->ptr[4] * n2_l.$z$;</pre>
 <br>

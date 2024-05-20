@@ -159,7 +159,8 @@ printbr(
 printbr()
 
 -- letters don't matter so long as there are 3 of them
-local xs = table{'x', 'y', 'z'}
+local x,y,z = vars('x', 'y', 'z')
+local xs = table{x, y, z}
 local chart = Tensor.Chart{coords=xs}
 
 local D_dense = Tensor('_i', function(i) return D('_'..i) end)
