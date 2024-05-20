@@ -74,7 +74,7 @@ ${{ E} ^u} = {{{{{ F} ^u} ^v}} {{{ n} _v}}}$
 <br>
 
 <br>
-${{ E} _i} = {{{{ A} _t} _{,i}}{-{{{ A} _i} _{,j}}}}$
+${{ E} _i} = {{{{ A} _t} _{,i}}{-{{{ A} _i} _{,t}}}}$
 <br>
 
 <br>
@@ -95,6 +95,10 @@ ${{{{ \star F} ^u} ^v} _{;v}} = {0}$
 ${{{\frac{1}{2}}} {{{{{{ \epsilon} ^u} ^v} ^a} ^b}} {{{{{ F} _a} _b} _{;v}}}} = {0}$
 <br>
 
+<br>
+${{ D} _i} = {{{\epsilon}} \cdot {{{ E} _i}}}$
+<br>
+${{ B} _i} = {{{\mu}} \cdot {{{ H} _i}}}$
 <br>
 hyperbolic balance law:
 <br>
@@ -301,4 +305,30 @@ real const (Y)->ptr[2] = (X)->ptr[0] * tmp11 + -(X)->ptr[1] * tmp13 + (X)->ptr[2
 real const (Y)->ptr[3] = (X)->ptr[0] * n2_l.$x$ + (X)->ptr[1] * n3_l.$x$ + (X)->ptr[3] * n_l.$x$ + (X)->ptr[5] * n3_l.$x$ + (X)->ptr[4] * n2_l.$x$;
 real const (Y)->ptr[4] = (X)->ptr[0] * n2_l.$y$ + (X)->ptr[1] * n3_l.$y$ + (X)->ptr[3] * n_l.$y$ + (X)->ptr[5] * n3_l.$y$ + (X)->ptr[4] * n2_l.$y$;
 real const (Y)->ptr[5] = (X)->ptr[0] * n2_l.$z$ + (X)->ptr[1] * n3_l.$z$ + (X)->ptr[3] * n_l.$z$ + (X)->ptr[5] * n3_l.$z$ + (X)->ptr[4] * n2_l.$z$;</pre>
+<br>
+<hr>
+<br>
+
+<br>
+combining:
+<br>
+
+<br>
+${{{\left( {{\epsilon}} \cdot {{{ E} ^i}}\right)} _{,t}}{-{{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon} ^i} ^j} ^k}} {{{{{ \epsilon} _k} ^l} ^m}} {{{{ A} _m} _{,l}}}\right)} _{,j}}}} = {{ J} ^i}$
+<br>
+${{{\left( {{\epsilon}} \cdot {{\left({{{{ A} _t} _{,i}}{-{{{ A} _i} _{,t}}}}\right)}}\right)} _{,t}}{-{{\left( {{\frac{1}{\mu}}} {{{{{ \epsilon} ^i} ^j} ^k}} {{{{{ \epsilon} _k} ^l} ^m}} {{{{ A} _m} _{,l}}}\right)} _{,j}}}} = {{ J} ^i}$
+<br>
+${{{{{\epsilon}} \cdot {{{{{ A} _t} _{,i}} _{,t}}}}{-{{{\epsilon}} \cdot {{{{{ A} _i} _{,t}} _{,t}}}}}}{-{{\left( {{\frac{1}{\mu}}} {{\left({{{{{{ δ} ^i} ^l}} {{{{ δ} ^j} ^m}}}{-{{{{{ δ} ^i} ^m}} {{{{ δ} ^j} ^l}}}}}\right)}} {{{{ A} _m} _{,l}}}\right)} _{,j}}}} = {{ J} ^i}$
+<br>
+${{{{\epsilon}} \cdot {{{{{ A} _t} _{,t}} _{,i}}}}{-{{{\epsilon}} \cdot {{{{{ A} _i} _{,t}} _{,t}}}}}{-{{{\frac{1}{\mu}}} {{{{{ A} _j} _{,j}} _{,i}}}}} + {{{\frac{1}{\mu}}} {{{{{ A} _i} _{,j}} _{,j}}}}} = {{ J} _i}$
+<br>
+using Lorentz gauge:	${{-{{{ A} _t} _{,t}}} + {{{ A} _i} _{,i}}} = {0}$
+<br>
+${{{{{ A} _i} _{,t}} _{,t}}{-{{{{c}^{2}}} {{{{{ A} _i} _{,j}} ^{,j}}}}}} = {{{{\frac{1}{\epsilon}}} {{{ J} _i}}}{-{{{{c}^{2}}} {{{{ R} _i} _u}} {{{ A} _u}}}}}$
+<br>
+...
+<br>
+${{{{{ A} _t} _{,t}} _{,t}}{-{{{{c}^{2}}} {{{{{ A} _t} _{,j}} ^{,j}}}}}} = {{{{\frac{1}{\epsilon}}} {{{ J} _t}}}{-{{{{c}^{2}}} {{{{ R} _t} _u}} {{{ A} _u}}}}}$
+<br>
+
 <br>

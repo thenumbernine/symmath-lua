@@ -9,10 +9,13 @@ local B = var'B'
 local D = var'D'
 local E = var'E'
 local F = var'F'
+local H = var'H'
 local J = var'J'
+local R = var'R'
 local S = var'S'
 local U = var'U'
 local V = var'V'
+local c = var'c'
 local g = var'g'
 local n = var'n'
 local epsilon = var'\\epsilon'
@@ -47,7 +50,7 @@ printbr()
 printbr(E'^u':eq(F'^uv' * n'_v'))
 printbr()
 
-printbr(E'_i':eq(A'_t,i' - A'_i,j'))
+printbr(E'_i':eq(A'_t,i' - A'_i,t'))
 printbr()
 
 printbr(B'^u':eq(epsilon'^uvab' * F'_ab' * n'_v'))
@@ -62,6 +65,8 @@ printbr(var'\\star F''^uv_;v':eq(0))
 printbr((frac(1,2) * epsilon'^uvab' * F'_ab_;v'):eq(0))
 printbr()
 
+printbr(D'_i':eq(epsilon * E'_i'))
+printbr(B'_i':eq(mu * H'_i'))
 --[[
 TODO
 
@@ -439,3 +444,25 @@ printbr'left transform code:'
 printbr('<pre>'..evlcode..'</pre>')
 printbr'right transform code:'
 printbr('<pre>'..evrcode..'</pre>')
+
+printbr'<hr>'
+printbr()
+
+printbr'combining:'
+printbr()
+
+local Adef = ((epsilon * E'^i')'_,t' - (frac(1,mu) * epsilon'^ijk' * epsilon'_k^lm' * A'_m,l')'_,j'):eq(J'^i')
+printbr(Adef)
+local Adef = ((epsilon * (A'_t,i' - A'_i,t'))'_,t' - (frac(1,mu) * epsilon'^ijk' * epsilon'_k^lm' * A'_m,l')'_,j'):eq(J'^i')
+printbr(Adef)
+local Adef = (epsilon * A'_t,i,t' - epsilon * A'_i,tt' - (frac(1,mu) * (delta'^il' * delta'^jm' - delta'^im' * delta'^jl') * A'_m,l')'_,j'):eq(J'^i')
+printbr(Adef)
+local Adef = (epsilon * A'_t,ti' - epsilon * A'_i,tt' - frac(1,mu) * A'_j,ji' + frac(1,mu) * A'_i,jj'):eq(J'_i')
+printbr(Adef)
+printbr('using Lorentz gauge:', (-A'_t,t' + A'_i,i'):eq(0))
+local Adef = (A'_i,tt' - c^2 * A'_i,j^j'):eq(frac(1,epsilon) * J'_i' - c^2 * R'_iu' * A'_u')
+printbr(Adef)
+printbr'...'
+local Atdef = (A'_t,tt' - c^2 * A'_t,j^j'):eq(frac(1,epsilon) * J'_t' - c^2 * R'_tu' * A'_u')
+printbr(Atdef)
+printbr()
