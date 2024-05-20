@@ -7,6 +7,7 @@ require 'symmath'.setup{env=env, MathJax={title='Maxwell hyperbolic conservation
 local A = var'A'
 local B = var'B'
 local D = var'D'
+local E = var'E'
 local F = var'F'
 local J = var'J'
 local S = var'S'
@@ -14,17 +15,45 @@ local U = var'U'
 local V = var'V'
 local g = var'g'
 local n = var'n'
-local x = var'x'
-local t = var't'
 local epsilon = var'\\epsilon'
 local epsilonBar = var'\\bar{\\epsilon}'
 local mu = var'\\mu'
+
+
+-- letters don't matter so long as there are 3 of them
+local t,x,y,z = vars('t', 'x', 'y', 'z')
+local xs = table{x, y, z}
+local txs = table{t, x, y, z}
+local spacetimeChart = Tensor.Chart{coords=txs}
+local chart = Tensor.Chart{coords=xs, symbols='abcijklmn'}
 
 printbr(A'_u', '= Electromagnetic 4-potential')
 printbr()
 
 printbr'Faraday tensor:'
+printbr(F'_uv':eq(A'_v;u' - A'_u;v'))
+printbr('due to symmetry of connections...')
 printbr(F'_uv':eq(A'_v,u' - A'_u,v'))
+printbr()
+
+printbr'dense:'
+printbr()
+local eqn = F'_uv':makeDense():eq((A'_v,u':makeDense() - A'_u,v':makeDense())():permute'_uv')
+printbr(eqn)
+eqn = eqn()
+printbr(eqn)
+printbr()
+
+printbr(E'^u':eq(F'^uv' * n'_v'))
+printbr()
+
+printbr(E'_i':eq(A'_t,i' - A'_i,j'))
+printbr()
+
+printbr(B'^u':eq(epsilon'^uvab' * F'_ab' * n'_v'))
+printbr()
+
+printbr(B'_i':eq(epsilon'_i^jk' * A'_k,j'))
 printbr()
 
 printbr'Maxwell equations:'
@@ -158,11 +187,6 @@ printbr(
 )
 printbr()
 
--- letters don't matter so long as there are 3 of them
-local x,y,z = vars('x', 'y', 'z')
-local xs = table{x, y, z}
-local chart = Tensor.Chart{coords=xs}
-
 local D_dense = Tensor('_i', function(i) return D('_'..i) end)
 local B_dense = Tensor('_i', function(i) return B('_'..i) end)
 -- hmm, should 'n' be 'n' , or should it be the vielbein transform e?
@@ -209,7 +233,7 @@ end)
 
 local sqrt_det_g = var'\\sqrt{|g|}'
 
-local epsilon_uuu_dense = (require 'symmath.tensor.LeviCivita'():permute'^abc' / sqrt_det_g)()
+local epsilon_uuu_dense = (require 'symmath.tensor.LeviCivita'(3):permute'^abc' / sqrt_det_g)()
 
 local dF_dU_dense = 
 	dF_dU_def
