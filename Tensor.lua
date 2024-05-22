@@ -387,9 +387,15 @@ function Tensor:init(...)
 				local subVariance = table(self.variance)
 				table.remove(subVariance, 1)
 
-				-- convert-to-tensor before Expression.init, because now Expression.init can't handle non-Expression vanilla tables
+				-- convert-to-tensor before Expression.init,
+				-- because now Expression.init can't handle non-Expression vanilla tables
+				-- but if had any coerced types (number -> Constant) then we now have to coerce them here as well ...
 				for i=1,#args do
 					local x = args[i]
+					if Constant.isNumber(x) then
+						x = Constant(x)
+						args[i] = x
+					end
 					asserttype(x, 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 					if not Expression:isa(x) then
 						-- then assume it's meant to be a sub-tensor
@@ -431,6 +437,10 @@ function Tensor:init(...)
 			-- this way we know all children (a) are Tensors and have a ".degree" field, or (b) are non-Tensor Expressions and are degree-0
 			for i=1,#self do
 				local x = self[i]
+				if Constant.isNumber(x) then
+					x = Constant(x)
+					args[i] = x
+				end			
 				asserttype(x, 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 				if not Expression:isa(x) then
 					-- then assume it's meant to be a sub-tensor
