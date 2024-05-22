@@ -158,6 +158,9 @@ so that comma using those symbols will simplify based on the letter's variables 
 
 local table = require 'ext.table'
 local range = require 'ext.range'
+local asserttype = require 'ext.assert'.type
+local asserteq = require 'ext.assert'.eq
+local assertgt = require 'ext.assert'.gt
 local Expression = require 'symmath.Expression'
 local Array = require 'symmath.Array'
 local symmath
@@ -317,11 +320,11 @@ function Tensor:init(...)
 		local dim = args[1].dim
 		--if dim and args[1].indexes then error("can't specify dim and indexes") end
 		if dim then
-			assert(type(dim) == 'table')
+			asserttype(dim, 'table')
 			dim = range(#dim):map(function(i)
 				local di = dim[i]
 				if Constant:isa(di) then di = di.value end
-				assert(type(di) == 'number')
+				asserttype(di, 'number')
 				return di
 			end)
 			-- construct content from default of zeroes
@@ -387,7 +390,7 @@ function Tensor:init(...)
 				-- convert-to-tensor before Expression.init, because now Expression.init can't handle non-Expression vanilla tables
 				for i=1,#args do
 					local x = args[i]
-					assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
+					asserttype(x, 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 					if not Expression:isa(x) then
 						-- then assume it's meant to be a sub-tensor
 						x = Tensor(subVariance, table.unpack(x))
@@ -428,7 +431,7 @@ function Tensor:init(...)
 			-- this way we know all children (a) are Tensors and have a ".degree" field, or (b) are non-Tensor Expressions and are degree-0
 			for i=1,#self do
 				local x = self[i]
-				assert(type(x) == 'table', "tensors can only be constructed with Expressions or tables of Expressions")
+				asserttype(x, 'table', "tensors can only be constructed with Expressions or tables of Expressions")
 				if not Expression:isa(x) then
 					-- then assume it's meant to be a sub-tensor
 					x = Tensor(table.unpack(x))
@@ -662,7 +665,7 @@ function Tensor:applyRaiseOrLower(i, tensorIndex)
 			t.variance = table(variance):mapi(function(var) return var:clone() end)
 			if Tensor:isa(t[1]) then
 				local subVariance = t.variance:sub(2)
-				assert(#subVariance > 0, "somehow tensor .variance isn't as big as tensor degree")
+				assertgt(#subVariance, 0, "somehow tensor .variance isn't as big as tensor degree")
 				for i,ti in ipairs(t) do
 					applyVariance(ti, subVariance)
 				end
@@ -899,7 +902,7 @@ Tensor.__newindex = function(self, key, value)
 			-- if it isrc there - read from that variable - and write back to self.iter
 			-- if it isn't there - skip this iter
 --print('assigning to indexes '..table.concat(isrc, ','))
-			assert(#isrc == #dstVariance)
+			asserteq(#isrc, #dstVariance)
 			-- looks similar to transformIndexes in Tensor/Ref.lua
 			local indexes = dstVariance
 			local notfound = false
@@ -988,7 +991,7 @@ function Tensor.pruneMul(lhs, rhs)
 			dim = table():append(lhs:dim()):append(rhs:dim()),
 			values = function(...)
 				local indexes = {...}
-				assert(#indexes == #lhs.variance + #rhs.variance)
+				asserteq(#indexes, #lhs.variance + #rhs.variance)
 				local lhsIndexes = {table.unpack(indexes, 1, #lhs.variance)}
 				local rhsIndexes = {table.unpack(indexes, #lhs.variance+1, #lhs.variance + #rhs.variance)}
 				return lhs:get(lhsIndexes) * rhs:get(rhsIndexes)
@@ -1037,7 +1040,7 @@ function Tensor.pruneMul(lhs, rhs)
 							resultIndexes:remove(i)
 							resultDims:remove(i)
 
-							assert(infoi.dim == infoj.dim)	-- instead of error, maybe just don't simplify?
+							asserteq(infoi.dim, infoj.dim)	-- instead of error, maybe just don't simplify?
 							sumAcrossPairs:insert{infoi, infoj}
 							sumDims:insert(infoi.dim)
 							found = true
@@ -1089,7 +1092,7 @@ function Tensor.pruneMul(lhs, rhs)
 			-- now we can assert all the sumAcrossPairs' index locations are nil in srca and srcb
 
 			local result = setmetatable({}, table)
-			--assert(numSum == #sumAcrossPairs)
+			--asserteq(numSum, #sumAcrossPairs)
 			if #sumAcrossPairs == 0 then
 				-- outer product = no summing, just multiply and return
 				-- assert that srca and srcb are already full
