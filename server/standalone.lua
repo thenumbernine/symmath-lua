@@ -18,7 +18,7 @@ local showcode = require 'template.showcode'
 local HTTP = require 'http.class'
 local json = require 'dkjson'
 
-local worksheetFilename = ...
+local worksheetFilename, blocking = ...
 assert(worksheetFilename, "expected a filename")
 
 
@@ -655,4 +655,4 @@ function SymmathHTTP:handleRequest(...)
 	end
 end
 
-SymmathHTTP():run()
+SymmathHTTP{block=blocking}:run()
