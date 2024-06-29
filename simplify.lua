@@ -1,5 +1,5 @@
 local table = require 'ext.table'
-
+--DEBUG(symmath.simplify): local timer = require 'ext.timer'
 local symmath
 
 
@@ -22,13 +22,13 @@ if simplifyObj.useTrigSimplify
 and not x.mutable
 and x:hasTrig()
 then
---timer('trigsimp', function(...)
+--DEBUG(symmath.simplify): timer('trigsimp', function(...)
 
 		-- trigonometric
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
 
 		if x.map then
---printbr('testing for trig squares:', x)
+--DEBUG(symmath.simplify): printbr('testing for trig squares:', x)
 			local sin = symmath.sin
 			local cos = symmath.cos
 			local Constant = symmath.Constant
@@ -47,7 +47,7 @@ then
 					then
 						local th = expr[1][1]
 						found = true
---printbr'here cos->sin'
+--DEBUG(symmath.simplify): printbr'here cos->sin'
 						if n==2 then
 							return 1 - sin(th)^2
 						elseif n==3 then
@@ -59,15 +59,15 @@ then
 				end
 			end)
 			if found then
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = expand(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = prune(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = factor(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = prune(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 			end
 
 			found = false
@@ -85,7 +85,7 @@ then
 					then
 						local th = expr[1][1]
 						found = true
---printbr'here sin->cos'
+--DEBUG(symmath.simplify): printbr'here sin->cos'
 						if n==2 then
 							return 1 - cos(th)^2
 						elseif n==3 then
@@ -97,19 +97,19 @@ then
 				end
 			end)
 			if found then
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = expand(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = prune(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = factor(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 				x = prune(x, ...)
---printbr(x)
+--DEBUG(symmath.simplify): printbr(x)
 			end
 		end
---print('trigsimp size', x:countNodes())
---end, ...)
+--DEBUG(symmath.simplify): print('trigsimp size', x:countNodes())
+--DEBUG(symmath.simplify): end, ...)
 end
 --]==]
 	return x
@@ -141,8 +141,8 @@ local function simplifyCall(simplifyObj, x, ...)
 	end
 --]]
 
---return timer('simplify', function(...)
---print('start', require 'symmath.export.SingleLine'(x))
+--DEBUG(symmath.simplify): return timer('simplify', function(...)
+--DEBUG(symmath.simplify): print('start', require 'symmath.export.SingleLine'(x))
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ...
 	-- this doesn't make sense, but maybe it's true
 	if symmath.Array:isa(x) then
@@ -184,19 +184,19 @@ local function simplifyCall(simplifyObj, x, ...)
 
 		x = expand(x, ...)	-- TODO only expand powers of sums if they are summed themselves  (i.e. only expand add -> power -> add)
 		if stack then stack:insert{'Expand', clone(x)} end
---print('expand\n'..x)
+--DEBUG(symmath.simplify): print('expand\n'..x)
 
 		x = prune(x, ...)
 		if stack then stack:insert{'Prune', clone(x)} end
---print('prune\n'..x)
+--DEBUG(symmath.simplify): print('prune\n'..x)
 
 		x = factor(x)
 		if stack then stack:insert{'Factor', clone(x)} end
---print('factor\n'..x)
+--DEBUG(symmath.simplify): print('factor\n'..x)
 
 		x = prune(x)
 		if stack then stack:insert{'Prune', clone(x)} end
---print('prune\n'..x)
+--DEBUG(symmath.simplify): print('prune\n'..x)
 
 		x = simplifyTrig(x, ...)
 
@@ -206,20 +206,20 @@ local function simplifyCall(simplifyObj, x, ...)
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
 -- stdout too? or just stderr?
---local print = printbr or print
---print('reached maxiter', simplifyMaxIter)
+--DEBUG(symmath.simplify): local print = printbr or print
+--DEBUG(symmath.simplify): print('reached maxiter', simplifyMaxIter)
 		if stack then
 			local SingleLine = symmath.export.SingleLine
 			for j,kv in ipairs(stack) do
 				local op, xi = table.unpack(kv)
 				io.stderr:write('simplify stack #'..j..':\t'..op..'\t'..SingleLine(xi)..'\n')
---print('simplify stack #'..j..':\t'..op..'\t'..SingleLine(xi))
+--DEBUG(symmath.simplify): print('simplify stack #'..j..':\t'..op..'\t'..SingleLine(xi))
 			end
 		end
 		io.stderr:write("simplification loop\n")
---print("simplification loop")
+--DEBUG(symmath.simplify): print("simplification loop")
 		io.stderr:write(debug.traceback()..'\n')
---print(debug.traceback())
+--DEBUG(symmath.simplify): print(debug.traceback())
 	end
 --]]
 
@@ -235,9 +235,9 @@ local function simplifyCall(simplifyObj, x, ...)
 	end
 --]]
 
---print('end', require 'symmath.export.SingleLine'(x))
+--DEBUG(symmath.simplify): print('end', require 'symmath.export.SingleLine'(x))
 	return x
---end, ...)
+--DEBUG(symmath.simplify): end, ...)
 end
 
 setmetatable(simplifyObj, {
