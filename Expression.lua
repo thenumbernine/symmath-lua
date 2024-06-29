@@ -1925,7 +1925,9 @@ function Expression.getDependentVars(...)
 	for i=1,select('#', ...) do
 		select(i, ...):map(collectVars)
 	end
-	return table.values(vars)
+	return table.keys(vars):sort():mapi(function(name)
+		return vars[name]
+	end)
 end
 
 --[[
