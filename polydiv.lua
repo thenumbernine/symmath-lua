@@ -12,24 +12,14 @@ if x is omitted then it is attempted to be inferred
 
 returns (a / b), remainder
 --]]
-local function polydivr(a, b, x, verbose)
-	if verbose
-	and type(verbose) ~= 'function'
-	and type(verbose) ~= 'table'
-	then
-		verbose = _G.printbr or _G.print
-	end
-	if verbose then
-		verbose'polydivr begin'
-	end
+local function polydivr(a, b, x)
+--DEBUG(symmath.polydiv): print'polydivr begin'
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 	local polyCoeffs = symmath.polyCoeffs
 	local clone = symmath.clone
 
-	if verbose then
-		verbose('polydivr dividing', a, 'by', b, 'wrt var', x)
-	end
+--DEBUG(symmath.polydiv): print('polydivr dividing', a, 'by', b, 'wrt var', x)
 
 	-- in case someone is dividing by a Lua number...
 	a = clone(a)
@@ -42,9 +32,7 @@ local function polydivr(a, b, x, verbose)
 		local vars = a:getDependentVars(b)
 
 		if #vars == 0 then
-			if verbose then
-				verbose('found no vars, using normie division')
-			end
+--DEBUG(symmath.polydiv): print('found no vars, using normie division')
 			-- no variables at all?  no polynomial division
 			-- ... just use regular division
 			-- TODO is this considered a remainder or the polynomial itself?
@@ -53,9 +41,7 @@ local function polydivr(a, b, x, verbose)
 
 		if #vars == 1 then
 			x = vars[1]
-			if verbose then
-				verbose('inferred var', x)
-			end
+--DEBUG(symmath.polydiv): print('inferred var', x)
 		end
 		if #vars == 2 then
 			error("you didn't specify an 'x' variable, and there are more than one variables for me to choose from.")
@@ -71,9 +57,7 @@ local function polydivr(a, b, x, verbose)
 	-- if the max degree of the denominator is 0 then the variable doesn't appear in the denominator
 	-- and that means no polynomial division is needed
 	if db == 0 then
-		if verbose then
-			verbose('found no leading poly, using normie division')
-		end
+--DEBUG(symmath.polydiv): print('found no leading poly, using normie division')
 		-- TODO is this considered a remainder or the polynomial itself?
 		return a / b, Constant(0)
 	end
@@ -82,90 +66,62 @@ local function polydivr(a, b, x, verbose)
 	local da = table.maxn(ca)
 	local la = ca[da]
 
-	if verbose then
-		verbose'coeffs of numerator'
-		for k,v in pairs(ca) do
-			verbose('coeff', k,' = ', v)
-		end
-		verbose'coeffs of denom'
-		for k,v in pairs(cb) do
-			verbose('coeff', k,' = ', v)
-		end
-		verbose('numerator degree', da)
-		verbose('numerator leading coefficient', la)
-	end
+--DEBUG(symmath.polydiv):	print'coeffs of numerator'
+--DEBUG(symmath.polydiv):	for k,v in pairs(ca) do
+--DEBUG(symmath.polydiv):		print('coeff', k,' = ', v)
+--DEBUG(symmath.polydiv):	end
+--DEBUG(symmath.polydiv):	print'coeffs of denom'
+--DEBUG(symmath.polydiv):	for k,v in pairs(cb) do
+--DEBUG(symmath.polydiv):		print('coeff', k,' = ', v)
+--DEBUG(symmath.polydiv):	end
+--DEBUG(symmath.polydiv):	print('numerator degree', da)
+--DEBUG(symmath.polydiv):	print('numerator leading coefficient', la)
 
 	while da >= db do
 		local r = (la / lb)()
 		local i = da-db
-		if verbose then
-			verbose('setting the ', i, 'th result coefficient to ', r)
-		end
+--DEBUG(symmath.polydiv):	print('setting the ', i, 'th result coefficient to ', r)
 		if res[i] then
 			-- something went wrong ?
 			-- most likely the num / denom wasn't in add -> mul -> div form
 			break
 		end
 		res[i] = r:clone()
-		if verbose then
-			verbose('numerator becomes', a - r * b * x^i)
-		end
+--DEBUG(symmath.polydiv):	print('numerator becomes', a - r * b * x^i)
 		a = (a - r * b * x^i)()
-		if verbose then
-			verbose('simplified numerator is', a)
-		end
+--DEBUG(symmath.polydiv):	print('simplified numerator is', a)
 		ca = polyCoeffs(a, x)
-		if verbose then
-			verbose'coeffs of numerator'
-			for k,v in pairs(ca) do
-				verbose('coeff', k,' = ', v)
-			end
-		end
+--DEBUG(symmath.polydiv):	print'coeffs of numerator'
+--DEBUG(symmath.polydiv):	for k,v in pairs(ca) do
+--DEBUG(symmath.polydiv):		print('coeff', k,' = ', v)
+--DEBUG(symmath.polydiv):	end
 		da = table.maxn(ca)
 		la = ca[da]
-		if verbose then
-			verbose('numerator degree is now', da)
-			verbose('numerator leading coefficient', la)
-		end
+--DEBUG(symmath.polydiv):	print('numerator degree is now', da)
+--DEBUG(symmath.polydiv):	print('numerator leading coefficient', la)
 	end
 
 	local sum = Constant(0)
 	local keys = table.keys(res):sort(function(a_,b_) return a_ > b_ end)
 	for _,k in ipairs(keys) do
 		local v = res[k]
-		if verbose then
-			verbose('sum adding degree',k,' coeff', v,'of var', x)
-		end
+--DEBUG(symmath.polydiv):	print('sum adding degree',k,' coeff', v,'of var', x)
 		sum = sum + v * (k == 0 and Constant(1) or (k == 1 and x or x^k))
 	end
 
-	if verbose then
-		verbose('polydivr returning sum', sum)
-		verbose('returning remainder', a)
-	end
+--DEBUG(symmath.polydiv):	print('polydivr returning sum', sum)
+--DEBUG(symmath.polydiv):	print('returning remainder', a)
 	return sum, a
 end
 
 --[[
 return (a/b) using polynomial long-division
 --]]
-local function polydiv(a, b, x, verbose)
-	if verbose
-	and type(verbose) ~= 'function'
-	and type(verbose) ~= 'table'
-	then
-		verbose = _G.printbr or _G.print
-	end
-	if verbose then
-		verbose'polydiv begin'
-	end
-	if verbose then
-		verbose'polydiv calling polydivr'
-	end
-	local res, remainder = polydivr(a, b, x, verbose)
-	if verbose then
-		verbose'polydiv returning results'
-	end
+local function polydiv(a, b, x)
+--DEBUG(symmath.polydiv):	print'polydiv begin'
+--DEBUG(symmath.polydiv):	print'polydiv calling polydivr'
+	local res, remainder = polydivr(a, b, x)
+--DEBUG(symmath.polydiv):	print'polydiv returning results'
 	return res + (remainder / b)()
 end
 
@@ -173,17 +129,9 @@ return setmetatable({
 	polydiv = polydiv,
 	polydivr = polydivr,
 }, {
-	__call = function(T, a, b, x, verbose)
-		if verbose then
-			if verbose
-			and type(verbose) ~= 'function'
-			and type(verbose) ~= 'table'
-			then
-				verbose = _G.printbr or _G.print
-			end
-			verbose'polydiv.__call begin'
-			verbose'polydiv.__call tail-calling polydiv'
-		end
-		return polydiv(a, b, x, verbose)		-- by default return a single expression
+	__call = function(T, a, b, x)
+--DEBUG(symmath.polydiv):	print'polydiv.__call begin'
+--DEBUG(symmath.polydiv):	print'polydiv.__call tail-calling polydiv'
+		return polydiv(a, b, x)		-- by default return a single expression
 	end,
 })
