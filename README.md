@@ -921,6 +921,7 @@ In the case of multiplication, unmatched wildcards will be assigned a value of 1
 
 - https://github.com/thenumbernine/lua-ext
 - https://github.com/thenumbernine/complex-lua
+- https://github.com/thenumbernine/lua-bignumber
 - https://github.com/thenumbernine/lua-gnuplot (optionally, for plotting graphs)
 - 'utf8' if available.  Used by console-based output methods.
 - 'ffi' if available.
@@ -948,7 +949,6 @@ How to get around this:
 1. Use the rockspec with luarocks to install this as a luarock.  This will put correct files in correct locations.  Problem solved.
 2. Move symmath.lua into the parent directory.  This clutters things but also solves the problem.
 3. Modify your LUA\_PATH / package.path to also include `"?/?.lua"`.
-4. ... profit?
 
 ## SymMath Interpreter
 
@@ -1005,6 +1005,7 @@ This requires my lua-http project in order to run.
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 
 - subindexes, so you can store a tensor of tensors: `g_ab = Tensor('_ab', {-alpha^2+beta^2, beta_j}, {beta_i, gamma_ij})`
+-	- This is mixed because you can already accomplish this by making a separate chart that just has the collection of coordinates you want to represent, assign it to those indexes, and use those in your dense Tensor construction.  I started on sub-tensors but I don't know that I'll finish them, and maybe someday I'll remove them.
 
 - change canonical form from 'div add sub mul' to 'add sub mul div'.  also split apart div mul's into mul divs and then factor add mul's into mul add's for simplification of fractions
 
@@ -1014,378 +1015,388 @@ This requires my lua-http project in order to run.
 
 - I am thinking my constantly changing sqrts to fraction powers and back is slowing things down.  How about instead a better "isSqrt" or "getEquivPower" test that both sqrt(), cbrt(), and pow() all implement?
 
-- browser interface: "continue" feature, to counter-balance the "stop" cells
-- browser interface: "stop" cells should hide their input box.
-- browser interface: "undo" and "redo" buttons
-- browser interface: "find" function
-- browser interface: line numbers, better line wrap detection, syntax highlighting
+- browser interface:
+- - "continue" feature, to counter-balance the "stop" cells
+- - "stop" cells should hide their input box.
+- - "undo" and "redo" buttons ... though the browser itself does do this for text edits.
+- - "find" function ... once again, browser builtin has this.
+- - line numbers, better line wrap detection, syntax highlighting
+
+- favor() function or something that lets you pick between representations of sin/cos or tan, between re/im vs conj, sqrt vs pow, etc.
+
+- flag for whether to show the outermost Tensor as col-vs-row depending on valence (instead of always as a col, which Matrix does)
+- - oh and fix Matrix degree-3 LaTeX errors.
+
+- rename dense-Tensor permute() to something more appropriate like permuteIndexes, reshapeIndexes, permuteStorage, etc...
+- :outer() for Matrix / Array
+- - :complexify() / :decomplexify()
+- - basis elements / basis vectors and dual associated with tangentSpace of Charts of Manifolds
+- :reshape() or :mergeIndex() or ravel/unravel(), I need this to 1) reshape n-degree matrixes/tensors to vectors (for factorLinearSystem) and 2) to take odd/even indexes of matrix-outer-complex-2x2-basis to (de)complexify.
 
 
 Output Examples:
 
-[tests/output/ADM Levi-Civita](https://thenumbernine.github.io/symmath/tests/output/ADM%20Levi%2dCivita.html)
+[tests/output/ADM Levi-Civita](https://thenumbernine.github.io/lua/symmath/tests/output/ADM%20Levi%2dCivita.html)
 
-[tests/output/ADM formalism](https://thenumbernine.github.io/symmath/tests/output/ADM%20formalism.html)
+[tests/output/ADM formalism](https://thenumbernine.github.io/lua/symmath/tests/output/ADM%20formalism.html)
 
-[tests/output/ADM gravity using expressions](https://thenumbernine.github.io/symmath/tests/output/ADM%20gravity%20using%20expressions.html)
+[tests/output/ADM gravity using expressions](https://thenumbernine.github.io/lua/symmath/tests/output/ADM%20gravity%20using%20expressions.html)
 
-[tests/output/ADM metric - mixed](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric%20%2d%20mixed.html)
+[tests/output/ADM metric - mixed](https://thenumbernine.github.io/lua/symmath/tests/output/ADM%20metric%20%2d%20mixed.html)
 
-[tests/output/ADM metric](https://thenumbernine.github.io/symmath/tests/output/ADM%20metric.html)
+[tests/output/ADM metric](https://thenumbernine.github.io/lua/symmath/tests/output/ADM%20metric.html)
 
-[tests/output/Alcubierre](https://thenumbernine.github.io/symmath/tests/output/Alcubierre.html)
+[tests/output/Alcubierre](https://thenumbernine.github.io/lua/symmath/tests/output/Alcubierre.html)
 
-[tests/output/BSSN - generate - cartesian](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian.html)
+[tests/output/BSSN - generate - cartesian](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20cartesian.html)
 
-[tests/output/BSSN - generate - spherical - LambdaBar 2](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar%202.html)
+[tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
 
-[tests/output/BSSN - generate - spherical - LambdaBar 3](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar%203.html)
+[tests/output/BSSN - generate](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20generate.html)
 
-[tests/output/BSSN - generate - spherical - LambdaBar](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical%20%2d%20LambdaBar.html)
+[tests/output/BSSN - index - cache](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
 
-[tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
+[tests/output/BSSN - index](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20index.html)
 
-[tests/output/BSSN - generate](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20generate.html)
+[tests/output/Building Curvature by ADM](https://thenumbernine.github.io/lua/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
 
-[tests/output/BSSN - index - cache](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
+[tests/output/Divergence Theorem in curvilinear coordinates](https://thenumbernine.github.io/lua/symmath/tests/output/Divergence%20Theorem%20in%20curvilinear%20coordinates.html)
 
-[tests/output/BSSN - index](https://thenumbernine.github.io/symmath/tests/output/BSSN%20%2d%20index.html)
+[tests/output/EFE discrete solution - 1-var](https://thenumbernine.github.io/lua/symmath/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar.html)
 
-[tests/output/Building Curvature by ADM](https://thenumbernine.github.io/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
+[tests/output/EFE discrete solution - 2-var](https://thenumbernine.github.io/lua/symmath/tests/output/EFE%20discrete%20solution%20%2d%202%2dvar.html)
 
-[tests/output/Divergence Theorem in curvilinear coordinates](https://thenumbernine.github.io/symmath/tests/output/Divergence%20Theorem%20in%20curvilinear%20coordinates.html)
+[tests/output/Einstein field equations - expression](https://thenumbernine.github.io/lua/symmath/tests/output/Einstein%20field%20equations%20%2d%20expression.html)
 
-[tests/output/EFE discrete solution - 1-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%201%2dvar.html)
+[tests/output/Ernst](https://thenumbernine.github.io/lua/symmath/tests/output/Ernst.html)
 
-[tests/output/EFE discrete solution - 2-var](https://thenumbernine.github.io/symmath/tests/output/EFE%20discrete%20solution%20%2d%202%2dvar.html)
+[tests/output/Euler Angles in Higher Dimensions](https://thenumbernine.github.io/lua/symmath/tests/output/Euler%20Angles%20in%20Higher%20Dimensions.html)
 
-[tests/output/Einstein field equations - expression](https://thenumbernine.github.io/symmath/tests/output/Einstein%20field%20equations%20%2d%20expression.html)
+[tests/output/Euler fluid equations - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Euler%20fluid%20equations%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/Ernst](https://thenumbernine.github.io/symmath/tests/output/Ernst.html)
+[tests/output/Euler fluid equations - primitive form](https://thenumbernine.github.io/lua/symmath/tests/output/Euler%20fluid%20equations%20%2d%20primitive%20form.html)
 
-[tests/output/Euler Angles in Higher Dimensions](https://thenumbernine.github.io/symmath/tests/output/Euler%20Angles%20in%20Higher%20Dimensions.html)
+[tests/output/FLRW](https://thenumbernine.github.io/lua/symmath/tests/output/FLRW.html)
 
-[tests/output/Euler fluid equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20flux%20eigenvectors.html)
+[tests/output/Faraday tensor in general relativity](https://thenumbernine.github.io/lua/symmath/tests/output/Faraday%20tensor%20in%20general%20relativity.html)
 
-[tests/output/Euler fluid equations - primitive form](https://thenumbernine.github.io/symmath/tests/output/Euler%20fluid%20equations%20%2d%20primitive%20form.html)
+[tests/output/Faraday tensor in special relativity](https://thenumbernine.github.io/lua/symmath/tests/output/Faraday%20tensor%20in%20special%20relativity.html)
 
-[tests/output/FLRW](https://thenumbernine.github.io/symmath/tests/output/FLRW.html)
+[tests/output/Finite Difference Coefficients](https://thenumbernine.github.io/lua/symmath/tests/output/Finite%20Difference%20Coefficients.html)
 
-[tests/output/Faraday tensor in general relativity](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor%20in%20general%20relativity.html)
+[tests/output/FiniteVolume](https://thenumbernine.github.io/lua/symmath/tests/output/FiniteVolume.html)
 
-[tests/output/Faraday tensor in special relativity](https://thenumbernine.github.io/symmath/tests/output/Faraday%20tensor%20in%20special%20relativity.html)
+[tests/output/GLM-Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/GLM%2dMaxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/FiniteVolume](https://thenumbernine.github.io/symmath/tests/output/FiniteVolume.html)
+[tests/output/Gravitation 16.1 - dense](https://thenumbernine.github.io/lua/symmath/tests/output/Gravitation%2016.1%20%2d%20dense.html)
 
-[tests/output/GLM-Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/GLM%2dMaxwell%20equations%20%2d%20flux%20eigenvectors.html)
+[tests/output/Gravitation 16.1 - expression](https://thenumbernine.github.io/lua/symmath/tests/output/Gravitation%2016.1%20%2d%20expression.html)
 
-[tests/output/Gravitation 16.1 - dense](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20dense.html)
+[tests/output/Gravitation 16.1 - mixed](https://thenumbernine.github.io/lua/symmath/tests/output/Gravitation%2016.1%20%2d%20mixed.html)
 
-[tests/output/Gravitation 16.1 - expression](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20expression.html)
+[tests/output/KOE](https://thenumbernine.github.io/lua/symmath/tests/output/KOE.html)
 
-[tests/output/Gravitation 16.1 - mixed](https://thenumbernine.github.io/symmath/tests/output/Gravitation%2016.1%20%2d%20mixed.html)
+[tests/output/Kaluza-Klein - dense](https://thenumbernine.github.io/lua/symmath/tests/output/Kaluza%2dKlein%20%2d%20dense.html)
 
-[tests/output/KOE](https://thenumbernine.github.io/symmath/tests/output/KOE.html)
+[tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/lua/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
 
-[tests/output/Kaluza-Klein - dense](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20dense.html)
+[tests/output/Kaluza-Klein - real world values](https://thenumbernine.github.io/lua/symmath/tests/output/Kaluza%2dKlein%20%2d%20real%20world%20values.html)
 
-[tests/output/Kaluza-Klein - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20index.html)
+[tests/output/Kaluza-Klein - varying scalar field - index](https://thenumbernine.github.io/lua/symmath/tests/output/Kaluza%2dKlein%20%2d%20varying%20scalar%20field%20%2d%20index.html)
 
-[tests/output/Kaluza-Klein - real world values](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20real%20world%20values.html)
+[tests/output/Kerr metric of Earth](https://thenumbernine.github.io/lua/symmath/tests/output/Kerr%20metric%20of%20Earth.html)
 
-[tests/output/Kaluza-Klein - varying scalar field - index](https://thenumbernine.github.io/symmath/tests/output/Kaluza%2dKlein%20%2d%20varying%20scalar%20field%20%2d%20index.html)
+[tests/output/Kerr-Schild - dense](https://thenumbernine.github.io/lua/symmath/tests/output/Kerr%2dSchild%20%2d%20dense.html)
 
-[tests/output/Kerr metric of Earth](https://thenumbernine.github.io/symmath/tests/output/Kerr%20metric%20of%20Earth.html)
+[tests/output/Kerr-Schild - expression](https://thenumbernine.github.io/lua/symmath/tests/output/Kerr%2dSchild%20%2d%20expression.html)
 
-[tests/output/Kerr-Schild - dense](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20dense.html)
+[tests/output/Kerr-Schild degenerate case](https://thenumbernine.github.io/lua/symmath/tests/output/Kerr%2dSchild%20degenerate%20case.html)
 
-[tests/output/Kerr-Schild - expression](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20%2d%20expression.html)
+[tests/output/Lorentz group](https://thenumbernine.github.io/lua/symmath/tests/output/Lorentz%20group.html)
 
-[tests/output/Kerr-Schild degenerate case](https://thenumbernine.github.io/symmath/tests/output/Kerr%2dSchild%20degenerate%20case.html)
+[tests/output/MHD - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/MHD%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/Lorentz group](https://thenumbernine.github.io/symmath/tests/output/Lorentz%20group.html)
+[tests/output/MHD inverse](https://thenumbernine.github.io/lua/symmath/tests/output/MHD%20inverse.html)
 
-[tests/output/MHD - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/MHD%20%2d%20flux%20eigenvectors.html)
+[tests/output/MHD symmetrization](https://thenumbernine.github.io/lua/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/MHD inverse](https://thenumbernine.github.io/symmath/tests/output/MHD%20inverse.html)
+[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/lua/symmath/tests/output/MakeTrigLookupTables.html)
 
-[tests/output/MHD symmetrization](https://thenumbernine.github.io/symmath/tests/output/MHD%20symmetrization.html)
+[tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/symmath/tests/output/MakeTrigLookupTables.html)
+[tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
+[tests/output/Newton method](https://thenumbernine.github.io/lua/symmath/tests/output/Newton%20method.html)
 
-[tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
+[tests/output/Platonic Solids - cache](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids%20%2d%20cache.html)
 
-[tests/output/Newton method](https://thenumbernine.github.io/symmath/tests/output/Newton%20method.html)
+[tests/output/Platonic Solids](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids.html)
 
-[tests/output/Platonic Solids](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids.html)
+[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
 
-[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
+[tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
 
-[tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
+[tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
 
-[tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
+[tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
 
-[tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
+[tests/output/Platonic Solids/600-cell transforms 1](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%201.html)
 
-[tests/output/Platonic Solids/600-cell transforms 1](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%201.html)
+[tests/output/Platonic Solids/600-cell transforms 10](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2010.html)
 
-[tests/output/Platonic Solids/600-cell transforms 10](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2010.html)
+[tests/output/Platonic Solids/600-cell transforms 11](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2011.html)
 
-[tests/output/Platonic Solids/600-cell transforms 11](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2011.html)
+[tests/output/Platonic Solids/600-cell transforms 12](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2012.html)
 
-[tests/output/Platonic Solids/600-cell transforms 12](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2012.html)
+[tests/output/Platonic Solids/600-cell transforms 13](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2013.html)
 
-[tests/output/Platonic Solids/600-cell transforms 13](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2013.html)
+[tests/output/Platonic Solids/600-cell transforms 14](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2014.html)
 
-[tests/output/Platonic Solids/600-cell transforms 14](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2014.html)
+[tests/output/Platonic Solids/600-cell transforms 15](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2015.html)
 
-[tests/output/Platonic Solids/600-cell transforms 15](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2015.html)
+[tests/output/Platonic Solids/600-cell transforms 16](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2016.html)
 
-[tests/output/Platonic Solids/600-cell transforms 16](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2016.html)
+[tests/output/Platonic Solids/600-cell transforms 17](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2017.html)
 
-[tests/output/Platonic Solids/600-cell transforms 17](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2017.html)
+[tests/output/Platonic Solids/600-cell transforms 18](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2018.html)
 
-[tests/output/Platonic Solids/600-cell transforms 18](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2018.html)
+[tests/output/Platonic Solids/600-cell transforms 19](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2019.html)
 
-[tests/output/Platonic Solids/600-cell transforms 19](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2019.html)
+[tests/output/Platonic Solids/600-cell transforms 2](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%202.html)
 
-[tests/output/Platonic Solids/600-cell transforms 2](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%202.html)
+[tests/output/Platonic Solids/600-cell transforms 20](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2020.html)
 
-[tests/output/Platonic Solids/600-cell transforms 20](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%2020.html)
+[tests/output/Platonic Solids/600-cell transforms 3](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%203.html)
 
-[tests/output/Platonic Solids/600-cell transforms 3](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%203.html)
+[tests/output/Platonic Solids/600-cell transforms 4](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%204.html)
 
-[tests/output/Platonic Solids/600-cell transforms 4](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%204.html)
+[tests/output/Platonic Solids/600-cell transforms 5](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%205.html)
 
-[tests/output/Platonic Solids/600-cell transforms 5](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%205.html)
+[tests/output/Platonic Solids/600-cell transforms 6](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%206.html)
 
-[tests/output/Platonic Solids/600-cell transforms 6](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%206.html)
+[tests/output/Platonic Solids/600-cell transforms 7](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%207.html)
 
-[tests/output/Platonic Solids/600-cell transforms 7](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%207.html)
+[tests/output/Platonic Solids/600-cell transforms 8](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%208.html)
 
-[tests/output/Platonic Solids/600-cell transforms 8](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%208.html)
+[tests/output/Platonic Solids/600-cell transforms 9](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%209.html)
 
-[tests/output/Platonic Solids/600-cell transforms 9](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%209.html)
+[tests/output/Platonic Solids/600-cell vertex inner products](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20inner%20products.html)
 
-[tests/output/Platonic Solids/600-cell vertex inner products](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20inner%20products.html)
+[tests/output/Platonic Solids/600-cell vertex multiplication table](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20multiplication%20table.html)
 
-[tests/output/Platonic Solids/600-cell vertex multiplication table](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertex%20multiplication%20table.html)
+[tests/output/Platonic Solids/600-cell vertexes](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertexes.html)
 
-[tests/output/Platonic Solids/600-cell vertexes](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertexes.html)
+[tests/output/Platonic Solids/600-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell.html)
 
-[tests/output/Platonic Solids/600-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/600%2dcell.html)
+[tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
 
-[tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
+[tests/output/Platonic Solids/Cube](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Cube.html)
 
-[tests/output/Platonic Solids/Cube](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Cube.html)
+[tests/output/Platonic Solids/Dodecahedron](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Dodecahedron.html)
 
-[tests/output/Platonic Solids/Dodecahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Dodecahedron.html)
+[tests/output/Platonic Solids/Icosahedron](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Icosahedron.html)
 
-[tests/output/Platonic Solids/Icosahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Icosahedron.html)
+[tests/output/Platonic Solids/Octahedron](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Octahedron.html)
 
-[tests/output/Platonic Solids/Octahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Octahedron.html)
+[tests/output/Platonic Solids/Tetrahedron](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Tetrahedron.html)
 
-[tests/output/Platonic Solids/Tetrahedron](https://thenumbernine.github.io/symmath/tests/output/Platonic%20Solids/Tetrahedron.html)
+[tests/output/SRHD](https://thenumbernine.github.io/lua/symmath/tests/output/SRHD.html)
 
-[tests/output/SRHD](https://thenumbernine.github.io/symmath/tests/output/SRHD.html)
+[tests/output/SRHD_1D](https://thenumbernine.github.io/lua/symmath/tests/output/SRHD_1D.html)
 
-[tests/output/SRHD_1D](https://thenumbernine.github.io/symmath/tests/output/SRHD_1D.html)
+[tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
 
-[tests/output/Schwarzschild - isotropic](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20isotropic.html)
+[tests/output/Schwarzschild - spherical - derivation - varying time 2](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time%202.html)
 
-[tests/output/Schwarzschild - spherical - derivation - varying time 2](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time%202.html)
+[tests/output/Schwarzschild - spherical - derivation - varying time](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time.html)
 
-[tests/output/Schwarzschild - spherical - derivation - varying time](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation%20%2d%20varying%20time.html)
+[tests/output/Schwarzschild - spherical - derivation](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation.html)
 
-[tests/output/Schwarzschild - spherical - derivation](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20derivation.html)
+[tests/output/Schwarzschild - spherical - mass varying with time](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20mass%20varying%20with%20time.html)
 
-[tests/output/Schwarzschild - spherical - mass varying with time](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical%20%2d%20mass%20varying%20with%20time.html)
+[tests/output/Schwarzschild - spherical](https://thenumbernine.github.io/lua/symmath/tests/output/Schwarzschild%20%2d%20spherical.html)
 
-[tests/output/Schwarzschild - spherical](https://thenumbernine.github.io/symmath/tests/output/Schwarzschild%20%2d%20spherical.html)
+[tests/output/Shallow Water equations - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Shallow%20Water%20equations%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/Shallow Water equations - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/Shallow%20Water%20equations%20%2d%20flux%20eigenvectors.html)
+[tests/output/TOV](https://thenumbernine.github.io/lua/symmath/tests/output/TOV.html)
 
-[tests/output/TOV](https://thenumbernine.github.io/symmath/tests/output/TOV.html)
+[tests/output/Z4 - flux PDE noSource](https://thenumbernine.github.io/lua/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource.html)
 
-[tests/output/Z4 - flux PDE noSource usingOnlyUs](https://thenumbernine.github.io/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource%20usingOnlyUs.html)
+[tests/output/Z4](https://thenumbernine.github.io/lua/symmath/tests/output/Z4.html)
 
-[tests/output/Z4](https://thenumbernine.github.io/symmath/tests/output/Z4.html)
+[tests/output/black hole brain](https://thenumbernine.github.io/lua/symmath/tests/output/black%20hole%20brain.html)
 
-[tests/output/black hole brain](https://thenumbernine.github.io/symmath/tests/output/black%20hole%20brain.html)
+[tests/output/console_spherical_metric](https://thenumbernine.github.io/lua/symmath/tests/output/console_spherical_metric.html)
 
-[tests/output/console_spherical_metric](https://thenumbernine.github.io/symmath/tests/output/console_spherical_metric.html)
+[tests/output/elastic plate](https://thenumbernine.github.io/lua/symmath/tests/output/elastic%20plate.html)
 
-[tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
+[tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
-[tests/output/electrovacuum/general case](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/general%20case.html)
+[tests/output/electrovacuum/general case](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/general%20case.html)
 
-[tests/output/electrovacuum/infinite wire no charge](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/infinite%20wire%20no%20charge.html)
+[tests/output/electrovacuum/infinite wire no charge](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/infinite%20wire%20no%20charge.html)
 
-[tests/output/electrovacuum/infinite wire](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/infinite%20wire.html)
+[tests/output/electrovacuum/infinite wire](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/infinite%20wire.html)
 
-[tests/output/electrovacuum/uniform field - Cartesian](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20Cartesian.html)
+[tests/output/electrovacuum/uniform field - Cartesian](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20Cartesian.html)
 
-[tests/output/electrovacuum/uniform field - cylindrical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20cylindrical.html)
+[tests/output/electrovacuum/uniform field - cylindrical](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20cylindrical.html)
 
-[tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
+[tests/output/electrovacuum/uniform field - spherical](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/uniform%20field%20%2d%20spherical.html)
 
-[tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
+[tests/output/electrovacuum/verify cylindrical transform](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/verify%20cylindrical%20transform.html)
 
-[tests/output/exp_metric](https://thenumbernine.github.io/symmath/tests/output/exp_metric.html)
+[tests/output/hydrodynamics](https://thenumbernine.github.io/lua/symmath/tests/output/hydrodynamics.html)
 
-[tests/output/hydrodynamics](https://thenumbernine.github.io/symmath/tests/output/hydrodynamics.html)
+[tests/output/hyperbolic gamma driver in ADM terms](https://thenumbernine.github.io/lua/symmath/tests/output/hyperbolic%20gamma%20driver%20in%20ADM%20terms.html)
 
-[tests/output/hyperbolic gamma driver in ADM terms](https://thenumbernine.github.io/symmath/tests/output/hyperbolic%20gamma%20driver%20in%20ADM%20terms.html)
+[tests/output/imperial units](https://thenumbernine.github.io/lua/symmath/tests/output/imperial%20units.html)
 
-[tests/output/imperial units](https://thenumbernine.github.io/symmath/tests/output/imperial%20units.html)
+[tests/output/metric catalog](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog.html)
 
-[tests/output/metric catalog](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog.html)
+[tests/output/metric catalog/Cartesian, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/Cartesian%2c%20coordinate.html)
 
-[tests/output/metric catalog/Cartesian, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Cartesian%2c%20coordinate.html)
+[tests/output/metric catalog/Schwarzschild](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/Schwarzschild.html)
 
-[tests/output/metric catalog/Schwarzschild](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/Schwarzschild.html)
+[tests/output/metric catalog/cylindrical and time, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%20and%20time%2c%20coordinate.html)
 
-[tests/output/metric catalog/cylindrical and time, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20and%20time%2c%20coordinate.html)
+[tests/output/metric catalog/cylindrical surface, anholonomic, conformal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20conformal.html)
 
-[tests/output/metric catalog/cylindrical surface, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20conformal.html)
+[tests/output/metric catalog/cylindrical surface, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/cylindrical surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/cylindrical surface, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20coordinate.html)
 
-[tests/output/metric catalog/cylindrical surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%20surface%2c%20coordinate.html)
+[tests/output/metric catalog/cylindrical, anholonomic, conformal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20conformal.html)
 
-[tests/output/metric catalog/cylindrical, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20conformal.html)
+[tests/output/metric catalog/cylindrical, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/cylindrical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/cylindrical, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/cylindrical%2c%20coordinate.html)
 
-[tests/output/metric catalog/cylindrical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/cylindrical%2c%20coordinate.html)
+[tests/output/metric catalog/paraboliod, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/paraboliod%2c%20coordinate.html)
 
-[tests/output/metric catalog/paraboliod, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/paraboliod%2c%20coordinate.html)
+[tests/output/metric catalog/polar and time, constant rotation, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20constant%20rotation%2c%20coordinate.html)
 
-[tests/output/metric catalog/polar and time, constant rotation, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20constant%20rotation%2c%20coordinate.html)
+[tests/output/metric catalog/polar and time, lapse varying in radial, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20coordinate.html)
 
-[tests/output/metric catalog/polar and time, lapse varying in radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20coordinate.html)
+[tests/output/metric catalog/polar and time, lapse varying in radial, rotation varying in time and radial, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20rotation%20varying%20in%20time%20and%20radial%2c%20coordinate.html)
 
-[tests/output/metric catalog/polar and time, lapse varying in radial, rotation varying in time and radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%20and%20time%2c%20lapse%20varying%20in%20radial%2c%20rotation%20varying%20in%20time%20and%20radial%2c%20coordinate.html)
+[tests/output/metric catalog/polar, anholonomic, conformal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20conformal.html)
 
-[tests/output/metric catalog/polar, anholonomic, conformal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20conformal.html)
+[tests/output/metric catalog/polar, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/polar, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/polar, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/polar%2c%20coordinate.html)
 
-[tests/output/metric catalog/polar, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/polar%2c%20coordinate.html)
+[tests/output/metric catalog/sphere surface, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/sphere surface, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/sphere surface, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20coordinate.html)
 
-[tests/output/metric catalog/sphere surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/sphere%20surface%2c%20coordinate.html)
+[tests/output/metric catalog/spherical and time, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20coordinate.html)
 
-[tests/output/metric catalog/spherical and time, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20coordinate.html)
+[tests/output/metric catalog/spherical and time, lapse varying in radial](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20lapse%20varying%20in%20radial.html)
 
-[tests/output/metric catalog/spherical and time, lapse varying in radial](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%20and%20time%2c%20lapse%20varying%20in%20radial.html)
+[tests/output/metric catalog/spherical, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/spherical, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/spherical, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%2c%20coordinate.html)
 
-[tests/output/metric catalog/spherical, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20coordinate.html)
+[tests/output/metric catalog/spherical, log-radial, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%2c%20log%2dradial%2c%20coordinate.html)
 
-[tests/output/metric catalog/spherical, log-radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20log%2dradial%2c%20coordinate.html)
+[tests/output/metric catalog/spherical, sinh-radial, anholonomic, orthonormal](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20anholonomic%2c%20orthonormal.html)
 
-[tests/output/metric catalog/spherical, sinh-radial, anholonomic, orthonormal](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20anholonomic%2c%20orthonormal.html)
+[tests/output/metric catalog/spherical, sinh-radial, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20coordinate.html)
 
-[tests/output/metric catalog/spherical, sinh-radial, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spherical%2c%20sinh%2dradial%2c%20coordinate.html)
+[tests/output/metric catalog/spiral, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/spiral%2c%20coordinate.html)
 
-[tests/output/metric catalog/spiral, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/spiral%2c%20coordinate.html)
+[tests/output/metric catalog/torus surface, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/torus%20surface%2c%20coordinate.html)
 
-[tests/output/metric catalog/torus surface, coordinate](https://thenumbernine.github.io/symmath/tests/output/metric%20catalog/torus%20surface%2c%20coordinate.html)
+[tests/output/natural units](https://thenumbernine.github.io/lua/symmath/tests/output/natural%20units.html)
 
-[tests/output/natural units](https://thenumbernine.github.io/symmath/tests/output/natural%20units.html)
+[tests/output/numeric integration](https://thenumbernine.github.io/lua/symmath/tests/output/numeric%20integration.html)
 
-[tests/output/numeric integration](https://thenumbernine.github.io/symmath/tests/output/numeric%20integration.html)
+[tests/output/remove beta from adm metric](https://thenumbernine.github.io/lua/symmath/tests/output/remove%20beta%20from%20adm%20metric.html)
 
-[tests/output/remove beta from adm metric](https://thenumbernine.github.io/symmath/tests/output/remove%20beta%20from%20adm%20metric.html)
+[tests/output/rotation group](https://thenumbernine.github.io/lua/symmath/tests/output/rotation%20group.html)
 
-[tests/output/rotation group](https://thenumbernine.github.io/symmath/tests/output/rotation%20group.html)
+[tests/output/run all tests](https://thenumbernine.github.io/lua/symmath/tests/output/run%20all%20tests.html)
 
-[tests/output/run all tests](https://thenumbernine.github.io/symmath/tests/output/run%20all%20tests.html)
+[tests/output/scalar metric](https://thenumbernine.github.io/lua/symmath/tests/output/scalar%20metric.html)
 
-[tests/output/scalar metric](https://thenumbernine.github.io/symmath/tests/output/scalar%20metric.html)
+[tests/output/solve cubic](https://thenumbernine.github.io/lua/symmath/tests/output/solve%20cubic.html)
 
-[tests/output/simple_ag](https://thenumbernine.github.io/symmath/tests/output/simple_ag.html)
+[tests/output/spacetime embedding radius](https://thenumbernine.github.io/lua/symmath/tests/output/spacetime%20embedding%20radius.html)
 
-[tests/output/spacetime embedding radius](https://thenumbernine.github.io/symmath/tests/output/spacetime%20embedding%20radius.html)
+[tests/output/spinors](https://thenumbernine.github.io/lua/symmath/tests/output/spinors.html)
 
-[tests/output/spinors](https://thenumbernine.github.io/symmath/tests/output/spinors.html)
+[tests/output/spring force](https://thenumbernine.github.io/lua/symmath/tests/output/spring%20force.html)
 
-[tests/output/spring force](https://thenumbernine.github.io/symmath/tests/output/spring%20force.html)
+[tests/output/sum of two metrics](https://thenumbernine.github.io/lua/symmath/tests/output/sum%20of%20two%20metrics.html)
 
-[tests/output/sum of two metrics](https://thenumbernine.github.io/symmath/tests/output/sum%20of%20two%20metrics.html)
+[tests/output/symbols](https://thenumbernine.github.io/lua/symmath/tests/output/symbols.html)
 
-[tests/output/symbols](https://thenumbernine.github.io/symmath/tests/output/symbols.html)
+[tests/output/tensor coordinate invariance](https://thenumbernine.github.io/lua/symmath/tests/output/tensor%20coordinate%20invariance.html)
 
-[tests/output/tensor coordinate invariance](https://thenumbernine.github.io/symmath/tests/output/tensor%20coordinate%20invariance.html)
+[tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/lua/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
 
-[tests/output/toy-1+1 spacetime](https://thenumbernine.github.io/symmath/tests/output/toy%2d1%2b1%20spacetime.html)
+[tests/output/unit/Matrix eigen](https://thenumbernine.github.io/lua/symmath/tests/output/unit/Matrix%20eigen.html)
 
-[tests/output/unit/Matrix eigen](https://thenumbernine.github.io/symmath/tests/output/unit/Matrix%20eigen.html)
+[tests/output/unit/Variable dependsOn](https://thenumbernine.github.io/lua/symmath/tests/output/unit/Variable%20dependsOn.html)
 
-[tests/output/unit/Variable dependsOn](https://thenumbernine.github.io/symmath/tests/output/unit/Variable%20dependsOn.html)
+[tests/output/unit/compile](https://thenumbernine.github.io/lua/symmath/tests/output/unit/compile.html)
 
-[tests/output/unit/compile](https://thenumbernine.github.io/symmath/tests/output/unit/compile.html)
+[tests/output/unit/determinant_performance](https://thenumbernine.github.io/lua/symmath/tests/output/unit/determinant_performance.html)
 
-[tests/output/unit/determinant_performance](https://thenumbernine.github.io/symmath/tests/output/unit/determinant_performance.html)
+[tests/output/unit/export](https://thenumbernine.github.io/lua/symmath/tests/output/unit/export.html)
 
-[tests/output/unit/export](https://thenumbernine.github.io/symmath/tests/output/unit/export.html)
+[tests/output/unit/func](https://thenumbernine.github.io/lua/symmath/tests/output/unit/func.html)
 
-[tests/output/unit/func](https://thenumbernine.github.io/symmath/tests/output/unit/func.html)
+[tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/lua/symmath/tests/output/unit/getIndexesUsed.html)
 
-[tests/output/unit/getIndexesUsed](https://thenumbernine.github.io/symmath/tests/output/unit/getIndexesUsed.html)
+[tests/output/unit/index](https://thenumbernine.github.io/lua/symmath/tests/output/unit/index.html)
 
-[tests/output/unit/index](https://thenumbernine.github.io/symmath/tests/output/unit/index.html)
+[tests/output/unit/index_construction](https://thenumbernine.github.io/lua/symmath/tests/output/unit/index_construction.html)
 
-[tests/output/unit/index_construction](https://thenumbernine.github.io/symmath/tests/output/unit/index_construction.html)
+[tests/output/unit/integral](https://thenumbernine.github.io/lua/symmath/tests/output/unit/integral.html)
 
-[tests/output/unit/integral](https://thenumbernine.github.io/symmath/tests/output/unit/integral.html)
+[tests/output/unit/limit](https://thenumbernine.github.io/lua/symmath/tests/output/unit/limit.html)
 
-[tests/output/unit/limit](https://thenumbernine.github.io/symmath/tests/output/unit/limit.html)
+[tests/output/unit/linear solver](https://thenumbernine.github.io/lua/symmath/tests/output/unit/linear%20solver.html)
 
-[tests/output/unit/linear solver](https://thenumbernine.github.io/symmath/tests/output/unit/linear%20solver.html)
+[tests/output/unit/match](https://thenumbernine.github.io/lua/symmath/tests/output/unit/match.html)
 
-[tests/output/unit/match](https://thenumbernine.github.io/symmath/tests/output/unit/match.html)
+[tests/output/unit/matrix](https://thenumbernine.github.io/lua/symmath/tests/output/unit/matrix.html)
 
-[tests/output/unit/matrix](https://thenumbernine.github.io/symmath/tests/output/unit/matrix.html)
+[tests/output/unit/notfinite](https://thenumbernine.github.io/lua/symmath/tests/output/unit/notfinite.html)
 
-[tests/output/unit/notfinite](https://thenumbernine.github.io/symmath/tests/output/unit/notfinite.html)
+[tests/output/unit/plot](https://thenumbernine.github.io/lua/symmath/tests/output/unit/plot.html)
 
-[tests/output/unit/plot](https://thenumbernine.github.io/symmath/tests/output/unit/plot.html)
+[tests/output/unit/polyCoeffs](https://thenumbernine.github.io/lua/symmath/tests/output/unit/polyCoeffs.html)
 
-[tests/output/unit/polyCoeffs](https://thenumbernine.github.io/symmath/tests/output/unit/polyCoeffs.html)
+[tests/output/unit/polydiv](https://thenumbernine.github.io/lua/symmath/tests/output/unit/polydiv.html)
 
-[tests/output/unit/polydiv](https://thenumbernine.github.io/symmath/tests/output/unit/polydiv.html)
+[tests/output/unit/replace](https://thenumbernine.github.io/lua/symmath/tests/output/unit/replace.html)
 
-[tests/output/unit/replace](https://thenumbernine.github.io/symmath/tests/output/unit/replace.html)
+[tests/output/unit/replaceIndex](https://thenumbernine.github.io/lua/symmath/tests/output/unit/replaceIndex.html)
 
-[tests/output/unit/replaceIndex](https://thenumbernine.github.io/symmath/tests/output/unit/replaceIndex.html)
+[tests/output/unit/sets](https://thenumbernine.github.io/lua/symmath/tests/output/unit/sets.html)
 
-[tests/output/unit/sets](https://thenumbernine.github.io/symmath/tests/output/unit/sets.html)
+[tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/lua/symmath/tests/output/unit/simplifyMetrics.html)
 
-[tests/output/unit/simplifyMetrics](https://thenumbernine.github.io/symmath/tests/output/unit/simplifyMetrics.html)
+[tests/output/unit/solve](https://thenumbernine.github.io/lua/symmath/tests/output/unit/solve.html)
 
-[tests/output/unit/solve](https://thenumbernine.github.io/symmath/tests/output/unit/solve.html)
+[tests/output/unit/sqrt](https://thenumbernine.github.io/lua/symmath/tests/output/unit/sqrt.html)
 
-[tests/output/unit/sqrt](https://thenumbernine.github.io/symmath/tests/output/unit/sqrt.html)
+[tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/lua/symmath/tests/output/unit/symmetrizeIndexes.html)
 
-[tests/output/unit/symmetrizeIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/symmetrizeIndexes.html)
+[tests/output/unit/tensor sub-assignment](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20sub%2dassignment.html)
 
-[tests/output/unit/tensor sub-assignment](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dassignment.html)
+[tests/output/unit/tensor sub-index](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20sub%2dindex.html)
 
-[tests/output/unit/tensor sub-index](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20sub%2dindex.html)
+[tests/output/unit/tensor use case](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20use%20case.html)
 
-[tests/output/unit/tensor use case](https://thenumbernine.github.io/symmath/tests/output/unit/tensor%20use%20case.html)
+[tests/output/unit/test](https://thenumbernine.github.io/lua/symmath/tests/output/unit/test.html)
 
-[tests/output/unit/test](https://thenumbernine.github.io/symmath/tests/output/unit/test.html)
+[tests/output/unit/tidyIndexes](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tidyIndexes.html)
 
-[tests/output/unit/tidyIndexes](https://thenumbernine.github.io/symmath/tests/output/unit/tidyIndexes.html)
+[tests/output/wave equation in spacetime - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/wave%20equation%20in%20spacetime%20%2d%20flux%20eigenvectors.html)
 
-[tests/output/wave equation in spacetime - flux eigenvectors](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime%20%2d%20flux%20eigenvectors.html)
-
-[tests/output/wave equation in spacetime](https://thenumbernine.github.io/symmath/tests/output/wave%20equation%20in%20spacetime.html)
+[tests/output/wave equation in spacetime](https://thenumbernine.github.io/lua/symmath/tests/output/wave%20equation%20in%20spacetime.html)
 

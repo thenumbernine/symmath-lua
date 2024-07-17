@@ -149,25 +149,27 @@ This requires my lua-http project in order to run.
 require 'ext'
 local url = require 'socket.url'
 
---local base = [[https://cdn.rawgit.com/thenumbernine/symmath-lua/master/]]
---local base = [[https://htmlpreview.github.io/?https://github.com/thenumbernine/symmath-lua/blob/master/]]
-local base = [[https://thenumbernine.github.io/symmath/]]
+local base = [[https://thenumbernine.github.io/lua/symmath/]]
 
 local s = table{[[
 Output Examples:
 ]]}
 
-path:rdir(function(f, isdir)
-	return f ~= '.git' 
-		and f:sub(1,6) ~= 'server'
-		and (isdir or f:sub(-5) == '.html')
-end):sort():mapi(function(f)
-	local name = f:sub(1,-6)
+local fs = table()
+for f in path:rdir(function(f, isdir)
+	f = path(f)
+	return f.path ~= '.git' 
+		and f.path:sub(1,6) ~= 'server'
+		and (isdir or f.path:sub(-5) == '.html')
+end) do fs:insert(f) end
+fs:sort(function(a,b) return a.path < b.path end)
+for _,f in ipairs(fs) do
+	local name = f.path:sub(1,-6)
 	s:insert('['..name..']('..base..
-		url.escape(f)
+		url.escape(f.path)
 			:gsub('%%2f','/')
 			:gsub('%%2e','.')
 		..')\n')
-end)
+end
 ?>
 <?=s:concat'\n'?>
