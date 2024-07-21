@@ -550,13 +550,14 @@ const ids = getIDs();
 document.querySelectorAll('[class="page"]').forEach(page => {
 	removeFromParent(page);	//used for the page title 
 });
-ids.bodydiv.style.paddingLeft = '200px';	//make this match the menu width
+//ids.bodydiv.style.paddingLeft = '200px';	//make this match the menu width
 ids.bodydiv.style.width = '100%';
 
 //const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
 
 const lua = new EmbeddedLuaInterpreter({
 	packages : [
+		'bignumber',
 		'complex',
 		'dkjson',
 		'ext',
