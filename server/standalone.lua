@@ -1,4 +1,4 @@
-#!/usr/bin/env lua
+#!/usr/bin/env luajit
 --[[
 here's the standalone version that runs an instance of my lua-http server
 while simultaneously keeping track of its own symmath state
@@ -110,16 +110,47 @@ function SymmathHTTP:setupSandbox()
 	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
 	self.env = {}
 
-
 	for k,v in pairs(_G) do
 		self.env[k] = v
 	end
-
 
 	-- do this after we've hijacked ext.io
 	-- TODO sandbox the package.loaded and require table?
 	require 'ext.env'(self.env)
 
+
+-- [[ begin taken from numo9
+	-- modify let our env use special operators
+	-- this will modify the env's load xpcall etc
+	-- so let's try to do this without modifying _G or our global env
+	-- but also without exposing load() to the game api ... then again why not?
+	self.loadenv = setmetatable({
+		-- it is going to modify `package`, so lets give it a dummy copy
+		-- in fact TODO all this needs to be replaced for virtual filesystem stuff or not at all ...
+		package = {
+			searchpath = package.searchpath,
+			-- replace this or else langfix.env will modify the original require()
+			searchers = table(package.searchers or package.loaders):setmetatable(nil),
+			path = package.path,
+			cpath = package.cpath,
+			loaded = {},
+		},
+		require = function(...)
+			error"require not implemented"
+		end,
+	}, {
+		--[[ don't do this, the game API self.env.load messes with our Lua load() override
+		__index = self.env,
+		--]]
+		-- [[
+		__index = _G,
+		--]]
+	})
+
+	-- so langfix can do its internal calls
+	self.langfixState = require 'langfix.env'(self.loadenv)
+	self.env.langfix = self.loadenv.langfix
+--]] end taken from numo9
 
 	local orig_io = require 'io'
 	-- TODO FIXME this is resetting ext.io, but what about io itself?
@@ -400,12 +431,31 @@ function SymmathHTTP:runCell(cell)
 		-- first try loading the code with 'return ' in front - just like lua interpreter
 		-- but don't if we are suppressing output -- because the 'return' is only used for just that
 		if not suppressOutput then
+			--[[
 			xpcall(function()
 				results = table.pack(fromlua(cell.input, nil, nil, self.env))
 				self:log(2, "run() got a single expression")
 			end, function(err)
 				-- hide any errors and try later on fail
 			end)
+			--]]
+			-- [[
+			local pushOutput = self.env.io.stdout.buffer
+			self.env.io.stdout.buffer = ''
+
+			-- try to append the lhs's tostring to the output
+			-- hide errors maybe?
+			-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
+			-- ... just assign 'results' here
+			xpcall(function()
+				results = table.pack(assert(self.loadenv.load("return "..cell.input, nil, nil, self.env))())
+				self:log(2, "run() got a single expression")
+			end, function(err)
+				-- hide any errors and try later on fail
+			end)
+
+			self.env.io.stdout.buffer = pushOutput
+			--]]
 		end
 
 		-- if it's not a single-expression, how about an assignment?  in that case, try to capture the lhs
@@ -446,7 +496,7 @@ self:log(5, "cellinput is now "..findlhs)
 				-- also we don't need 'results' ... since we're going to get it from the xpcall on lhs
 				-- but maybe we should save 'results', since without 'results' it will be run twice as a non-expr, non-assign-stmt ...
 				-- TODO sometimes it crashes here
-				results = table.pack(assert(load(cell.input, nil, nil, self.env))())
+				results = table.pack(assert(self.loadenv.load(cell.input, nil, nil, self.env))())
 				self:log(2, "run() successfully handled assign-stmt")
 
 				if not suppressOutput then
@@ -461,14 +511,15 @@ self:log(5, "cellinput is now "..findlhs)
 					end, function(err)
 					end)
 					--]]
-					-- [[ tostring() already handled below? vararg this way:
+					-- this works, but doesn't work with langfix ...
+					--[[ tostring() already handled below? vararg this way:
 					xpcall(function()
 						results = table.pack(fromlua(lhs, nil, nil, self.env))
 						self:log(2, "run() successfully handled tostring(lhs)")
 					end, function(err)
 					end)
 					--]]
-					--[[ rely on print() (handles mult ret better)
+					-- [[ rely on print() (handles mult ret better)
 					local pushOutput = self.env.io.stdout.buffer
 					self.env.io.stdout.buffer = ''
 
@@ -477,7 +528,7 @@ self:log(5, "cellinput is now "..findlhs)
 					-- since return-stmt and assign-stmt are exclusive in lua (you can't do "return a=b" like C),
 					-- ... just assign 'results' here
 					xpcall(function()
-						table.pack(assert(load("print("..lhs..")", nil, nil, self.env))())
+						table.pack(assert(self.loadenv.load("print("..lhs..")", nil, nil, self.env))())
 						self:log(2, "run() successfully handled tostring(lhs)")
 						-- assign here so that we don't assign if we get an error
 						results = self.env.io.stdout.buffer
@@ -493,7 +544,7 @@ self:log(5, "cellinput is now "..findlhs)
 		-- if expression fails, and assign-statement fails, then try without ... in case it's multi-statement
 		if not results then
 			self:log(2, "run() handling multi-stmt")
-			results = table.pack(assert(load(cell.input, nil, nil, self.env))())
+			results = table.pack(assert(self.loadenv.load(cell.input, nil, nil, self.env))())
 		end
 
 		cell.output = self.env.io.stdout.buffer
