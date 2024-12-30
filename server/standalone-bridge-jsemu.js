@@ -9,6 +9,10 @@ class EmulatedServer {
 	onLuaInit(lua) {
 		this.lua = lua;
 
+lua.execute(`
+require 'langfix'
+`);
+
 console.log("executing lua and defining global symmathhttp")
 		lua.execute(`
 -- embedded-javascript version of standalone.lua
@@ -557,13 +561,15 @@ ids.bodydiv.style.width = '100%';
 
 const lua = new EmbeddedLuaInterpreter({
 	packages : [
+		'dkjson',
+		'template',
+		'ext',
+		'parser',
+		'langfix',
 		'bignumber',
 		'complex',
-		'dkjson',
-		'ext',
 		'gnuplot',
-		'template',
-		'symmath'
+		'symmath',
 	],
 	packageTests : [
 		'symmath'
