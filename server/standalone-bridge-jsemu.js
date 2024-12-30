@@ -512,7 +512,7 @@ console.log("getWorksheet", args);
 		//and then return it
 		//alright, I might finally need dkjson.lua ...
 		let result = '';
-		this.capture({
+		this.lua.capture({
 			callback : () => {
 				lua.execute(
 `
