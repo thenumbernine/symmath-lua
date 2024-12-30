@@ -1,4 +1,4 @@
-import {EmbeddedLuaInterpreter} from '/js/lua.vm-util.js.lua';
+import {EmbeddedLuaInterpreter} from '/js/lua.vm-util.js';
 import {DOM} from '/js/util.js';
 const urlparams = new URLSearchParams(window.location.search);
 
@@ -23,6 +23,20 @@ let capture = function(args) {
 
 let nextID = 1;
 
+const insertAfter = (node, sibling) => {
+	sibling.parentNode.insertBefore(node, sibling.nextSibling);
+};
+
+// this is also in symmath/server/standalone.js ...
+// https://docs.mathjax.org/en/latest/web/typeset.html#typeset-async
+// new MathJax is a bit more restrictive of how to handle concurrent rendering ...
+function typeset(code) {
+	MathJax.startup.promise = MathJax.startup.promise
+		.then(() => MathJax.typesetPromise(code()))
+		.catch((err) => console.log('Typeset failed: ' + err.message));
+	return MathJax.startup.promise;
+}
+
 class SymLuaEmbeddedLuaInterpreter extends EmbeddedLuaInterpreter {
 	print(s) {
 		this.printOutAndErr(s);
@@ -33,24 +47,24 @@ class SymLuaEmbeddedLuaInterpreter extends EmbeddedLuaInterpreter {
 	printOutAndErr(s) {
 		if (s[0] !== '<' && s[s.length-1] !== '>') {
 			if (s.substr(0,2) !== '\\(' && s.substr(-2) !== '\\)') {
-				if (this.output.html() !== '') s += '\n';
+				if (this.output.innerHTML !== '') s += '\n';
 			}
 		}
 		s.replace(/\n/g, '<br>');
+		// TODO still needed? .mjid is also in symmath/server/standalone.js
 		this.mjid = (this.mjid || 0) + 1;
 		let mjid = ''+this.mjid;
 		let div = DOM('div', {
-			id : mjid,
 			html : s,
 			appendTo : this.output,
 		});
 		this.output.append(div);
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub, mjid]);
-		this.output.scrollTop(99999999);
+		typeset(() => [div]);
+		window.scrollTo(0, document.body.scrollHeight);
 	}
 	//add in the [Output] for viewing cached LaTeX output
 	createDivForTestRow(info) {
-		let div = SymLuaEmbeddedLuaInterpreter.superProto.createDivForTestRow.apply(this, arguments);
+		let div = super.createDivForTestRow.apply(this, arguments);
 		let url = unescape(info.url);
 		let localPath = url.replace( /\/symbolic-lua\/src\/tests\/(.*)\.lua/, '/symbolic-lua/src/tests/output/$1.html');
 		const a = DOM('a', {
@@ -59,13 +73,13 @@ class SymLuaEmbeddedLuaInterpreter extends EmbeddedLuaInterpreter {
 			target : '_blank',
 			css : {'margin-right' : '10px'},
 		});
-		div.insertAfter(div.children[0], a);
+		insertAfter(a, div.children[0]);
 		return div;
 	}
 }
 
 interpretter = new SymLuaEmbeddedLuaInterpreter({
-	id : 'lua-vm-container',
+	//id : 'lua-vm-container',
 	packages : ['ext', 'gnuplot', 'symmath'],
 	packageTests : ['symmath'],
 	autoLaunch : true,

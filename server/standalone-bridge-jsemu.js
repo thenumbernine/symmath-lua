@@ -503,7 +503,7 @@ console.log("haserror?", s);
 	getWorksheet(args) {
 		const lua = this.lua;
 console.log("getWorksheet", args);
-		//TODO read file from the lua.vm-util.js.lua preloader
+		//TODO read file from the lua.vm-util.js preloader
 		//and then convert it from a lua object to a json object
 		//and then return it
 		//alright, I might finally need dkjson.lua ...
@@ -541,7 +541,7 @@ console.log("getWorksheet results", result);
 
 //from here down is specific to my website...
 
-import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js.lua';
+import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
 import {getIDs, removeFromParent} from '/js/util.js';
 const ids = getIDs();
 
