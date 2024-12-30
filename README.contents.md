@@ -4,7 +4,7 @@
 
 ## Live Demo
 
-http://christopheremoore.net/symbolic-lua
+https://thenumbernine.github.io/symmath/
 
 ## TLDR
 
@@ -23,8 +23,8 @@ http://christopheremoore.net/symbolic-lua
 - Everything done in pure Lua / Lua syntax.  No/minimal parsing.
 - Originally intended for computational physics.  Implement equations in Lua, perform symbolic manipulation, generate functions (via symmath.compile)
 
-Online demo and API at http://christopheremoore.net/symbolic-lua  
-Example used at http://christopheremoore.net/metric  
+Online demo and API at https://thenumbernine.github.io/symmath/
+Example used at https://thenumbernine.github.io/metric/
 	and http://christopheremoore.net/gravitational-wave-simulation  
 
 <?=path'README.reference.md':read()?>
