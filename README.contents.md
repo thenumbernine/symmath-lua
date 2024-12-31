@@ -66,7 +66,7 @@ How to get around this:
 
 If you want to run this as a command-line with the API in global namespace:
 
-` symmath.sh `:
+` symmath `:
 ``` bash
 #!/usr/bin/env sh
 if [ $# = 0 ]
@@ -92,6 +92,8 @@ Then run with
 ``` sh
 symmath " print ( Matrix { { u ^ 2 + 1, u * v } , { u * v , v ^ 2 + 1 } } : inverse ( ) ) "
 ```
+
+If you would like to use the benefits of shorthand lambdas of the [Lua langfix](https://github.com/thenumbernine/langfix-lua) then install its shell script and simply replace the `lua -lext` in `symmath` with `rua`.
 
 ## SymMath Local Browser Interface
 
