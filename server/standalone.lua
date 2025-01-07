@@ -20,6 +20,7 @@ local json = require 'dkjson'
 
 local worksheetFilename, blocking = ...
 assert(worksheetFilename, "expected a filename")
+if blocking == nil then blocking = true end	-- default to true since non-blocking is using 100% of my CPU ...
 
 
 -- store original _G.print here so this file scope can use it (before overriding it later)
