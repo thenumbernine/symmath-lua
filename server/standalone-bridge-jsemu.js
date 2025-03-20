@@ -9,9 +9,11 @@ class EmulatedServer {
 	onLuaInit(lua) {
 		this.lua = lua;
 
-lua.execute(`
-require 'langfix'
-`);
+// before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
+lua.execute(` package.loaded.ffi = nil `);
+
+// now add langfix so any subsequent loads will be using langfix syntax
+lua.execute(` require 'langfix' `);
 
 console.log("executing lua and defining global symmathhttp")
 		lua.execute(`
