@@ -933,6 +933,14 @@ console.log("getWorksheet results", cellsjson);
 				});
 			},
 		},
+		{
+			text : darkMode ? 'Light Mode' : 'Dark Mode',
+			id : 'darkModeToggle',
+			click : e => {
+				darkMode = !darkMode;
+				updateDarkMode();
+			},
+		},
 	);
 
 	let helpDiv = DOM('div', {
@@ -992,5 +1000,27 @@ console.log("getWorksheet results", cellsjson);
 		}
 	});
 }
+
+let darkMode = false;
+const updateDarkMode = () => {
+	const v = document.getElementById('darkModeToggle')
+	if (v) v.innerText = darkMode ? 'Light Mode' : 'Dark Mode';
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+};
+window.setDarkMode = (x) => { darkMode = x; updateDarkMode(); };
+
+// dark mode init ...
+// paired with standalone.css
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+window.addEventListener('load', () => {
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		darkMode = true;
+	}
+	updateDarkMode();
+});
 
 export {init, fail, serverBase};

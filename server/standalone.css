@@ -1,3 +1,36 @@
+:root {
+	--fg_color: #000000;
+	--bg_color: rgb(243,243,243);
+	--shadow_color: rgba(0, 0, 0, 0.1);
+	--dropdown_color_1: #4caf50;
+	--dropdown_color_2: #f9f9f9;
+	--dropdown_color_3: #f1f1f1;
+	--dropdown_color_4: #3e8e41;
+}
+[data-theme="dark"] {
+	--fg_color: #ffffff;
+	--bg_color: #000000;
+	--shadow_color: rgba(255, 255, 255, 0.7);
+	--dropdown_color_1: #b350af;
+	--dropdown_color_2: #272727;
+	--dropdown_color_3: #3f3f3f;
+	--dropdown_color_4: #c171be;
+}
+
+body {
+	overflow : scroll;
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+body, input, span, button, div, textarea, select {
+	background : var(--bg_color);
+	color : var(--fg_color);
+}
+
+input {
+	border: 1px solid var(--bg_color);
+}
+
 textarea, pre {
 	-moz-tab-size : 4;
 	-o-tab-size : 4;
@@ -20,8 +53,8 @@ textarea, pre {
 
 /* Style The Dropdown Button */
 .dropbtn {
-	background-color: #4CAF50;
-	color: white;
+	background-color: var(--dropdown_color_1);
+	color: var(--bg_color);
 	padding: 16px;
 	font-size: 16px;
 	border: none;
@@ -38,7 +71,7 @@ textarea, pre {
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #f9f9f9;
+	background-color: var(--dropdown_color_2);
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 2;
@@ -46,14 +79,16 @@ textarea, pre {
 
 /* Links inside the dropdown */
 .dropdown-content a {
-	color: black;
+	color: var(--fg_color);
 	padding: 12px 16px;
 	text-decoration: none;
 	display: block;
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+	background-color: var(--dropdown_color_3);
+}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -62,7 +97,7 @@ textarea, pre {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-	background-color: #3e8e41;
+	background-color: var(--dropdown_color_4);
 }
 
 /* end block by w3schools */
@@ -81,7 +116,7 @@ textarea, pre {
 	top : 0px;
 	width : 100%;
 	height : 100%;
-	background-color : white;
+	background-color : var(--bg_color);
 	z-index : 3;
 	padding : 10px;
 	overflow : scroll;
@@ -112,20 +147,20 @@ textarea, pre {
 
 .ioDiv {
 	width : 100%;
-	border-right : 1px solid black;
+	border-right : 1px solid var(--fg_color);
 	padding-right : 3px;
 }
 
 .inputTextArea {
 	width : 100%;
 	border : 0px;
-	border-right : 1px solid black;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+	border-right : 1px solid var(--fg_color);
+	box-shadow: 0px 2px 4px 0px var(--shadow_color);
 }
 
 .outputDiv {
 	margin-top : 5px;
-	border-right : 1px solid black;
+	border-right : 1px solid var(--fg_color);
 	overflow-x : auto;
 	overflow-y : hidden;
 	/*padding : 10px;*/
