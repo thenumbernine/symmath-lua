@@ -1,6 +1,6 @@
 // local / emulated lua in javascript ?
 import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
-import {getIDs, removeFromParent} from '/js/util.js';
+import {require, getIDs, removeFromParent} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
 
 /*
@@ -8,7 +8,21 @@ initArgs:
 	worksheetFilename
 	symmathPath
 */
-const init = (initArgs) => {
+const init = async (initArgs) => {
+
+// https://docs.mathjax.org/en/latest/web/configuration.html
+// specify mathjax initial args ...
+window.MathJax = {
+	tex: {
+		inlineMath: [['$', '$'], ['\\(', '\\)']]
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+// ... then load mathjax ...
+await require('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+
 
 class EmulatedServer {
 	constructor() {
