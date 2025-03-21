@@ -663,6 +663,7 @@ args:
 	root
 	worksheets
 	done
+	disableQuit
 */
 function init(args) {
 	serverBase.server = assertExists(args, 'server');
@@ -704,7 +705,7 @@ function init(args) {
 		}
 	};
 
-	addMenu(
+	addMenu(...([
 		'File',
 		{
 			text : 'New',
@@ -760,6 +761,7 @@ console.log("...failed writing cells.");
 				});
 			},
 		},
+	].concat(args.disableQuit ? [] : [
 		{
 			text : 'Quit',
 			click : e => {
@@ -776,7 +778,7 @@ console.log("...failed writing cells.");
 				// I guess this is an ajax problem if it is sending the request, the server is receiving it and handling it, and then the next server is still getting another request.
 			},
 		},
-	);
+	])));
 
 	addMenu(
 		'Run',

@@ -613,6 +613,7 @@ const lua = new EmbeddedLuaInterpreter({
 				worksheetDiv.style.marginRight = '10px';
 			},
 			worksheets : worksheets,
+			disableQuit : true,	// no need to quit in js ...
 		});
 	},
 });
