@@ -1,5 +1,14 @@
 // local / emulated lua in javascript ?
-import {init, fail, serverBase} from './standalone.js';
+import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
+import {getIDs, removeFromParent} from '/js/util.js';
+import {init as initStandalone, fail, serverBase} from './standalone.js';
+
+/*
+initArgs:
+	worksheetFilename
+	symmathPath
+*/
+const init = (initArgs) => {
 
 class EmulatedServer {
 	constructor() {
@@ -10,19 +19,37 @@ class EmulatedServer {
 		this.lua = lua;
 
 // before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
-lua.execute(` package.loaded.ffi = nil `);
+lua.execute(`package.loaded.ffi = nil`);
 
 // now add langfix so any subsequent loads will be using langfix syntax
-lua.execute(` require 'langfix' `);
+lua.execute(`require 'langfix'`);
 
-console.log("executing lua and defining global symmathhttp")
+console.log("executing lua and defining global symmathHTTP")
 		lua.execute(`
 -- embedded-javascript version of standalone.lua
 -- TODO superclass some of this with standalone.lua ?
 
+-- here gnuplot
+--somehow change the in-lua gnuplot execution to instead call the emscripten lua gnuplot ...
+package.loaded.gnuplot = function(args)
+	-- override os.execute to instead forward to gnuplot.run
+	-- TODO the gnuplot is in its own emscripten, how about building that as a side-module
+	-- call js from lua
+	--[[
+	local gnuplot = js.global.gnuplot
+	gnuplot:run(inscript, e => {
+		gnuplot:getFile(outputFilename, e => {
+			error'TODO insert output svg here'
+		});
+	});
+	--]]
+end
+
+-- TODO verify the need for this with the new build ... maybe just use the lua.print/lua.printErr/lua.capture?
 -- for emscripten, store this as a global
 orig_print = print
 
+-- TODO verify this with the new build
 -- emscripten js throws errors on calling io.popen
 -- and ext.os is using popen to determine windows or not ...
 -- so instead I am just going to override it here
@@ -539,22 +566,20 @@ console.log("getWorksheet results", result);
 		args.done(result);
 	}
 
-	fwdInit(...args) {
-		return init(...args);
+	fwdInit(args) {
+		return initStandalone(args);
 	}
 }
 
 
 //from here down is specific to my website...
 
-import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
-import {getIDs, removeFromParent} from '/js/util.js';
 const ids = getIDs();
 
 //Lua is the lua.vm.js compiled-to-js lua
 //lua is my wrapper of it
 document.querySelectorAll('[class="page"]').forEach(page => {
-	removeFromParent(page);	//used for the page title 
+	removeFromParent(page);	//used for the page title
 });
 //ids.bodydiv.style.paddingLeft = '200px';	//make this match the menu width
 ids.bodydiv.style.width = '100%';
@@ -578,20 +603,26 @@ const lua = new EmbeddedLuaInterpreter({
 	],
 	autoLaunch : true,
 	done : function() {
+console.log('removing loading');
 		removeFromParent(ids.loading);
-		
+
 		this.print = s => {console.log(s);};
 		this.printErr = s => {console.log(s);};
 
-		//TODO next:
-		//somehow change the in-lua gnuplot execution to instead call the emscripten lua gnuplot ...
-		//require 'gnuplot'.execute = call js from lua
 		const server = new EmulatedServer();
 
 		//load the standalone.lua equiv in pure js
 		server.onLuaInit(this);
 		//TODO maybe put everything in this function inside here?
 
+		// mkdir where to store the user worksheets
+		//FS.mkdir('user-worksheets');
+
+		// copy premade worksheets into the folder ... or not? or only if there's no local storage? or idk? a locak storage flag for initializing them?
+		// or put them in their own folder ?
+		// then copy local storage worksheets that the user has made
+
+		// TODO replace this with lua-packages.js
 		const worksheets = luaVmPackageInfos.symmath.tests.map(info => {
 			if (info.dest.substr(0,14) != 'symmath/tests/') throw "expected all test file prefixes to start with symmath/tests/ but found "+info.dest;
 			return info.dest.substr(14);
@@ -601,7 +632,7 @@ const lua = new EmbeddedLuaInterpreter({
 			return fn.substring(0, fn.length-8);
 		});
 		worksheets.sort();
-		
+
 		//init on the standalone html frontend to symmath
 		// TODO give it an object?  so its not just a global?
 		server.fwdInit({
@@ -613,7 +644,12 @@ const lua = new EmbeddedLuaInterpreter({
 				worksheetDiv.style.marginRight = '10px';
 			},
 			worksheets : worksheets,
+			worksheetFilename : initArgs.worksheetFilename,
+			symmathPath : initArgs.symmathPath,
 			disableQuit : true,	// no need to quit in js ...
 		});
 	},
 });
+
+};
+export {init};

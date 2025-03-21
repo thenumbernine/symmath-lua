@@ -662,6 +662,8 @@ args:
 	server
 	root
 	worksheets
+	worksheetFilename
+	symmathPath
 	done
 	disableQuit
 */
@@ -675,7 +677,7 @@ function init(args) {
 	});
 
 	menubar.appendChild(DOM('span', {
-		text : window.worksheetFilename,
+		text : assertExists(args, 'worksheetFilename'),
 	}));
 
 	menubar.appendChild(DOM('br'));
@@ -780,6 +782,39 @@ console.log("...failed writing cells.");
 		},
 	])));
 
+	if (args.worksheets) {
+		let loadWorksheetButtons = ['Open'];
+		args.worksheets.forEach((filename,i) => {
+			loadWorksheetButtons.push({
+				text : filename,
+				click : e => {
+					serverBase.setAllControlsEnabled(false);
+					serverBase.server.getWorksheet({
+						filename : 'tests/'+filename+'.symmath',
+						done : cellsjson => {
+console.log("getWorksheet results", cellsjson);
+							rebuildHtmlFromCells({
+								cellsjson : cellsjson,
+								done : () => {
+									serverBase.setAllControlsEnabled(true);
+								},
+								fail : () => {
+									serverBase.setAllControlsEnabled(true);
+									fail();
+								},
+							});
+						},
+						fail : () => {
+							serverBase.setAllControlsEnabled(true);
+							fail();
+						},
+					});
+				},
+			});
+		});
+		addMenu.apply(null, loadWorksheetButtons);
+	}
+
 	addMenu(
 		'Run',
 		{
@@ -832,39 +867,6 @@ console.log("...failed writing cells.");
 			},
 		},
 	);
-
-	if (args.worksheets) {
-		let loadWorksheetButtons = ['Worksheets'];
-		args.worksheets.forEach((filename,i) => {
-			loadWorksheetButtons.push({
-				text : filename,
-				click : e => {
-					serverBase.setAllControlsEnabled(false);
-					serverBase.server.getWorksheet({
-						filename : 'tests/'+filename+'.symmath',
-						done : cellsjson => {
-console.log("getWorksheet results", cellsjson);
-							rebuildHtmlFromCells({
-								cellsjson : cellsjson,
-								done : () => {
-									serverBase.setAllControlsEnabled(true);
-								},
-								fail : () => {
-									serverBase.setAllControlsEnabled(true);
-									fail();
-								},
-							});
-						},
-						fail : () => {
-							serverBase.setAllControlsEnabled(true);
-							fail();
-						},
-					});
-				},
-			});
-		});
-		addMenu.apply(null, loadWorksheetButtons);
-	}
 
 	addMenu(
 		'View',
@@ -949,7 +951,7 @@ console.log("getWorksheet results", cellsjson);
 	});
 
 
-	const readmeURL = window.symmathPath+'/README.reference.md';
+	const readmeURL = assertExists(args, 'symmathPath')+'/README.reference.md';
 //console.log('getting readme', readmeURL); 
 	fetch(readmeURL)
 	.then(response => {
@@ -1011,7 +1013,6 @@ const updateDarkMode = () => {
 		document.documentElement.removeAttribute('data-theme', 'dark');
 	}
 };
-window.setDarkMode = (x) => { darkMode = x; updateDarkMode(); };
 
 // dark mode init ...
 // paired with standalone.css

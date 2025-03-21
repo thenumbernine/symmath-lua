@@ -2,17 +2,19 @@
 //
 //alternatively use the bridge for connecting with lua-in-javascript
 
-import {init, fail, serverBase} from '/server/standalone.js';
+import {init as initStandalone, fail, serverBase} from '/server/standalone.js';
 
-function RemoteServer() {
-}
-RemoteServer.prototype = {
+//TODO this is in common with the other standalone-bridge
+//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
+import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
+
+class RemoteServer {
 	/*
 	args:
 		done
 		fail
 	*/
-	getCells : function(args) {
+	getCells(args) {
 		fetch('getcells')
 		.then(response => {
 			if (!response.ok) return Promise.reject('not ok');
@@ -28,7 +30,7 @@ RemoteServer.prototype = {
 		done
 		fail
 	*/
-	setOutputType : function(args) {
+	setOutputType(args) {
 		fetch("setoutputtype?uid="+args.uid+"&outputtype="+args.outputtype)
 		.then(response => {
 			if (!response.ok) return Promise.reject('not ok');
@@ -43,7 +45,7 @@ RemoteServer.prototype = {
 		done
 		fail
 	*/
-	remove : function(args) {
+	remove(args) {
 		fetch("remove?uid="+args.uid)
 		.then(response => {
 			if (!response.ok) return Promise.reject('not ok');
@@ -59,7 +61,7 @@ RemoteServer.prototype = {
 		done
 		fail
 	*/
-	run : function(args) {
+	run(args) {
 		const data = new FormData();
 		data.set('uid', args.uid);
 		data.set('cellinput', args.cellinput);
@@ -85,7 +87,7 @@ RemoteServer.prototype = {
 		uid
 		hidden
 	*/
-	setHidden : function(args) {
+	setHidden(args) {
 		fetch("sethidden?uid="+args.uid+"&hidden="+args.hidden)
 		.then(response => {
 			if (!response.ok) return Promise.reject('not ok');
@@ -101,7 +103,7 @@ console.log('sethidden', args.done);
 		done,
 		fail
 	*/
-	newCell : function(args) {
+	newCell(args) {
 		fetch("newcell" + (args.uid !== undefined ? ("?" + args.uid) : ""))
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -116,7 +118,7 @@ console.log('sethidden', args.done);
 		done
 		fail
 	*/
-	writeCells : function(args) {
+	writeCells(args) {
 		fetch("writecells", {
 			method : 'POST',
 			headers : {
@@ -138,7 +140,7 @@ console.log('sethidden', args.done);
 		done
 		fail
 	*/
-	save : function(args) {
+	save(args) {
 		fetch('save')
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -147,7 +149,7 @@ console.log('sethidden', args.done);
 		}).catch(e => { args.fail?.(e); });
 	},
 
-	quit : function(args) {
+	quit(args) {
 		fetch("quit")
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -161,7 +163,7 @@ console.log('sethidden', args.done);
 		done
 		fail
 	*/
-	newWorksheet : function(args) {
+	newWorksheet(args) {
 		fetch('newworksheet')
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -175,7 +177,7 @@ console.log('sethidden', args.done);
 		done
 		fail
 	*/
-	resetEnv : function(args) {
+	resetEnv(args) {
 		fetch('resetenv')
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -190,7 +192,7 @@ console.log('sethidden', args.done);
 		done
 		fail
 	*/
-	getWorksheet : function(args) {
+	getWorksheet(args) {
 		fetch('getworksheet?filename='+encodeURIComponent(args.filename))
 		.then(response => {
 			if (!response.ok) throw 'not ok';
@@ -198,18 +200,27 @@ console.log('sethidden', args.done);
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
 	}
-};
+}
 
-//TODO this is in common with the otehr standalone-bridge
-//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
-import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
-tryToFindMathJax.init({
-	done : () => {
-		init({
-			server : new RemoteServer(),
-			root : document.body,
-			worksheets : window.symmathWorksheets,
-		});
-	},
-	fail : fail,
-});
+/*
+args:
+	worksheetFilename
+	symmathPath
+	worksheets
+*/
+const init = (args) => {
+	tryToFindMathJax.init({
+		done : () => {
+			initStandalone({
+				server : new RemoteServer(),
+				root : document.body,
+				worksheets : args.worksheets,
+				worksheetFilename : args.worksheetFilename,
+				symmathPath : args.symmathPath,
+			});
+		},
+		fail : fail,
+	});
+}
+
+export {init};
