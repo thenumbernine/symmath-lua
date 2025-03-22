@@ -1,6 +1,7 @@
 // local / emulated lua in javascript ?
+import {Div} from '/js/dom.js';
 import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
-import {removeFromParent, DOM} from '/js/util.js';
+import {removeFromParent} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
 
 /*
@@ -10,17 +11,19 @@ initArgs:
 */
 const init = async (initArgs) => {
 
-const bodydiv = DOM('div', {
+let loadingHeader;
+const bodydiv = Div({
 	appendTo : document.body,
-});
-const loadingHeader = DOM('div', {
-	['class'] : 'header',
-	appendTo : bodydiv,
-});
-DOM('div', {
-	text : 'Loading...',
-	id : 'loading',
-	appendTo : loadingHeader,
+	children : [
+		loadingHeader = Div({
+			classList : ['header'],
+			children : [
+				Div({
+					innerText : 'Loading...',
+				}),
+			],
+		}),
+	],
 });
 
 class EmulatedServer {
