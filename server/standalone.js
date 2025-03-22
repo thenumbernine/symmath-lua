@@ -1,4 +1,33 @@
-import {DOM, assertExists, removeFromParent, merge, show, hide} from '/js/util.js';
+import {DOM, require, assertExists, removeFromParent, merge, show, hide} from '/js/util.js';
+
+// dark mode init ...
+// paired with standalone.css
+//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+let darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+const updateDarkMode = () => {
+	const v = document.getElementById('darkModeToggle')
+	if (v) v.innerText = darkMode ? 'Light Mode' : 'Dark Mode';
+	if (darkMode) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	} else {
+		document.documentElement.removeAttribute('data-theme', 'dark');
+	}
+};
+updateDarkMode();
+
+// https://docs.mathjax.org/en/latest/web/configuration.html
+// specify mathjax initial args ...
+window.MathJax = {
+	tex: {
+		inlineMath: [['$', '$'], ['\\(', '\\)']]
+	},
+	svg: {
+		fontCache: 'global'
+	}
+};
+// ... then load mathjax ...
+await import('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 
 function fail(e) {
 	console.log(arguments);
@@ -667,7 +696,7 @@ args:
 	done
 	disableQuit
 */
-function init(args) {
+async function init(args) {
 	serverBase.server = assertExists(args, 'server');
 	const root = args ? args.root : document.body;
 
@@ -951,6 +980,10 @@ console.log("getWorksheet results", cellsjson);
 	});
 
 
+	// load showdown for the help menu
+	//const showdown = await import ('https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js');	// complains
+	const showdown = await require('https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js');
+
 	const readmeURL = assertExists(args, 'symmathPath')+'/README.reference.md';
 //console.log('getting readme', readmeURL); 
 	fetch(readmeURL)
@@ -1002,26 +1035,5 @@ console.log("getWorksheet results", cellsjson);
 		}
 	});
 }
-
-let darkMode = false;
-const updateDarkMode = () => {
-	const v = document.getElementById('darkModeToggle')
-	if (v) v.innerText = darkMode ? 'Light Mode' : 'Dark Mode';
-	if (darkMode) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.removeAttribute('data-theme', 'dark');
-	}
-};
-
-// dark mode init ...
-// paired with standalone.css
-//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-window.addEventListener('load', () => {
-	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		darkMode = true;
-	}
-	updateDarkMode();
-});
 
 export {init, fail, serverBase};

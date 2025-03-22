@@ -18,7 +18,8 @@ local showcode = require 'template.showcode'
 local HTTP = require 'http.class'
 local json = require 'dkjson'
 
-local worksheetFilename, blocking = ...
+-- TODO better cmdline args
+local worksheetFilename, port, blocking = ...
 assert(worksheetFilename, "expected a filename")
 if blocking == nil then blocking = true end	-- default to true since non-blocking is using 100% of my CPU ...
 
@@ -60,6 +61,7 @@ function SymmathHTTP:init(args)
 -- [[
 args = table(args):setmetatable(nil)
 args.log = 10
+args.port = port
 --]]
 
 	SymmathHTTP.super.init(self, args)

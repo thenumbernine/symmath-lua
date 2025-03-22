@@ -1,6 +1,6 @@
 // local / emulated lua in javascript ?
 import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
-import {require, getIDs, removeFromParent} from '/js/util.js';
+import {removeFromParent, DOM} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
 
 /*
@@ -10,19 +10,18 @@ initArgs:
 */
 const init = async (initArgs) => {
 
-// https://docs.mathjax.org/en/latest/web/configuration.html
-// specify mathjax initial args ...
-window.MathJax = {
-	tex: {
-		inlineMath: [['$', '$'], ['\\(', '\\)']]
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-// ... then load mathjax ...
-await require('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
-
+const bodydiv = DOM('div', {
+	appendTo : document.body,
+});
+const loadingHeader = DOM('div', {
+	['class'] : 'header',
+	appendTo : bodydiv,
+});
+DOM('div', {
+	text : 'Loading...',
+	id : 'loading',
+	appendTo : loadingHeader,
+});
 
 class EmulatedServer {
 	constructor() {
@@ -32,13 +31,12 @@ class EmulatedServer {
 	onLuaInit(lua) {
 		this.lua = lua;
 
-// before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
-lua.execute(`package.loaded.ffi = nil`);
+		// before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
+		lua.execute(`package.loaded.ffi = nil`);
 
-// now add langfix so any subsequent loads will be using langfix syntax
-lua.execute(`require 'langfix'`);
+		// now add langfix so any subsequent loads will be using langfix syntax
+		lua.execute(`require 'langfix'`);
 
-console.log("executing lua and defining global symmathHTTP")
 		lua.execute(`
 -- embedded-javascript version of standalone.lua
 -- TODO superclass some of this with standalone.lua ?
@@ -357,10 +355,7 @@ symmathhttp = SymmathHTTP()
 
 `);
 
-console.log("querying global symmathhttp")
-		lua.execute("orig_print(symmathhttp)");
-console.log("outputBuffer", lua.outputBuffer);
-lua.outputBuffer = '';
+		lua.outputBuffer = '';
 	}
 
 	getCellForUID(uid) {
@@ -580,23 +575,20 @@ console.log("getWorksheet results", result);
 		args.done(result);
 	}
 
-	fwdInit(args) {
-		return initStandalone(args);
+	async fwdInit(args) {
+		return await initStandalone(args);
 	}
 }
 
-
 //from here down is specific to my website...
-
-const ids = getIDs();
 
 //Lua is the lua.vm.js compiled-to-js lua
 //lua is my wrapper of it
 document.querySelectorAll('[class="page"]').forEach(page => {
 	removeFromParent(page);	//used for the page title
 });
-//ids.bodydiv.style.paddingLeft = '200px';	//make this match the menu width
-ids.bodydiv.style.width = '100%';
+//bodydiv.style.paddingLeft = '200px';	//make this match the menu width
+bodydiv.style.width = '100%';
 
 //const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
 
@@ -616,9 +608,8 @@ const lua = new EmbeddedLuaInterpreter({
 		'symmath'
 	],
 	autoLaunch : true,
-	done : function() {
-console.log('removing loading');
-		removeFromParent(ids.loading);
+	done : async function() {
+		removeFromParent(loadingHeader);
 
 		this.print = s => {console.log(s);};
 		this.printErr = s => {console.log(s);};
@@ -649,9 +640,9 @@ console.log('removing loading');
 
 		//init on the standalone html frontend to symmath
 		// TODO give it an object?  so its not just a global?
-		server.fwdInit({
+		await server.fwdInit({
 			server : server,
-			root : ids.bodydiv,
+			root : bodydiv,
 			done : () => {
 				const worksheetDiv = document.querySelector('[class="worksheetDiv"]');
 				worksheetDiv.style.padding = '10px';

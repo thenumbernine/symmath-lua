@@ -4,10 +4,6 @@
 
 import {init as initStandalone, fail, serverBase} from '/server/standalone.js';
 
-//TODO this is in common with the other standalone-bridge
-//TODO would be nice to find mathjax async, and rebuild all mathjax cell outputs once mathjax is loaded
-import {tryToFindMathJax} from'/server/tryToFindMathJax.js';
-
 class RemoteServer {
 	/*
 	args:
@@ -209,17 +205,12 @@ args:
 	worksheets
 */
 const init = (args) => {
-	tryToFindMathJax.init({
-		done : () => {
-			initStandalone({
-				server : new RemoteServer(),
-				root : document.body,
-				worksheets : args.worksheets,
-				worksheetFilename : args.worksheetFilename,
-				symmathPath : args.symmathPath,
-			});
-		},
-		fail : fail,
+	await initStandalone({
+		server : new RemoteServer(),
+		root : document.body,
+		worksheets : args.worksheets,
+		worksheetFilename : args.worksheetFilename,
+		symmathPath : args.symmathPath,
 	});
 }
 
