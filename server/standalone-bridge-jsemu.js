@@ -41,6 +41,9 @@ class EmulatedServer {
 		lua.execute(`require 'langfix'`);
 
 		lua.execute(`
+local js = require 'js'
+local window = js.global
+
 -- embedded-javascript version of standalone.lua
 -- TODO superclass some of this with standalone.lua ?
 
@@ -51,7 +54,7 @@ package.loaded.gnuplot = function(args)
 	-- TODO the gnuplot is in its own emscripten, how about building that as a side-module
 	-- call js from lua
 	--[[
-	local gnuplot = js.global.gnuplot
+	local gnuplot = window.gnuplot
 	gnuplot:run(inscript, e => {
 		gnuplot:getFile(outputFilename, e => {
 			error'TODO insert output svg here'
@@ -59,10 +62,6 @@ package.loaded.gnuplot = function(args)
 	});
 	--]]
 end
-
--- TODO verify the need for this with the new build ... maybe just use the lua.print/lua.printErr/lua.capture?
--- for emscripten, store this as a global
-orig_print = print
 
 -- TODO verify this with the new build
 -- emscripten js throws errors on calling io.popen
@@ -87,14 +86,6 @@ local fromlua = require 'ext.fromlua'
 local template = require 'template'
 local showcode = require 'template.showcode'
 
--- store original _G.print here so this file scope can use it (before overriding it later)
-local print = print
-local orig_io = require 'io'
-local orig_io_write = io.write
-local ext_io = require 'ext.io'
-local ext_io_write = ext_io.write
-
-
 -- kind of a mess ...
 -- not multithread safe at all
 -- write this before load()'ing cell block code, based on the cell type
@@ -114,101 +105,37 @@ function SymmathHTTP:init()
 	self.cells = table()
 end
 
-
-local FakeFile = class()
-function FakeFile:init()
-	self.buffer = ''
-end
-function FakeFile:close() end
-function FakeFile:flush() end	-- do immediately?
-function FakeFile:lines() return coroutine.wrap(function() end) end
-function FakeFile:read() end
-function FakeFile:seek() end
-function FakeFile:setvbuf() end
-function FakeFile:write() end
-
 function SymmathHTTP:setupSandbox()
 
 	-- here's the execution environment.  really this is what you have to parallel ... well ... maybe sandbox this
 	self.env = {}
 
-
 	for k,v in pairs(_G) do
 		self.env[k] = v
 	end
 
-
 	-- do this after we've hijacked ext.io
 	-- TODO sandbox the package.loaded and require table?
 	require 'ext.env'(self.env)
-
-
-	local orig_io = require 'io'
-	-- TODO FIXME this is resetting ext.io, but what about io itself?
-	-- I guess its hidden if we always require 'ext' on the env
-	local orig_io = require 'ext.io'
-
-	self.env.io = {}
-	for k,v in pairs(orig_io) do
-		self.env.io[k] = v
-	end
-
-	-- file handle object
-	self.env.io.stdin = FakeFile()
-	self.env.io.stdout = FakeFile()
-
-	--[[ well, this doesn't work, guess i have to override everything I use in io ...
-	self.env.io.output(self.env.io.stdout)
-	self.env.io.input(self.env.io.stdin)
-	--]]
-	-- [[
-	function self.env.io.stdout:write(...)
-		for i=1,select('#', ...) do
-			self.buffer = self.buffer .. tostring((select(i, ...)))
-		end
-	end
-
-	function self.env.io.read(...)
-		return self.env.io.stdin:read(...)
-	end
-
-	function self.env.io.write(...)
-		return self.env.io.stdout:write(...)
-	end
-
-	function self.env.io.flush(...)
-		return self.env.io.stdout:flush(...)
-	end
-
-	function self.env.print(...)
-		for i=1,select('#', ...) do
-			if i > 1 then self.env.io.write'\\t' end
-			self.env.io.write(tostring((select(i, ...))))
-		end
-		self.env.io.write(currentBlockNewLineSymbol or '\\n')
-		self.env.io.flush()
-	end
-	--]]
-
-
-	-- for the sake of printElem()
-	-- and GnuPlot's former behavior (maybe go back to former?)
-	_G.print = self.env.print
-	require 'io'.write = self.env.io.write
-	require 'ext.io'.write = self.env.io.write
-
 
 	local symmath = require 'symmath'
 	symmath.setup{env=self.env, implicitVars=true, fixVariableNames=true}
 	symmath.tostring = symmath.export.MathJax
 end
 
+-- [[
 function SymmathHTTP:log() end
+--]]
+--[[
+function SymmathHTTP:log(level, s)
+	window.symmathCellLog = (window.symmathCellLog or '') .. s .. '\\n'
+end
+--]]
 
 function SymmathHTTP:runCell(cell)
 	self:log(2, 'running...')
 	self:log(2, showcode(cell.input))
-	self.env.io.stdout.buffer = ''
+	window.luaCaptureBuffer = ''
 	cell.haserror = nil
 
 	-- TODO use this in cell env print() and io.write()
@@ -220,7 +147,7 @@ function SymmathHTTP:runCell(cell)
 
 		-- put a ; at the end to suppress assignment output.  sound familiar?
 		local suppressOutput = cell.input:sub(-1) == ';'
-	self:log(1, 'suppressOutput = ', suppressOutput)
+self:log(1, 'suppressOutput = ', suppressOutput)
 
 		local results
 
@@ -295,8 +222,8 @@ self:log(5, "cellinput is now "..findlhs)
 					end)
 					--]]
 					--[[ rely on print() (handles mult ret better)
-					local pushOutput = self.env.io.stdout.buffer
-					self.env.io.stdout.buffer = ''
+					local pushOutput = window.luaCaptureBuffer
+					window.luaCaptureBuffer = ''
 
 					-- try to append the lhs's tostring to the output
 					-- hide errors maybe?
@@ -306,11 +233,11 @@ self:log(5, "cellinput is now "..findlhs)
 						table.pack(assert(load("print("..lhs..")", nil, nil, self.env))())
 						self:log(2, "run() successfully handled tostring(lhs)")
 						-- assign here so that we don't assign if we get an error
-						results = self.env.io.stdout.buffer
+						results = window.luaCaptureBuffer
 					end, function(err)
 					end)
 
-					self.env.io.stdout.buffer = pushOutput
+					window.luaCaptureBuffer = pushOutput
 					--]]
 				end
 			end
@@ -322,7 +249,7 @@ self:log(5, "cellinput is now "..findlhs)
 			results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 		end
 
-		cell.output = self.env.io.stdout.buffer
+		cell.output = window.luaCaptureBuffer
 		self:log(2, "run() cell.output", cell.output)
 
 		if results.n > 0 then
@@ -345,7 +272,7 @@ self:log(5, "cellinput is now "..findlhs)
 		end
 
 	end, function(err)
-		self:log(0, 'got error '..err)
+		self:log(0, 'got error '..err..'\\n'..debug.traceback())
 		cell.output = err..'\\n'..debug.traceback()
 		cell.haserror = true	-- use this flag to override the output type, so that when the error goes away the output will go back to what it was
 	end)
@@ -424,8 +351,7 @@ symmathhttp = SymmathHTTP()
 		let output = '';
 		this.lua.capture({
 			callback : () => {
-				thiz.lua.execute(
-`
+				const code = `
 currentRunningCell = {
 	uid=` + cell.uid + `,
 	input=` + thiz.encodeString(cell.input) + `,
@@ -434,9 +360,10 @@ currentRunningCell = {
 	hidden=` + (cell.hidden ? "true" : "false") + `
 }
 symmathhttp:runCell(currentRunningCell)
-orig_print(currentRunningCell.output)
-`
-);
+print(currentRunningCell.output)
+`;
+console.log(code);
+				thiz.lua.execute(code);
 			},
 			output : s => {
 				s += '\n';
@@ -454,7 +381,7 @@ console.log("error", s);
 
 		this.lua.capture({
 			callback : () => {
-				thiz.lua.execute("orig_print(currentRunningCell.haserror and 'true' or 'false')");
+				thiz.lua.execute("print(currentRunningCell.haserror and 'true' or 'false')");
 			},
 			output : s => {
 console.log("haserror?", s);
@@ -562,7 +489,7 @@ data = 'symmath/`+args.filename+`'
 data = require 'ext.io'.readfile(data)
 data = require 'ext.fromlua'(data)
 data = require 'dkjson'.encode(data)
-orig_print(data)
+print(data)
 `
 );
 			},
@@ -595,6 +522,8 @@ bodydiv.style.width = '100%';
 
 //const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
 
+let luaCaptureBuffer = '';
+
 const lua = new EmbeddedLuaInterpreter({
 	packages : [
 		'dkjson',
@@ -613,9 +542,16 @@ const lua = new EmbeddedLuaInterpreter({
 	autoLaunch : true,
 	done : async function() {
 		removeFromParent(loadingHeader);
+window.lua = this.lua;
 
-		this.print = s => {console.log(s);};
-		this.printErr = s => {console.log(s);};
+		this.print = s => {
+			luaCaptureBuffer += s;
+			console.log(s);
+		};
+		this.printErr = s => {
+			luaCaptureBuffer += s;
+			console.log(s);
+		};
 
 		const server = new EmulatedServer();
 

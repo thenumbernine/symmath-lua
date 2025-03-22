@@ -1,4 +1,4 @@
-import {appendChildren, A, Br, Button, Div, Select, Span, TextArea} from '/js/dom.js';
+import {appendChildren, A, Br, Button, Div, Pre, Select, Span, TextArea} from '/js/dom.js';
 import {require, assertExists, removeFromParent, merge, show, hide} from '/js/util.js';
 
 // dark mode init ...
