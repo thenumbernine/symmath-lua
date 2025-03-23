@@ -1,8 +1,71 @@
 // local / emulated lua in javascript ?
 import {Div} from '/js/dom.js';
-import {EmbeddedLuaInterpreter, luaVmPackageInfos} from '/js/lua.vm-util.js';
 import {removeFromParent} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
+
+
+import {newLua} from '/js/lua-interop.js';
+import {addPackage} from '/js/lua.vm-util.js';
+import {luaPackages} from '/js/lua-packages.js';
+
+/*
+I'd make this a lua-interop, but it seems that changing lua.lib.print/Err doesn't reflect in the emscripten/wasm code...
+sooo TODO find how to replace stdout+stderr in wasm/emscripten and then move this into lua-interop
+args:
+	callback = what to execute,
+	output = where to redirect output,
+	error = where to redirect errors
+*/
+const luaCapture = args => {
+	//now cycle through coordinates, evaluate data points, and get the data back into JS
+	//push module output and redirect to a buffer of my own
+	const oldPrint = capturePrint;
+	const oldPrintErr = capturePrintErr;
+	capturePrint = args.output;
+	capturePrintErr = args.error;
+	args.callback(this);
+	capturePrint = oldPrint;
+	capturePrintErr = oldPrintErr;
+};
+
+let capturePrint, capturePrintErr;
+const lua = await newLua({
+	print : s => {
+		if (capturePrint) {
+			capturePrint(s);
+		} else {
+			console.log('> ' + s);
+		}
+	},
+	printErr : s => {
+		if (capturePrintErr) {
+			capturePrintErr(s);
+		} else {
+			console.log('> ' + s);
+		}
+	},
+});
+
+
+lua.newState();
+window.lua = lua;
+
+const FS = lua.lib.FS;
+await Promise.all([
+	luaPackages.dkjson,
+	luaPackages.template,
+	luaPackages.ext,
+	luaPackages.parser,
+	luaPackages.langfix,
+	luaPackages.bignumber,
+	luaPackages.complex,
+	luaPackages.gnuplot,
+	luaPackages.symmath,
+].map(pkg => addPackage(FS, pkg)));
+
+lua.doString(` package.path = './?.lua;/?.lua;/?/?.lua' `);
+FS.chdir('/');
+
 
 /*
 initArgs:
@@ -31,16 +94,246 @@ class EmulatedServer {
 		this.nextValidUID = 1;
 	}
 
-	onLuaInit(lua) {
-		this.lua = lua;
+	getCellForUID(uid) {
+		let ctrl = serverBase.findCtrlForUID(uid);
+		if (!ctrl) return;
+		return ctrl.cell;
+	}
 
-		// before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
-		lua.execute(`package.loaded.ffi = nil`);
+	/*
+	args:
+		done : function(cellsjson)
+		fail
+	*/
+	getCells(args) {
+		args.done(JSON.stringify(serverBase.cells));
+	}
 
-		// now add langfix so any subsequent loads will be using langfix syntax
-		lua.execute(`require 'langfix'`);
+	/*
+	args:
+		uid
+		outputtype
+		done
+		fail
+	*/
+	setOutputType(args) {
+		let cell = this.getCellForUID(args.uid);
+		if (!cell) args.fail();
+		cell.outputtype = args.outputtype;
+		args.done(JSON.stringify(cell));
+	}
 
-		lua.execute(`
+	/*
+	args:
+		uid
+		done
+		fail
+	*/
+	remove(args) {
+		//callback is going to remove the js cell anyways, so
+		args.done();
+	}
+
+	encodeString(s) {
+		// TODO search for the # of ='s that isn't used in the string
+		return '[=======[' + s + ']=======]';
+	}
+
+	/*
+	args:
+		uid,
+		cellinput,
+		done
+		fail
+	*/
+	run(args) {
+		let thiz = this;
+		let cell = this.getCellForUID(args.uid);
+		cell.input = args.cellinput;
+		//here's where the lua interpretter comes in
+
+
+		let output = '';
+		luaCapture({
+			callback : () => {
+				const code = `
+currentRunningCell = {
+	uid=` + cell.uid + `,
+	input=` + thiz.encodeString(cell.input) + `,
+	output='',
+	outputtype=` + thiz.encodeString(cell.outputtype) + `,
+	hidden=` + (cell.hidden ? "true" : "false") + `
+}
+symmathhttp:runCell(currentRunningCell)
+print(currentRunningCell.output)
+`;
+console.log(code);
+				lua.doString(code);
+			},
+			output : s => {
+				s += '\n';
+console.log("output", s);
+				output += s;
+			},
+			error : s => {
+				//I don't' think this is ever hit
+				s += '\n';
+console.log("error", s);
+				output += s;
+			}
+		});
+		cell.output = output;
+
+		luaCapture({
+			callback : () => {
+				lua.doString("print(currentRunningCell.haserror and 'true' or 'false')");
+			},
+			output : s => {
+console.log("haserror?", s);
+				cell.haserror = s == 'true';
+			},
+		});
+
+		//let the browser handle some input
+		setTimeout(() => {
+			args.done(JSON.stringify(cell));
+		}, 0);
+	}
+
+	/*
+	args:
+		uid
+		hidden
+	*/
+	setHidden(args) {
+		let cell = this.getCellForUID(args.uid);
+		if (!cell) (args.fail || fail)();
+		cell.hidden = args.hidden;
+		if (args.done) args.done();
+	}
+
+	/*
+	args:
+		uid (optional) cell to insert before
+		done : function(celljson),
+		fail
+	*/
+	newCell(args) {
+		//make sure this matches standalone.lua's Cell ctor
+		args.done(JSON.stringify({
+			uid : ++this.nextValidUID,
+			input : '',
+			output : '',
+			outputtype : 'html',
+			hidden : false
+		}));
+	}
+
+	/*
+	args:
+		(don't pass cells, i'll just read from the global)
+		done
+		fail
+	*/
+	writeCells(args) {
+		args.done();
+	}
+
+	/*
+	args:
+		done
+		fail
+	*/
+	save(args) {
+		args.done();
+	}
+
+	quit() {
+	}
+
+	/*
+	args:
+		done
+		fail
+	*/
+	newWorksheet(args) {
+		lua.doString("symmathhttp:setupSandbox()");
+		args.done();
+	}
+
+	/*
+	args:
+		done
+		fail
+	*/
+	resetEnv(args) {
+		lua.doString("symmathhttp:setupSandbox()");
+		args.done();
+	}
+
+	/*
+	args:
+		filename
+		done
+		fail
+	*/
+	getWorksheet(args) {
+console.log("getWorksheet", args);
+		//TODO read file from the lua.vm-util.js preloader
+		//and then convert it from a lua object to a json object
+		//and then return it
+		//alright, I might finally need dkjson.lua ...
+		let result = '';
+		luaCapture({
+			callback : () => {
+				lua.doString(`
+local data
+data = 'symmath/`+args.filename+`'
+data = require 'ext.io'.readfile(data)
+data = require 'ext.fromlua'(data)
+data = require 'dkjson'.encode(data)
+print(data)
+`);
+			},
+			output : s => {
+				result += s + '\n';
+console.log("output", s);
+			},
+			error : s => {
+console.log("error", s);
+			}
+		});
+console.log("getWorksheet results", result);
+		args.done(result);
+	}
+
+	async fwdInit(args) {
+		return await initStandalone(args);
+	}
+}
+
+//from here down is specific to my website...
+
+document.querySelectorAll('[class="page"]').forEach(page => {
+	removeFromParent(page);	//used for the page title
+});
+//bodydiv.style.paddingLeft = '200px';	//make this match the menu width
+bodydiv.style.width = '100%';
+
+//const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
+
+
+const server = new EmulatedServer();
+
+//load the standalone.lua equiv in pure js
+
+// before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
+lua.doString(`package.loaded.ffi = nil`);
+
+// now add langfix so any subsequent loads will be using langfix syntax
+lua.doString(`require 'langfix'`);
+
+lua.doString(`
 local js = require 'js'
 local window = js.global
 
@@ -135,7 +428,7 @@ end
 function SymmathHTTP:runCell(cell)
 	self:log(2, 'running...')
 	self:log(2, showcode(cell.input))
-	window.luaCaptureBuffer = ''
+	--window.luaCaptureBuffer = ''
 	cell.haserror = nil
 
 	-- TODO use this in cell env print() and io.write()
@@ -249,7 +542,7 @@ self:log(5, "cellinput is now "..findlhs)
 			results = table.pack(assert(load(cell.input, nil, nil, self.env))())
 		end
 
-		cell.output = window.luaCaptureBuffer
+		--cell.output = window.luaCaptureBuffer
 		self:log(2, "run() cell.output", cell.output)
 
 		if results.n > 0 then
@@ -285,314 +578,55 @@ symmathhttp = SymmathHTTP()
 
 `);
 
-		lua.outputBuffer = '';
-	}
-
-	getCellForUID(uid) {
-		let ctrl = serverBase.findCtrlForUID(uid);
-		if (!ctrl) return;
-		return ctrl.cell;
-	}
-
-	/*
-	args:
-		done : function(cellsjson)
-		fail
-	*/
-	getCells(args) {
-		args.done(JSON.stringify(serverBase.cells));
-	}
-
-	/*
-	args:
-		uid
-		outputtype
-		done
-		fail
-	*/
-	setOutputType(args) {
-		let cell = this.getCellForUID(args.uid);
-		if (!cell) args.fail();
-		cell.outputtype = args.outputtype;
-		args.done(JSON.stringify(cell));
-	}
-
-	/*
-	args:
-		uid
-		done
-		fail
-	*/
-	remove(args) {
-		//callback is going to remove the js cell anyways, so
-		args.done();
-	}
-
-	encodeString(s) {
-		// TODO search for the # of ='s that isn't used in the string
-		return '[=======[' + s + ']=======]';
-	}
-
-	/*
-	args:
-		uid,
-		cellinput,
-		done
-		fail
-	*/
-	run(args) {
-		const lua = this.lua;
-		let thiz = this;
-		let cell = this.getCellForUID(args.uid);
-		cell.input = args.cellinput;
-		//here's where the lua interpretter comes in
+lua.outputBuffer = '';
 
 
-		let output = '';
-		this.lua.capture({
-			callback : () => {
-				const code = `
-currentRunningCell = {
-	uid=` + cell.uid + `,
-	input=` + thiz.encodeString(cell.input) + `,
-	output='',
-	outputtype=` + thiz.encodeString(cell.outputtype) + `,
-	hidden=` + (cell.hidden ? "true" : "false") + `
-}
-symmathhttp:runCell(currentRunningCell)
-print(currentRunningCell.output)
-`;
-console.log(code);
-				thiz.lua.execute(code);
-			},
-			output : s => {
-				s += '\n';
-console.log("output", s);
-				output += s;
-			},
-			error : s => {
-				//I don't' think this is ever hit
-				s += '\n';
-console.log("error", s);
-				output += s;
-			}
-		});
-		cell.output = output;
 
-		this.lua.capture({
-			callback : () => {
-				thiz.lua.execute("print(currentRunningCell.haserror and 'true' or 'false')");
-			},
-			output : s => {
-console.log("haserror?", s);
-				cell.haserror = s == 'true';
-			},
-		});
+// mkdir where to store the user worksheets
+//FS.mkdir('user-worksheets');
 
-		//let the browser handle some input
-		setTimeout(() => {
-			args.done(JSON.stringify(cell));
-		}, 0);
-	}
+// copy premade worksheets into the folder ... or not? or only if there's no local storage? or idk? a locak storage flag for initializing them?
+// or put them in their own folder ?
+// then copy local storage worksheets that the user has made
 
-	/*
-	args:
-		uid
-		hidden
-	*/
-	setHidden(args) {
-		let cell = this.getCellForUID(args.uid);
-		if (!cell) (args.fail || fail)();
-		cell.hidden = args.hidden;
-		if (args.done) args.done();
-	}
+// TODO replace this with lua-packages.js
+let worksheets = [];
 
-	/*
-	args:
-		uid (optional) cell to insert before
-		done : function(celljson),
-		fail
-	*/
-	newCell(args) {
-		//make sure this matches standalone.lua's Cell ctor
-		args.done(JSON.stringify({
-			uid : ++this.nextValidUID,
-			input : '',
-			output : '',
-			outputtype : 'html',
-			hidden : false
-		}));
-	}
-
-	/*
-	args:
-		(don't pass cells, i'll just read from the global)
-		done
-		fail
-	*/
-	writeCells(args) {
-		args.done();
-	}
-
-	/*
-	args:
-		done
-		fail
-	*/
-	save(args) {
-		args.done();
-	}
-
-	quit() {
-	}
-
-	/*
-	args:
-		done
-		fail
-	*/
-	newWorksheet(args) {
-		this.lua.execute("symmathhttp:setupSandbox()");
-		args.done();
-	}
-
-	/*
-	args:
-		done
-		fail
-	*/
-	resetEnv(args) {
-		this.lua.execute("symmathhttp:setupSandbox()");
-		args.done();
-	}
-
-	/*
-	args:
-		filename
-		done
-		fail
-	*/
-	getWorksheet(args) {
-		const lua = this.lua;
-console.log("getWorksheet", args);
-		//TODO read file from the lua.vm-util.js preloader
-		//and then convert it from a lua object to a json object
-		//and then return it
-		//alright, I might finally need dkjson.lua ...
-		let result = '';
-		this.lua.capture({
-			callback : () => {
-				lua.execute(
-`
-local data
-data = 'symmath/`+args.filename+`'
-data = require 'ext.io'.readfile(data)
-data = require 'ext.fromlua'(data)
-data = require 'dkjson'.encode(data)
-print(data)
-`
-);
-			},
-			output : s => {
-				result += s + '\n';
-console.log("output", s);
-			},
-			error : s => {
-console.log("error", s);
-			}
-		});
-console.log("getWorksheet results", result);
-		args.done(result);
-	}
-
-	async fwdInit(args) {
-		return await initStandalone(args);
-	}
-}
-
-//from here down is specific to my website...
-
-//Lua is the lua.vm.js compiled-to-js lua
-//lua is my wrapper of it
-document.querySelectorAll('[class="page"]').forEach(page => {
-	removeFromParent(page);	//used for the page title
+luaPackages.symmath.forEach(fileset => {
+	fileset.files.forEach(file => {
+		const entry = {
+			url : (fileset.from + '/' + file).replace('+', '%2b'),
+			dest : fileset.to + '/' + file,
+		};
+		if (fileset.from.substr(-6) == '/tests' || fileset.from.indexOf('/tests/') != -1) {
+			worksheets.push(entry);
+		}
+	});
 });
-//bodydiv.style.paddingLeft = '200px';	//make this match the menu width
-bodydiv.style.width = '100%';
+worksheets = worksheets.map(info => {
+	if (info.dest.substr(0,14) != 'symmath/tests/') throw "expected all test file prefixes to start with symmath/tests/ but found "+info.dest;
+	return info.dest.substr(14);
+}).filter(fn => {
+	return fn.substring(fn.length-8) == '.symmath';
+}).map(fn => {
+	return fn.substring(0, fn.length-8);
+});
+worksheets.sort();
 
-//const gnuplot = new Gnuplot("gnuplot-JS/gnuplot.js");
-
-let luaCaptureBuffer = '';
-
-const lua = new EmbeddedLuaInterpreter({
-	packages : [
-		'dkjson',
-		'template',
-		'ext',
-		'parser',
-		'langfix',
-		'bignumber',
-		'complex',
-		'gnuplot',
-		'symmath',
-	],
-	packageTests : [
-		'symmath'
-	],
-	autoLaunch : true,
-	done : async function() {
-		removeFromParent(loadingHeader);
-window.lua = this.lua;
-
-		this.print = s => {
-			luaCaptureBuffer += s;
-			console.log(s);
-		};
-		this.printErr = s => {
-			luaCaptureBuffer += s;
-			console.log(s);
-		};
-
-		const server = new EmulatedServer();
-
-		//load the standalone.lua equiv in pure js
-		server.onLuaInit(this);
-		//TODO maybe put everything in this function inside here?
-
-		// mkdir where to store the user worksheets
-		//FS.mkdir('user-worksheets');
-
-		// copy premade worksheets into the folder ... or not? or only if there's no local storage? or idk? a locak storage flag for initializing them?
-		// or put them in their own folder ?
-		// then copy local storage worksheets that the user has made
-
-		// TODO replace this with lua-packages.js
-		const worksheets = luaVmPackageInfos.symmath.tests.map(info => {
-			if (info.dest.substr(0,14) != 'symmath/tests/') throw "expected all test file prefixes to start with symmath/tests/ but found "+info.dest;
-			return info.dest.substr(14);
-		}).filter(fn => {
-			return fn.substring(fn.length-8) == '.symmath';
-		}).map(fn => {
-			return fn.substring(0, fn.length-8);
-		});
-		worksheets.sort();
-
-		//init on the standalone html frontend to symmath
-		// TODO give it an object?  so its not just a global?
-		await server.fwdInit({
-			server : server,
-			root : bodydiv,
-			done : () => {
-				const worksheetDiv = document.querySelector('[class="worksheetDiv"]');
-				worksheetDiv.style.padding = '10px';
-				worksheetDiv.style.marginRight = '10px';
-			},
-			worksheets : worksheets,
-			worksheetFilename : initArgs.worksheetFilename,
-			symmathPath : initArgs.symmathPath,
-			disableQuit : true,	// no need to quit in js ...
-		});
+//init on the standalone html frontend to symmath
+// TODO give it an object?  so its not just a global?
+await server.fwdInit({
+	server : server,
+	root : bodydiv,
+	done : () => {
+		const worksheetDiv = document.querySelector('[class="worksheetDiv"]');
+		worksheetDiv.style.padding = '10px';
+		worksheetDiv.style.marginRight = '10px';
 	},
+	worksheets : worksheets,
+	worksheetFilename : initArgs.worksheetFilename,
+	symmathPath : initArgs.symmathPath,
+	disableQuit : true,	// no need to quit in js ...
 });
 
 };
