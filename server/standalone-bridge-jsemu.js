@@ -1,12 +1,9 @@
 // local / emulated lua in javascript ?
 import {Div} from '/js/dom.js';
-import {removeFromParent} from '/js/util.js';
+import {removeFromParent, addPackage} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
-
-
-import {newLua} from '/js/lua-interop.js';
-import {addPackage} from '/js/lua.vm-util.js';
 import {luaPackages} from '/js/lua-packages.js';
+import {newLua} from '/js/lua-interop.js';
 
 /*
 I'd make this a lua-interop, but it seems that changing lua.lib.print/Err doesn't reflect in the emscripten/wasm code...
