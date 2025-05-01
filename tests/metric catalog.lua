@@ -705,7 +705,7 @@ for _,info in ipairs(spacetimes) do
 		print(...)
 		print'<br>'
 	end
-	
+
 	print(MathJax.header)
 
 --print('<a name="'..info.title..'">')
@@ -716,7 +716,7 @@ for _,info in ipairs(spacetimes) do
 	-- and this is the associated coordinates
 	local baseCoords = info.baseCoords
 	local embedded = info.embedded
-	
+
 	printbr([[chart coordinates: $x^\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return x.name end):concat', '..[[\}$]])
 	printbr([[chart coordinate basis: $e_\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return 'e_{\\tilde{'..x.name..'}}' end):concat', '..[[\}$]])
 	printbr([[embedding coordinates: $u^I = \{]]..table.mapi(embedded, function(x) return x.name end):concat', '..[[\}$]])
@@ -726,7 +726,7 @@ for _,info in ipairs(spacetimes) do
 	-- dimension of manifold
 	local n = #baseCoords
 
-	
+
 	local manifold = Tensor.Manifold()
 	-- embedded
 	local embeddedChart = manifold:Chart{coords=embedded, symbols='IJKLMN', metric=function() return info.flatMetric end}
@@ -817,7 +817,7 @@ for _,info in ipairs(spacetimes) do
 			..' has operator $e_{'..baseCoords[i].name..'}(\\zeta) = $'..tangentSpaceOperators[i](zeta))
 	end
 	printbr()
-	
+
 	-- potentially-anholonomic chart:
 	local chart = manifold:Chart{coords=anholonomicCoords, tangentSpaceOperators=tangentSpaceOperators}
 
@@ -828,7 +828,7 @@ for _,info in ipairs(spacetimes) do
 	if info.chart or info.basis then
 -- [[
 		e = Tensor'_u^I'
-		
+
 		-- calc basis by applying operators to chart
 		if info.chart then
 			local u = info.chart()
@@ -882,7 +882,7 @@ for _,info in ipairs(spacetimes) do
 			printbr(var'e''^u_I':eq(eU))
 		end
 		printbr()
-	
+
 		-- show orthogonality of basis and its inverse
 		printbr((var'e''_u^I' * var'e''^v_I'):eq((e'_u^I' * eU'^v_I')()))
 		printbr((var'e''_u^I' * var'e''^u_J'):eq((e'_u^I' * eU'^u_J')()))
@@ -895,8 +895,8 @@ for _,info in ipairs(spacetimes) do
 		--[[
 		e_u = e_u^I d/dx^I
 		and e^v_J is the inverse of e_u^I
-		such that e_u^I e^v_I = delta_u^v and e_u^I e^u_J = delta^I_J
-		
+		such that e_u^I e^v_I = δ_u^v and e_u^I e^u_J = δ^I_J
+
 		[e_u, e_v] = e_u e_v - e_v e_u
 			= e_u^I d/dx^I (e_v^J d/dx^J) - e_v^I d/dx^I (e_u^J d/dx^J)
 			= e_u^I ( (d/dx^I e_v^J) d/dx^J + e_v^J d/dx^I d/dx^J) - e_v^I ((d/dx^I e_u^J) d/dx^J + e_u^J d/dx^I d/dx^J)
@@ -904,9 +904,9 @@ for _,info in ipairs(spacetimes) do
 			= (e_u^I e_v^J_,I - e_v^I e_u^J_,I) d/dx^J
 			= (e_u^I (dx^a/dx^I d/dx^a e_v^J) - e_v^I (dx^a/dx^I d/dx^a e_u^J)) d/dx^J
 			= (e_u^I e_v^J_,a - e_v^I e_u^J_,a) e^a_I d/dx^J
-			= (delta_u^a e_v^J_,a - delta_v^a e_u^J_,a) d/dx^J
+			= (δ_u^a e_v^J_,a - δ_v^a e_u^J_,a) d/dx^J
 			= (e_v^J_,u - e_u^J_,v) d/dx^J
-			
+
 		so for [e_u, e_v] = c_uv^w e_w = c_uv^w e_w^J d/dx^J
 		we find c_uv^w e_w^I = (e_v^I_,u - e_u^I_,v)
 		or c_uv^w = (e_v^I_,u - e_u^I_,v) e^w_I
@@ -929,7 +929,7 @@ for _,info in ipairs(spacetimes) do
 			printbr(var'g''_uv':eq(g))
 		end
 		printbr()
-	
+
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 	elseif info.metric then
 		g = info.metric()
@@ -949,7 +949,7 @@ for _,info in ipairs(spacetimes) do
 
 	-- TODO just put this once in the intro?
 	printbr(var'\\Gamma''_abc':eq(frac(1,2)*(var'g''_ab,c' + var'g''_ac,b' - var'g''_bc,a' + var'c''_abc' + var'c''_acb' - var'c''_cba')))
-	
+
 	local Props = require 'symmath.physics.diffgeom':subclass()
 	function Props:doPrint(field)
 		print(field.title..':')
@@ -986,7 +986,7 @@ for _,info in ipairs(spacetimes) do
 	local divExpr = divVarExpr:replace(var'A', A):replace(var'\\Gamma', Gamma)
 	-- TODO only simplify TensorRef, so the indexes are fixed
 	printbr('divergence:', divVarExpr:eq(divExpr():factorDivision()))
-	
+
 	printbr'geodesic:'
 	-- TODO unravel equaliy, or print individual assignments
 	printbr((d2x'^a':eq(-Gamma'^a_bc' * dx'^b' * dx'^c'))():factorDivision())
@@ -1032,9 +1032,9 @@ printbr()
 		local conn = Matrix:lambda({n,n}, function(a,b)
 			return connCoord[a][i][b]
 		end)
-		
+
 		local name = baseCoords[i].name
-	
+
 		printbr(var('[\\Gamma_'..name..']'):eq(conn))
 		printbr()
 
@@ -1106,29 +1106,29 @@ end
 		--]]
 		printbr('=', expNegIntExpr)
 		printbr()
-	
+
 		print(P(' _'..name)^-1, '=', exp(origIntConn))
 		printbr('=', expIntExpr)
 		printbr()
-	
+
 		propInv[i] = expIntExpr
 		propFwd[i] = expNegIntExpr
 	end
 
 	printbr'propagator commutation:'
 	printbr()
-	
+
 	for i=1,n-1 do
 		local Pi = propFwd[i]
 		local Piname = P(' _'..baseCoords[i].name)
-		
+
 		local PiL = Pi:clone()
 		for k=1,n do
 			if k ~= i then
 				PiL = PiL:replace(baseCoords[k], xLs[k])
 			end
 		end
-		
+
 		for j=i+1,n do
 			local Pj = propFwd[j]
 			local Pjname = P(' _'..baseCoords[j].name)
@@ -1139,20 +1139,20 @@ end
 					PjL = PjL:replace(baseCoords[k], xLs[k])
 				end
 			end
-		
+
 			local PiR = PiL:replace(xLs[j], xRs[j])
 			local PjR = PjL:replace(xLs[i], xRs[i])
-	
+
 			-- Pj propagates coord j from L to R
 			-- so in Pi replace coord j from arbitrary to jR
 			local Pij = PiR * PjL
-			
+
 			-- Pi propagates coord i from L to R
 			-- so in Pj replace coord i from arbitrary to iR
 			local Pji = PjR * PiL
-			
+
 			local Pcij = (Pij - Pji)()
-			
+
 			printbr('[', Piname, ',', Pjname, '] =', Pij - Pji, '=', Pcij)
 		end
 	end
@@ -1187,16 +1187,16 @@ end
 			expr = expr
 				:replace((xRs[k] - xLs[k])(), deltas[k])
 				:replace((xLs[k] - xRs[k])(), -deltas[k])
-				
+
 				:replace((xRs[k]^2 - xLs[k]^2)(), deltaSqs[k])
 				:replace((xLs[k]^2 - xRs[k]^2)(), -deltaSqs[k])
-				
+
 				:replace((xRs[k]^3 - xLs[k]^3)(), deltaCubes[k])
 				:replace((xLs[k]^3 - xRs[k]^3)(), -deltaCubes[k])
-				
+
 				:replace((cos(xRs[k]) - cos(xLs[k]))(), deltaCoss[k])
 				:replace((cos(xLs[k]) - cos(xRs[k]))(), -deltaCoss[k])
-		
+
 				-- hmm
 				:replace((xRs[k]^2)(), xLs[k]^2 + deltaSqs[k])()
 				:replace((xRs[k]^3)(), xLs[k]^3 + deltaCubes[k])()
@@ -1217,7 +1217,7 @@ end
 		coordVolumeElem = sqrt(detg)()
 	end
 	printbr('volume element: ', coordVolumeElem)
-	
+
 	local cellVolume = coordVolumeElem
 	for k=1,n do
 		if not cellVolume:findChild(baseCoords[k]) then
@@ -1319,7 +1319,7 @@ end
 	printbr()
 
 	-- now repeat, except as you eval, substitute for the deltas
-	
+
 	local sum = 0
 	for k,coordk in ipairs(basisOperators) do
 		local kLname = xLs[k].name
