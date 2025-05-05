@@ -60,7 +60,7 @@ await Promise.all([
 	luaPackages.symmath,
 ].map(pkg => addPackage(FS, pkg)));
 
-lua.doString(` package.path = './?.lua;/?.lua;/?/?.lua' `);
+lua.run(` package.path = './?.lua;/?.lua;/?/?.lua' `);
 FS.chdir('/');
 
 
@@ -165,7 +165,7 @@ symmathhttp:runCell(currentRunningCell)
 print(currentRunningCell.output)
 `;
 console.log(code);
-				lua.doString(code);
+				lua.run(code);
 			},
 			output : s => {
 				s += '\n';
@@ -183,7 +183,7 @@ console.log("error", s);
 
 		luaCapture({
 			callback : () => {
-				lua.doString("print(currentRunningCell.haserror and 'true' or 'false')");
+				lua.run("print(currentRunningCell.haserror and 'true' or 'false')");
 			},
 			output : s => {
 console.log("haserror?", s);
@@ -254,7 +254,7 @@ console.log("haserror?", s);
 		fail
 	*/
 	newWorksheet(args) {
-		lua.doString("symmathhttp:setupSandbox()");
+		lua.run("symmathhttp:setupSandbox()");
 		args.done();
 	}
 
@@ -264,7 +264,7 @@ console.log("haserror?", s);
 		fail
 	*/
 	resetEnv(args) {
-		lua.doString("symmathhttp:setupSandbox()");
+		lua.run("symmathhttp:setupSandbox()");
 		args.done();
 	}
 
@@ -283,7 +283,7 @@ console.log("getWorksheet", args);
 		let result = '';
 		luaCapture({
 			callback : () => {
-				lua.doString(`
+				lua.run(`
 local data
 data = 'symmath/`+args.filename+`'
 data = require 'ext.io'.readfile(data)
@@ -325,12 +325,12 @@ const server = new EmulatedServer();
 //load the standalone.lua equiv in pure js
 
 // before anything, since this is js, and afaik there's no luajit in js, let me disable my buggy luaffi
-lua.doString(`package.loaded.ffi = nil`);
+lua.run(`package.loaded.ffi = nil`);
 
 // now add langfix so any subsequent loads will be using langfix syntax
-lua.doString(`require 'langfix'`);
+lua.run(`require 'langfix'`);
 
-lua.doString(`
+lua.run(`
 local js = require 'js'
 local window = js.global
 
