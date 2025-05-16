@@ -17,7 +17,7 @@ class RemoteServer {
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -33,7 +33,7 @@ class RemoteServer {
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -48,7 +48,7 @@ class RemoteServer {
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -76,7 +76,7 @@ class RemoteServer {
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -91,7 +91,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -106,7 +106,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => {args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -129,7 +129,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -143,7 +143,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); })
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	quit(args) {
 		fetch("quit")
@@ -152,7 +152,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); })
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -166,7 +166,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -180,7 +180,7 @@ console.log('sethidden', args.done);
 			response.text()
 			.then(text => { args.done?.(text); });
 		}).catch(e => { args.fail?.(e); });
-	},
+	}
 
 	/*
 	args:
@@ -204,14 +204,13 @@ args:
 	symmathPath
 	worksheets
 */
-const init = (args) => {
-	await initStandalone({
+const init = (args) =>
+	initStandalone({
 		server : new RemoteServer(),
 		root : document.body,
 		worksheets : args.worksheets,
 		worksheetFilename : args.worksheetFilename,
 		symmathPath : args.symmathPath,
 	});
-}
 
 export {init};
