@@ -25,6 +25,9 @@ const luaCapture = args => {
 	capturePrintErr = oldPrintErr;
 };
 
+// gnuplot lua<->js will need this until i get blocking in lua->js calls to work
+window.luaCaptureCell = undefined;
+
 let capturePrint, capturePrintErr;
 const lua = await newLua({
 	print : s => {
@@ -150,6 +153,8 @@ class EmulatedServer {
 		//here's where the lua interpretter comes in
 
 
+		window.luaCaptureCell = cell;	//for gnuplot
+		window.luaCaptureDone = args.done;
 		let output = '';
 		luaCapture({
 			callback : () => {
@@ -181,6 +186,8 @@ console.log("error", s);
 		});
 		cell.output = output;
 
+		window.luaCaptureCell = undefined;	//for gnuplot
+		window.luaCaptureDone = undefined;
 		luaCapture({
 			callback : () => {
 				lua.run("print(currentRunningCell.haserror and 'true' or 'false')");
@@ -337,22 +344,6 @@ local window = js.global
 -- embedded-javascript version of standalone.lua
 -- TODO superclass some of this with standalone.lua ?
 
--- here gnuplot
---somehow change the in-lua gnuplot execution to instead call the emscripten lua gnuplot ...
-package.loaded.gnuplot = function(args)
-	-- override os.execute to instead forward to gnuplot.run
-	-- TODO the gnuplot is in its own emscripten, how about building that as a side-module
-	-- call js from lua
-	--[[
-	local gnuplot = window.gnuplot
-	gnuplot:run(inscript, e => {
-		gnuplot:getFile(outputFilename, e => {
-			error'TODO insert output svg here'
-		});
-	});
-	--]]
-end
-
 -- TODO verify this with the new build
 -- emscripten js throws errors on calling io.popen
 -- and ext.os is using popen to determine windows or not ...
@@ -363,6 +354,31 @@ function io.popen(procname)
 			return ''
 		end,
 	}
+end
+
+-- here gnuplot
+-- change the in-lua gnuplot execution to instead call the emscripten lua gnuplot ...
+-- override os.execute to instead forward to gnuplot.run
+-- TODO the gnuplot is in its own emscripten, how about building that as a side-module
+local gnuplot = require 'gnuplot'
+function gnuplot:exec(cmd)
+	local path = require 'ext.path'
+	local string = require 'ext.string'
+
+	-- cmd should be "gnuplot [-p] [cmdfilename]"
+	local cmdfn = string.split(string.trim(cmd), '%s+'):last()
+	local cmddata = assert(path(cmdfn):read())
+
+	-- put an empty file there for the symmath.export.GnuPlot.plot function to fill an output with empty html
+	path'tmp.svg':write''
+
+	-- take note whoever is capturing output at the moment
+	local luaCaptureCell = window.luaCaptureCell
+	local luaCaptureDone = window.luaCaptureDone
+	-- now ask js to take its sweet time and get back to us
+	window.runGnuplot(nil, cmddata, luaCaptureCell, luaCaptureDone)
+
+	return true, 'exit', 0
 end
 
 local class = require 'ext.class'
