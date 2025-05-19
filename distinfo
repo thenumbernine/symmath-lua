@@ -472,6 +472,7 @@ files = {
 deps = {
 	"bignumber",
 	"complex",
+	"dkjson",
 	"ext",
 	"gnuplot",
 	"matrix",
