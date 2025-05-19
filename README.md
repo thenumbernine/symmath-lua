@@ -624,7 +624,7 @@ Prints the individual nonzero values of the tensor, or '0' if they are all zero.
 
 ### Tensor Index Expressions
 
-Indexes can be added to any expression using Lua's call + strig operator in the same way they are added to dense tensors.
+Indexes can be added to any expression using Lua's call + string operator in the same way they are added to dense tensors.
 
 `t = var't' print(t'_ij')`
 Create a Tensor.Ref object dereferencing variable 't' with indexes 'i', lowered; and 'j', lowered.
