@@ -1,6 +1,6 @@
 // local / emulated lua in javascript ?
 import {Div} from '/js/dom.js';
-import {removeFromParent, addPackage} from '/js/util.js';
+import {removeFromParent, loadPackageAndDeps} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
 import {luaPackages} from '/js/lua-packages.js';
 import {newLua} from '/js/lua-interop.js';
@@ -51,17 +51,8 @@ lua.newState();
 window.lua = lua;
 
 const FS = lua.lib.FS;
-await Promise.all([
-	luaPackages.dkjson,
-	luaPackages.template,
-	luaPackages.ext,
-	luaPackages.parser,
-	luaPackages.langfix,
-	luaPackages.bignumber,
-	luaPackages.complex,
-	luaPackages.gnuplot,
-	luaPackages.symmath,
-].map(pkg => addPackage(FS, pkg)));
+await loadPackageAndDeps(FS, ['langfix', 'symmath']);
+
 
 lua.run(` package.path = './?.lua;/?.lua;/?/?.lua' `);
 FS.chdir('/');
