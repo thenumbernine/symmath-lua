@@ -1,7 +1,3 @@
-WARNING - failed to parse server/standalone.html.lua: line 1 col 3 code "!doctype html>": line 1 col 3 code "!doctype html>": unknown token !doctype html>
-<html>
-WARNING - failed to parse tests/Z4 - flux PDE noSource usingOnlyUs.lua: line 19268 col 3 code "": line 19268 col 3 code "": expected token="=" tokentype="symbol" but found token=nil type=nil
-WARNING - failed to parse tests/Z4 - flux PDE noSource.lua: line 19196 col 3 code "": line 19196 col 3 code "": expected token="=" tokentype="symbol" but found token=nil type=nil
 name = "symmath"
 files = {
 	["Array.lua"] = "symmath/Array.lua",
