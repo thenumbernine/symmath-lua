@@ -2,7 +2,6 @@
 import {Div} from '/js/dom.js';
 import {removeFromParent, loadPackageAndDeps} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
-import {luaPackages} from '/js/lua-packages.js';
 import {newLua} from '/js/lua-interop.js';
 
 /*
@@ -51,7 +50,8 @@ lua.newState();
 window.lua = lua;
 
 const FS = lua.lib.FS;
-await loadPackageAndDeps(FS, ['langfix', 'symmath']);
+const luaPackages = {};
+await loadPackageAndDeps(FS, ['langfix', 'symmath'], luaPackages);
 
 
 lua.run(` package.path = './?.lua;/?.lua;/?/?.lua' `);
@@ -602,7 +602,7 @@ luaPackages.symmath.forEach(fileset => {
 			url : (fileset.from + '/' + file).replace('+', '%2b'),
 			dest : fileset.to + '/' + file,
 		};
-		if (fileset.from.substr(-6) == '/tests' || fileset.from.indexOf('/tests/') != -1) {
+		if (entry.url.indexOf('/tests/') != -1) {
 			worksheets.push(entry);
 		}
 	});
