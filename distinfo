@@ -143,6 +143,16 @@ files = {
 	["tensor/dual.lua"] = "symmath/tensor/dual.lua",
 	["tensor/symbols.lua"] = "symmath/tensor/symbols.lua",
 	["tensor/wedge.lua"] = "symmath/tensor/wedge.lua",
+	["tidy.lua"] = "symmath/tidy.lua",
+	["visitor/DistributeDivision.lua"] = "symmath/visitor/DistributeDivision.lua",
+	["visitor/Expand.lua"] = "symmath/visitor/Expand.lua",
+	["visitor/ExpandPolynomial.lua"] = "symmath/visitor/ExpandPolynomial.lua",
+	["visitor/Factor.lua"] = "symmath/visitor/Factor.lua",
+	["visitor/FactorDivision.lua"] = "symmath/visitor/FactorDivision.lua",
+	["visitor/Prune.lua"] = "symmath/visitor/Prune.lua",
+	["visitor/Tidy.lua"] = "symmath/visitor/Tidy.lua",
+	["visitor/Visitor.lua"] = "symmath/visitor/Visitor.lua",
+--[[ for symmath standalone only:
 	["tests/ADM Levi-Civita.lua"] = "symmath/tests/ADM Levi-Civita.lua",
 	["tests/ADM formalism.lua"] = "symmath/tests/ADM formalism.lua",
 	["tests/ADM gravity using expressions.lua"] = "symmath/tests/ADM gravity using expressions.lua",
@@ -459,25 +469,17 @@ files = {
 	["tests/wave equation in spacetime.lua"] = "symmath/tests/wave equation in spacetime.lua",
 	["tests/worksheet_spherical_metric.symmath"] = "symmath/tests/worksheet_spherical_metric.symmath",
 	["tests/worksheet_spherical_metric_using_eqs.symmath"] = "symmath/tests/worksheet_spherical_metric_using_eqs.symmath",
-	["tidy.lua"] = "symmath/tidy.lua",
-	["visitor/DistributeDivision.lua"] = "symmath/visitor/DistributeDivision.lua",
-	["visitor/Expand.lua"] = "symmath/visitor/Expand.lua",
-	["visitor/ExpandPolynomial.lua"] = "symmath/visitor/ExpandPolynomial.lua",
-	["visitor/Factor.lua"] = "symmath/visitor/Factor.lua",
-	["visitor/FactorDivision.lua"] = "symmath/visitor/FactorDivision.lua",
-	["visitor/Prune.lua"] = "symmath/visitor/Prune.lua",
-	["visitor/Tidy.lua"] = "symmath/visitor/Tidy.lua",
-	["visitor/Visitor.lua"] = "symmath/visitor/Visitor.lua",
+--]]
 }
 deps = {
 	"bignumber",
 	"complex",
-	"dkjson",
 	"ext",
 	"gnuplot",
 	"matrix",
 	"template",
 	"vec",
+	--"dkjson",
 	--"http",	-- for standalone server
 	--"solver",	-- in tests
 }
