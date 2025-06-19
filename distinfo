@@ -479,7 +479,7 @@ deps = {
 	"matrix",
 	"template",
 	"vec",
-	--"dkjson",
+	"dkjson",
 	--"http",	-- for standalone server
 	--"solver",	-- in tests
 }
