@@ -55,7 +55,7 @@ $i$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.445000ms<br>
+time: 0.332000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -67,7 +67,7 @@ ${\sqrt{-1}} = {i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.404000ms<br>
+time: 0.307000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -91,7 +91,7 @@ ${{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}}\right)}^{\frac{1}{2}}} = {{{i}} {{\sq
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.010000ms<br>
+time: 6.804000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -103,7 +103,7 @@ ${-{{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}}\right)}^{\frac{1}{2}}}} = { {-{i}} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.925000ms<br>
+time: 6.487000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -121,7 +121,7 @@ ${{\left({{{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}}\right)}} \cdot {{-1}}}\right
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.536000ms<br>
+time: 3.708000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -133,7 +133,7 @@ ${-{{\left({{{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}}\right)}} \cdot {{-1}}}\rig
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.586000ms<br>
+time: 4.727000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -151,7 +151,7 @@ ${{\left({{\frac{1}{y}} {{\frac{1}{-1}}{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}}\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.974000ms<br>
+time: 9.271000ms<br>
 stack: size: 35<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -163,7 +163,7 @@ ${-{{\left({{\frac{1}{y}} {{\frac{1}{-1}}{\left({{ {-{x}} {{a}}}{-{{{x}} {{b}}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.129000ms<br>
+time: 10.091000ms<br>
 stack: size: 41<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -193,7 +193,7 @@ ${{{2}^{\frac{-1}{2}}} + {{2}^{\frac{1}{2}}}} = {\frac{3}{\sqrt{2}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.032000ms<br>
+time: 2.561000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -205,7 +205,7 @@ ${{{{2}} \cdot {{{2}^{\frac{-1}{2}}}}} + {{2}^{\frac{1}{2}}}} = {{{2}} {{\sqrt{2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.474000ms<br>
+time: 1.452000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -217,7 +217,7 @@ ${{{{4}} \cdot {{{2}^{\frac{-1}{2}}}}} + {{2}^{\frac{1}{2}}}} = {{{3}} {{\sqrt{2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.790000ms<br>
+time: 1.677000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -235,7 +235,7 @@ ${{{\left({{1} + {\sqrt{3}}}\right)}^{2}} + {{\left({{1}{-{\sqrt{3}}}}\right)}^{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.446000ms<br>
+time: 3.683000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -253,7 +253,7 @@ ${{{{\frac{1}{2}}} {{\sqrt{3}}} {{\frac{\sqrt{2}}{\sqrt{3}}}}} + { {-{\frac{1}{2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.775000ms<br>
+time: 6.584000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -271,7 +271,7 @@ ${{ {-{\frac{1}{3}}} \cdot  {-{{\frac{1}{3}}{\left({{1} + {\sqrt{3}}}\right)}}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.638000ms<br>
+time: 10.202000ms<br>
 stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -289,7 +289,7 @@ ${{\frac{ {-{\sqrt{3}}} {{\sqrt{2}}}}{{{2}} {{\sqrt{3}}}}} + {{\frac{1}{6}} {\sq
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.765000ms<br>
+time: 4.069000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -307,7 +307,7 @@ ${{1} + {{{5}} {{\sqrt{5}}}} + {\sqrt{5}}} = {{1} + {{{6}} {{\sqrt{5}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.205000ms<br>
+time: 1.611000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -319,7 +319,7 @@ ${{1} + {{{25}} {{\sqrt{5}}}} + {\sqrt{5}}} = {{1} + {{{26}} {{\sqrt{5}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.904000ms<br>
+time: 1.839000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -331,7 +331,7 @@ ${{{1} + {{{5}} {{\sqrt{5}}}}}{-{{{5}} {{\sqrt{5}}}}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.645000ms<br>
+time: 0.789000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -349,7 +349,7 @@ ${\frac{-{\left({{1} + {\sqrt{5}}}\right)}}{{{2}} {{\sqrt{3}}}}} = {{{\frac{1}{2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.686000ms<br>
+time: 12.300000ms<br>
 stack: size: 83<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -367,7 +367,7 @@ ${{{{{\frac{1}{3}}{\left({-{\left({{1}{-{\sqrt{3}}}}\right)}}\right)}}} {{\frac{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.638000ms<br>
+time: 11.720000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -385,7 +385,7 @@ ${\frac{ {-{\sqrt{{\sqrt{5}} + {1}}}} {{\left({{1}{-{\sqrt{5}}}}\right)}}}{{{4}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.594000ms<br>
+time: 8.434000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -403,7 +403,7 @@ ${{6} + {{{6}} {{\sqrt{3}}}}} \ne {12}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.749000ms<br>
+time: 2.353000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -421,7 +421,7 @@ ${{{\left({{\sqrt{5}} + {1}}\right)}} {{\left({{\sqrt{5}}{-{1}}}\right)}}} = {4}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.878000ms<br>
+time: 1.634000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -433,7 +433,7 @@ ${\sqrt{{{\left({{\sqrt{5}} + {1}}\right)}} {{\left({{\sqrt{5}}{-{1}}}\right)}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.234000ms<br>
+time: 3.570000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -451,7 +451,7 @@ ${\frac{{1} + {\frac{2}{\sqrt{3}}}}{{{2}} {{\sqrt{3}}}}} = {{\frac{1}{6}}{\left(
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.785000ms<br>
+time: 1.863000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -469,7 +469,7 @@ ${{{{\frac{1}{3}}} \cdot  {-{\left({{1}{-{\sqrt{3}}}}\right)}} {{\frac{1}{3}}} \
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.599000ms<br>
+time: 10.800000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -487,7 +487,7 @@ ${{\frac{1}{\sqrt{6}}} + {\frac{1}{\sqrt{6}}}} = {\frac{2}{\sqrt{6}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.734000ms<br>
+time: 1.773000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>/:Prune:divToPowSub<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -505,7 +505,7 @@ ${{\frac{1}{384}}{\left({{{{32}} {{\sqrt{3}}}} + {{{32}} {{\sqrt{15}}}}}\right)}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 35.034000ms<br>
+time: 24.480000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -523,7 +523,7 @@ ${\frac{\sqrt{5}}{{{2}} {{\sqrt{3}}}}} = {{\frac{1}{6}} {\sqrt{15}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.290000ms<br>
+time: 7.903000ms<br>
 stack: size: 111<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>*:Prune:combineMulOfLikePow_constants<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>*:Prune:combineMulOfLikePow_constants<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -541,7 +541,7 @@ ${\frac{-1}{{{2}} {{\sqrt{3}}}}} = {-{\sqrt{\frac{1}{12}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.045000ms<br>
+time: 6.126000ms<br>
 stack: size: 98<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>^:Prune:oneToTheX<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -553,7 +553,7 @@ ${-{\sqrt{\frac{1}{12}}}} \ne {\sqrt{\frac{1}{12}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.483000ms<br>
+time: 5.426000ms<br>
 stack: size: 137<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>Prune<br><li>^:Expand:frac<br><li>Expand<br><li>^:Prune:oneToTheX<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -571,7 +571,7 @@ ${{{{\sqrt{2}}} {{\sqrt{\frac{1}{3}}}} \cdot  {-{\frac{1}{3}}}} + { {-{\frac{1}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.354000ms<br>
+time: 13.221000ms<br>
 stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -589,7 +589,7 @@ ${{1} + {{{\frac{-{\left({{7}{-{{{3}} {{\sqrt{5}}}}}}\right)}}{{{3}} {{\left({{3
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.882000ms<br>
+time: 4.716000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -607,7 +607,7 @@ ${\frac{{\frac{1}{2}}{\left({-{\left({{\sqrt{5}}{-{1}}}\right)}}\right)}}{\sqrt{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 36.678000ms<br>
+time: 26.531000ms<br>
 stack: size: 120<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>Constant:Tidy:apply<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>^:Prune:distributePow<br><li>^:Prune:expandMulOfLikePow<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:frac<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:sqrtFix4<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -625,7 +625,7 @@ ${{{\sqrt{\frac{15}{16}}}} {{\sqrt{\frac{2}{3}}}}} = {\frac{\sqrt{5}}{{{2}} {{\s
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.241000ms<br>
+time: 3.001000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -663,7 +663,7 @@ ${{{2}} {{\sqrt{2}}} {{\sqrt{3}}}} = {{{2}} {{\sqrt{2}}} {{\sqrt{3}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.821000ms<br>
+time: 1.592000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>^:Prune:sqrtFix4<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -693,7 +693,7 @@ ${{{\sqrt{f}}} {{\sqrt{g}}} {{\left({{\sqrt{g}} + {f}}\right)}}} = {{{\sqrt{f}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.774000ms<br>
+time: 7.241000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:flattenAddMul<br><li>^:Prune:xToTheOne<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -705,7 +705,7 @@ ${{{{\sqrt{f}}} {{\sqrt{g}}}} + {{{g}} {{\sqrt{f}}}}} = {{{\sqrt{f}}} {{\sqrt{g}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.175000ms<br>
+time: 3.637000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>+:Prune:flattenAddMul<br><li>^:Prune:xToTheOne<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -735,7 +735,7 @@ ${{\sqrt{15}}{-{\sqrt{15}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.394000ms<br>
+time: 0.302000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -747,7 +747,7 @@ ${{\sqrt{6}}{-{\sqrt{{{2}} \cdot {{3}}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.504000ms<br>
+time: 0.381000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -759,7 +759,7 @@ ${{\sqrt{6}}{-{{{\sqrt{2}}} {{\sqrt{3}}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.510000ms<br>
+time: 0.934000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -771,7 +771,7 @@ ${{{\frac{1}{2}} {\sqrt{15}}}{-{{\frac{1}{2}} {\sqrt{15}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.424000ms<br>
+time: 2.953000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -783,7 +783,7 @@ ${{\sqrt{{{6}} {{x}}}}{-{{{\sqrt{2}}} {{\sqrt{3}}} {{\sqrt{x}}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.055000ms<br>
+time: 1.229000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -807,7 +807,7 @@ ${{{\left({{3} + {\sqrt{5}}}\right)}} {{\left({{3}{-{\sqrt{5}}}}\right)}}} = {4}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.048000ms<br>
+time: 1.293000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -819,7 +819,7 @@ ${{{4}} {{\sqrt{{3} + {\sqrt{5}}}}}} = {{{4}} {{\sqrt{{3} + {\sqrt{5}}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.164000ms<br>
+time: 0.902000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -914,9 +914,9 @@ stack traceback:<br>
 	sqrt.lua:120: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:97: in function 'timer'<br>
 	sqrt.lua:9: in main chunk<br>
-	[C]: at 0x58acd9dd4350
+	[C]: at 0x58d4d1c69350
 </td><td>
-time: 8.832000ms<br>
+time: 5.531000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -928,7 +928,7 @@ ${{{\left({{3} + {\sqrt{5}}}\right)}} {{\left({{3}{-{\sqrt{5}}}}\right)}} {{\sqr
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.891000ms<br>
+time: 3.672000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1123,9 +1123,9 @@ stack traceback:<br>
 	sqrt.lua:120: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:97: in function 'timer'<br>
 	sqrt.lua:9: in main chunk<br>
-	[C]: at 0x58acd9dd4350
+	[C]: at 0x58d4d1c69350
 </td><td>
-time: 26.808000ms<br>
+time: 20.953000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>^:Expand:frac<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1276,8 +1276,8 @@ stack traceback:<br>
 	sqrt.lua:120: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:97: in function 'timer'<br>
 	sqrt.lua:9: in main chunk<br>
-	[C]: at 0x58acd9dd4350
+	[C]: at 0x58d4d1c69350
 </td><td>
-time: 23.032000ms<br>
+time: 19.849000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>sqrt:Prune:apply<br><li>Prune<br><li>^:Expand:frac<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

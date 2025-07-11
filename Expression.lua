@@ -2225,6 +2225,7 @@ end
 
 -- these are helpers that go with iteradd and itermul:
 
+-- TODO rename to 'addToTable' for consistency with 'mulToTable'
 function Expression.sumToTable(s)
 	local t = table()
 	for x in s:iteradd() do
@@ -2239,6 +2240,25 @@ function Expression.mulToTable(s)
 		t:insert(x)
 	end
 	return t
+end
+
+-- inverse of Expression.sumToTable
+-- did I put this somewhere else already?
+function Expression.tableToSum(t)
+	add = add or require 'symmath.op.add'
+	Constant = Constant or require 'symmath.Constant'
+	local n = #t
+	if n == 0 then return Constant(0) end
+	if n == 1 then return t[1] end
+	return add(table.unpack(t))
+end
+function Expression.tableToMul(t)
+	mul = mul or require 'symmath.op.mul'
+	Constant = Constant or require 'symmath.Constant'
+	local n = #t
+	if n == 0 then return Constant(1) end
+	if n == 1 then return t[1] end
+	return mul(table.unpack(t))
 end
 
 

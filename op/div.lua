@@ -55,7 +55,7 @@ end
 -- lim (f/g) = (lim f)/(lim g) so long as (lim g) ~= 0
 function div:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
---DEBUG:local print = symmath.tostring.print or print
+--DEBUG(@5):local print = symmath.tostring.print or print
 	local prune = symmath.prune
 	local Limit = symmath.Limit
 	local Side = Limit.Side
@@ -254,7 +254,7 @@ div.rules = {
 -- ... and then let the next Prune() call divide them out
 		{polydiv = function(factor, expr)
 			symmath = symmath or require 'symmath'
---DEBUG:local print = symmath.tostring.print or print
+--DEBUG(@5):local print = symmath.tostring.print or print
 			local Constant = symmath.Constant
 
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
@@ -476,14 +476,16 @@ div.rules = {
 		-- => (a*(p - i*q))/(p^2 + q^2)
 		{complex = function(prune, expr)
 			symmath = symmath or require 'symmath'
+--DEBUG(@5):local print = symmath.tostring.print or print
+--DEBUG(@5):print('Prune/complex checking for a / (p + i q)', symmath.export.SingleLine(expr))
 			local Constant = symmath.Constant
 			local i = symmath.i
-			local Wildcard = symmath.Wildcard
 			local a, b = table.unpack(expr)
-			-- [[ wildcards, but try to avoid default patterns infinite recursion
+			--[[ wildcards, but try to avoid default patterns infinite recursion
+			local Wildcard = symmath.Wildcard
 			local p, q = b:match(
 				Wildcard{index=1, cannotDependOn=i}
-				+ symmath.i * Wildcard{index=2, cannotDependOn=i, atLeast=1}
+				+ i * Wildcard{index=2, cannotDependOn=i, atLeast=1}
 			)
 			-- TODO why is #2 matching to a default of 0 when atLeast=1 is set ...
 			-- how to get the match() to avoid matching to reals ...
@@ -491,13 +493,50 @@ div.rules = {
 			and q
 			then
 				if not Constant.isValue(q, 0) then
-					return prune(a * (p - symmath.i * q) / (p^2 + q^2))
+					return prune(a * (p - i * q) / (p^2 + q^2))
 				end
 			end
 			--]]
-			--[[ non-wildcards ... should run faster but takes a lot more if-conditions
-			if b == i then
-				return prune(-i * a)
+			-- [[ non-wildcards ... should run faster but takes a lot more if-conditions
+			local Expression = symmath.Expression
+			local unm = symmath.op.unm
+			local mul = symmath.op.mul
+			local denomTermWithI = table()
+			local denomTermWithoutI = table()
+			-- TODO early out for testing mul:isa vs add:isa here might make it go faster...
+			for sum in b:iteradd() do
+				local found
+				local sumt = sum:mulToTable()
+				for j=#sumt,1,-1 do
+					local term = sumt[j]
+					if term == i
+					--or term == unm(i)	-- TODO is this a constant or is it unm?
+					then
+						found = true
+						table.remove(sumt, j)
+						break
+					end
+				end
+				if found then
+					-- have to rebuild it cuz we removed a child
+					denomTermWithI:insert(Expression.tableToMul(sumt))
+				else
+					denomTermWithoutI:insert(sum)
+				end
+			end
+			if #denomTermWithI == 0 and #denomTermWithoutI == 0 then
+				error('no denom, how did you get here?')
+			elseif #denomTermWithI == 0 and #denomTermWithoutI > 0 then
+				-- only real denoms, leave as is
+			elseif #denomTermWithI > 0 and #denomTermWithoutI == 0 then
+				-- only imag denoms
+				local q = Expression.tableToMul(denomTermWithI)
+				return prune(-i * a / q)
+			else
+				-- both real and imag denoms
+				local p = Expression.tableToMul(denomTermWithoutI)
+				local q = Expression.tableToMul(denomTermWithI)
+				return prune(a * (p - i * q) / (p^2 + q^2))
 			end
 			--]]
 		end},
@@ -647,7 +686,7 @@ div.rules = {
 		-- this fixes -1/(1-x) == 1/(-1+x)
 		{negOverNeg = function(prune, expr)
 			symmath = symmath or require 'symmath'
---DEBUG:local print = symmath.tostring.print or print
+--DEBUG(@5):local print = symmath.tostring.print or print
 --DEBUG(@5):print('div/Prune/negOverNeg')
 			local p, q = table.unpack(expr)
 			-- go by negative real set?  but what about -x vs x, when both are reals?
@@ -766,7 +805,7 @@ div.rules = {
 		-- [[ same as above, but trying to not use match so that it will run fatser, since match now seems to have some NP code in it (the permutation matching stuff most likely)
 		{conjOfSqrtInDenom = function(prune, expr)
 			symmath = symmath or require 'symmath'
---DEBUG:local print = symmath.tostring.print or print
+--DEBUG(@5):local print = symmath.tostring.print or print
 			local add = symmath.op.add
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -972,7 +1011,7 @@ div.rules = {
 		-- that builds lists of term=, power= as well
 		{divToPowSub = function(prune, expr)
 			symmath = symmath or require 'symmath'
---DEBUG:local print = symmath.tostring.print or print
+--DEBUG(@5):local print = symmath.tostring.print or print
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant

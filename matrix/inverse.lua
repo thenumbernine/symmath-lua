@@ -30,12 +30,13 @@ or should I favor assert() compatability?)
 
 --]]
 return function(A, b, callback, allowRectangular, A_det)
+	local simplify = require 'symmath.simplify'
 	local Array = require 'symmath.Array'
 	local Matrix = require 'symmath.Matrix'
 	local Constant = require 'symmath.Constant'
-	local simplify = require 'symmath.simplify'
 	local clone = require 'symmath.clone'
-
+--DEBUG(@5):local print = require 'symmath'.tostring.print or print
+--DEBUG(@5):print('Matrix.inverse', A, b, callback, allowRectangular, A_det)
 	if Constant.isNumber(A) then return 1/Constant(A) end
 	if not Array:isa(A) then return Constant(1)/A end
 
@@ -85,12 +86,19 @@ return function(A, b, callback, allowRectangular, A_det)
 			if b then result = (result * b)() end
 			return result, Matrix.identity(invdim[1], invdim[2])
 		elseif m == 2 and n == 2 then
+--DEBUG(@5):print('Matrix.inverse handling 2x2 case...')
 			A_det = A_det or A:determinant()
+--DEBUG(@5):print('A_det =', A_det)
 			if not Constant.isValue(A_det, 0) then
-				local result = (Matrix(
+--DEBUG(@5):print('A_det is not zero...')
+				local result = Matrix(
 					{A[2][2], -A[1][2]},
 					{-A[2][1], A[1][1]}
-				) / A_det)()
+				) / A_det
+--DEBUG(@5):print('result = ', result)
+--DEBUG(@5):print('simplifying result...')
+				result = result()
+--DEBUG(@5):print('result = ', result)
 				--if b then result = (result * b)() end
 				return result, Matrix.identity(invdim[1], invdim[2])
 			end
