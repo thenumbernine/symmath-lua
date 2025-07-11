@@ -55,6 +55,7 @@ end
 -- lim (f/g) = (lim f)/(lim g) so long as (lim g) ~= 0
 function div:evaluateLimit(x, a, side)
 	symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 	local prune = symmath.prune
 	local Limit = symmath.Limit
 	local Side = Limit.Side
@@ -129,15 +130,15 @@ function div:evaluateLimit(x, a, side)
 		then
 			local dp = table.maxn(cp)
 			local dq = table.maxn(cq)
---DEBUG(@5):printbr('p: ', p)
---DEBUG(@5):printbr('q: ', q)
---DEBUG(@5):printbr('keys of coeffs of p: ', table.keys(cp):concat', ')
---DEBUG(@5):printbr('keys of coeffs of q: ', table.keys(cq):concat', ')
---DEBUG(@5):printbr('degrees if p(x)/q(x): ', dp, dq)
---DEBUG(@5):printbr('leading coeff of p:', cp[dp])
---DEBUG(@5):printbr('leading coeff of q:', cq[dq])
+--DEBUG(@5):print('p: ', p)
+--DEBUG(@5):print('q: ', q)
+--DEBUG(@5):print('keys of coeffs of p: ', table.keys(cp):concat', ')
+--DEBUG(@5):print('keys of coeffs of q: ', table.keys(cq):concat', ')
+--DEBUG(@5):print('degrees if p(x)/q(x): ', dp, dq)
+--DEBUG(@5):print('leading coeff of p:', cp[dp])
+--DEBUG(@5):print('leading coeff of q:', cq[dq])
 			if dp > dq then
---DEBUG(@5):printbr'using degree(p) > degree(q)...'
+--DEBUG(@5):print'using degree(p) > degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
 				if leadingCoeffRatio:lt(0):isTrue() then
 					return Constant(-1) * inf
@@ -147,11 +148,11 @@ function div:evaluateLimit(x, a, side)
 					error("how do I fix this?")
 				end
 			elseif dp == dq then
---DEBUG(@5):printbr'using degree(p) == degree(q)...'
+--DEBUG(@5):print'using degree(p) == degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
 				return leadingCoeffRatio
 			elseif dp < dq then
---DEBUG(@5):printbr'using degree(p) < degree(q)...'
+--DEBUG(@5):print'using degree(p) < degree(q)...'
 				return Constant(0)
 			end
 		end
@@ -253,6 +254,7 @@ div.rules = {
 -- ... and then let the next Prune() call divide them out
 		{polydiv = function(factor, expr)
 			symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 			local Constant = symmath.Constant
 
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
@@ -644,6 +646,8 @@ div.rules = {
 		-- [[ how about only if both leading terms are negative
 		-- this fixes -1/(1-x) == 1/(-1+x)
 		{negOverNeg = function(prune, expr)
+			symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 --DEBUG(@5):print('div/Prune/negOverNeg')
 			local p, q = table.unpack(expr)
 			-- go by negative real set?  but what about -x vs x, when both are reals?
@@ -762,6 +766,7 @@ div.rules = {
 		-- [[ same as above, but trying to not use match so that it will run fatser, since match now seems to have some NP code in it (the permutation matching stuff most likely)
 		{conjOfSqrtInDenom = function(prune, expr)
 			symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 			local add = symmath.op.add
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
@@ -828,9 +833,9 @@ div.rules = {
 							end
 							--]=]
 
---DEBUG(@5):printbr('a = ', a)
---DEBUG(@5):printbr('b = ', b)
---DEBUG(@5):printbr('c = ', c)
+--DEBUG(@5):print('a = ', a)
+--DEBUG(@5):print('b = ', b)
+--DEBUG(@5):print('c = ', c)
 
 							if a then
 								q = q:clone()
@@ -967,6 +972,7 @@ div.rules = {
 		-- that builds lists of term=, power= as well
 		{divToPowSub = function(prune, expr)
 			symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
@@ -1007,7 +1013,6 @@ div.rules = {
 
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
---[[
 --DEBUG(@5):print'numerator'
 --DEBUG(@5):for i=1,#numBases do
 --DEBUG(@5):print'base'
@@ -1022,7 +1027,6 @@ div.rules = {
 --DEBUG(@5):print'power'
 --DEBUG(@5):print(denomPowers[i])
 --DEBUG(@5):end
---]]
 			-- split any constant integers into its prime factorization
 			for _,info in ipairs{
 				{numBases, numPowers},

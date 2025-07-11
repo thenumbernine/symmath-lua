@@ -56,8 +56,6 @@ function add:evaluateDerivative(deriv, ...)
 	return add(result:unpack())
 end
 
---local function print(...) return printbr(...) end
-
 --[[
 TODO since add() and mul() can have 'n' children
 here we should match wildcards across children, greedy 1-or-more
@@ -74,6 +72,7 @@ how to accomplish this:
 --]]
 function add.match(a, b, matches)
 	symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 	local Wildcard = symmath.Wildcard
 	local Constant = symmath.Constant
 --DEBUG(@5):local SingleLine = require 'symmath.export.SingleLine'
@@ -262,7 +261,7 @@ function add.match(a, b, matches)
 					local suba = a:sub(matchSize+1)
 --DEBUG(@5):print(tab.."calling recursively on "..#suba.." terms: "..table.mapi(suba, SingleLine):concat', ')
 					local didMatch = checkWhatsLeft(suba, b, matchesForThisSize, indent)
---DEBUG(@5):print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(results, SingleLine):concat', ')
+--DEBUG(@5):print(tab.."returned results from the sub-checkWhatsLeft : "..table.mapi(didMatch or {}, SingleLine):concat', ')
 					if didMatch then
 --DEBUG(@5):print(tab.."returning that list for matchSize="..matchSize.."...")
 						-- also write them back to the original argument since we are returning true
@@ -306,6 +305,7 @@ TODO consider addNonCommutative operators
 --]]
 function add:wildcardMatches(a, matches)
 	symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 	local Constant = symmath.Constant
 	local Wildcard = symmath.Wildcard
 --DEBUG(@5):local SingleLine = require 'symmath.export.SingleLine'
@@ -828,6 +828,7 @@ add.rules = {
 			assert(#expr > 1)
 
 			symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 			local mul = symmath.op.mul
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
