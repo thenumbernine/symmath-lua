@@ -660,15 +660,15 @@ function Expression:replaceIndex(find, repl, cond, args)
 	local findFixed, findSum, findExtra = find:getIndexesUsed()
 	local replFixed, replSum, replExtra = repl:getIndexesUsed()
 
---printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
---printbr('selfSum: '..require 'ext.tolua'(selfSum))
---printbr('selfExtra: '..require 'ext.tolua'(selfExtra))
---printbr('findFixed: '..require 'ext.tolua'(findFixed))
---printbr('findSum: '..require 'ext.tolua'(findSum))
---printbr('findExtra: '..require 'ext.tolua'(findExtra))
---printbr('replFixed: '..require 'ext.tolua'(replFixed))
---printbr('replSum: '..require 'ext.tolua'(replSum))
---printbr('replExtra: '..require 'ext.tolua'(replExtra))
+--DEBUG(@5):printbr('selfFixed: '..require 'ext.tolua'(selfFixed))
+--DEBUG(@5):printbr('selfSum: '..require 'ext.tolua'(selfSum))
+--DEBUG(@5):printbr('selfExtra: '..require 'ext.tolua'(selfExtra))
+--DEBUG(@5):printbr('findFixed: '..require 'ext.tolua'(findFixed))
+--DEBUG(@5):printbr('findSum: '..require 'ext.tolua'(findSum))
+--DEBUG(@5):printbr('findExtra: '..require 'ext.tolua'(findExtra))
+--DEBUG(@5):printbr('replFixed: '..require 'ext.tolua'(replFixed))
+--DEBUG(@5):printbr('replSum: '..require 'ext.tolua'(replSum))
+--DEBUG(@5):printbr('replExtra: '..require 'ext.tolua'(replExtra))
 
 	local selfAll = table():append(selfFixed, selfSum, selfExtra)
 	local findAll = table():append(findFixed, findSum, findExtra)
@@ -701,10 +701,10 @@ function Expression:replaceIndex(find, repl, cond, args)
 	--if not require 'symmath.Variable':isa(find) then
 	--if true then
 	if not (#selfAll > 0 and #findAll > 0) then
---printbr'only replacing'
+--DEBUG(@5):printbr'only replacing'
 		return self:replace(find, repl, cond)
 	end
---printbr'reindexing and replacing'
+--DEBUG(@5):printbr'reindexing and replacing'
 
 	TensorIndex = TensorIndex or require 'symmath.tensor.Index'
 	Wildcard = Wildcard or require 'symmath.Wildcard'
@@ -739,14 +739,14 @@ function Expression:replaceIndex(find, repl, cond, args)
 			end
 		end
 	end)
---printbr('looking for matches against ', find)
---printbr('...with wildcards replaced, looking for ', findWithWildcards)
+--DEBUG(@5):printbr('looking for matches against ', find)
+--DEBUG(@5):printbr('...with wildcards replaced, looking for ', findWithWildcards)
 
 	return self:map(function(x)
 
 		local results = table{x:match(findWithWildcards)}
 		if results[1] ~= false then
---printbr('found', x)
+--DEBUG(@5):printbr('found', x)
 
 			-- if there were no wildcards then we would've just got back a 'true'
 			-- in that case, no need to replace anything?
@@ -754,10 +754,10 @@ function Expression:replaceIndex(find, repl, cond, args)
 			-- in that case, just nil the results[1] so it doesn't mess things up later.
 			if results[1] == true then results[1] = nil end
 			for wildcardIndex,xIndex in ipairs(results) do
---printbr('match', wildcardIndex, 'is', xIndex)
+--DEBUG(@5):printbr('match', wildcardIndex, 'is', xIndex)
 				local selfIndex = wildcardIndexToTensorIndex[wildcardIndex]
 				if not (xIndex.lower == selfIndex.lower and xIndex.derivative == selfIndex.derivative) then
---printbr("lower or derivative doesn't match original -- failing")
+--DEBUG(@5):printbr("lower or derivative doesn't match original -- failing")
 					-- index variance and symbol don't match ... don't replace this one
 					return nil
 				end
@@ -770,7 +770,7 @@ function Expression:replaceIndex(find, repl, cond, args)
 				for j=i+1,#wildcardIndexToTensorIndex do
 					if wildcardIndexToTensorIndex[i].symbol == wildcardIndexToTensorIndex[j].symbol then
 						if results[i].symbol ~= results[j].symbol then
---printbr("find wildcards "..i.." and "..j.." match, but results don't")
+--DEBUG(@5):printbr("find wildcards "..i.." and "..j.." match, but results don't")
 							return false
 						end
 					end
@@ -789,9 +789,9 @@ function Expression:replaceIndex(find, repl, cond, args)
 			end
 
 			local replReindexed = repl:reindex{[from] = to}
---printbr("replacing with (before reindexing) ", repl)
---printbr("reindexing from", from, "to", to)
---printbr("replacing with (after reindexing) ", replReindexed)
+--DEBUG(@5):printbr("replacing with (before reindexing) ", repl)
+--DEBUG(@5):printbr("reindexing from", from, "to", to)
+--DEBUG(@5):printbr("replacing with (after reindexing) ", replReindexed)
 			return replReindexed
 		end
 	end)
@@ -854,13 +854,13 @@ function Expression:tidyIndexes(args)
 
 	local function tidyTerm(term, checkFixed)
 		local fixed, summed = term:getIndexesUsed()
---print('term fixed', require 'ext.tolua'(fixed), '<br>')
---print('term summed', require 'ext.tolua'(summed), '<br>')
+--DEBUG(@5):print('term fixed', require 'ext.tolua'(fixed), '<br>')
+--DEBUG(@5):print('term summed', require 'ext.tolua'(summed), '<br>')
 		fixed = fixed:mapi(function(x) return x.symbol end)
 		summed = summed:mapi(function(x) return x.symbol end)
 
---print('term fixed', require 'ext.tolua'(fixed), '<br>')
---print('term summed', require 'ext.tolua'(summed), '<br>')
+--DEBUG(@5):print('term fixed', require 'ext.tolua'(fixed), '<br>')
+--DEBUG(@5):print('term summed', require 'ext.tolua'(summed), '<br>')
 		if checkFixed then
 			if not tableCommutativeEqual(fixed, checkFixed) then
 				error("couldn't tidyIndexes() - two terms had differing fixed indexes")
@@ -881,7 +881,7 @@ function Expression:tidyIndexes(args)
 		for i,s in ipairs(summed) do
 			indexMap[' '..s] = ' '..allSymbols[i]
 		end
---print('remapping', require 'ext.tolua'(indexMap), '<br>')
+--DEBUG(@5):print('remapping', require 'ext.tolua'(indexMap), '<br>')
 		term = term:reindex(indexMap)
 
 		return term, fixed
@@ -889,7 +889,7 @@ function Expression:tidyIndexes(args)
 
 	-- if expr is an add then assert all its children have the same fixed indexes
 	if add:isa(expr) then
---print('found add<br>')
+--DEBUG(@5):print('found add<br>')
 		expr[1] = tidyTerm(expr[1])
 
 		for i=2,#expr do
@@ -900,7 +900,7 @@ function Expression:tidyIndexes(args)
 	then
 		expr = tidyTerm(expr)
 	else
---print('found '..expr.name..'<br>')
+--DEBUG(@5):print('found '..expr.name..'<br>')
 	end
 	-- if expr is a mul then its fixed are its fixed.  nothing more to it.
 	-- if expr is a function then it should only have sum indexes.
@@ -917,7 +917,7 @@ function Expression:__call(...)
 		return self:simplify()
 	end
 
---print('__call reindexing')
+--DEBUG(@5):print('__call reindexing')
 	-- calling with anything else?  assume index dereference
 	local indexes = ...
 
@@ -1058,18 +1058,18 @@ TODO support for covariant derivative
 also TODO a script for automatically expanding the upper/lowers and determining if the swapped indexes do in fact match
 --]]
 function Expression:symmetrizeIndexes(var, indexes, override)
---print('symmetrizing '..var.name..' indexes '..require'ext.tolua'(indexes))
+--DEBUG(@5):print('symmetrizing '..var.name..' indexes '..require'ext.tolua'(indexes))
 	return self:map(function(x)
 		TensorRef = TensorRef or require 'symmath.tensor.Ref'
 		if TensorRef:isa(x)
 		and x[1] == var
 		and #x >= table.sup(indexes)+1	-- if the indexes refer to derivatives then make sure they're there
 		then
---print('found matching var: '..x)
+--DEBUG(@5):print('found matching var: '..x)
 			local indexObjs = table.mapi(indexes, function(i)
 				return x[i+1]:clone()
 			end)
---print('associated indexes: '..table.mapi(indexObjs, tostring):concat' ')
+--DEBUG(@5):print('associated indexes: '..table.mapi(indexObjs, tostring):concat' ')
 			assert(#indexObjs == #indexes)
 			indexObjs:sort(function(a,b)
 				if a.symbol ~= b.symbol then
@@ -1077,7 +1077,7 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 				end
 				return tostring(a.lower) < tostring(b.lower)
 			end)
---print('indexes, sorted: '..table.mapi(indexObjs, tostring):concat' ')
+--DEBUG(@5):print('indexes, sorted: '..table.mapi(indexObjs, tostring):concat' ')
 
 			if not override then
 				-- don't allow swaps of derivatives with non-derivatives
@@ -1099,11 +1099,11 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 
 			x = x:clone()
 			for i,s in ipairs(indexObjs) do
---print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)
+--DEBUG(@5):print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)
 				x[indexes[i]+1].symbol = s.symbol
 				x[indexes[i]+1].lower = s.lower
 			end
---print('resulting obj: '..x)
+--DEBUG(@5):print('resulting obj: '..x)
 			return x
 		end
 
@@ -1112,13 +1112,13 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 		mul = mul or require 'symmath.op.mul'
 		if mul:isa(x) then
 			local found
---print('checking mul: '..x)
+--DEBUG(@5):print('checking mul: '..x)
 
 			-- rather than only use the first set of symmetrized indexes, how about we re-sort other terms for all symmetrized indexes?
 			-- i.e. g_ab a^bac => g_(ab) => g_ab a^abc
 			-- but  g_ab a^bac g_ef b^feg => g_(ab) .... will only symmetrize the first and not the second (because we are only sorting one per term)
 			for j,y in ipairs(x) do
---print('checking mul term #'..j..': '..y)
+--DEBUG(@5):print('checking mul term #'..j..': '..y)
 				if TensorRef:isa(y)
 				and y[1] == var
 				and #y >= table.sup(indexes)+1
@@ -1127,19 +1127,19 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 						x = x:clone()
 						found = true
 					end
---print('found matching var: '..y)
+--DEBUG(@5):print('found matching var: '..y)
 					local srcIndexObjs = table.mapi(indexes, function(i)
 						return y[i+1]:clone()
 					end)
 					assert(#srcIndexObjs == #indexes)
---print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
+--DEBUG(@5):print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
 					srcIndexObjs:sort(function(a,b)
 						if a.symbol ~= b.symbol then
 							return tostring(a.symbol) < tostring(b.symbol)
 						end
 						return tostring(a.lower) < tostring(b.lower)
 					end)
---print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
+--DEBUG(@5):print('associated indexes: '..table.mapi(srcIndexObjs, tostring):concat' ')
 
 					if not override then
 						-- don't allow swaps of derivatives with non-derivatives
@@ -1160,20 +1160,20 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 					end
 
 					for i,s in ipairs(srcIndexObjs) do
---print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)
+--DEBUG(@5):print('setting '..x[1].name..' index '..(indexes[i]+1)..' to '..s)
 						y[indexes[i]+1].symbol = s.symbol
 						y[indexes[i]+1].lower = s.lower
 					end
---print('resulting obj: '..y)
+--DEBUG(@5):print('resulting obj: '..y)
 
 					-- if we found a matching tensor in a mul - and we sorted it - then next we need to sort all associated indexes in other tensors in the mul
 
---print('checking mul for matching indexes in other terms...')
+--DEBUG(@5):print('checking mul for matching indexes in other terms...')
 					for k=1,#x do
 						if k ~= j then -- don't re-sort your own symbols, or else G^d_dc : symmetrize(G, {2,3}) will sort index 1 as well and produce G_cd^d
 							x[k] = x[k]:map(function(z)
 								if TensorRef:isa(z) then
---print('checking term# '..k..': '..z)
+--DEBUG(@5):print('checking term# '..k..': '..z)
 									local dstIndexes = table()
 									local indexObjs = table()
 									for m=2,#z do
@@ -1184,8 +1184,8 @@ function Expression:symmetrizeIndexes(var, indexes, override)
 											indexObjs:insert(z[m]:clone())
 										end
 									end
---print('found matching index objs '..table.mapi(indexObjs, tostring):concat' ')
---print('...at indexes '..require 'ext.tolua'(dstIndexes))
+--DEBUG(@5):print('found matching index objs '..table.mapi(indexObjs, tostring):concat' ')
+--DEBUG(@5):print('...at indexes '..require 'ext.tolua'(dstIndexes))
 									-- can't share any more indexes with our source object than we are symmetrizing ... unless you are breaking index notation rules
 									if #dstIndexes > #indexes then
 										local msg = "looks like you tried to symmetrize a tensor that was multiplied to another tensor ... and the other tensor was using duplicated sum indexes ... in mul expr "..tostring(x)
@@ -1467,13 +1467,13 @@ function Expression:simplifyMetrics(mulrules, trules)
 
 
 				for ruleIndex,rule in ipairs(mulrules) do
-	--print('checking rule ', rule)
+--DEBUG(@5):print('checking rule ', rule)
 					for exprGIndex,g in ipairs(expr) do
 						if TensorRef:isa(g)
 						and #g == 3 -- no derivatives
 						and rule.isMetric(g) -- make sure it matches what we are looking for
 						then
-	--print('found metric symbol '..g)
+--DEBUG(@5):print('found metric symbol '..g)
 							for gi=2,3 do
 								local gTensorIndex = g[gi]
 								for exprTIndex,t in ipairs(expr) do
@@ -1486,7 +1486,7 @@ function Expression:simplifyMetrics(mulrules, trules)
 											and rule.canSimplify(g, t, gi, ti)
 											then
 												local gReplTensorIndex = g[5 - gi]
-	--print('applying '..g..' to '..t)
+--DEBUG(@5):print('applying '..g..' to '..t)
 												t[ti].symbol = gReplTensorIndex.symbol
 												t[ti].lower = gReplTensorIndex.lower
 
@@ -1500,7 +1500,7 @@ function Expression:simplifyMetrics(mulrules, trules)
 												end
 
 												table.remove(expr, exprGIndex)
-	--print('now we have '..expr)
+--DEBUG(@5):print('now we have '..expr)
 												found = true
 												anyfound = true
 												break
@@ -1722,7 +1722,7 @@ function Expression.replaceWithDense(expr, cache)
 		if Tensor.Ref:isa(x)
 		and Variable:isa(x[1])
 		then
---printbr('found tensorref', x)
+--DEBUG(@5):printbr('found tensorref', x)
 			local indexes = table.sub(x, 2):mapi(function(index) return index:clone() end)
 			-- remove deriv, needed for permuting the Tensor into the TensorRef(Variable)'s form
 			local indexesWithoutDeriv = indexes:mapi(function(index)
@@ -1754,15 +1754,15 @@ function Expression.replaceWithDense(expr, cache)
 			-- or just don't bother with derivatives, and encode everything in the variable name
 			local dense, cachedRef = cache:get(x)
 			if dense then
---printbr('...matched to cached tensorref', cachedRef)
---printbr('found associated dense', dense)
+--DEBUG(@5):printbr('...matched to cached tensorref', cachedRef)
+--DEBUG(@5):printbr('found associated dense', dense)
 			else
 				dense = x:makeDense()
---printbr('...created new dense', dense)
+--DEBUG(@5):printbr('...created new dense', dense)
 				cache:add(x, dense)
 			end
 			local result = Tensor.Ref(dense, indexesWithoutDeriv:unpack())
---printbr('...returning dense tensorref', result)
+--DEBUG(@5):printbr('...returning dense tensorref', result)
 			return result
 		end
 	end)
@@ -1817,7 +1817,7 @@ end
 -- apply a single rule obj to the expression 'self'
 function Expression:applyRule(ruleClass, ruleName)
 	local rule = assert(ruleClass:findRule(ruleName))
---print('rule', ruleClass.name..'/'..(next(rule)), '<br>')
+--DEBUG(@5):print('rule', ruleClass.name..'/'..(next(rule)), '<br>')
 	local visitor = require 'symmath.visitor.Visitor'()
 	--visitor.name = 'applyRule-'..ruleClass.name..'/'..ruleName
 	visitor.name = ruleName:match'(.*)/(.*)'
@@ -1825,10 +1825,10 @@ function Expression:applyRule(ruleClass, ruleName)
 	-- that would otherwise prevent the subsequent visitor's other rules from applying to this expression
 	visitor.rememberVisit = false
 	function visitor:lookup(m, bubbleIn)
---print('looking up', m.name, '<br>')
+--DEBUG(@5):print('looking up', m.name, '<br>')
 		assert(m, "expression metatable is nil")
 		if m ~= ruleClass then return end
---print('m matches rule class','<br>')
+--DEBUG(@5):print('m matches rule class','<br>')
 		-- TODO how does findRule work with bubbleIn/rulesBubbleIn?
 		return {rule}
 	end
@@ -2272,7 +2272,7 @@ function Expression:nameForExporter(...)
 		error("usage: expr:nameForExporter(exporter, [new name]) - gets or sets the name for the specific exporter")
 	end
 
---print((n == 1 and 'getting' or 'setting')..' var.name='..self.name..' args=', ...)
+--DEBUG(@5):print((n == 1 and 'getting' or 'setting')..' var.name='..self.name..' args=', ...)
 
 	if type(exporter) == 'string' then
 		exporter = require ('symmath.export.'..exporter)
@@ -2281,17 +2281,17 @@ function Expression:nameForExporter(...)
 	Export = Export or require 'symmath.export.Export'
 	assert(Export:isa(exporter), "expected an Export subclass")
 
---print('using nameForExporterTable='..self.nameForExporterTable)
---print('...which contains '..require 'ext.tolua'(self.nameForExporterTable and table.map(self.nameForExporterTable, function(v,k) return v, k.name end) or self.nameForExporterTable))
+--DEBUG(@5):print('using nameForExporterTable='..self.nameForExporterTable)
+--DEBUG(@5):print('...which contains '..require 'ext.tolua'(self.nameForExporterTable and table.map(self.nameForExporterTable, function(v,k) return v, k.name end) or self.nameForExporterTable))
 	-- get old name associated with the exporter, or one of its ancestors
 	local oldName
 	if self.nameForExporterTable then
 		local e = exporter
 		while e do
---print('checking against exporter='..e..' exporter.name='..e.name)
+--DEBUG(@5):print('checking against exporter='..e..' exporter.name='..e.name)
 			local name = self.nameForExporterTable[e.name]
 			if name then
---print('...found '..name)
+--DEBUG(@5):print('...found '..name)
 				oldName = name
 				break
 			end
@@ -2310,7 +2310,7 @@ function Expression:nameForExporter(...)
 		if self.nameForExporterTable == getmetatable(self.nameForExporterTable) then
 			self.nameForExporterTable = setmetatable(table(self.nameForExporterTable), nil)
 		end
---print('setting nameForExporterTable='..self.nameForExporterTable..' key/exporter='..exporter..' key/exporter.name='..exporter.name..' value='..newName)
+--DEBUG(@5):print('setting nameForExporterTable='..self.nameForExporterTable..' key/exporter='..exporter..' key/exporter.name='..exporter.name..' value='..newName)
 		self.nameForExporterTable[exporter.name] = newName
 	end
 
@@ -2321,8 +2321,8 @@ function Expression:nameForExporter(...)
 		oldName = exporter:fixVariableName(oldName)
 	end
 
---print('done and returning name '..oldName)
---print()
+--DEBUG(@5):print('done and returning name '..oldName)
+--DEBUG(@5):print()
 	return oldName
 end
 

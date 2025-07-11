@@ -129,15 +129,15 @@ function div:evaluateLimit(x, a, side)
 		then
 			local dp = table.maxn(cp)
 			local dq = table.maxn(cq)
---printbr('p: ', p)
---printbr('q: ', q)
---printbr('keys of coeffs of p: ', table.keys(cp):concat', ')
---printbr('keys of coeffs of q: ', table.keys(cq):concat', ')
---printbr('degrees if p(x)/q(x): ', dp, dq)
---printbr('leading coeff of p:', cp[dp])
---printbr('leading coeff of q:', cq[dq])
+--DEBUG(@5):printbr('p: ', p)
+--DEBUG(@5):printbr('q: ', q)
+--DEBUG(@5):printbr('keys of coeffs of p: ', table.keys(cp):concat', ')
+--DEBUG(@5):printbr('keys of coeffs of q: ', table.keys(cq):concat', ')
+--DEBUG(@5):printbr('degrees if p(x)/q(x): ', dp, dq)
+--DEBUG(@5):printbr('leading coeff of p:', cp[dp])
+--DEBUG(@5):printbr('leading coeff of q:', cq[dq])
 			if dp > dq then
---printbr'using degree(p) > degree(q)...'
+--DEBUG(@5):printbr'using degree(p) > degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
 				if leadingCoeffRatio:lt(0):isTrue() then
 					return Constant(-1) * inf
@@ -147,11 +147,11 @@ function div:evaluateLimit(x, a, side)
 					error("how do I fix this?")
 				end
 			elseif dp == dq then
---printbr'using degree(p) == degree(q)...'
+--DEBUG(@5):printbr'using degree(p) == degree(q)...'
 				local leadingCoeffRatio = prune(cp[dp] / cq[dq])
 				return leadingCoeffRatio
 			elseif dp < dq then
---printbr'using degree(p) < degree(q)...'
+--DEBUG(@5):printbr'using degree(p) < degree(q)...'
 				return Constant(0)
 			end
 		end
@@ -270,7 +270,7 @@ div.rules = {
 
 					local c, r = polydivr(p, q, x)
 					if Constant.isValue(r, 0) then
---print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
+--DEBUG(@5):print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
 						-- with simplification
 						--return c
 						-- without
@@ -279,7 +279,7 @@ div.rules = {
 
 					local c, r = polydivr(q, p, x)
 					if Constant.isValue(r, 0) then
---print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
+--DEBUG(@5):print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
 						-- with simplification
 						--return 1/c
 						-- without
@@ -299,13 +299,13 @@ div.rules = {
 
 					local c, r = polydivr(p, q, x)
 					if Constant.isValue(r, 0) then
---print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
+--DEBUG(@5):print('1. dividing '..p..' by '..q..' wrt x='..x..' and getting '..c..', remainder '..r)
 						return c
 					end
 
 					local c, r = polydivr(q, p, x)
 					if Constant.isValue(r, 0) then
---print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
+--DEBUG(@5):print('2. dividing '..q..' by '..p..' wrt x='..x..' and getting '..c..', remainder '..r)
 						return 1/c
 					end
 				end
@@ -377,7 +377,7 @@ div.rules = {
 -- [=[ or just try the num/denom as-is
 -- this adds in extra terms that need to be prune()'d later
 -- ex: ((2*x + 2*y)/2):factor() makes ((2*x + 2*y)/2 * 2)/2
---print('from', symmath.Verbose(expr))
+--DEBUG(@5):print('from', symmath.Verbose(expr))
 			local np, nq = candivide(expr[1], expr[2])
 			if np then
 				-- TODO DANGER
@@ -396,7 +396,7 @@ div.rules = {
 			local res = candividesimplify(expr[1], expr[2])
 			if res then
 				if res ~= expr then	-- hmm, why does this happen? seems to when dividing by a constant, or non-poly of x (whatever x may be)
---print('candivide', expr[1], expr[2], 'got', res)
+--DEBUG(@5):print('candivide', expr[1], expr[2], 'got', res)
 					return factor:apply(res)
 				end
 			end
@@ -644,13 +644,13 @@ div.rules = {
 		-- [[ how about only if both leading terms are negative
 		-- this fixes -1/(1-x) == 1/(-1+x)
 		{negOverNeg = function(prune, expr)
---print('div/Prune/negOverNeg')
+--DEBUG(@5):print('div/Prune/negOverNeg')
 			local p, q = table.unpack(expr)
 			-- go by negative real set?  but what about -x vs x, when both are reals?
 			-- go by negative sign?  but what about constants?
 			-- go by negative sign *or* negative constants.
 			if p:hasLeadingMinus() and q:hasLeadingMinus() then
---print('div/Prune/negOverNeg np and nq')
+--DEBUG(@5):print('div/Prune/negOverNeg np and nq')
 				-- [=[
 				return prune:apply(-p) / prune:apply(-q)
 				--]=]
@@ -828,9 +828,9 @@ div.rules = {
 							end
 							--]=]
 
---printbr('a = ', a)
---printbr('b = ', b)
---printbr('c = ', c)
+--DEBUG(@5):printbr('a = ', a)
+--DEBUG(@5):printbr('b = ', b)
+--DEBUG(@5):printbr('c = ', c)
 
 							if a then
 								q = q:clone()
@@ -1008,20 +1008,20 @@ div.rules = {
 			local numBases, numPowers = listToBasesAndPowers(nums)
 			local denomBases, denomPowers = listToBasesAndPowers(denoms)
 --[[
-print'numerator'
-for i=1,#numBases do
-print'base'
-print(numBases[i])
-print'power'
-print(numPowers[i])
-end
-print'denominator'
-for i=1,#denomBases do
-print'base'
-print(denomBases[i])
-print'power'
-print(denomPowers[i])
-end
+--DEBUG(@5):print'numerator'
+--DEBUG(@5):for i=1,#numBases do
+--DEBUG(@5):print'base'
+--DEBUG(@5):print(numBases[i])
+--DEBUG(@5):print'power'
+--DEBUG(@5):print(numPowers[i])
+--DEBUG(@5):end
+--DEBUG(@5):print'denominator'
+--DEBUG(@5):for i=1,#denomBases do
+--DEBUG(@5):print'base'
+--DEBUG(@5):print(denomBases[i])
+--DEBUG(@5):print'power'
+--DEBUG(@5):print(denomPowers[i])
+--DEBUG(@5):end
 --]]
 			-- split any constant integers into its prime factorization
 			for _,info in ipairs{
@@ -1116,15 +1116,15 @@ end
 					result = num / denom
 				end
 
---print'modified, returning'
---print(result)
+--DEBUG(@5):print'modified, returning'
+--DEBUG(@5):print(result)
 				return prune:apply(result)
 			end
 		end},
 		--]=]
 
 		--[=[
---print'not modified'
+--DEBUG(@5):print'not modified'
 		{apply = function(prune, expr)
 			symmath = symmath or require 'symmath'
 			local add = symmath.op.add

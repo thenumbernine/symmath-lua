@@ -146,8 +146,7 @@ return function(A, b, callback, allowRectangular, A_det)
 			if not Constant.isValue(A[row][i], 1) then
 				-- rescale column
 				local s = A[row][i]
--- TODO verbose arg?
---print('rescaling row '..i..' by $'..(1/s):simplify()..'$<br>')
+--DEBUG(@5):print('rescaling row '..i..' by $'..(1/s):simplify()..'$<br>')
 				for j=1,n do
 					A[row][j] = A[row][j] / s
 				end
@@ -156,7 +155,7 @@ return function(A, b, callback, allowRectangular, A_det)
 				end
 				A = simplify(A)
 				AInv = simplify(AInv)
---print('$A =$ '..A..', $A^{-1}$ = '..AInv..'<br>')
+--DEBUG(@5):print('$A =$ '..A..', $A^{-1}$ = '..AInv..'<br>')
 				if callback then callback(AInv, A, row, i, nil, 'scale') end
 			end
 			-- eliminate columns apart from diagonal
@@ -164,21 +163,21 @@ return function(A, b, callback, allowRectangular, A_det)
 				if j ~= row then
 					if not Constant.isValue(A[j][i], 0) then
 						local s = A[j][i]
---print('subtracting $'..s..'$ to row '..j..'<br>')
+--DEBUG(@5):print('subtracting $'..s..'$ to row '..j..'<br>')
 						for k=1,n do
 							A[j][k] = A[j][k] - s * A[row][k]
 						end
 						for k=1,invdim[2] do
 							AInv[j][k] = AInv[j][k] - s * AInv[row][k]
 						end
---print('$A = $'..A..'<br>')
---print('simplifying A...<br>')
+--DEBUG(@5):print('$A = $'..A..'<br>')
+--DEBUG(@5):print('simplifying A...<br>')
 						A = simplify(A)
---print('$A = $'..A..'<br>')
---print('$A^{-1} = $'..AInv..'<br>')
---print('simplifying A^{-1}...<br>')
+--DEBUG(@5):print('$A = $'..A..'<br>')
+--DEBUG(@5):print('$A^{-1} = $'..AInv..'<br>')
+--DEBUG(@5):print('simplifying A^{-1}...<br>')
 						AInv = simplify(AInv)
---print('$A^{-1} = $'..AInv..'<br>')
+--DEBUG(@5):print('$A^{-1} = $'..AInv..'<br>')
 						if callback then callback(AInv, A, row, i, j, 'row') end
 					end
 				end

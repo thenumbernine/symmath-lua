@@ -33,7 +33,7 @@ local function replaceRecurse(expr, find, repl, cond)
 		-- but its children have been removed
 		-- therefore it could reach an invalid state of having 0 or 1 children
 		if status then
---print("# children left", #removed, '<br>')
+--DEBUG(@5):print("# children left", #removed, '<br>')
 			-- bit of a hack
 			local BinaryOp = require 'symmath.op.Binary'
 			if BinaryOp:isa(removed) then
@@ -48,7 +48,7 @@ local function replaceRecurse(expr, find, repl, cond)
 			end
 			modified = true
 		end
---print("expr is now",expr,'<br>')
+--DEBUG(@5):print("expr is now",expr,'<br>')
 	end
 	if replacedAll then return expr end
 --]]

@@ -117,7 +117,7 @@ only return true for the dependentVars entries with src==TensorRef(self, ...) wi
 that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 --]]
 function TensorRef:dependsOn(x)
---print('does TensorRef '..self..' depend on '..x..'?')
+--DEBUG(@5):print('does TensorRef '..self..' depend on '..x..'?')
 	symmath = symmath or require 'symmath'
 	local Variable = symmath.Variable
 
@@ -325,7 +325,7 @@ function TensorRef:makeDense()
 	local Variable = symmath.Variable
 	assert(TensorRef:isa(self))
 	assert(Variable:isa(self[1]))
---printbr('creating dense tensor', self)
+--DEBUG(@5):printbr('creating dense tensor', self)
 	local basevar = self[1]:clone()
 	local indexes = table.sub(self, 2):mapi(function(index) return index:clone() end)
 	local numDeriv = 0
@@ -416,7 +416,7 @@ function TensorRef:makeDense()
 
 		return v
 	end)
---printbr(self, '=>', result)
+--DEBUG(@5):printbr(self, '=>', result)
 	return result
 end
 
@@ -583,7 +583,7 @@ TensorRef.rules = {
 			-- so commas must be all at the end
 			local function transformIndexes(withDerivatives)
 				-- raise all indexes, transform tensors accordingly
---printbr('transforming indexes '..table.map(indexes,tostring):concat',')
+--DEBUG(@5):printbr('transforming indexes '..table.map(indexes,tostring):concat',')
 				for i=1,#indexes do
 					if not indexes[i].derivative == not withDerivatives then
 
@@ -604,9 +604,9 @@ TensorRef.rules = {
 								indexMap[j] = table.find(srcChart.coords, dstChart.coords[j])  --assert(..., "failed to find src variable in dst chart")
 							end
 
---printbr('transforming tensor', t)
+--DEBUG(@5):printbr('transforming tensor', t)
 							local newindexes = table.sub(indexes,1,i):append(table.sub(t.variance,i+1))
---printbr('...into indexes', table.mapi(newindexes, tostring):concat())
+--DEBUG(@5):printbr('...into indexes', table.mapi(newindexes, tostring):concat())
 							t = Tensor{
 								-- only update indexes 1..i
 								-- keep the rest the same
@@ -618,12 +618,12 @@ TensorRef.rules = {
 									srcIndexes[i] = indexMap[srcIndexes[i]] -- assert(..., "failed to remap\n"..tolua({i=i, srcIndexes=srcIndexes, indexMap=indexMap}, {indent=true}))
 									if not srcIndexes[i] then return 0 end	-- zero whatever isn't there.
 									-- but if it's a subindex then srcIndexes can be nil ...
---printbr('assigning at {'..table.concat(srcIndexes, ',')..'} to '..t[srcIndexes])
+--DEBUG(@5):printbr('assigning at {'..table.concat(srcIndexes, ',')..'} to '..t[srcIndexes])
 									return t[srcIndexes]
 								end,
 							}
---printbr('...into tensor', t)
---printbr('...with dim', require 'symmath.Array'(t:dim()))
+--DEBUG(@5):printbr('...into tensor', t)
+--DEBUG(@5):printbr('...with dim', require 'symmath.Array'(t:dim()))
 						end
 
 						t.variance[i].symbol = indexes[i].symbol
@@ -683,7 +683,7 @@ TensorRef.rules = {
 				for i=1,#indexes do
 					indexes[i].derivative = false
 				end
-		--print('after differentiation: '..tensor)
+--DEBUG(@5):print('after differentiation: '..tensor)
 			end
 
 			-- handle specific number/variable indexes
@@ -749,19 +749,19 @@ TensorRef.rules = {
 -- And I can't put this as a separate TensorRef rule because, well, it expects simplification of Tensors, not TensorRefs ...
 -- [====[
 			if Tensor:isa(t) then
---printbr("before removeSingleDimIndexes, t.variance", table.mapi(t.variance, tostring):concat(), ", t:dim()", require 'symmath.Array'(t:dim()))
-		--printbr('t', t)
-		--printbr('t variance',table.unpack(t.variance))
+--DEBUG(@5):printbr("before removeSingleDimIndexes, t.variance", table.mapi(t.variance, tostring):concat(), ", t:dim()", require 'symmath.Array'(t:dim()))
+--DEBUG(@5):printbr('t', t)
+--DEBUG(@5):printbr('t variance',table.unpack(t.variance))
 					local function mapSingleIndexes(v,k,dst)
-		--printbr('v.symbol',v.symbol)
+--DEBUG(@5):printbr('v.symbol',v.symbol)
 						local chart = t:findChartForSymbol(v.symbol)
-		--printbr('chart',chart,'variables',chart and #chart.coords)
+--DEBUG(@5):printbr('chart',chart,'variables',chart and #chart.coords)
 						return (chart and #chart.coords == 1 and k or nil), #dst+1
 					end
 					local valueSingleVarIndexes = table.mapi(t.variance, mapSingleIndexes)
 					-- if any are left then remove them
 					if #valueSingleVarIndexes > 0 then
-		--printbr('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(t.variance,tostring):concat',',' at ',valueSingleVarIndexes:concat',')
+--DEBUG(@5):printbr('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(t.variance,tostring):concat',',' at ',valueSingleVarIndexes:concat',')
 						-- remove the rest of the single-variance letters
 						local remainingIndexes = table.filter(t.variance, function(v,k)
 							return not valueSingleVarIndexes:find(k)
@@ -770,37 +770,37 @@ TensorRef.rules = {
 						if #remainingIndexes == 0 then
 							assert(#t.variance == #valueSingleVarIndexes)
 							for i=1,#valueSingleVarIndexes do
-		--printbr("drilling from ", t, " to ", t[1])
+--DEBUG(@5):printbr("drilling from ", t, " to ", t[1])
 								t = t[1]
 							end
-		--print'<pre>'
-		--printbr(debug.traceback())
-		--print'</pre>'
---printbr("drilling returning", t)
---printbr("after removeSingleDimIndexes drilling,", "t.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "t:dim()", t.dim and require 'symmath.Array'(t:dim()) or 'nil')
+--DEBUG(@5):print'<pre>'
+--DEBUG(@5):printbr(debug.traceback())
+--DEBUG(@5):print'</pre>'
+--DEBUG(@5):printbr("drilling returning", t)
+--DEBUG(@5):printbr("after removeSingleDimIndexes drilling,", "t.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "t:dim()", t.dim and require 'symmath.Array'(t:dim()) or 'nil')
 							if not Tensor:isa(t) then return t end
 						else
 						--]=]
---printbr('stripping tensor', t)
---printbr('t[1]', t[1])
---printbr('t[1][1]', t[1][1])
+--DEBUG(@5):printbr('stripping tensor', t)
+--DEBUG(@5):printbr('t[1]', t[1])
+--DEBUG(@5):printbr('t[1][1]', t[1][1])
 							t = Tensor(
 								remainingIndexes, function(...)
 									local is = {...}
---printbr('mapping from', table.concat(is, ','))
+--DEBUG(@5):printbr('mapping from', table.concat(is, ','))
 									for i=#valueSingleVarIndexes,1,-1 do
 										table.insert(is, valueSingleVarIndexes[i], 1)
 									end
---printbr('mapping to ', table.concat(is, ','))
+--DEBUG(@5):printbr('mapping to ', table.concat(is, ','))
 									local result = t[is]
---printbr('got element', result)
+--DEBUG(@5):printbr('got element', result)
 									return result
 								end)
---printbr('done stripping tensor, result is', t)
---printbr("after removeSingleDimIndexes remapping,", "result.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "result:dim()", require 'symmath.Array'(t:dim()))
+--DEBUG(@5):printbr('done stripping tensor, result is', t)
+--DEBUG(@5):printbr("after removeSingleDimIndexes remapping,", "result.variance", t.variance and table.mapi(t.variance, tostring):concat() or 'nil', "result:dim()", require 'symmath.Array'(t:dim()))
 						end
 					end
---printbr("afterwards, no remapping done")
+--DEBUG(@5):printbr("afterwards, no remapping done")
 			end
 --]====]
 

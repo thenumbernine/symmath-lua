@@ -174,7 +174,7 @@ local band
 do --if not band then
 	local f, err = load[[return function(a,b) return a & b end]]
 	if f then
---print'using operator'
+--DEBUG(@5):print'using operator'
 		band = assert(f())
 	end
 end
@@ -182,7 +182,7 @@ end
 -- try global
 for _,lib in ipairs{'bit', 'bit32'} do
 	if _G[lib] then
---print('using global lib', lib)
+--DEBUG(@5):print('using global lib', lib)
 		band = _G[lib].band
 	end
 end
@@ -191,14 +191,14 @@ for _,lib in ipairs{'bit', 'bit32'} do
 	if not band then
 		local has, bit = pcall(require, lib)
 		if has then
---print('using lib ', lib)
+--DEBUG(@5):print('using lib ', lib)
 			band = bit.band
 		end
 	end
 end
 -- implement in vanilla old lua
 if not band then
---print('using vanilla')
+--DEBUG(@5):print('using vanilla')
 	band = function(a,b)
 		local two = 2
 		local res = 0

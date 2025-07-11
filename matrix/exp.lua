@@ -7,7 +7,7 @@ local function matrixExponent(A)
 	local expLambda = Matrix.diagonal( allLambdas:mapi(function(lambda)
 		return exp(lambda)
 	end):unpack() )
---printbr(R * expLambda * L)
+--DEBUG(@5):printbr(R * expLambda * L)
 	return (R * expLambda * L)()
 end
 

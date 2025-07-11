@@ -16,17 +16,17 @@ return function(self, expr)
 		local found
 		for j=1,#clone do
 			if clone[j] == expri then
---print('partial replace found',expri,'<br>')
+--DEBUG(@5):print('partial replace found',expri,'<br>')
 				table.remove(clone, j)
 				found = true
 				break
 			end
 		end
 		if not found then
---print("partial replace didn't find",expri,'<br>')
+--DEBUG(@5):print("partial replace didn't find",expri,'<br>')
 			return false, clone
 		end
 	end
---print("partial replace found all<br>")
+--DEBUG(@5):print("partial replace found all<br>")
 	return true, clone
 end

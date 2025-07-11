@@ -39,16 +39,16 @@ end
 
 -- processes an individual term of f(x) = sum(i, coeffs[i] * x^i) + coeffs.extra
 local function processTerm(coeffs, expr, x)
---print('processTerm',expr,x)
+--DEBUG(@5):print('processTerm',expr,x)
 	local clone = require 'symmath.clone'
 	local mul = require 'symmath.op.mul'
 
 	if not mul:isa(expr) then
---print('not mul')
+--DEBUG(@5):print('not mul')
 		-- just process expr
---print('testing',expr,x)
+--DEBUG(@5):print('testing',expr,x)
 		local n = isXToTheNth(expr, x)
---print('got power',n)
+--DEBUG(@5):print('got power',n)
 		if n then
 			-- if expr is x^n then add 1 to the x^n coefficient
 			local Constant = require 'symmath.Constant'
@@ -64,14 +64,14 @@ local function processTerm(coeffs, expr, x)
 			end
 		end
 	else
---print('is mul')
+--DEBUG(@5):print('is mul')
 		-- then process all terms
 		-- if you find an x^n then assume it's the only one there (courtesy of simplify())
 		-- and put the rest in a mul and add it to coeffs[n]
 		for i=1,#expr do
---print('testing',expr[i],x)
+--DEBUG(@5):print('testing',expr[i],x)
 			local n = isXToTheNth(expr[i], x)
---print('got power',n)
+--DEBUG(@5):print('got power',n)
 			if n then
 				if #expr == 2 then	-- the insert the other
 					addToCoeffs(coeffs, n, expr[2-i+1])

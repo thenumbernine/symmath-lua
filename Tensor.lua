@@ -697,7 +697,7 @@ function Tensor:permute(dstVariance)
 		dstVariance = TensorIndex.parseIndexes(dstVariance)
 	end
 
---print('dstVariance', table.mapi(dstVariance, tostring):concat())
+--DEBUG(@5):print('dstVariance', table.mapi(dstVariance, tostring):concat())
 
 	-- determine index remapping
 	local indexMap = {}
@@ -711,12 +711,12 @@ function Tensor:permute(dstVariance)
 	end
 
 	local olddim = self:dim()
---print('olddim', require 'ext.tolua'(olddim))
+--DEBUG(@5):print('olddim', require 'ext.tolua'(olddim))
 	local newdim = {}
 	for i=1,#olddim do
 		newdim[indexMap[i]] = olddim[i]
 	end
---print('newdim', require 'ext.tolua'(newdim))
+--DEBUG(@5):print('newdim', require 'ext.tolua'(newdim))
 
 	-- perform assignment
 	local success, result = xpcall(function()
@@ -813,18 +813,18 @@ Tensor.__newindex = function(self, key, value)
 		without this, g['_tt'] = 2 will fail ... and must be written g['_tt'] = Tensor('_tt', 2)
 		or g['_ti'] = A'_i' will fail ... and must be written g['_ti'] = Tensor('_ti', A)
 		--]]
---print('value variance',table.unpack(value.variance))
---print('dest variance',table.unpack(dstVariance))
+--DEBUG(@5):print('value variance',table.unpack(value.variance))
+--DEBUG(@5):print('dest variance',table.unpack(dstVariance))
 		local function mapSingleIndexes(v,k,t)
---print('v.symbol',v.symbol)
+--DEBUG(@5):print('v.symbol',v.symbol)
 			local chart = self:findChartForSymbol(v.symbol)
---print('chart',chart,'variables',chart and #chart.coords)
+--DEBUG(@5):print('chart',chart,'variables',chart and #chart.coords)
 			return (chart and #chart.coords == 1 and k or nil), #t+1
 		end
 		local valueSingleVarIndexes = table.mapi(value.variance, mapSingleIndexes)
 		local dstSingleVarIndexes = table.mapi(dstVariance, mapSingleIndexes)
---print('value single vars',valueSingleVarIndexes:unpack())
---print('self single vars',dstSingleVarIndexes:unpack())
+--DEBUG(@5):print('value single vars',valueSingleVarIndexes:unpack())
+--DEBUG(@5):print('self single vars',dstSingleVarIndexes:unpack())
 		for _,dstIndex in ipairs(dstSingleVarIndexes) do
 			local v = dstVariance[dstIndex]
 			local k = valueSingleVarIndexes:find(nil, function(valueIndex) return v.symbol == value.variance[valueIndex].symbol end)
@@ -832,7 +832,7 @@ Tensor.__newindex = function(self, key, value)
 				valueSingleVarIndexes:remove(k)
 			else
 				-- wrap it in the single-variable index
---print('from ',value)
+--DEBUG(@5):print('from ',value)
 				value = Tensor(table{
 					TensorIndex{
 						lower = v.lower,
@@ -844,12 +844,12 @@ Tensor.__newindex = function(self, key, value)
 				for i=1,#valueSingleVarIndexes do
 					valueSingleVarIndexes[i] = valueSingleVarIndexes[i] + 1
 				end
---print('to ',value)
+--DEBUG(@5):print('to ',value)
 			end
 		end
 		-- if any are left then remove them
 		if #valueSingleVarIndexes > 0 then
---print('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
+--DEBUG(@5):print('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
 			value = Tensor(
 				-- remove the rest of the single-variance letters
 				table.filter(value.variance, function(v,k)
@@ -878,27 +878,27 @@ Tensor.__newindex = function(self, key, value)
 
 		-- permute the indexes of the value to match the source
 		-- TODO no need to permute it if the index is entirely variables/numbers, such that the assignment is to a single element in the tensor
---print('permuting...')
+--DEBUG(@5):print('permuting...')
 		local dst = value:permute(dstVariance)
---for i=1,#dst do print('dst['..i..']', dst[i]) end
+--DEBUG(@5):for i=1,#dst do print('dst['..i..']', dst[i]) end
 		-- reform self to the original variances
 		-- TODO once again for scalar assignment or subset assignment
---print('applying variance...')
+--DEBUG(@5):print('applying variance...')
 		dst = dst(self.variance)
---for i=1,#dst do print('dst['..i..']=', dst[i]) end
---print('simplifying...')
+--DEBUG(@5):for i=1,#dst do print('dst['..i..']=', dst[i]) end
+--DEBUG(@5):print('simplifying...')
 
 		dst = dst()
---print('assigning from dst\n'..dst)
+--DEBUG(@5):print('assigning from dst\n'..dst)
 -- applying variance to dst puts dst into dst[1] because the subindex isn't there ...
 
---print('all dst iters:')
---for is in dst:iter() do print(table.concat(is, ',')) end
---print('...done')
+--DEBUG(@5):print('all dst iters:')
+--DEBUG(@5):for is in dst:iter() do print(table.concat(is, ',')) end
+--DEBUG(@5):print('...done')
 
 		--[[ copy in new values
 		for is in self:iter() do
---print('index is',table.concat(is, ','), ' assigning '..dst[is]..' to '..self[is])
+--DEBUG(@5):print('index is',table.concat(is, ','), ' assigning '..dst[is]..' to '..self[is])
 			self[is] = dst[is]
 		end
 		--]]
@@ -909,7 +909,7 @@ Tensor.__newindex = function(self, key, value)
 			-- then we find the same variable in dstChart.coords
 			-- if it isrc there - read from that variable - and write back to self.iter
 			-- if it isn't there - skip this iter
---print('assigning to indexes '..table.concat(isrc, ','))
+--DEBUG(@5):print('assigning to indexes '..table.concat(isrc, ','))
 			assert.eq(#isrc, #dstVariance)
 			-- looks similar to transformIndexes in Tensor/Ref.lua
 			local indexes = dstVariance
@@ -918,17 +918,17 @@ Tensor.__newindex = function(self, key, value)
 				-- don't worry about raising or lowering
 				local srcChart = self:findChartForSymbol(self.variance[i].symbol)
 				local dstChart = self:findChartForSymbol(indexes[i].symbol)
---print('assigning from '..indexes[i].symbol)
---print('assigning into '..self.variance[i].symbol)
+--DEBUG(@5):print('assigning from '..indexes[i].symbol)
+--DEBUG(@5):print('assigning into '..self.variance[i].symbol)
 
 				do--if srcIndex ~= dstIndex then
---print('looking for', srcChart.coords[isrc[i]])
---print('...among variables',table.unpack(dstChart.coords))
+--DEBUG(@5):print('looking for', srcChart.coords[isrc[i]])
+--DEBUG(@5):print('...among variables',table.unpack(dstChart.coords))
 					local dstIndex = table.find(dstChart.coords, srcChart.coords[isrc[i]])
 					-- however 'dst' has already been transformed to the basis of 'src' ...
 					-- ... and padded with zeros (TODO don't bother do that?)
 					-- so I don't need to reindex the lookup, just skip the zeroes
---print('dstIndex',dstIndex)
+--DEBUG(@5):print('dstIndex',dstIndex)
 					if not dstIndex then
 						notfound = true
 						break
@@ -1027,7 +1027,7 @@ function Tensor.pruneMul(lhs, rhs)
 			resultDims:insert(dim)
 			resultIndexInfos:insert{loc = i, dim = dim, side = 2}
 		end
---print("before: "..resultIndexes:mapi(tostring):concat' ')
+--DEBUG(@5):print("before: "..resultIndexes:mapi(tostring):concat' ')
 		local sumAcrossPairs = setmetatable({}, table)
 		local sumDims = setmetatable({}, table)
 		do
@@ -1037,8 +1037,8 @@ function Tensor.pruneMul(lhs, rhs)
 				for i=1,#resultIndexInfos-1 do
 					for j=i+1,#resultIndexInfos do
 						if resultIndexes[i].symbol == resultIndexes[j].symbol then
---print("removing indexes", i, j)
---print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)
+--DEBUG(@5):print("removing indexes", i, j)
+--DEBUG(@5):print("with symbols", resultIndexes[i].symbol, resultIndexes[j].symbol)
 
 							local infoj = resultIndexInfos:remove(j)	-- remove larger first
 							resultIndexes:remove(j)
@@ -1082,7 +1082,7 @@ function Tensor.pruneMul(lhs, rhs)
 
 		local numSums = #sumDims
 		local iter = {}
---print("after: "..resultIndexes:mapi(tostring):concat' ')
+--DEBUG(@5):print("after: "..resultIndexes:mapi(tostring):concat' ')
 		local dst = {}
 		local srca = {}
 		local srcb = {}
@@ -1095,7 +1095,7 @@ function Tensor.pruneMul(lhs, rhs)
 			for i,info in ipairs(resultIndexInfos) do
 				srcs[info.side][info.loc] = dst[i]
 			end
---print('setting fixed read indexes of lhs '..require'ext.tolua'(srca)..' rhs '..require'ext.tolua'(srcb))
+--DEBUG(@5):print('setting fixed read indexes of lhs '..require'ext.tolua'(srca)..' rhs '..require'ext.tolua'(srcb))
 
 			-- now we can assert all the sumAcrossPairs' index locations are nil in srca and srcb
 

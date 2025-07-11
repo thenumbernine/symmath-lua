@@ -50,8 +50,8 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 --]]
 local symmath
 function Visitor:apply(expr, ...)
---return require 'ext.timer'(self.name, function(...)
---local changeInNodes = {}
+--DEBUG(@5):return require 'ext.timer'(self.name, function(...)
+--DEBUG(@5):local changeInNodes = {}
 
 	symmath = symmath or require 'symmath'
 	local debugVisitors = symmath.debugVisitors
@@ -73,7 +73,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		and not expr.mutable
 		and expr[self.hasBeenField]
 		then
---print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')
+--DEBUG(@5):print('found '..self.hasBeenField..' on '..symmath.export.SingleLine(expr)..' - not visiting')
 			return expr
 		end
 --]]
@@ -206,8 +206,8 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 		end
 
 		-- if we found an entry then apply it
---local rulesSrcNodeName = m.name
---assert(rulesSrcNodeName ~= 'Expression')
+--DEBUG(@5):local rulesSrcNodeName = m.name
+--DEBUG(@5):assert(rulesSrcNodeName ~= 'Expression')
 		local rules = self:lookup(m)
 		if rules then
 			for _,rule in ipairs(rules) do
@@ -219,7 +219,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 				then
 					local name, func = next(rule)
 
---local beforeCount = Expression.countNodes(expr)
+--DEBUG(@5):local beforeCount = Expression.countNodes(expr)
 
 					local newexpr = func(self, expr, ...)
 					if newexpr then
@@ -231,15 +231,15 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 							symmath.simplify.stack:insert{m.name..':'..self.name..':'..name, symmath.clone(newexpr)}
 						end
 
---local afterCount = Expression.countNodes(expr)
---local changeKey = (rulesSrcNodeName or '?') .. ' ' .. (self.name or '?') .. ' ' .. name
---changeInNodes[changeKey] = (changeInNodes[changeKey] or 0) + afterCount - beforeCount
+--DEBUG(@5):local afterCount = Expression.countNodes(expr)
+--DEBUG(@5):local changeKey = (rulesSrcNodeName or '?') .. ' ' .. (self.name or '?') .. ' ' .. name
+--DEBUG(@5):changeInNodes[changeKey] = (changeInNodes[changeKey] or 0) + afterCount - beforeCount
 						-- if we change content then there's no guarantee the metatable -- or the rules -- will be the same
 						-- we probably need to start again
 						m = getmetatable(expr)
 						assert(m, "got back a result with no metatable")
---rulesSrcNodeName = m.name
---assert(rulesSrcNodeName ~= 'Expression')
+--DEBUG(@5):rulesSrcNodeName = m.name
+--DEBUG(@5):assert(rulesSrcNodeName ~= 'Expression')
 						break
 					--[[ should I insert this in the stack even if it wasn't applied?
 					-- yes?  since the function calls are inserted even if they don't produce anything new
@@ -259,22 +259,22 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	if debugVisitors then
 		print(id, 'done pruning with', Verbose(expr))
 	end
-----print('prune', require 'symmath.export.SingleLine'(x))
---if next(changeInNodes) then
---	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
---end
+--DEBUG(@5):print('prune', require 'symmath.export.SingleLine'(x))
+--DEBUG(@5):if next(changeInNodes) then
+--DEBUG(@5):	print(self.name..' size', expr:countNodes(), 'changed by', require 'ext.tolua'(changeInNodes))
+--DEBUG(@5):end
 
 	if self.rememberVisit then
 -- [[ cache visitors & simplification.  does this help?
 		if not expr.mutable then
---print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))
+--DEBUG(@5):print(self.hasBeenField..' from '..symmath.export.SingleLine(orig)..' to '..symmath.export.SingleLine(expr))
 			expr[self.hasBeenField] = true
 		end
 --]]
 	end
 
 	return expr
---end, ...)
+--DEBUG(@5):end, ...)
 end
 
 -- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case

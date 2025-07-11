@@ -26,7 +26,7 @@ Side.__eq = rawequal
 --]]
 -- [[ so here is the fix that shouldn't be necessary ...
 function Side.__eq(a,b)
---print('comparing '..rawname(a)..' '..a.name..' with '..rawname(b)..' '..b.name..'<br>')
+--DEBUG(@5):print('comparing '..rawname(a)..' '..a.name..' with '..rawname(b)..' '..b.name..'<br>')
 	return a.name == b.name
 end
 --]]

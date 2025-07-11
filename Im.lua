@@ -45,7 +45,7 @@ Im.rules = table(Im.rules, {
 		end},
 
 		{apply = function(prune, expr)
---print('prune Im ', expr)			
+--DEBUG(@5):print('prune Im ', expr)			
 			local x = expr[1]
 			symmath = symmath or require 'symmath'
 			local Constant = symmath.Constant

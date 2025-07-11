@@ -94,9 +94,9 @@ Integral.rules = {
 			--
 			-- int(c * f(x))
 			local f, c = int:match(Wildcard{index=2, cannotDependOn=x} * Wildcard{1, dependsOn=x})
---local Verbose = require 'symmath.export.Verbose'
---print('f', f and Verbose(f) or tostring(f))
---print('c', c and Verbose(c) or tostring(c))
+--DEBUG(@5):local Verbose = require 'symmath.export.Verbose'
+--DEBUG(@5):print('f', f and Verbose(f) or tostring(f))
+--DEBUG(@5):print('c', c and Verbose(c) or tostring(c))
 			if f then
 
 
@@ -169,13 +169,13 @@ Integral.rules = {
 
 				do	-- int(f'(x)/f(x))
 					local dgpat, g = f:match(Wildcard(1) * (1 / Wildcard(2)))
---print('dgpat', dgpat and Verbose(dgpat) or tostring(dgpat))
---print('g', g and Verbose(g) or tostring(g))
+--DEBUG(@5):print('dgpat', dgpat and Verbose(dgpat) or tostring(dgpat))
+--DEBUG(@5):print('g', g and Verbose(g) or tostring(g))
 					if dgpat then
 						local dgcalc = g:diff(x)()
 						if not Constant.isValue(dgcalc, 0) then
 							local ratio = (dgcalc / dgpat)()
---print('ratio', ratio and Verbose(ratio) or tostring(ratio))
+--DEBUG(@5):print('ratio', ratio and Verbose(ratio) or tostring(ratio))
 							if not ratio:dependsOn(x) then
 								return frac(c, ratio) * log(abs(g))
 							end

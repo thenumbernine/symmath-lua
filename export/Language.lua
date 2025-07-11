@@ -489,7 +489,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 			i = i + 1
 		end
 --]=]
---print(require'ext.tolua'(used))
+--DEBUG(@5):print(require'ext.tolua'(used))
 		-- [[ reinsert temp vars used only once
 		-- TODO used[] isn't accurate ... if a tree was used several times, and it is a branch of another tree, and the other tree is sepraated into a tmpvar
 		-- then the child of the tmpvar tree will still have a high used[] count but just be used once or so ...
@@ -516,7 +516,7 @@ print('MERGING TMPVARS '..tmpvardefs[i][1]..' AND '..tmpvardefs[j][1])
 			local oldvar = tmpvardefs[k][1]
 			local newname = 'tmp'..(#tmpvardefs-k+1)
 			local newvar = Variable(newname)
---print('replacing', oldvar.name, 'with', newname)
+--DEBUG(@5):print('replacing', oldvar.name, 'with', newname)
 			for j=1,#tmpvardefs do
 				tmpvardefs[j] = tmpvardefs[j]:replace(oldvar, newvar)
 			end

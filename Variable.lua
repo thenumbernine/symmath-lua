@@ -184,7 +184,7 @@ only return true for the dependentVars entries with src==self
 that match x (either Variable equals, or TensorRef with matching Variable and # of indexes)
 --]]
 function Variable:dependsOn(x)
---printbr('does Variable '..self..' depend on '..x..'?')
+--DEBUG(@5):printbr('does Variable '..self..' depend on '..x..'?')
 
 	if x == self then return true end
 
