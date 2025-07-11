@@ -1,12 +1,12 @@
 local table = require 'ext.table'
---DEBUG: local timer = require 'ext.timer'
+--DEBUG:local timer = require 'ext.timer'
 local symmath
-
 
 local simplifyObj = {}
 
 local function simplifyTrig(x, ...)
 	symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 	local expand = symmath.expand
 	local prune = symmath.prune
 	local factor = symmath.factor
@@ -28,7 +28,7 @@ then
 		-- where to put this, since doing one or the other means the other or the one missing out on div etc simplifications
 
 		if x.map then
---DEBUG: printbr('testing for trig squares:', x)
+--DEBUG: print('testing for trig squares:', x)
 			local sin = symmath.sin
 			local cos = symmath.cos
 			local Constant = symmath.Constant
@@ -47,7 +47,7 @@ then
 					then
 						local th = expr[1][1]
 						found = true
---DEBUG: printbr'here cos->sin'
+--DEBUG: print'here cos->sin'
 						if n==2 then
 							return 1 - sin(th)^2
 						elseif n==3 then
@@ -59,15 +59,15 @@ then
 				end
 			end)
 			if found then
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = expand(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = prune(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = factor(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = prune(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 			end
 
 			found = false
@@ -85,7 +85,7 @@ then
 					then
 						local th = expr[1][1]
 						found = true
---DEBUG: printbr'here sin->cos'
+--DEBUG: print'here sin->cos'
 						if n==2 then
 							return 1 - cos(th)^2
 						elseif n==3 then
@@ -97,15 +97,15 @@ then
 				end
 			end)
 			if found then
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = expand(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = prune(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = factor(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 				x = prune(x, ...)
---DEBUG: printbr(x)
+--DEBUG: print(x)
 			end
 		end
 --DEBUG: print('trigsimp size', x:countNodes())
@@ -130,6 +130,7 @@ simplifyObj.debugLoops = false
 
 local function simplifyCall(simplifyObj, x, ...)
 	symmath = symmath or require 'symmath'
+--DEBUG:local print = symmath.tostring.print or print
 
 -- [[ cache visitors & simplification.  does this help?
 	if symmath.useHasBeenFlags
@@ -141,7 +142,7 @@ local function simplifyCall(simplifyObj, x, ...)
 	end
 --]]
 
---DEBUG: return timer('simplify', function(...)
+--DEBUG: return select(2, timer('simplify', function(...)
 --DEBUG: print('start', require 'symmath.export.SingleLine'(x))
 	-- I'm suspicious that arrays are getting into simplify loops because of them simplifying all expressions simultaneously ...
 	-- this doesn't make sense, but maybe it's true
@@ -206,7 +207,6 @@ local function simplifyCall(simplifyObj, x, ...)
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
 -- stdout too? or just stderr?
---DEBUG: local print = printbr or print
 --DEBUG: print('reached maxiter', simplifyMaxIter)
 		if stack then
 			local SingleLine = symmath.export.SingleLine
@@ -237,7 +237,7 @@ local function simplifyCall(simplifyObj, x, ...)
 
 --DEBUG: print('end', require 'symmath.export.SingleLine'(x))
 	return x
---DEBUG: end, ...)
+--DEBUG: end, ...))
 end
 
 setmetatable(simplifyObj, {

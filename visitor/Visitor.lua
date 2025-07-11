@@ -50,7 +50,7 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 --]]
 local symmath
 function Visitor:apply(expr, ...)
---DEBUG(@5):return require 'ext.timer'(self.name, function(...)
+--DEBUG(@5):return select(2, require 'ext.timer'(self.name, function(...)
 --DEBUG(@5):local changeInNodes = {}
 
 	symmath = symmath or require 'symmath'
@@ -274,7 +274,7 @@ assert(selfmt.hasBeenField == self.hasBeenField)
 	end
 
 	return expr
---DEBUG(@5):end, ...)
+--DEBUG(@5):end, ...))
 end
 
 -- wrapping this so child classes can add prefix/postfix custom code apart from the recursive case
