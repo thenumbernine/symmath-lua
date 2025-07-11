@@ -15,6 +15,16 @@ local unitTestOutputPath = path(symmathPath)/'tests/output/unit'
 unitTestCachePath:mkdir(true)
 unitTestOutputPath:mkdir(true)
 
+-- TODO maybe I should do a html library, and maybe it should be connected to the htmlparser library, and maybe I should rename that to just 'html' ...
+local function htmlescape(str)
+	return str
+		:gsub('&', '&amp;')
+		:gsub('<', '&lt;')
+		:gsub('>', '&gt;')
+		:gsub('"', '&quot;')
+		:gsub("'", '&#39;')
+end
+
 local function updateMaster()
 	local allTestResults = {}
 	for fn in unitTestCachePath:dir() do
@@ -69,10 +79,11 @@ td, th {
 		.. '</td><td>' .. (numFails == 0 and '' or numFails)
 		.. '</td><td class="content">\n'
 		.. 	table.mapi(rows, function(row)
+				local rowdesctitle = htmlescape(row.code)
 				if row.error then
-					return '<span style="color:red">'..failstr..'</span>'
+					return '<span style="color:red" title="'..rowdesctitle..'">'..failstr..'</span>'
 				elseif row.code and #string.trim(row.code) > 0 then
-					return '<span style="color:green">'..checkstr..'</span>'
+					return '<span style="color:green" title="'..rowdesctitle..'">'..checkstr..'</span>'
 				elseif row.comment then
 					return ''
 				else

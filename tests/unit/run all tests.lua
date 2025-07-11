@@ -32,6 +32,7 @@ for _,f in ipairs(fs) do
 	and f.path ~= 'sub-tensor assignment.lua'
 	and f.path ~= 'tensor use case.lua'
 	then
+		-- TODO use make.target cuz it has higher resolution timestamp checking etc
 		local target = '../output/unit/'..f.path:sub(1,-5)..'.html'
 		local fileattr = f:attr()
 		local targetattr = path(target):attr()
