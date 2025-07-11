@@ -256,12 +256,13 @@ div.rules = {
 			symmath = symmath or require 'symmath'
 --DEBUG(@5):local print = symmath.tostring.print or print
 			local Constant = symmath.Constant
-
+--DEBUG(@5):print('polydiv', symmath.export.SingleLine(expr))
 			-- now when polydiv encounters a non-poly situation, it calls simplify()
 			-- so ... don't use polydiv ... use its internal
 			local polydivr = symmath.polydiv.polydivr
 
 			local function candivide(p, q)
+--DEBUG(@5):print('candivide', symmath.export.SingleLine(p), symmath.export.SingleLine(q))
 				-- for expr == p / q
 				-- if p and q are polynomials of some var (with no 'extra')
 				-- then try to divide p from q and see if no remainer exists
@@ -384,7 +385,7 @@ div.rules = {
 			if np then
 				-- TODO DANGER
 				-- this is sometimes inserting denominator variables that we are in the middle of solving for
-				-- and that introduces extra x=0 solutions ... 
+				-- and that introduces extra x=0 solutions ...
 				-- NOT GOOD
 				-- but easy fix, solve() no longer calls factor() when preparing the equation for searching out number of solved-variables present.
 				-- however, solve() does call simplify() after that step so the danger still exists...
