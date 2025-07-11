@@ -113,8 +113,6 @@ This requires my lua-http project in order to run.
 
 - functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
 
-- infinite precision or big integers.  https://github.com/thenumbernine/lua-bignumber .
-
 - combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
 

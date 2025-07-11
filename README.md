@@ -310,11 +310,9 @@ For the most part Lua numbers will work, and will automatically be replaced by s
 This is because Constant is a subclass of Expression, and I was too lazy to implement all the ridiculous number of edge cases required to handle Lua numbers, though I am thinking about doing this.
 Constant can be constructed with numbers (`Constant(0), Constant(1)`, etc) or with complex values (`Constant{re=1, im=0}`, etc).
 
+You can also use BigNumbers from my [bignumber Lua library](https://github.com/thenumbernine/lua-bignumber)
+
 Complex values can be represented by `complex`, which uses builtin complex types when run within LuaJIT, or uses a pure-Lua alternative otherwise.
-
-Some day I will properly represent sets (naturals, integers, rationals, reals, complex, etc), and maybe groups, rings, etc, but not for now.
-
-Some day I will also add support for infinite precision or big integers, but not right now.  Check out my BigNumber Lua library at https://github.com/thenumbernine/lua-bignumber for more on this..
 
 ### Constants
 
@@ -1000,8 +998,6 @@ This requires my lua-http project in order to run.
 - more integrals that will evaluate.
 
 - functions that lua has that I don't: ceil, floor, deg, rad, fmod, frexp, log10, min, max
-
-- infinite precision or big integers.  https://github.com/thenumbernine/lua-bignumber .
 
 - combine symmath with the lua-parser to decompile lua code -> ast -> symmath, perform symbolic differentiation on it, then recompile it ...
 	i.e. `f = [[function(x) return x^2 end]] g = symmath:luaDiff(f, 'x') <=> g = [[function(x) return 2*x end]]`
