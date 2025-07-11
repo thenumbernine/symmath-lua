@@ -50,10 +50,10 @@ Inherit from Visitor, instanciate that class as 'x', and x() will call Visitor:a
 --]]
 local symmath
 function Visitor:apply(expr, ...)
---DEBUG(@5):return select(2, require 'ext.timer'(self.name, function(...)
+	symmath = symmath or require 'symmath'
+--DEBUG(@5):return select(2, require 'ext.timer'(self.name..' '..symmath.export.SingleLine(expr), function(...)
 --DEBUG(@5):local changeInNodes = {}
 
-	symmath = symmath or require 'symmath'
 	local debugVisitors = symmath.debugVisitors
 
 	local origIsExpr
