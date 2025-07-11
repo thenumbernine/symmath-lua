@@ -2281,14 +2281,14 @@ function Expression:nameForExporter(...)
 	Export = Export or require 'symmath.export.Export'
 	assert(Export:isa(exporter), "expected an Export subclass")
 
---DEBUG(@5):print('using nameForExporterTable='..self.nameForExporterTable)
+--DEBUG(@5):print('using nameForExporterTable=', self.nameForExporterTable)
 --DEBUG(@5):print('...which contains '..require 'ext.tolua'(self.nameForExporterTable and table.map(self.nameForExporterTable, function(v,k) return v, k.name end) or self.nameForExporterTable))
 	-- get old name associated with the exporter, or one of its ancestors
 	local oldName
 	if self.nameForExporterTable then
 		local e = exporter
 		while e do
---DEBUG(@5):print('checking against exporter='..e..' exporter.name='..e.name)
+--DEBUG(@5):print('checking against exporter='..tostring(e)..' exporter.name='..tostring(e and e.name))
 			local name = self.nameForExporterTable[e.name]
 			if name then
 --DEBUG(@5):print('...found '..name)
@@ -2310,7 +2310,7 @@ function Expression:nameForExporter(...)
 		if self.nameForExporterTable == getmetatable(self.nameForExporterTable) then
 			self.nameForExporterTable = setmetatable(table(self.nameForExporterTable), nil)
 		end
---DEBUG(@5):print('setting nameForExporterTable='..self.nameForExporterTable..' key/exporter='..exporter..' key/exporter.name='..exporter.name..' value='..newName)
+--DEBUG(@5):print('setting nameForExporterTable='..tostring(self.nameForExporterTable)..' key/exporter='..tostring(exporter)..' key/exporter.name='..tostring(exporter and exporter.name)..' value='..newName)
 		self.nameForExporterTable[exporter.name] = newName
 	end
 
