@@ -278,30 +278,63 @@ end
 --  or should only matrix/vectors?
 -- should non-matrix arrays perform per-element scalar multiplications instead?  or none?
 -- how about do this like my matrix library? inner the last index of the left and the first index of the right.
-local function matrixMatrixMul(a,b)
-	local adim = a:dim()
-	local bdim = b:dim()
-	if #adim ~= 2 or #bdim ~= 2 then return end	-- only support matrix/matrix multiplication
-	local ah = adim[1]
-	local aw = adim[2]
-	local bh = bdim[1]
-	local bw = bdim[2]
-	if aw ~= bh then return end
+local function matrixMatrixMul(a,b,aj,bj)
+	local sa = a:dim()
+	local sb = b:dim()
+	local dega = #sa -- a:degree()
+	local degb = #sb -- b:degree()
+	--[[ only support matrix/matrix multiplication
+	if dega ~= 2 or degb ~= 2 then return end
+	--]]
+	if aj then
+		assert.le(1, aj)
+		assert.le(aj, dega)
+	else
+		aj = dega
+	end
+	if bj then
+		assert.le(1, bj)
+		assert.le(bj, degb)
+	else
+		bj = 1
+	end
+	local ssa = table(sa)
+	local saj = ssa:remove(aj)
+	local ssb = table(sb)
+	local sbj = ssb:remove(bj)
+	assert.eq(saj, sbj, "inner dimensions must be equal")
+	local sc = table(ssa):append(ssb)
+
 	symmath = symmath or require 'symmath'
-	return symmath.Matrix(range(ah):map(function(i)
-		return range(bw):map(function(j)
-			local s
-			for k=1,aw do
-				if not s then
-					s = a[i][k] * b[k][j]
-				else
-					s = s + a[i][k] * b[k][j]
-				end
-			end
-			return s
-		end)
-	end):unpack())
+	-- TODO should it be an Array or a Matrix or a Vector ...
+	-- ... or should I just merge them all into this class?
+	-- Vector has nothing different except its metatable.
+	-- Matrix just has a bunch of extra functions inherited.
+
+	-- How about I use the result type unless its a Vector, because that has connotation that its just degree-1, whereas Array, and Tensor don't.
+	-- Granted I am letting Matrix sneak by, being degree 2...
+	-- But oh wait there is no Vector class, it's just a wrapper for Array ...
+	local resultType = getmetatable(a)
+	if resultType == Array then resultType = getmetatable(b) end
+
+	return resultType:lambda(sc, function(...)
+		local i = {...}
+		local ia = table{table.unpack(i,1,#sa-1)}
+		ia:insert(aj, 'false')
+		local ib = table{table.unpack(i,#sa)}
+		ib:insert(bj, 'false')
+		local sum = symmath.Constant(0)
+		for u=1,saj do
+			ia[aj] = u
+			ib[bj] = u
+			local ai = a[ia]
+			local bi = b[ib]
+			sum = sum + ai * bi
+		end
+		return sum
+	end)
 end
+
 
 -- TODO only map the elements of the array
 -- TODO array getter, setter, and iterator
