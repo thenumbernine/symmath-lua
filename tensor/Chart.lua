@@ -19,6 +19,7 @@ complete with
 ----------- end original TensorCoordBasis class: -----------
 --]]
 
+local assert = require 'ext.assert'
 local class = require 'ext.class'
 local table = require 'ext.table'
 local string = require 'ext.string'
@@ -30,7 +31,7 @@ function Chart:init(args)
 	args = args or {}
 	self.manifold = args.manifold or require 'symmath.tensor.Manifold'.last	-- if no Manifold is provided, then ... use the default? or use the last created?
 	self.manifold.charts:insertUnique(self)
-	self.coords = table(assert(args.coords))
+	self.coords = table((assert.index(args, 'coords')))
 	local n = #self.coords
 
 	-- originally in tensor/TensorCoordBasis.lua
@@ -120,7 +121,7 @@ and define their associated tangentSpaceOperators in the Chart as differentiatin
 		end
 	else
 		self.tangentSpaceOperators = table(self.tangentSpaceOperators)
-		assert(#self.tangentSpaceOperators == n, "expected number of tangentSpaceOperators to equal number of coords")
+		assert.len(self.tangentSpaceOperators, n, "expected number of tangentSpaceOperators to equal number of coords")
 	end
 
 
@@ -207,7 +208,9 @@ function Chart:setMetric(metric, metricInverse)
 	else
 		a, b = 'a','b'
 	end
-	assert(a and b and #a>0 and #b>0)
+	assert(a and b)
+	assert.gt(#a, 0)
+	assert.gt(#b, 0)
 
 	local Tensor = require 'symmath.Tensor'
 	if not Tensor:isa(self.metric) then
@@ -239,7 +242,7 @@ function Chart:Tensor(...)
 	local t = table.pack(...)
 	local args = t[1]
 	-- TODO when is 'args' ctor arguments and when it is some Tensor to :clone() ?
-	assert(type(args) == 'table', "hmm, I'm working out the kinks of this")
+	assert.type(args, 'table', "hmm, I'm working out the kinks of this")
 	args = table(args):setmetatable(nil)
 	args.chart = self
 	t[1] = args
