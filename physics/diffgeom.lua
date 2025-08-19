@@ -19,7 +19,12 @@ Props.fields = table{
 		name = 'c',
 		symbol = 'c',
 		title = 'commutation coefficients',
-		display = function(self) return var'c''_ab^c':eq(self.c'_ab^c'()) end,
+		display = function(self)
+			return var'c''_ab^c':eq(
+				--self.c'_ab^c'()
+				self.c:permute'^c_ab'	-- show the [ab] antisymmetry better
+			)
+		end,
 	},
 	{
 		name = 'g',
@@ -40,7 +45,12 @@ Props.fields = table{
 		symbol = '{\\partial g}',
 		title = 'metric derivative',
 		calc = function(self) return self.g'_ab,c'():permute'_abc' end,
-		display = function(self) return var'g''_ab,c':eq(self.dg'_abc'()) end,
+		display = function(self)
+			return var'g''_ab,c':eq(
+				--self.dg'_abc'()
+				self.dg:permute'_cab'	-- show the (ab) symmetry
+			)
+		end,
 	},
 	{
 		name = 'GammaL',
@@ -53,21 +63,38 @@ Props.fields = table{
 			end
 			return expr():permute'_abc'
 		end,
-		display = function(self) return var'\\Gamma''_abc':eq(self.GammaL'_abc'()) end,
+		display = function(self)
+			return var'\\Gamma''_abc':eq(
+				-- if we are holonomic we want to see Gamma_a(bc)
+				-- if we are anholonomic we want to see Gamma_[a|b|c]
+				--self.GammaL'_abc'()
+				self.GammaL:permute'_bac'	-- show Gamma_(a|b|c) or Gamma_[a|b|c]
+			)
+		end,
 	},
 	{
 		name = 'Gamma',
 		symbol = '\\Gamma',
 		title = 'connection coefficients / 2nd kind Christoffel',
 		calc = function(self) return self.GammaL'^a_bc'() end,
-		display = function(self) return var'\\Gamma''^a_bc':eq(self.Gamma'^a_bc'()) end,
+		display = function(self)
+			return var'\\Gamma''^a_bc':eq(
+				--self.Gamma'^a_bc'()
+				self.Gamma:permute'_b^a_c'
+			) 
+		end,
 	},
 	{
 		name = 'dGamma',
 		symbol = '{\\partial \\Gamma}',
 		title = 'connection coefficients derivative',
 		calc = function(self) return self.Gamma'^a_bc,d'():permute'^a_bcd' end,
-		display = function(self) return var'\\Gamma''^a_bc,d':eq(self.dGamma'^a_bcd'()) end,
+		display = function(self)
+			return var'\\Gamma''^a_bc,d':eq(
+				--self.dGamma'^a_bcd'()
+				self.dGamma:permute'_bd^a_c'	-- put derivs together, put anti/sym together
+			)
+		end,
 	},
 
 -- this is too slow.  for dim=4, Gamma^a_bc is 4^3 = 64 elements
@@ -82,7 +109,12 @@ Props.fields = table{
 		symbol = '(\\Gamma^2)',
 		title = 'connection coefficients squared',
 		calc = function(self) return (self.Gamma'^a_ce' * self.Gamma'^e_db')():permute'^a_bcd' end,
-		display = function(self) return (var'\\Gamma''^a_ec' * var'\\Gamma''^e_bd'):eq(self.GammaSq'^a_bcd'()) end,
+		display = function(self) 
+			return (var'\\Gamma''^a_ec' * var'\\Gamma''^e_bd'):eq(
+				--self.GammaSq'^a_bcd'()
+				self.GammaSq:permute'_bd^a_c'
+			) 
+		end,
 	},
 	{
 		name = 'RiemannULLL',
@@ -95,7 +127,12 @@ Props.fields = table{
 			end
 			return expr():permute'^a_bcd'
 		end,
-		display = function(self) return var'R''^a_bcd':eq(self.RiemannULLL'^a_bcd'()) end,
+		display = function(self) 
+			return var'R''^a_bcd':eq(
+				self.RiemannULLL'^a_bcd'()
+				--self.RiemannULLL:permute'_bd^a_c'
+			) 
+		end,
 	},
 	{
 		name = 'Riemann',

@@ -35,6 +35,7 @@ local rho = set.nonNegativeReal:var'\\rho'
 local R = set.nonNegativeReal:var'R'
 
 local alpha = var('\\alpha', {r})
+local f = var('f', {r})
 local omega = set.nonNegativeReal:var'\\omega'
 local q = var('q', {t,x,y,z})
 
@@ -46,7 +47,7 @@ local eta3 = Matrix:lambda({3,3}, function(i,j) return i==j and (i==1 and -1 or 
 local eta4 = Matrix:lambda({4,4}, function(i,j) return i==j and (i==1 and -1 or 1) or 0 end)
 
 
-local spacetimes = {
+local spacetimes = table{
 	{
 		title = 'Cartesian, coordinate',
 		baseCoords = {x,y},
@@ -148,10 +149,11 @@ local spacetimes = {
 		end,
 		eToEHol = function()
 			-- notice neither is a cartesian index,
-			-- but the capital denotes the non-coordinate basis
-			-- gHol_ab = g_AB e_a^A e_b^B
+			-- but the capital denotes the coordinate basis
+			-- gHol_AB = g_ab eToEHol_A^a eToEHol_B^b
+			-- eHol_A = partial_A = eToEHol_A^a e_a
 			-- notice that orthonormal implies g_ab = eta_ab
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{1, 0},
 				{0, r}
 			)
@@ -170,7 +172,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta))
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
@@ -241,7 +243,7 @@ local spacetimes = {
 				{0, 0, 1})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{1, 0},
 				{0, 1}
 			)
@@ -261,7 +263,7 @@ local spacetimes = {
 				{0, 0, 1})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{1, 0},
 				{0, r}
 			)
@@ -284,7 +286,7 @@ local spacetimes = {
 				{0, 0, sqrt(r)})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{sqrt(r), 0},
 				{0, sqrt(r)}
 			)
@@ -311,7 +313,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{1, 0, 0},
 				{0, r, 0},
 				{0, 0, 1}
@@ -336,7 +338,7 @@ local spacetimes = {
 			return Tensor('^I', r * cos(theta), r * sin(theta), z)
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{r^frac(1,3), 0, 0},
 				{0, r^frac(1,3), 0},
 				{0, 0, r^frac(1,3)}
@@ -398,7 +400,7 @@ local spacetimes = {
 				{-sin(phi),cos(phi),0})
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{r, 0},
 				{0, r*sin(theta)}
 			)
@@ -431,7 +433,7 @@ local spacetimes = {
 				r * cos(theta))
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{1, 0, 0},
 				{0, r, 0},
 				{0, 0, r*sin(theta)}
@@ -455,7 +457,7 @@ local spacetimes = {
 		end,
 		eToEHol = function()
 			local cf = r * sqrt(abs(sin(theta)))
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{cf, 0, 0},
 				{0, cf, 0},
 				{0, 0, cf}
@@ -489,7 +491,7 @@ local spacetimes = {
 		end,
 		eToEHol = function()
 			local cf = r * sqrt(abs(sin(theta)))
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{cf, 0},
 				{0, cf}
 			)
@@ -529,7 +531,7 @@ local spacetimes = {
 				rDef * cos(theta))
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
+			return Tensor('_A^a',
 				{(A*cosh(rho/w)) / (w * sinh(1/w)), 0, 0},
 				{0, (A*sinh(rho/w)) / sinh(1/w), 0},
 				{0, 0, (A*sinh(rho/w) * sin(theta)) / sinh(1/w)}
@@ -572,21 +574,45 @@ local spacetimes = {
 		baseCoords = {t,r,theta,phi},
 		embedded = {t,x,y,z},
 		flatMetric = eta4,
+		metric = function()
+			return Tensor('_uv', eta4)
+		end,
 		basis = function()
+			--[=[
 			return Tensor('_u^I',
-				{alpha, 0, 0, 0},
-				{0, 1/alpha, 0, 0},
+				{f, 0, 0, 0},
+				{0, 1/f, 0, 0},
 				{0, 0, r, 0},
 				{0, 0, 0, r * sin(theta)}
 			)
+			--]=]
+			-- anholonomic means non-coordinate
+			-- specifically this is a locally-Minkowski anholonomic basis
+			-- and that means the transform from a Minkowski-metric embedding manifold to the locally-Minkowski frame is identity
+			-- [=[
+			return Tensor('_u^I', Matrix.identity(4):unpack())
+			--]=]
 		end,
 		eToEHol = function()
-			return Tensor('_a^A',
-				{alpha, 0, 0, 0},
-				{0, 1/alpha, 0, 0},
+			-- GAHH I've confused myself
+			-- [=[
+			return Tensor('_A^a',
+				{f, 0, 0, 0},
+				{0, 1/f, 0, 0},
 				{0, 0, r, 0},
 				{0, 0, 0, r * sin(theta)}
 			)
+			--]=]
+			--[=[
+			return Tensor('_A^a',
+				Matrix(
+					{f, 0, 0, 0},
+					{0, 1/f, 0, 0},
+					{0, 0, r, 0},
+					{0, 0, 0, r * sin(theta)}
+				):inverse():unpack()
+			)
+			--]=]
 		end,
 	},
 --[[ this is having problems integrating alpha_,r
@@ -697,6 +723,9 @@ local spacetimes = {
 	},
 }
 
+spacetimes = spacetimes:filter(function(c)
+	return c.title == 'Schwarzschild, anholonomic'
+end)
 
 local MathJax = symmath.export.MathJax
 MathJax.header.pathToTryToFindMathJax = '..'
@@ -736,14 +765,13 @@ for _,info in ipairs(spacetimes) do
 
 	-- technically this is the variable whose derivative operator produces the basis,
 	-- and this is the associated coordinates
-	local baseCoords = info.baseCoords
-	local embedded = info.embedded
+	local baseCoords = table(info.baseCoords)
+	local embedded = table(info.embedded)
 
-	printbr([[chart coordinates: $x^\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return x.name end):concat', '..[[\}$]])
-	printbr([[chart coordinate basis: $e_\tilde{\mu} = \{]]..table.mapi(baseCoords, function(x) return 'e_{\\tilde{'..x.name..'}}' end):concat', '..[[\}$]])
-	printbr([[embedding coordinates: $u^I = \{]]..table.mapi(embedded, function(x) return x.name end):concat', '..[[\}$]])
-	printbr([[embedding basis $e_I = \{]]..table.mapi(embedded, function(x) return 'e_{'..x.name..'}' end):concat', '..[[\}$]])
-
+	printbr([[chart coordinates: $x^\tilde{\mu} = \{]]..baseCoords:mapi(function(x) return x.name end):concat', '..[[\}$]])
+	printbr([[chart coordinate basis: $e_\tilde{\mu} = \{]]..baseCoords:mapi(function(x) return 'e_{\\tilde{'..x.name..'}}' end):concat', '..[[\}$]])
+	printbr([[embedding coordinates: $u^I = \{]]..embedded:mapi(function(x) return x.name end):concat', '..[[\}$]])
+	printbr([[embedding basis $e_I = \{]]..embedded:mapi(function(x) return 'e_{'..x.name..'}' end):concat', '..[[\}$]])
 
 	-- dimension of manifold
 	local n = #baseCoords
@@ -761,7 +789,7 @@ for _,info in ipairs(spacetimes) do
 
 	-- can't build this until after Tensor.Chart is built, because before then Tensor doesn't know the dimension of _I and _J
 	-- TODO how to build this Tensor for embeddedChart?
-	local eta = Tensor('_IJ', table.unpack(info.flatMetric))
+	local eta = Tensor('_IJ', info.flatMetric:unpack())
 	print'flat metric:'
 	if usePrintElem then
 		eta:printElem('\\eta', write)
@@ -781,16 +809,20 @@ for _,info in ipairs(spacetimes) do
 	-- transform from Cartesian basis to chart basis
 	-- e_I = Cartesian basis
 	-- e_u = chart basis
+	--  (for anholonomic this is non-coordinate ...
+	--   TODO this is technically the hat operators below
+	--   and those hats match non-hats when the basis is holonomic
+	-- )
 	-- e_u = e_u^I e_I
 	-- e_I = e^u_I e_u
 	local e
 	-- transform from chart basis to Cartesian basis
 	local eU
 	-- transform from chart basis to coordinate basis
-	-- e_A = chart basis
-	-- e_a = coordinate basis
-	-- e_a = e_a^A e_A
-	-- e_A = e^a_A e_a
+	-- e_u = chart basis
+	-- e_A = coordinate basis
+	-- e_u = e^A_u e_A
+	-- e_A = e_A^u e_u
 	local eToEHol = info.eToEHol and info.eToEHol() or Tensor('_A^a', function(A, a)
 		return A == a and 1 or 0
 	end)
@@ -798,17 +830,17 @@ for _,info in ipairs(spacetimes) do
 	if usePrintElem then
 		eToEHol:printElem('\\tilde{e}', write)
 	else
-		printbr(var'\\tilde{e}''_A^a':eq(eToEHol))
+		printbr(var'e'' _\\tilde{a} ^a':eq(eToEHol))
 	end
 	printbr()
 	printbr()
 	-- transform from coordinate basis to chart basis
-	local eHolToE = Tensor('^a_A', table.unpack((Matrix.inverse(eToEHol))))
+	local eHolToE = Tensor('^A_a', Matrix.inverse(eToEHol):unpack())
 	printbr'transform from coorinate to basis:'
 	if usePrintElem then
 		eHolToE:printElem('\\tilde{e}', write)
 	else
-		printbr(var'\\tilde{e}''^a_A':eq(eHolToE))
+		printbr(var'e'' ^\\tilde{a} _a':eq(eHolToE))
 	end
 	printbr()
 	printbr()
@@ -816,7 +848,7 @@ for _,info in ipairs(spacetimes) do
 
 	-- create basis operators - as non-coordinate linear combinations of coordinates when available
 	local tangentSpaceOperators = table()
-	local anholonomicCoords = table.mapi(baseCoords, function(c)
+	local anholonomicCoords = baseCoords:mapi(function(c)
 		return c.set:var('\\hat{'..c.name..'}')
 	end)
 	for i=1,n do
@@ -840,8 +872,8 @@ for _,info in ipairs(spacetimes) do
 	end
 	printbr()
 
-	-- potentially-anholonomic chart:
 	local chart = manifold:Chart{coords=anholonomicCoords, tangentSpaceOperators=tangentSpaceOperators}
+	printbr([[anholonomic coordinates: $x^\hat{\mu} = \{]]..anholonomicCoords:mapi(function(x) return x.name end):concat', '..[[\}$]])
 
 	-- metric
 	local g
@@ -874,7 +906,7 @@ for _,info in ipairs(spacetimes) do
 			printbr()
 		-- simply use basis provided
 		elseif info.basis then
-			printbr'basis in embedded coordinates:'
+			printbr'basis in embedded coordinates / transform from embedded to basis:'
 			e['_u^I'] = info.basis()()
 			if usePrintElem then
 				e:printElem('e', write)
@@ -892,7 +924,7 @@ for _,info in ipairs(spacetimes) do
 			eU = info.eU()
 		else
 			assert(#tangentSpaceOperators == #embedded)
-			eU = Tensor('^u_I', table.unpack(Matrix(table.unpack(e)):inverse():transpose()))
+			eU = Tensor('^u_I', Matrix(e:unpack()):inverse():transpose():unpack())
 		end
 
 		--printbr(var'e''^u_I'
@@ -935,15 +967,22 @@ for _,info in ipairs(spacetimes) do
 		is it just me, or does this look strikingly similar to the spin connection?
 		--]]
 		c = Tensor'_ab^c'
-		c['_ab^c'] = ((e'_b^I_,a' - e'_a^I_,b') * eU'^c_I')()
+		c['_ab^c'] = ((eHolToE'^A_b,a' - eHolToE'^A_a,b') * eToEHol'_A^c')()
 		if usePrintElem then
 			c:printElem('c', write)
 		else
-			printbr(var'c''_ab^c':eq(c))
+			printbr(var'c''_ab^c':eq(
+				c:permute'^c_ab'	-- show the [ab] antisymmetry better
+			))
 		end
 		printbr()
 
 		g = (e'_u^I' * e'_v^J' * eta'_IJ')()
+
+		-- coordinate-basis
+		local coordG = (g'_uv' * eToEHol'_A^u' * eToEHol'_B^v')()
+		printbr('coordinate metric', var'\\tilde{g}'' _\\tilde{u} _\\tilde{v}':eq(coordG))
+
 		printbr(var'g''_uv':eq(var'e''_u^I' * var'e''_v^J' * var'\\eta''_IJ'))
 		if usePrintElem then
 			g:printElem('g', write)
@@ -980,7 +1019,7 @@ for _,info in ipairs(spacetimes) do
 			if usePrintElem then
 				t:printElem(field.symbol, write)
 			else
-				printbr(var(field.symbol):eq(t))
+				printbr(field.display(self))
 			end
 		else
 			print(t)
