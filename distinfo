@@ -1,5 +1,10 @@
+--------------------------------------------
+-- generated with dist/build-distinfo.rua --
+--------------------------------------------
+
 name = "symmath"
 files = {
+	[".github/FUNDING.yml"] = "symmath/.github/FUNDING.yml",
 	["Array.lua"] = "symmath/Array.lua",
 	["Constant.lua"] = "symmath/Constant.lua",
 	["Derivative.lua"] = "symmath/Derivative.lua",
@@ -37,6 +42,7 @@ files = {
 	["conj.lua"] = "symmath/conj.lua",
 	["cos.lua"] = "symmath/cos.lua",
 	["cosh.lua"] = "symmath/cosh.lua",
+	["distinfo"] = "symmath/distinfo",
 	["distributeDivision.lua"] = "symmath/distributeDivision.lua",
 	["eval.lua"] = "symmath/eval.lua",
 	["exp.lua"] = "symmath/exp.lua",
@@ -345,6 +351,7 @@ files = {
 	["tests/output/imperial units.html"] = "symmath/tests/output/imperial units.html",
 	["tests/output/metric catalog.html"] = "symmath/tests/output/metric catalog.html",
 	["tests/output/metric catalog/Cartesian, coordinate.html"] = "symmath/tests/output/metric catalog/Cartesian, coordinate.html",
+	["tests/output/metric catalog/Schwarzschild, anholonomic.html"] = "symmath/tests/output/metric catalog/Schwarzschild, anholonomic.html",
 	["tests/output/metric catalog/Schwarzschild.html"] = "symmath/tests/output/metric catalog/Schwarzschild.html",
 	["tests/output/metric catalog/cylindrical and time, coordinate.html"] = "symmath/tests/output/metric catalog/cylindrical and time, coordinate.html",
 	["tests/output/metric catalog/cylindrical surface, anholonomic, conformal.html"] = "symmath/tests/output/metric catalog/cylindrical surface, anholonomic, conformal.html",
@@ -390,7 +397,6 @@ files = {
 	["tests/output/unit/Matrix eigen.html"] = "symmath/tests/output/unit/Matrix eigen.html",
 	["tests/output/unit/Variable dependsOn.html"] = "symmath/tests/output/unit/Variable dependsOn.html",
 	["tests/output/unit/compile.html"] = "symmath/tests/output/unit/compile.html",
-	["tests/output/unit/determinant_performance.html"] = "symmath/tests/output/unit/determinant_performance.html",
 	["tests/output/unit/export.html"] = "symmath/tests/output/unit/export.html",
 	["tests/output/unit/func.html"] = "symmath/tests/output/unit/func.html",
 	["tests/output/unit/getIndexesUsed.html"] = "symmath/tests/output/unit/getIndexesUsed.html",
@@ -398,7 +404,6 @@ files = {
 	["tests/output/unit/index_construction.html"] = "symmath/tests/output/unit/index_construction.html",
 	["tests/output/unit/integral.html"] = "symmath/tests/output/unit/integral.html",
 	["tests/output/unit/limit.html"] = "symmath/tests/output/unit/limit.html",
-	["tests/output/unit/linear solver.html"] = "symmath/tests/output/unit/linear solver.html",
 	["tests/output/unit/match.html"] = "symmath/tests/output/unit/match.html",
 	["tests/output/unit/matrix.html"] = "symmath/tests/output/unit/matrix.html",
 	["tests/output/unit/notfinite.html"] = "symmath/tests/output/unit/notfinite.html",
@@ -414,7 +419,6 @@ files = {
 	["tests/output/unit/symmetrizeIndexes.html"] = "symmath/tests/output/unit/symmetrizeIndexes.html",
 	["tests/output/unit/tensor sub-assignment.html"] = "symmath/tests/output/unit/tensor sub-assignment.html",
 	["tests/output/unit/tensor sub-index.html"] = "symmath/tests/output/unit/tensor sub-index.html",
-	["tests/output/unit/tensor use case.html"] = "symmath/tests/output/unit/tensor use case.html",
 	["tests/output/unit/test.html"] = "symmath/tests/output/unit/test.html",
 	["tests/output/unit/tidyIndexes.html"] = "symmath/tests/output/unit/tidyIndexes.html",
 	["tests/output/wave equation in spacetime - flux eigenvectors.html"] = "symmath/tests/output/wave equation in spacetime - flux eigenvectors.html",
@@ -480,6 +484,7 @@ deps = {
 	"template",
 	"vec",
 	"dkjson",
+	--"grem",
 	--"http",	-- for standalone server
 	--"solver",	-- in tests
 }
