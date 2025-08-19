@@ -567,6 +567,28 @@ local spacetimes = {
 			)
 		end,
 	},
+	{
+		title = 'Schwarzschild, anholonomic',
+		baseCoords = {t,r,theta,phi},
+		embedded = {t,x,y,z},
+		flatMetric = eta4,
+		basis = function()
+			return Tensor('_u^I',
+				{alpha, 0, 0, 0},
+				{0, 1/alpha, 0, 0},
+				{0, 0, r, 0},
+				{0, 0, 0, r * sin(theta)}
+			)
+		end,
+		eToEHol = function()
+			return Tensor('_a^A',
+				{alpha, 0, 0, 0},
+				{0, 1/alpha, 0, 0},
+				{0, 0, r, 0},
+				{0, 0, 0, r * sin(theta)}
+			)
+		end,
+	},
 --[[ this is having problems integrating alpha_,r
 -- TODO to implement FTC I need to have a function expression, or an evaluate-at expression (same idea)
 	{
