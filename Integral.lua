@@ -64,12 +64,17 @@ Integral.rules = {
 			int = int():factorDivision()
 
 			if symmath.op.Equation:isa(int)
-			or add:isa(int)
 			or symmath.Array:isa(int)
 			then
 				return setmetatable(table.mapi(int, function(xi)
 					return prune(Integral(xi, table.unpack(expr, 2)))
 				end), getmetatable(int))
+			end
+
+			if add:isa(int) then
+				return add(table.mapi(int, function(xi)
+					return prune(Integral(xi, table.unpack(expr, 2)))
+				end):unpack())
 			end
 
 			-- TODO convert away divisions first ... convert into ^-1's

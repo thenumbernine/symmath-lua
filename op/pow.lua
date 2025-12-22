@@ -847,9 +847,9 @@ pow.rules = {
 				return expr:expand()
 				--]]
 				-- [[
-				return setmetatable(table.mapi(expr[1], function(x,i)
+				return mul(table.mapi(expr[1], function(x,i)
 					return x^expr[2]
-				end), mul)
+				end):unpack())
 				--]]
 			end
 		end},

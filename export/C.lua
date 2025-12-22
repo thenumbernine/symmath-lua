@@ -60,7 +60,7 @@ C.lookupTable = table(C.lookupTable):union{
 			and expr[2].value > 1
 			and expr[2].value < 100
 			then
-				local result1, result2 = self:apply(setmetatable(table.rep({expr[1]}, expr[2].value), symmath.op.mul))
+				local result1, result2 = self:apply(symmath.op.mul(table.rep({expr[1]}, expr[2].value):unpack()))
 				-- precedence will see pow and not give correct parenthesis
 				-- so manually add parenthesis here
 				return '('..result1..')', result2

@@ -243,7 +243,7 @@ function Language:toCodeInternal(args)
 						if n == math.floor(n) and n >= 0 and n < 100 then
 							if n == 0 then return Constant(1) end
 							if n == 1 then return x end
-							return setmetatable(table.rep({x[1]}, n), symmath.op.mul)
+							return symmath.op.mul(table.rep({x[1]}, n):unpack())
 						end
 					end
 				end
@@ -282,7 +282,7 @@ function Language:toCodeInternal(args)
 				assert(n >= 2)
 				while n > 2 do
 					local nn = n - 1
-					x[nn] = setmetatable({x[nn], x[n]}, mt)
+					x[nn] = mt(x[nn], x[n])
 					x[n] = nil
 					n = nn
 				end

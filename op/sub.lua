@@ -5,6 +5,22 @@ local sub = Binary:subclass()
 sub.precedence = 2
 sub.name = '-'
 
+function sub:init(...)
+	sub.super.init(self, ...)
+
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	-- but don't put this in Binary:init() since I think it's used in other places like Equation
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+	end
+end
+
 function sub:evaluateDerivative(deriv, ...)
 	local result = table()
 	for i=1,#self do

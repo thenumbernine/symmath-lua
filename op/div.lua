@@ -18,6 +18,22 @@ local div = Binary:subclass()
 div.precedence = 3.5
 div.name = '/'
 
+function div:init(...)
+	div.super.init(self, ...)
+
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	-- but don't put this in Binary:init() since I think it's used in other places like Equation
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+	end
+end
+
 function div:evaluateDerivative(deriv, ...)
 	local a, b = self[1], self[2]
 	a, b = a:cloneIfMutable(), b:cloneIfMutable()

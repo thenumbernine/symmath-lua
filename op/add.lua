@@ -9,15 +9,27 @@ local add = Binary:subclass()
 add.precedence = 2
 add.name = '+'
 
---[[
--- auto flatten any adds ...?
--- I don't think anyone depends on nested adds ...
--- and flattening here will make the API easier, requiring less simplify's for matching and ==
 function add:init(...)
 	add.super.init(self, ...)
+	--[[
+	-- auto flatten any adds ...?
+	-- I don't think anyone depends on nested adds ...
+	-- and flattening here will make the API easier, requiring less simplify's for matching and ==
 	self:flatten()
+	--]]
+	
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	-- but don't put this in Binary:init() since I think it's used in other places like Equation
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+	end
 end
---]]
 
 -- in-place flatten
 function add:flatten()
@@ -248,7 +260,7 @@ function add.match(a, b, matches)
 
 				local b1match = matchSize == 0 and Constant(0)
 					or matchSize == 1 and a[1]
-					or setmetatable(a:sub(1, matchSize), add)
+					or add(a:sub(1, matchSize):unpack())
 --DEBUG(@5):print(tab.."b1match "..SingleLine(b1match))
 				local matchesForThisSize = table(matches)
 --DEBUG(@5):print(tab.."matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
@@ -813,7 +825,7 @@ function ProdLists:toExpr()
 	end)
 	return #expr == 1
 		and expr[1]
-		or setmetatable(expr, add)
+		or add(table.unpack(expr))
 end
 
 function ProdLists:__tostring()
@@ -1190,7 +1202,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 			if flattenArgs then
-				return prune:apply(setmetatable(flattenArgs, add))
+				return prune:apply(add(table.unpack(flattenArgs)))
 			end
 --]=]
 		end},

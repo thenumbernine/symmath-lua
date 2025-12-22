@@ -9,15 +9,27 @@ mul.name = '*'
 mul.nameForExporterTable = {}
 mul.nameForExporterTable.LaTeX = ''	-- implicit mul, no symbol, but export/LaTeX.lua's symmath.op.mul exporter already has custom code, so you don't need this...
 
---[[
--- auto flatten any muls
--- this is useful for find/replace, since otherwise the API user has to simplify() everything to get it to match what the CAS produces
--- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
 function mul:init(...)
 	mul.super.init(self, ...)
+	--[[
+	-- auto flatten any muls
+	-- this is useful for find/replace, since otherwise the API user has to simplify() everything to get it to match what the CAS produces
+	-- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
 	self:flatten()
+	--]]
+	
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	-- but don't put this in Binary:init() since I think it's used in other places like Equation
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+	end
 end
---]]
 
 function mul:flatten()
 	local i = #self
@@ -269,7 +281,7 @@ function mul.match(a, b, matches)
 
 				local b1match = matchSize == 0 and Constant(1)
 					or matchSize == 1 and a[1]
-					or setmetatable(a:sub(1, matchSize), mul)
+					or mul(a:sub(1, matchSize):unpack())
 --DEBUG(@5):print(tab.."b1match "..SingleLine(b1match))
 				local matchesForThisSize = table(matches)
 --DEBUG(@5):print(tab.."matchesForThisSize["..b1.index.."] was "..(matchesForThisSize[b1.index] and SingleLine(matchesForThisSize[b1.index]) or 'nil'))
