@@ -1112,8 +1112,6 @@ mul.rules = {
 			local Variable = symmath.Variable
 			local TensorRef = symmath.Tensor.Ref
 
-			--expr = expr:clone()	-- wow this causes a lot of damage
-
 			--[[ here push all mulNonCommutes to the rhs
 			TODO why am I even sorting these?
 			I should just bin them all according to some classifications
@@ -1125,10 +1123,20 @@ mul.rules = {
 			4) Array, Matrix (doesn't commute)
 			--]]
 
+			--[[ call this before you modify expr
+			-- to make sure that you don't change an expression in-place
+			-- TODO for some reason this one causes all sorts of errors
+			local hasChanged
+			local function modifyExpr()
+				if not hasChanged then
+					expr = expr:clone()
+					hasChanged = true
+				end
+			end
+			--]]
 
 			-- push all Constants to the lhs, mul as we go
 			-- if we get a times 0 then return 0
-			--local hasBeenCloned
 			local cval = 1
 			for i=#expr,1,-1 do
 				local x = expr[i]
@@ -1136,12 +1144,7 @@ mul.rules = {
 					if x.value == 0 then
 						return Constant(0)
 					end
-					--[=[ for some reason this one causes all sorts of errors
-					if not hasBeenCloned then
-						expr = expr:clone()
-						hasBeenCloned = true
-					end
-					--]=]
+					--modifyExpr()
 					-- otherwise cval * x.value should not equal zero ...
 					table.remove(expr, i)
 					cval = cval * x.value
@@ -1154,12 +1157,7 @@ mul.rules = {
 			end
 
 			if cval ~= 1 then
-				--[=[ for some reason this one causes all sorts of errors
-				if not hasBeenCloned then
-					expr = expr:clone()
-					hasBeenCloned = true
-				end
-				--]=]
+				--modifyExpr()
 				table.insert(expr, 1, Constant(cval))
 			else
 				if #expr == 1 then
@@ -1232,12 +1230,23 @@ mul.rules = {
 			for i=1,#expr-1 do
 				for j=i,#expr-1 do
 					local k = j + 1
-					if not compare(expr[j], expr[k]) then
-						expr[j], expr[k] = expr[k], expr[j]
+					if not expr[j].mulNonCommutative
+					and not expr[k].mulNonCommutative
+					then
+						if not compare(expr[j], expr[k]) then
+							--modifyExpr()
+							expr[j], expr[k] = expr[k], expr[j]
+						end
 					end
 				end
 			end
+
 --]]
+			--[[ TODO even this does a lot of damage ....
+			if hasChanged then
+				return expr
+			end
+			--]]
 		end},
 
 -- [[ a^m * a^n => a^(m + n)
@@ -1273,7 +1282,7 @@ mul.rules = {
 				if Constant:isa(x) then
 					-- TODO get this to work for bignumber ...
 					if type(x.value) == 'number'
-					and x.value > 1 
+					and x.value > 1
 					then
 						local sqrtx = math.sqrt(x.value)
 						-- TODO set integer test?
