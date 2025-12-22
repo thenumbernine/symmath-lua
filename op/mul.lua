@@ -17,7 +17,7 @@ function mul:init(...)
 	-- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
 	self:flatten()
 	--]]
-	
+
 	-- cache commutativity flag
 	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
 	-- but don't put this in Binary:init() since I think it's used in other places like Equation
@@ -28,19 +28,62 @@ function mul:init(...)
 		if x.mulNonCommutative then
 			self.mulNonCommutative = true
 		end
+		if x.addNonAssociative then
+			self.addNonAssociative = true
+		end
+		if x.mulNonAssociative then
+			self.mulNonAssociative = true
+		end
 	end
 end
 
+-- in-place modifications
 function mul:flatten()
 	local i = #self
 	while i >= 1 do
-		self[i]:flatten()
-		if mul:isa(self[i]) then
-			local x = table.remove(self, i)
-			for j=#x,1,-1 do
-				table.insert(self, i, x[j])
+		local ch = self[i]
+		if mul:isa(ch) then
+			if ch.mulNonAssociative then
+				ch = ch:clone()
+				-- [[
+				-- if the mul is mul-non-associative then that means it shouldn't be moved ...
+				-- i.e. ((a * mul) * b) ~= (a * (mul * b))
+				-- but really, currently, a mul has this flag only if a member of the mul has the flag
+				-- (TODO maybe in the future make it mul.hasChildWithMulNonAssociative, but then I'd need two tests to prevent mul-non-associativity ... maybe ...)
+				-- so in this case, we still want to move mul's children which are *NOT* mulNonAssociative out of mul
+				--  and then if mul is only left we can move it out as well
+				--  but only if mul has >=2 non-associative children we keep mul around.
+				local chloc = i
+				for j=#ch,1,-1 do
+					local chj = ch[j]
+					if not chj.mulNonAssociative then
+						table.remove(ch, j)
+						table.insert(self, i, chj)
+						chloc = chloc + 1
+					end
+				end
+				-- skip past newly added elements so we can test them too
+				i = chloc
+				if #ch == 0 then
+					table.remove(self, chloc)
+				elseif #ch == 1 then
+					while mul:isa(ch) and #ch == 1 do
+						ch = ch[1]
+					end
+					self[chloc] = ch
+					i = i + 1
+				else
+					-- leave it there with its >=2 non-associative children
+				end
+				--]]
+			else
+				table.remove(self, i)
+				for j=#ch,1,-1 do
+					table.insert(self, i, ch[j])
+				end
+				-- skip past newly added elements so we can test them too
+				i = i + #ch
 			end
-			i = i + #x
 		end
 		i = i - 1
 	end
@@ -50,18 +93,80 @@ end
 -- TODO fix this too to not require multiple calls?
 -- or can we just assert that the visitor will be called on the children so it doesn't matter?
 function mul:flattenAndClone()
-	for i=#self,1,-1 do
-		local ch = self[i]
-		if mul:isa(ch) then
-			local expr = {table.unpack(self)}
-			table.remove(expr, i)
-			for j=#ch,1,-1 do
-				local chch = ch[j]
-				table.insert(expr, i, chch)
+--[==[
+	local Expression = require 'symmath.Expression'
+	local newargs = table()
+	local function recurse(node)
+		for i,x in ipairs(node) do
+			if mul:isa(x)
+			and not x.mulNonAssociative
+			then
+				-- then flatten its members
+				recurse(x)
+			elseif Expression:isa(x) then
+				newargs:insert(x:clone())
+			else
+				newargs:insert(x)
 			end
-			return mul(table.unpack(expr))
 		end
 	end
+	recurse(self)
+	return mul(newargs:unpack())
+--]==]
+-- [==[
+	local expr = self
+	local cloned = false
+	local i = #expr
+	while i >= 1 do
+		local ch = expr[i]
+		if mul:isa(ch) then
+			if not cloned then
+				expr = expr:clone()
+				cloned = true
+			end
+			if ch.mulNonAssociative then
+-- [[
+				ch = ch:clone()
+				-- operates based on the assumption that mul.mulNonAssociative means it has a child that is non-associative wrt multiplication
+				local chloc = i
+				for j=#ch,1,-1 do
+					local chj = ch[j]
+					if not chj.mulNonAssociative then
+						table.remove(ch, j)
+						table.insert(expr, i, chj)
+						chloc = chloc + 1
+					end
+				end
+				-- skip past newly added elements so we can test them too
+				i = chloc
+				if #ch == 0 then
+					table.remove(expr, chloc)
+				elseif #ch == 1 then
+					while mul:isa(ch) and #ch == 1 do
+						ch = ch[1]
+					end
+					expr[chloc] = ch
+					i = i + 1
+				else
+					-- leave it there with its >=2 non-associative children
+				end
+--]]
+			else
+				-- doesn't modify ch, no need to clone it...
+				table.remove(expr, i)
+				for j=#ch,1,-1 do
+					table.insert(expr, i, ch[j])
+				end
+				-- skip past newly added elements so we can test them too
+				i = i + #ch
+			end
+		end
+		i = i - 1
+	end
+	if cloned then
+		return expr
+	end
+--]==]
 end
 
 function mul:isFlattened()
@@ -616,7 +721,9 @@ function mul:distribute()
 	local add = symmath.op.add
 	local sub = symmath.op.sub
 	for i,ch in ipairs(self) do
-		if add:isa(ch) or sub:isa(ch) then
+		if add:isa(ch)
+		or sub:isa(ch)
+		then
 			local terms = table()
 			for j,chch in ipairs(ch) do
 				local term = self:clone()
@@ -822,12 +929,6 @@ mul.rules = {
 	},
 
 	Prune = {
-		{flatten = function(prune, expr)
-			-- flatten multiplications
-			local flat = expr:flattenAndClone()
-			if flat then return prune:apply(flat) end
-		end},
-
 -- move unary minuses up
 --[[ pruning unm immediately
 		{moveUnmUp = function(prune, expr)
@@ -852,6 +953,12 @@ mul.rules = {
 			end
 		end},
 --]]
+
+		{flatten = function(prune, expr)
+			-- flatten multiplications
+			local flat = expr:flattenAndClone()
+			if flat then return prune:apply(flat) end
+		end},
 
 		{handleInfAndNan = function(prune, expr)
 			symmath = symmath or require 'symmath'
@@ -1092,6 +1199,7 @@ mul.rules = {
 -- [[ and now for Matrix*Matrix multiplication ...
 -- Do this before the c * 0 = 0 rule.
 		{matrixMul = function(prune, expr)
+require 'ext.assert'.ge(#expr, 2)
 			symmath = symmath or require 'symmath'
 			for i=#expr,2,-1 do
 				local rhs = expr[i]
@@ -1623,6 +1731,37 @@ so when we find mul -> pow -> add
 			end
 		end},
 		--]]
+
+		{pruneCayleyDicksonMul = function(prune, expr)
+			-- left-to-right I guess, since octonions aren't associative...
+			for i=1,#expr-1 do
+				local expri = expr[i]
+				if expri.cayleyDicksonBasisList then
+					for j=i+1,#expr do
+						local exprj = expr[j]
+						if exprj.cayleyDicksonBasisList
+						and exprj.cayleyDicksonBasisList == expri.cayleyDicksonBasisList
+						then
+							local eVars = exprj.cayleyDicksonBasisList
+							local eiIndex = eVars:find(expri)
+							if eiIndex then
+								local ejIndex = eVars:find(exprj)
+								if ejIndex then
+									expr = expr:clone()
+									table.remove(expr, j)
+									local cdEntry = eVars.impl[eiIndex][ejIndex]
+									expr[i] = cdEntry.negative
+										and -eVars[cdEntry.index+1]
+										or eVars[cdEntry.index+1]
+									if #expr == 1 then return expr[1] end
+									return expr
+								end
+							end
+						end
+					end
+				end
+			end
+		end},
 	},
 
 	Tidy = {

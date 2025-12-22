@@ -663,6 +663,10 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 		if expr.lower then s = '_' .. s else s = '^' .. s end
 		return s
 	end,
+
+	[require 'symmath.CayleyDickson'.Basis] = function(self, expr)
+		return '{e_{'..expr.index..'}}'
+	end
 }:setmetatable(nil)
 
 -- make sure apply() returns a table

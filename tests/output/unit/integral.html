@@ -62,7 +62,7 @@ ${\int{{1}}d x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.304000ms<br>
+time: 0.541000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -74,7 +74,7 @@ ${\int{{y}}d x} = {{{x}} {{y}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.105000ms<br>
+time: 2.130000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -92,7 +92,7 @@ ${\int\limits_{{xL}}^{{xR}}{{1}}d x} = {{xR}{-{xL}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.997000ms<br>
+time: 5.770000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -122,7 +122,7 @@ ${{\int\limits_{{xL}}^{{xR}}{{x}}d x}{-{{\frac{1}{2}}{\left({{{xR}^{2}}{-{{xL}^{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.698000ms<br>
+time: 13.017000ms<br>
 stack: size: 73<br><ul style="margin:0px"><li>Init<br><li>Integral:Prune:apply<br><li>Integral:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:factorOutDivs<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:flatten<br><li>+:Prune:factorOutDivs<br><li>+:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>/:Prune:zeroOverX<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -146,7 +146,7 @@ ${\int{{x}}d x} = {{\frac{1}{2}} {{x}^{2}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.155000ms<br>
+time: 7.601000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -158,7 +158,7 @@ ${\int{{{x}^{2}}}d x} = {{\frac{1}{3}} {{x}^{3}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.431000ms<br>
+time: 6.730000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -170,7 +170,7 @@ ${{\int{{{x}^{-2}}}d x}{-{\frac{-1}{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.327000ms<br>
+time: 6.056000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:xToTheNegY<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -182,7 +182,7 @@ ${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.218000ms<br>
+time: 2.471000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -194,7 +194,7 @@ ${\int{{{x}^{-1}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.742000ms<br>
+time: 1.264000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -206,7 +206,7 @@ ${\int{{\frac{1}{{{2}} {{{x}^{2}}}}}}d x} = {-{\frac{1}{{{2}} {{x}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.823000ms<br>
+time: 8.675000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -224,7 +224,7 @@ ${\int{{{x}^{\frac{1}{2}}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.468000ms<br>
+time: 11.370000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -236,7 +236,7 @@ ${\int{{\sqrt{x}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.562000ms<br>
+time: 9.759000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -254,7 +254,7 @@ ${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.646000ms<br>
+time: 1.139000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -272,7 +272,7 @@ ${\int{{\frac{2}{x}}}d x} = {{{2}} {{\log\left( {\left| x\right|}\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.933000ms<br>
+time: 3.914000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:logPow<br><li>Prune<br><li>^:Expand:integerPower<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:logPow<br><li>+:Prune:flattenAddMul<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -284,7 +284,7 @@ ${\int{{\frac{1}{{{2}} {{x}}}}}d x} = {{\frac{1}{2}} {\log\left( {\left| x\right
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.724000ms<br>
+time: 6.789000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>/:Prune:logPow<br><li>Prune<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -302,7 +302,7 @@ ${\log\left( {{\left({\frac{1}{\left|{{\frac{1}{x}}{\left({{4} + {{{3}} {{x}}}}\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 23.783000ms<br>
+time: 47.540000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>log:Expand:apply<br><li>unm:Expand:apply<br><li>log:Expand:apply<br><li>Expand<br><li>log:Prune:apply<br><li>^:Prune:xToTheNegY<br><li>*:Prune:logPow<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -320,7 +320,7 @@ ${f} = {f}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.294000ms<br>
+time: 0.461000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -332,7 +332,7 @@ ${f} = {f}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.327000ms<br>
+time: 0.570000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:integrals<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -344,7 +344,7 @@ ${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.326000ms<br>
+time: 0.842000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -356,7 +356,7 @@ ${\int{{f}}d x} = {\int{{f}}d x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.994000ms<br>
+time: 2.543000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -368,7 +368,7 @@ ${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.455000ms<br>
+time: 1.400000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -386,7 +386,7 @@ ${-{\cos\left(  x\right)}} = {-{\cos\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.845000ms<br>
+time: 1.694000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -398,7 +398,7 @@ ${\sin\left(  x\right)} = {\sin\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.463000ms<br>
+time: 0.788000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -416,7 +416,7 @@ ${-{{\frac{1}{2}} {\cos\left( {{{2}} {{x}}}\right)}}} = {{\frac{1}{2}}{\left({-{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.171000ms<br>
+time: 6.117000ms<br>
 stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -428,7 +428,7 @@ ${{\frac{1}{y}} {\sin\left( {{{x}} {{y}}}\right)}} = {{\frac{1}{y}} {\sin\left( 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.338000ms<br>
+time: 8.369000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Tidy:apply<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -446,7 +446,7 @@ ${\int{{\frac{\cos\left(  x\right)}{\sin\left(  x\right)}}}d x} = {\log\left( {\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.474000ms<br>
+time: 4.461000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -464,7 +464,7 @@ ${{\frac{1}{4}}{\left({{\sin\left( {{{2}} {{x}}}\right)} + {{{2}} {{x}}}}\right)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.142000ms<br>
+time: 13.732000ms<br>
 stack: size: 30<br><ul style="margin:0px"><li>Init<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -482,7 +482,7 @@ ${\int{{\sinh\left(  x\right)}}d x} = {\cosh\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.407000ms<br>
+time: 0.762000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -494,7 +494,7 @@ ${\int{{\cosh\left(  x\right)}}d x} = {\sinh\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.547000ms<br>
+time: 0.758000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -530,7 +530,7 @@ ${\int{{\left({{{x}} {{y}}}\right)}}d x} = {{{\frac{1}{2}}} {{{x}^{2}}} {{y}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.792000ms<br>
+time: 4.540000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -542,7 +542,7 @@ ${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.795000ms<br>
+time: 16.401000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -554,7 +554,7 @@ ${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.210000ms<br>
+time: 14.512000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -566,7 +566,7 @@ ${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.707000ms<br>
+time: 17.005000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -578,7 +578,7 @@ ${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.336000ms<br>
+time: 6.506000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -596,7 +596,7 @@ ${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{a}} {{x}}}\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.031000ms<br>
+time: 12.585000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -608,7 +608,7 @@ ${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{b}} {{x}}}\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 92.891000ms<br>
+time: 185.925000ms<br>
 stack: size: 78<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -626,6 +626,6 @@ ${\int{{\left({{{{\sinh\left( {{{a}} {{x}}}\right)}^{2}}} {{\cosh\left( {{{a}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.099000ms<br>
+time: 18.976000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>

@@ -9,6 +9,28 @@ pow.omitSpace = true
 pow.precedence = 5
 pow.name = '^'
 
+function pow:init(...)
+	pow.super.init(self, ...)
+
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	-- but don't put this in Binary:init() since I think it's used in other places like Equation
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+		if x.addNonAssociative then
+			self.addNonAssociative = true
+		end
+		if x.mulNonAssociative then
+			self.mulNonAssociative = true
+		end
+	end
+end
+
 --[[
 d/dx(a^b)
 d/dx(exp(log(a^b)))
@@ -752,6 +774,20 @@ pow.rules = {
 					return result
 				end
 			end
+		end},
+
+		{pruneCayleyDicksonPow = function(prune, expr)
+			local a, b = table.unpack(expr)
+			if not a.cayleyDicksonBasisList then return end
+
+			symmath = symmath or require 'symmath'
+			local Constant = symmath.Constant
+			local eVars = a.cayleyDicksonBasisList
+			if not Constant.isValue(b, 2) then return end
+			-- e0^2 = e0, otherwise ei^2 = -e0
+			local ei = eVars:find(a)
+			if not ei then return end
+			return ei == 1 and eVars[1] or -eVars[1]
 		end},
 	},
 

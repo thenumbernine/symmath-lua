@@ -6,6 +6,27 @@ local unm = Expression:subclass()
 unm.precedence = 3	--4	--make it match mul and div so there aren't extra parenthesis around mul and div
 unm.name = 'unm'	-- hmm, same name as sub ... is that a problem?
 
+function unm:init(...)
+	unm.super.init(self, ...)
+
+	-- cache commutativity flag
+	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
+	for i,x in ipairs(self) do
+		if x.addNonCommutative then
+			self.addNonCommutative = true
+		end
+		if x.mulNonCommutative then
+			self.mulNonCommutative = true
+		end
+		if x.addNonAssociative then
+			self.addNonAssociative = true
+		end
+		if x.mulNonAssociative then
+			self.mulNonAssociative = true
+		end
+	end
+end
+
 function unm:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
 	return -deriv(x, ...)

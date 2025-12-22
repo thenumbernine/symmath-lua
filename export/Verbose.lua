@@ -57,6 +57,9 @@ Verbose.lookupTable = table(Verbose.lookupTable):union{
 		return self:applyForClass(require 'symmath.Tensor'.super, expr)
 			..table.mapi(expr.variance, tostring):concat()
 	end,
+	[require 'symmath.CayleyDickson'.Basis] = function(self, expr)
+		return expr.name..'{'..expr.index..'}'
+	end,
 }:setmetatable(nil)
 
 return Verbose()	-- singleton

@@ -38,12 +38,16 @@ end
 
 -- deep copy
 function Expression:clone()
+--DEBUG:local oldlen = #self
 	clone = clone or require 'symmath.clone'
 	local xs = table()
 	for i=1,#self do
 		xs:insert(clone(self[i]))
 	end
-	return getmetatable(self)(xs:unpack())
+--DEBUG:require 'ext.assert'.len(xs, oldlen)
+	local result = getmetatable(self)(xs:unpack())
+--DEBUG:require 'ext.assert'.len(result, oldlen)
+	return result
 end
 
 --[[
@@ -263,7 +267,11 @@ function Expression.__add(a,b)
 	if Equation:isa(b) then return b.__add(a,b) end
 
 	add = add or require 'symmath.op.add'
-	return add(a,b):flatten()
+	local result = add(a,b)
+	-- I don't want to ever modify-in-place non-mutable nodes...
+	return result:flattenAndClone() or result
+	-- ... but this is a throw-away node so :shrug: ...
+	--return result:flatten()
 end
 
 function Expression.__sub(a,b)
@@ -317,7 +325,15 @@ function Expression.__mul(a,b)
 	if Constant.isValue(b, 1) then return a end
 
 	mul = mul or require 'symmath.op.mul'
-	return mul(a,b):flatten()
+	local result = mul(a,b)
+	-- I don't want to ever modify-in-place non-mutable nodes...
+	--[[ TODO causing one random error in one random place ...
+	return result:flattenAndClone() or result
+	--]]
+	-- ... but this is a throw-away node so :shrug: ...
+	-- [[
+	return result:flatten()
+	--]]
 end
 
 function Expression.__div(a,b)
@@ -384,6 +400,7 @@ function Expression.__mod(a,b)
 	return mod(a,b)
 end
 
+-- TODO NOTICE this modifies in-place
 function Expression:flatten()
 if require 'symmath.Constant':isa(self) then assert(#self == 0) end
 	for i=1,#self do

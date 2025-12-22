@@ -17,7 +17,7 @@ function add:init(...)
 	-- and flattening here will make the API easier, requiring less simplify's for matching and ==
 	self:flatten()
 	--]]
-	
+
 	-- cache commutativity flag
 	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
 	-- but don't put this in Binary:init() since I think it's used in other places like Equation
@@ -28,6 +28,12 @@ function add:init(...)
 		if x.mulNonCommutative then
 			self.mulNonCommutative = true
 		end
+		if x.addNonAssociative then
+			self.addNonAssociative = true
+		end
+		if x.mulNonAssociative then
+			self.mulNonAssociative = true
+		end
 	end
 end
 
@@ -35,8 +41,11 @@ end
 function add:flatten()
 	local i = #self
 	while i >= 1 do
-		self[i]:flatten()
-		if add:isa(self[i]) then
+		local ch = self[i]
+		ch:flatten()
+		if add:isa(ch)
+		and not ch.addNonAssociative
+		then
 			local x = table.remove(self, i)
 			for j=#x,1,-1 do
 				table.insert(self, i, x[j])
@@ -51,6 +60,28 @@ function add:flatten()
 	-- this can also integrate with the ProdLists somehow, which converts to and fro add's often enough to be slow
 
 	return self
+end
+
+function add:flattenAndClone()
+	for i=#self,1,-1 do
+		local ch = self[i]
+		if add:isa(ch) then
+			local expr = self:clone()
+			if ch.addNonAssociative then
+				--[[ TODO
+				ch = ch:flattenAndClone() or ch:clone()
+				--]]
+			else
+				-- doesn't modify ch, no need to clone it...
+				table.remove(expr, i)
+				for j=#ch,1,-1 do
+					local chch = ch[j]
+					table.insert(expr, i, chch)
+				end
+				return expr
+			end
+		end
+	end
 end
 
 function add:isFlattened()
@@ -1171,7 +1202,9 @@ print('prodList', prodLists:toExpr(), '<br>')
 			-- (x + y) + z => x + y + z
 			for i=#expr,1,-1 do
 				local ch = expr[i]
-				if add:isa(ch) then
+				if add:isa(ch)
+				and not ch.addNonAssociative
+				then
 					expr = expr:clone()
 					-- this looks like a job for splice ...
 					table.remove(expr, i)
@@ -1188,7 +1221,9 @@ print('prodList', prodLists:toExpr(), '<br>')
 			-- (x + y) + z => x + y + z
 			local flattenArgs
 			for i,ch in ipairs(expr) do
-				if add:isa(ch) then
+				if add:isa(ch)
+				and not ch.addNonAssociative
+				then
 					if not flattenArgs then
 						flattenArgs = table.sub(expr, 1, i-1)
 					end

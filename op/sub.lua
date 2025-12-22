@@ -18,6 +18,12 @@ function sub:init(...)
 		if x.mulNonCommutative then
 			self.mulNonCommutative = true
 		end
+		if x.addNonAssociative then
+			self.addNonAssociative = true
+		end
+		if x.mulNonAssociative then
+			self.mulNonAssociative = true
+		end
 	end
 end
 
