@@ -5,6 +5,7 @@ basis of all vectors, matrices, tensors, etc
 
 local table = require 'ext.table'
 local range = require 'ext.range'
+local assert = require 'ext.assert'
 local tolua = require 'ext.tolua'
 local Expression = require 'symmath.Expression'
 local symmath

@@ -1434,7 +1434,7 @@ mul.rules = {
 --[=[
 this rule here passes the unit tests
 but it puts Platonic Solids in a simplification loop...
-TODO respect mulCommutative
+TODO respect mulNonCommutative
 only test to your neighbor
 and have a step above for pushing all commutative terms to one side
 
