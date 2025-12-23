@@ -986,7 +986,7 @@ simplifyAssertEq(eig.R, Matrix.identity(2))">✓</span></td></tr>
 <span style="color:green" title="simplifyAssertEq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )">✓</span></td></tr>
 <tr><td class="title">
 <a href="nonassociative.html">nonassociative</a>
-</td><td>16</td><td>2</td><td class="content">
+</td><td>20</td><td>1</td><td class="content">
 <span style="color:green" title="simplifyAssertEq(e0 * e0, e0)">✓</span>
 <span style="color:green" title="simplifyAssertEq(e1 * e1, -e0)">✓</span>
 <span style="color:green" title="simplifyAssertEq(e1 * e2, e3)">✓</span>
@@ -995,7 +995,11 @@ simplifyAssertEq(eig.R, Matrix.identity(2))">✓</span></td></tr>
 <span style="color:green" title="simplifyAssertEq(e1 * (e2 * e3), -e0)">✓</span>
 <span style="color:green" title="simplifyAssertEq((e1 * e2) * e4, e7)">✓</span>
 <span style="color:green" title="simplifyAssertEq(e1 * (e2 * e4), -e7)">✓</span>
-<span style="color:red" title="simplifyAssertEq((var&#39;a&#39; * e1 * e2) * e4, var&#39;a&#39; * e7)">✕</span>
+<span style="color:green" title="simplifyAssertEq( (var&#39;a&#39; * e1) * var&#39;a&#39;, var&#39;a&#39;^2 * e1)">✓</span>
+<span style="color:green" title="simplifyAssertEq( (var&#39;a&#39; * e1 * e2) * var&#39;a&#39;, var&#39;a&#39;^2 * e3)">✓</span>
+<span style="color:green" title="simplifyAssertEq( var&#39;a&#39; * (var&#39;a&#39; * e1 * e2) , var&#39;a&#39;^2 * e3)">✓</span>
+<span style="color:green" title="simplifyAssertEq( (var&#39;a&#39; * e1 * e2) * e4, var&#39;a&#39; * e7 )">✓</span>
+<span style="color:green" title="simplifyAssertEq((var&#39;a&#39; * e1 * e2) * e4, var&#39;a&#39; * e7)">✓</span>
 <span style="color:red" title="print((((e1 + e2) * e2) * e2)())">✕</span>
 <span style="color:green" title="assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0))">✓</span>
 <span style="color:green" title="assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))">✓</span>

@@ -38,6 +38,7 @@ function mul:init(...)
 end
 
 -- in-place modifications
+-- TODO don't use this ever anymore.  use flattenAndClone() instead.
 function mul:flatten()
 	local i = #self
 	while i >= 1 do
@@ -74,6 +75,8 @@ function mul:flatten()
 					i = i + 1
 				else
 					-- leave it there with its >=2 non-associative children
+					-- but reassign it because ch has been cloned and changed, so it's a new object
+					self[chloc] = ch
 				end
 				--]]
 			else
@@ -148,6 +151,8 @@ function mul:flattenAndClone()
 					expr[chloc] = ch
 					i = i + 1
 				else
+					-- but reassign it because ch has been cloned and changed, so it's a new object
+					expr[chloc] = ch
 					-- leave it there with its >=2 non-associative children
 				end
 --]]
@@ -1817,7 +1822,7 @@ so when we find mul -> pow -> add
 			return result
 			--]]
 			-- [[
-			return expr:flatten()	-- flatten() is in-place
+			return expr:flattenAndClone()	-- flatten() is in-place
 			--]]
 		end},
 

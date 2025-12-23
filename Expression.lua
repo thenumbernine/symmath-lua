@@ -327,13 +327,10 @@ function Expression.__mul(a,b)
 	mul = mul or require 'symmath.op.mul'
 	local result = mul(a,b)
 	-- I don't want to ever modify-in-place non-mutable nodes...
-	--[[ TODO causing one random error in one random place ...
+	-- TODO causing one random error in one random place ...
 	return result:flattenAndClone() or result
-	--]]
 	-- ... but this is a throw-away node so :shrug: ...
-	-- [[
-	return result:flatten()
-	--]]
+	--return result:flatten()
 end
 
 function Expression.__div(a,b)

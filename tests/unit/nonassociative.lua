@@ -26,6 +26,12 @@ for _,line in ipairs{
 [[simplifyAssertEq((e1 * e2) * e4, e7) -- nonzero associator]],
 [[simplifyAssertEq(e1 * (e2 * e4), -e7)]],
 
+-- had a problem with flatten but it's fixed now...
+[[simplifyAssertEq( (var'a' * e1) * var'a', var'a'^2 * e1)]],
+[[simplifyAssertEq( (var'a' * e1 * e2) * var'a', var'a'^2 * e3)]],
+[[simplifyAssertEq( var'a' * (var'a' * e1 * e2) , var'a'^2 * e3)]],
+[[simplifyAssertEq( (var'a' * e1 * e2) * e4, var'a' * e7 )]],
+
 [[simplifyAssertEq((var'a' * e1 * e2) * e4, var'a' * e7) -- with coefficients:]],
 
 -- stack overflowing when you mix add, mul, and mulNonAssociative
