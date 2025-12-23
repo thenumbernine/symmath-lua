@@ -4,7 +4,7 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/polydiv</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-	
+
 		<style>
 :root {
 	--font-color: #000000;
@@ -29,7 +29,8 @@ input {
 		</style>
 		<script type='text/javascript'>
 //https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-window.addEventListener('load', () => {
+//window.addEventListener('load', () =>
+{
 	let darkMode = false;
 	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		darkMode = true;
@@ -39,7 +40,8 @@ window.addEventListener('load', () => {
 	} else {
 		document.documentElement.removeAttribute('data-theme', 'dark');
 	}
-});
+}
+//);
 		</script>
 
 
@@ -64,7 +66,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.739000ms<br>
+time: 14.475000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -84,7 +86,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 30.931000ms<br>
+time: 30.205000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -110,7 +112,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.897000ms<br>
+time: 12.990000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -130,7 +132,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.224000ms<br>
+time: 13.537000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -156,7 +158,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.784000ms<br>
+time: 7.163000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -176,6 +178,6 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.502000ms<br>
+time: 11.758000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

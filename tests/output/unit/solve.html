@@ -4,7 +4,7 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/solve</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-	
+
 		<style>
 :root {
 	--font-color: #000000;
@@ -29,7 +29,8 @@ input {
 		</style>
 		<script type='text/javascript'>
 //https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-window.addEventListener('load', () => {
+//window.addEventListener('load', () =>
+{
 	let darkMode = false;
 	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		darkMode = true;
@@ -39,7 +40,8 @@ window.addEventListener('load', () => {
 	} else {
 		document.documentElement.removeAttribute('data-theme', 'dark');
 	}
-});
+}
+//);
 		</script>
 
 
@@ -56,7 +58,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.649000ms<br>
+time: 0.719000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -68,7 +70,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.548000ms<br>
+time: 2.176000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -86,7 +88,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.437000ms<br>
+time: 0.853000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -98,7 +100,7 @@ ${{x} = {1}} = {{x} = {1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.935000ms<br>
+time: 1.133000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -116,7 +118,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.703000ms<br>
+time: 1.610000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -128,7 +130,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.914000ms<br>
+time: 1.221000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -146,7 +148,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.706000ms<br>
+time: 2.002000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -158,7 +160,7 @@ ${{x} = {1}} = {{x} = {1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.066000ms<br>
+time: 2.897000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -170,7 +172,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.548000ms<br>
+time: 3.082000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -188,7 +190,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.797000ms<br>
+time: 2.940000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -200,7 +202,7 @@ ${{x} = {i}} = {{x} = {i}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.449000ms<br>
+time: 5.112000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -212,7 +214,7 @@ ${{x} = {-{i}}} = {{x} = {-{i}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.057000ms<br>
+time: 2.901000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -229,7 +231,7 @@ ${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.430000ms<br>
+time: 1.806000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -241,7 +243,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.571000ms<br>
+time: 1.249000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -253,7 +255,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.252000ms<br>
+time: 1.472000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -265,7 +267,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.566000ms<br>
+time: 1.283000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -288,7 +290,7 @@ ${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 28.359000ms<br>
+time: 28.497000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -300,7 +302,7 @@ ${3} = {3}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 20.783000ms<br>
+time: 20.966000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -312,7 +314,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 21.727000ms<br>
+time: 24.368000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -324,7 +326,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.329000ms<br>
+time: 18.039000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -336,7 +338,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.502000ms<br>
+time: 20.788000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -359,7 +361,7 @@ ${x} = {0}$	${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.242000ms<br>
+time: 6.690000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -371,7 +373,7 @@ ${4} = {4}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.991000ms<br>
+time: 4.815000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -383,7 +385,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.267000ms<br>
+time: 3.979000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -395,7 +397,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.460000ms<br>
+time: 3.406000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -407,7 +409,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.299000ms<br>
+time: 4.381000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -419,7 +421,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.016000ms<br>
+time: 4.859000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -467,7 +469,7 @@ ${x} = {0}$	${x} = {-{1}}$	${x} = {-{1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.849000ms<br>
+time: 3.153000ms<br>
 stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:zeroToTheX<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -479,7 +481,7 @@ ${3} = {3}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.300000ms<br>
+time: 2.135000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -491,7 +493,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.148000ms<br>
+time: 2.349000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -503,7 +505,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.208000ms<br>
+time: 2.592000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -515,7 +517,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.768000ms<br>
+time: 3.697000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -533,7 +535,7 @@ ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {{{i}} {{\sqrt{3}}}}}\right)}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.501000ms<br>
+time: 13.998000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -545,7 +547,7 @@ ${3} = {3}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.880000ms<br>
+time: 19.700000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -557,7 +559,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.986000ms<br>
+time: 2.473000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -569,7 +571,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.742000ms<br>
+time: 2.298000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -581,7 +583,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.688000ms<br>
+time: 2.048000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -605,7 +607,7 @@ ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.399000ms<br>
+time: 6.304000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -617,7 +619,7 @@ ${3} = {3}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.862000ms<br>
+time: 6.688000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -629,7 +631,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.504000ms<br>
+time: 5.406000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -641,7 +643,7 @@ ${{x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}} = {{x} = {{\frac{1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.152000ms<br>
+time: 12.044000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -653,7 +655,7 @@ ${{x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}} = {{x} = {{\frac{1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.073000ms<br>
+time: 14.857000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -671,7 +673,7 @@ ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {{{i}} {{\sqrt{3}}}}}\right)}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.601000ms<br>
+time: 11.067000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -683,7 +685,7 @@ ${3} = {3}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.205000ms<br>
+time: 11.882000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -695,7 +697,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.418000ms<br>
+time: 6.318000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -707,7 +709,7 @@ ${{x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}} = {{x} = {{\frac{1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.222000ms<br>
+time: 11.305000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -719,6 +721,6 @@ ${{x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}} = {{x} = {{\frac{1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.003000ms<br>
+time: 17.929000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

@@ -4,7 +4,7 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/func</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-	
+
 		<style>
 :root {
 	--font-color: #000000;
@@ -29,7 +29,8 @@ input {
 		</style>
 		<script type='text/javascript'>
 //https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-window.addEventListener('load', () => {
+//window.addEventListener('load', () =>
+{
 	let darkMode = false;
 	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		darkMode = true;
@@ -39,7 +40,8 @@ window.addEventListener('load', () => {
 	} else {
 		document.documentElement.removeAttribute('data-theme', 'dark');
 	}
-});
+}
+//);
 		</script>
 
 
@@ -70,7 +72,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.055000ms<br>
+time: 0.079000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -116,7 +118,7 @@ ${x}^{2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.359000ms<br>
+time: 1.497000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -128,7 +130,7 @@ ${y\left(  x\right)} = {{x}^{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.194000ms<br>
+time: 0.230000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -138,7 +140,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.030000ms<br>
+time: 0.015000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -202,7 +204,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.176000ms<br>
+time: 0.211000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -213,7 +215,7 @@ ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.599000ms<br>
+time: 0.299000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -223,7 +225,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.034000ms<br>
+time: 0.014000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -282,7 +284,7 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.292000ms<br>
+time: 3.771000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -325,12 +327,31 @@ stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 <b></b><br>
 <code>print(f:defeq():diff(y):prune())</code>
 </td><td>
-${0} = {0}$
-
-<span style="color:green">GOOD</span>
+<span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:48: attempt to call a table value<br>
+stack traceback:<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:257: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:256><br>
+	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:48: in function 'clone'<br>
+	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:45: in function 'clone'<br>
+	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:45: in function 'clone'<br>
+	[string "/home/chris/Projects/lua/symmath/op/mul.lua"]:154: in function 'flattenAndClone'<br>
+	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:331: in function '__mul'<br>
+	[string "/home/chris/Projects/lua/symmath/op/pow.lua"]:58: in function 'evaluateDerivative'<br>
+	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:367: in function 'func'<br>
+	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'apply'<br>
+	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:183: in function 'apply'<br>
+	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:367: in function 'func'<br>
+	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
+	[string "print(f:defeq():diff(y):prune())"]:1: in main chunk<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:249: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:248><br>
+	[C]: in function 'xpcall'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:248: in function 'exec'<br>
+	func.lua:65: in function 'cb'<br>
+	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
+	func.lua:6: in main chunk<br>
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 2.499000ms<br>
-stack: size: 14<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
+time: 1.559000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
@@ -340,7 +361,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.266000ms<br>
+time: 1.600000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -356,7 +377,7 @@ stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.015000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -366,7 +387,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.011000ms<br>
+time: 0.010000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -376,7 +397,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.065000ms<br>
+time: 0.034000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -386,7 +407,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.075000ms<br>
+time: 0.027000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -405,9 +426,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5e659017f390
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 0.092000ms<br>
+time: 0.089000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -427,9 +448,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5e659017f390
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 0.325000ms<br>
+time: 0.441000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -449,9 +470,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5e659017f390
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 0.226000ms<br>
+time: 0.270000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -471,9 +492,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5e659017f390
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 0.179000ms<br>
+time: 0.210000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -493,9 +514,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5e659017f390
+	[C]: at 0x566bc09ed390
 </td><td>
-time: 0.145000ms<br>
+time: 0.155000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>

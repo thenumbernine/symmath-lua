@@ -42,45 +42,110 @@ function add:flatten()
 	local i = #self
 	while i >= 1 do
 		local ch = self[i]
-		ch:flatten()
-		if add:isa(ch)
-		and not ch.addNonAssociative
-		then
-			local x = table.remove(self, i)
-			for j=#x,1,-1 do
-				table.insert(self, i, x[j])
+		if add:isa(ch) then
+			if ch.addNonAssociative then
+				ch = ch:clone()
+				local chloc = i
+				for j=#ch,1,-1 do
+					local chj = ch[j]
+					if not chj.addNonAssociative then
+						table.remove(ch, j)
+						table.insert(self, i, chj)
+						chloc = chloc + 1
+					end
+				end
+				i = chloc
+				if #ch == 0 then
+					table.remove(self, chloc)
+				elseif #ch == 1 then
+					while add:isa(ch) and #ch == 1 do
+						ch = ch[1]
+					end
+					self[chloc] = ch
+					i = i + 1
+				else
+					self[chloc] = ch
+				end
+			else
+				table.remove(self, i)
+				for j=#ch,1,-1 do
+					table.insert(self, i, ch[j])
+				end
+				i = i + #ch
 			end
-			i = i + #x
 		end
 		i = i - 1
 	end
-
-	-- TODO while you're here, sort terms, don't violate commutativity.
-	-- then, for match and __eq, don't bother with commutativity of terms -- just compare term-by-term.
-	-- this can also integrate with the ProdLists somehow, which converts to and fro add's often enough to be slow
-
 	return self
 end
 
 function add:flattenAndClone()
-	for i=#self,1,-1 do
-		local ch = self[i]
+	local expr = self
+	local cloned = false
+	local i = #expr
+	while i >= 1 do
+		local ch = expr[i]
 		if add:isa(ch) then
-			local expr = self:clone()
 			if ch.addNonAssociative then
-				--[[ TODO
-				ch = ch:flattenAndClone() or ch:clone()
-				--]]
+				local chcloned
+				ch = ch:clone()
+				local chloc = i
+				for j=#ch,1,-1 do
+					local chj = ch[j]
+					if not chj.addNonAssociative then
+						if not chcloned then
+							chcloned = true
+							ch = ch:clone()
+						end
+						table.remove(ch, j)
+						if not cloned then
+							expr = expr:clone()
+							cloned = true
+						end
+						table.insert(expr, i, chj)
+						chloc = chloc + 1
+					end
+				end
+				i = chloc
+				if #ch == 0 then
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
+					table.remove(expr, chloc)
+				elseif #ch == 1 then
+					while add:isa(ch) and #ch == 1 do
+						ch = ch[1]
+					end
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
+					expr[chloc] = ch
+					i = i + 1
+				elseif chcloned then
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
+					expr[chloc] = ch
+				end
 			else
-				-- doesn't modify ch, no need to clone it...
+				if not cloned then
+					expr = expr:clone()
+					cloned = true
+				end
 				table.remove(expr, i)
 				for j=#ch,1,-1 do
-					local chch = ch[j]
-					table.insert(expr, i, chch)
+					table.insert(expr, i, ch[j])
 				end
-				return expr
+				i = i + #ch
 			end
 		end
+		i = i - 1
+	end
+	if cloned then
+		return expr
 	end
 end
 
@@ -870,12 +935,13 @@ add.rules = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)
 
-			-- TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
+			--[[ TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
 			if expr.addNonCommutative
 			or expr.addNonAssociative
 			or expr.mulNonCommutative
 			or expr.mulNonAssociative
 			then return end
+			--]]
 
 			symmath = symmath or require 'symmath'
 --DEBUG:local print = symmath.tostring.print or print
@@ -1223,7 +1289,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				end
 			end
 --]=]
--- [=[ new version
+--[=[ new version
 			-- flatten additions
 			-- (x + y) + z => x + y + z
 			local flattenArgs
@@ -1247,6 +1313,8 @@ print('prodList', prodLists:toExpr(), '<br>')
 				return prune:apply(add(table.unpack(flattenArgs)))
 			end
 --]=]
+			local flat = expr:flattenAndClone()
+			if flat then return prune:apply(flat) end
 		end},
 
 		-- TODO is this technically valid? inf + c = inf?

@@ -785,8 +785,8 @@ pow.rules = {
 			local eVars = a.cayleyDicksonBasisList
 			if not Constant.isValue(b, 2) then return end
 			-- e0^2 = e0, otherwise ei^2 = -e0
-			local ei = eVars:find(a)
-			if not ei then return end
+			local ei = a.index+1 -- eVars:find(a)
+			--if not ei then return end
 			return ei == 1 and eVars[1] or -eVars[1]
 		end},
 	},

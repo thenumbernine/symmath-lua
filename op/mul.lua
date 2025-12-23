@@ -96,46 +96,28 @@ end
 -- TODO fix this too to not require multiple calls?
 -- or can we just assert that the visitor will be called on the children so it doesn't matter?
 function mul:flattenAndClone()
---[==[
-	local Expression = require 'symmath.Expression'
-	local newargs = table()
-	local function recurse(node)
-		for i,x in ipairs(node) do
-			if mul:isa(x)
-			and not x.mulNonAssociative
-			then
-				-- then flatten its members
-				recurse(x)
-			elseif Expression:isa(x) then
-				newargs:insert(x:clone())
-			else
-				newargs:insert(x)
-			end
-		end
-	end
-	recurse(self)
-	return mul(newargs:unpack())
---]==]
--- [==[
 	local expr = self
 	local cloned = false
 	local i = #expr
 	while i >= 1 do
 		local ch = expr[i]
 		if mul:isa(ch) then
-			if not cloned then
-				expr = expr:clone()
-				cloned = true
-			end
 			if ch.mulNonAssociative then
--- [[
-				ch = ch:clone()
+				local chcloned
 				-- operates based on the assumption that mul.mulNonAssociative means it has a child that is non-associative wrt multiplication
 				local chloc = i
 				for j=#ch,1,-1 do
 					local chj = ch[j]
 					if not chj.mulNonAssociative then
+						if not chcloned then
+							chcloned = true
+							ch = ch:clone()
+						end
 						table.remove(ch, j)
+						if not cloned then
+							expr = expr:clone()
+							cloned = true
+						end
 						table.insert(expr, i, chj)
 						chloc = chloc + 1
 					end
@@ -143,20 +125,35 @@ function mul:flattenAndClone()
 				-- skip past newly added elements so we can test them too
 				i = chloc
 				if #ch == 0 then
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
 					table.remove(expr, chloc)
 				elseif #ch == 1 then
 					while mul:isa(ch) and #ch == 1 do
 						ch = ch[1]
 					end
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
 					expr[chloc] = ch
 					i = i + 1
-				else
+				elseif chcloned then
+					if not cloned then
+						expr = expr:clone()
+						cloned = true
+					end
 					-- but reassign it because ch has been cloned and changed, so it's a new object
 					expr[chloc] = ch
 					-- leave it there with its >=2 non-associative children
 				end
---]]
 			else
+				if not cloned then
+					expr = expr:clone()
+					cloned = true
+				end
 				-- doesn't modify ch, no need to clone it...
 				table.remove(expr, i)
 				for j=#ch,1,-1 do
@@ -171,7 +168,6 @@ function mul:flattenAndClone()
 	if cloned then
 		return expr
 	end
---]==]
 end
 
 function mul:isFlattened()
@@ -1745,24 +1741,16 @@ so when we find mul -> pow -> add
 				if expri.cayleyDicksonBasisList then
 					for j=i+1,#expr do
 						local exprj = expr[j]
-						if exprj.cayleyDicksonBasisList
-						and exprj.cayleyDicksonBasisList == expri.cayleyDicksonBasisList
-						then
+						if exprj.cayleyDicksonBasisList == expri.cayleyDicksonBasisList then
 							local eVars = exprj.cayleyDicksonBasisList
-							local eiIndex = eVars:find(expri)
-							if eiIndex then
-								local ejIndex = eVars:find(exprj)
-								if ejIndex then
-									expr = expr:clone()
-									table.remove(expr, j)
-									local cdEntry = eVars.impl[eiIndex][ejIndex]
-									expr[i] = cdEntry.negative
-										and -eVars[cdEntry.index+1]
-										or eVars[cdEntry.index+1]
-									if #expr == 1 then return expr[1] end
-									return expr
-								end
-							end
+							local eiIndex = expri.index+1
+							local ejIndex = exprj.index+1
+							expr = expr:clone()
+							table.remove(expr, j)
+							local cdEntry = eVars.impl[eiIndex][ejIndex]
+							expr[i] = cdEntry.negative and -eVars[cdEntry.index+1] or eVars[cdEntry.index+1]
+							if #expr == 1 then expr = expr[1] end
+							return prune:apply(expr)
 						end
 					end
 				end

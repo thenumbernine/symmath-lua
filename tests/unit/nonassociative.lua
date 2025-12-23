@@ -31,11 +31,12 @@ for _,line in ipairs{
 [[simplifyAssertEq( (var'a' * e1 * e2) * var'a', var'a'^2 * e3)]],
 [[simplifyAssertEq( var'a' * (var'a' * e1 * e2) , var'a'^2 * e3)]],
 [[simplifyAssertEq( (var'a' * e1 * e2) * e4, var'a' * e7 )]],
-
 [[simplifyAssertEq((var'a' * e1 * e2) * e4, var'a' * e7) -- with coefficients:]],
 
+[[simplifyAssertEq(((e1 + e2) * e2)(), e3 - e0)]],
+
 -- stack overflowing when you mix add, mul, and mulNonAssociative
-[[print((((e1 + e2) * e2) * e2)()) -- should equal -e1 - e2 ]],
+[[simplifyAssertEq(((e1 + e2) * e2) * e2, -e1 - e2)]],
 
 -- trying to prevent add/Factor from shifting around non-commutative / non-associative terms
 -- without breaking everything
