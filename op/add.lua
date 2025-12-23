@@ -935,7 +935,7 @@ add.rules = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)
 
-			--[[ TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
+			-- [[ TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
 			if expr.addNonCommutative
 			or expr.addNonAssociative
 			or expr.mulNonCommutative

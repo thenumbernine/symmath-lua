@@ -56,7 +56,7 @@ input {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.018000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -72,7 +72,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.079000ms<br>
+time: 0.088000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -107,7 +107,7 @@ $y\left(  x\right)$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.034000ms<br>
+time: 0.032000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -118,7 +118,7 @@ ${x}^{2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.497000ms<br>
+time: 1.354000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -130,7 +130,7 @@ ${y\left(  x\right)} = {{x}^{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.230000ms<br>
+time: 0.155000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -140,7 +140,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.011000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -204,7 +204,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.211000ms<br>
+time: 0.132000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -215,7 +215,7 @@ ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.299000ms<br>
+time: 0.227000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -225,7 +225,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.012000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -284,7 +284,7 @@ ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.771000ms<br>
+time: 2.758000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -348,9 +348,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 1.559000ms<br>
+time: 2.181000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows</ul>
 </td></tr>
 <tr><td>
@@ -361,7 +361,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.600000ms<br>
+time: 3.046000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -377,7 +377,7 @@ stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.015000ms<br>
+time: 0.017000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -387,7 +387,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.010000ms<br>
+time: 0.013000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -397,7 +397,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.034000ms<br>
+time: 0.098000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -407,7 +407,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.027000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -426,9 +426,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 0.089000ms<br>
+time: 0.108000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -448,9 +448,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 0.441000ms<br>
+time: 0.465000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -470,9 +470,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 0.270000ms<br>
+time: 0.202000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -492,9 +492,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 0.210000ms<br>
+time: 0.296000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -514,9 +514,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x566bc09ed390
+	[C]: at 0x596139e11390
 </td><td>
-time: 0.155000ms<br>
+time: 0.150000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>

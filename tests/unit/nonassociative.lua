@@ -59,6 +59,25 @@ assert.eq(true, Expression.__eq(
 -- this is a commutative compare so it will pass
 [[assert.eq( (e0 * var'a')(), (var'a' * e0)() )]],
 
+-- make sure non-associativity stays in-order
+-- this goes with add.rules.Factor.apply's which is fully disabled for non-commutative/associative terms
+-- TODO I do need to rework it to work around them...
+[[
+local a = var'a' a.mulNonCommutative = true
+local b = var'b' b.mulNonCommutative = true
+assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))
+]],
+[[
+local a = var'a' a.mulNonCommutative = true
+local b = var'b' b.mulNonCommutative = true
+assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), a * e0 + b * e1 ))
+]],
+[[
+local a = var'a' a.mulNonCommutative = true
+local b = var'b' b.mulNonCommutative = true
+assert.eq(true, Expression.__eq( (e0 * a + e1 * b)(), e0 * a + e1 * b ))
+]],
+
 } do
 	env.exec(line)
 end

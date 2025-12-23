@@ -986,7 +986,7 @@ simplifyAssertEq(eig.R, Matrix.identity(2))">✓</span></td></tr>
 <span style="color:green" title="simplifyAssertEq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )">✓</span></td></tr>
 <tr><td class="title">
 <a href="nonassociative.html">nonassociative</a>
-</td><td>21</td><td></td><td class="content">
+</td><td>24</td><td></td><td class="content">
 <span style="color:green" title="simplifyAssertEq(e0 * e0, e0)">✓</span>
 <span style="color:green" title="simplifyAssertEq(e1 * e1, -e0)">✓</span>
 <span style="color:green" title="simplifyAssertEq(e1 * e2, e3)">✓</span>
@@ -1012,7 +1012,16 @@ assert.eq(true, Expression.__eq(
 	(var&#39;a&#39; * e0)(),
 	(e0 * var&#39;a&#39;)()
 ))">✓</span>
-<span style="color:green" title="assert.eq( (e0 * var&#39;a&#39;)(), (var&#39;a&#39; * e0)() )">✓</span></td></tr>
+<span style="color:green" title="assert.eq( (e0 * var&#39;a&#39;)(), (var&#39;a&#39; * e0)() )">✓</span>
+<span style="color:green" title="local a = var&#39;a&#39; a.mulNonCommutative = true
+local b = var&#39;b&#39; b.mulNonCommutative = true
+assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))">✓</span>
+<span style="color:green" title="local a = var&#39;a&#39; a.mulNonCommutative = true
+local b = var&#39;b&#39; b.mulNonCommutative = true
+assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), a * e0 + b * e1 ))">✓</span>
+<span style="color:green" title="local a = var&#39;a&#39; a.mulNonCommutative = true
+local b = var&#39;b&#39; b.mulNonCommutative = true
+assert.eq(true, Expression.__eq( (e0 * a + e1 * b)(), e0 * a + e1 * b ))">✓</span></td></tr>
 <tr><td class="title">
 <a href="notfinite.html">notfinite</a>
 </td><td>58</td><td></td><td class="content">

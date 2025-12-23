@@ -58,7 +58,7 @@ ${b} = {b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.320000ms<br>
+time: 0.417000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -76,7 +76,7 @@ ${{ a} _a} = {{ a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.290000ms<br>
+time: 1.637000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -88,7 +88,7 @@ ${{ b} ^a} = {{ b} ^a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.627000ms<br>
+time: 1.621000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -100,7 +100,7 @@ ${{{ b} ^a} + {{ c} ^a}} = {{{ b} ^a} + {{ c} ^a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.026000ms<br>
+time: 3.711000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -112,7 +112,7 @@ ${{{{{ b} ^a} ^b}} {{{ c} _b}}} = {{{{{ b} ^a} ^b}} {{{ c} _b}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.414000ms<br>
+time: 2.471000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -124,7 +124,7 @@ ${{{ b} ^a} + {{{{{ c} ^a} ^b}} {{{ d} _b}}}} = {{{ b} ^a} + {{{{{ c} ^a} ^b}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.054000ms<br>
+time: 2.939000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -142,7 +142,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.525000ms<br>
+time: 0.907000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -154,7 +154,7 @@ ${{{ b} _b} _a} = {{{ b} _b} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.843000ms<br>
+time: 0.736000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -166,7 +166,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.084000ms<br>
+time: 0.842000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -178,7 +178,7 @@ ${{{ b} _b} _a} = {{{ b} _b} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.100000ms<br>
+time: 0.798000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -190,7 +190,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.624000ms<br>
+time: 0.727000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -214,7 +214,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.748000ms<br>
+time: 1.823000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -226,7 +226,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.088000ms<br>
+time: 2.860000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -238,7 +238,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.160000ms<br>
+time: 1.252000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -250,7 +250,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.065000ms<br>
+time: 1.130000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -268,7 +268,7 @@ ${{{ b} _a} + {{{{{ b} _a} _b}} {{{ c} ^b}}}} = {{{ b} _a} + {{{{{ b} _a} _b}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.466000ms<br>
+time: 2.674000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -286,7 +286,7 @@ ${{{ a} _a} + {{{{{ c} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ c} _a} _b}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.413000ms<br>
+time: 3.537000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -304,7 +304,7 @@ ${{{ a} _a} + {{{{{ d} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ d} _a} _b}} {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.389000ms<br>
+time: 2.826000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -322,7 +322,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.627000ms<br>
+time: 0.664000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -334,7 +334,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.497000ms<br>
+time: 0.530000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -352,7 +352,7 @@ ${{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}} = {{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.476000ms<br>
+time: 1.891000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -370,7 +370,7 @@ ${{ b} _b} = {{ b} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.477000ms<br>
+time: 1.170000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -382,7 +382,7 @@ ${{{ b} _b} + {{{{ c} _a} ^a} _b}} = {{{ b} _b} + {{{{ c} _a} ^a} _b}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.557000ms<br>
+time: 1.788000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -406,7 +406,7 @@ ${b} = {b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.158000ms<br>
+time: 0.187000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -418,7 +418,7 @@ ${{ b} _u} = {{ b} _u}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.506000ms<br>
+time: 0.365000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -436,7 +436,7 @@ ${{{{{{ c} _u}} {{{{ d} ^b} _b}}}} {{{{ b} ^a} _a}}} = {{{{ c} _u}} {{{{ b} ^a} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.121000ms<br>
+time: 1.780000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -466,7 +466,7 @@ ${{{{ a} _i} _j} + {{{{{c}} {{{{ d} ^a} _a}}}} {{{{ b} _i} _j}}}} = {{{{ a} _i} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.217000ms<br>
+time: 4.183000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -478,7 +478,7 @@ ${{{{ a} _a} _b} + {{{{{c}} {{{{ d} ^c} _c}}}} {{{{ b} _a} _b}}}} = {{{{ a} _a} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.319000ms<br>
+time: 5.659000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -508,7 +508,7 @@ ${{{{ a} _i} _j} + {{{\left({{{{c}} {{{{ d} ^a} _a}}} + {{{ e} ^a} _a}}\right)}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.689000ms<br>
+time: 8.625000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:flatten<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -526,7 +526,7 @@ ${{{{ g} _i} _j} _{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b} ^k} _{,i}}} {{{{ g} _k
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.222000ms<br>
+time: 3.802000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -550,7 +550,7 @@ ${{{{{{ g} _a} _b} _{,t}}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{{ g} _a} _b} _{,t}}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.786000ms<br>
+time: 1.694000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -562,7 +562,7 @@ ${{{{{ c} _a} _b}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{ c} _a} _b}} {{{{{ g} _c} _d
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.339000ms<br>
+time: 1.632000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -586,7 +586,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.043000ms<br>
+time: 0.450000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -598,7 +598,7 @@ ${{{ a} ^a} _b} = {{{ a} ^a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.825000ms<br>
+time: 0.491000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -610,7 +610,7 @@ ${{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}} = {{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.281000ms<br>
+time: 2.197000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -628,7 +628,7 @@ ${{{ a} ^a} _a} = {{{ a} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.680000ms<br>
+time: 0.573000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -640,7 +640,7 @@ ${{{ a} ^a} _b} = {{{ a} ^a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.428000ms<br>
+time: 0.420000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -652,7 +652,7 @@ ${{{{{ a} ^a} _b}} {{b}}} = {{{{{ a} ^a} _b}} {{b}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.899000ms<br>
+time: 0.962000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -670,7 +670,7 @@ ${{ d} _{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}}{-{{{{{ b} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.500000ms<br>
+time: 3.916000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -682,7 +682,7 @@ ${{ d} _{,t}} = {{{{{{2}} {{e}} {{a}}}{-{{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.183000ms<br>
+time: 2.702000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -700,7 +700,7 @@ ${{{ d} _{,t}} = {{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{\frac{{{ c} _j} _k}{{d}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.017000ms<br>
+time: 7.371000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -718,7 +718,7 @@ ${{{ d} _{,t}} = {{{{{ g} ^j} ^k}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} = {{{ d} _
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.451000ms<br>
+time: 6.164000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -742,7 +742,7 @@ ${{{ b} ^i} _i} = {{{ b} ^i} _i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.456000ms<br>
+time: 0.557000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -771,7 +771,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.366000ms<br>
+time: 0.333000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -782,7 +782,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.239000ms<br>
+time: 0.243000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -793,7 +793,7 @@ ${{{ c} _b}} {{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.348000ms<br>
+time: 0.261000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -826,8 +826,8 @@ stack traceback:<br>
 	replaceIndex.lua:136: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	replaceIndex.lua:6: in main chunk<br>
-	[C]: at 0x5bf5f7620390
+	[C]: at 0x5f9ca2217390
 </td><td>
-time: 0.329000ms<br>
+time: 0.284000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
