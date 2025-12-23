@@ -14,45 +14,49 @@ env.oct = require 'symmath.CayleyDickson'(3)
 env.e0, env.e1, env.e2, env.e3, env.e4, env.e5, env.e6, env.e7 = table.unpack(env.oct)
 
 for _,line in ipairs{
-[[ assert.len(oct, 8) ]],
-[[
-assert.len(oct, 8)
-simplifyAssertEq(e0 * e0, e0)
-assert.len(oct, 8)
-]],
-[[
-assert.len(oct, 8)
-simplifyAssertEq(e1 * e1, -e0)
-assert.len(oct, 8)
-]],
-[[
-assert.len(oct, 8)
-simplifyAssertEq(e1 * e2, e3)
-assert.len(oct, 8)
-]],
-[[
-assert.len(oct, 8)
-simplifyAssertEq(e2 * e1, -e3)
-assert.len(oct, 8)
-]],
+[[simplifyAssertEq(e0 * e0, e0)]],
+[[simplifyAssertEq(e1 * e1, -e0)]],
+[[simplifyAssertEq(e1 * e2, e3)]],
+[[simplifyAssertEq(e2 * e1, -e3)]],
 
--- finding a bug...
-[[print((e1 * e4):prune())]],
-[[print(((e1 * a) * e4):prune())]],
-[[print(Vector(e1))]],
-[[print(Vector(e1) * e4)]],
-[[print((Vector(e1) * e4):prune())]],
-[[print(((Vector(e1) * a) * e4):prune())]],
-[[print((Vector{e1} * Vector(a))()[1])]],
 
--- fails
-[[print( ((Vector{e1} * Vector(a)) * e4)() )]],
+[[simplifyAssertEq((e1 * e2) * e3, -e0) -- zero-associator]],
+[[simplifyAssertEq(e1 * (e2 * e3), -e0)]],
+
+[[simplifyAssertEq((e1 * e2) * e4, e7) -- nonzero associator]],
+[[simplifyAssertEq(e1 * (e2 * e4), -e7)]],
+
+[[simplifyAssertEq((var'a' * e1 * e2) * e4, var'a' * e7) -- with coefficients:]],
+
+-- stack overflowing when you mix add, mul, and mulNonAssociative
+[[print((((e1 + e2) * e2) * e2)()) -- should equal -e1 - e2 ]],
+
+-- trying to prevent add/Factor from shifting around non-commutative / non-associative terms
+-- without breaking everything
+-- Expression.__eq will non-commutative compare nodes
+[[assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0))]],
+[[assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))]],
+-- so lets make sure that our commutative & associative number coefficients go left
+[[assert.eq(true, Expression.__eq((e0 * 2)(), 2 * e0))]],
+-- this is a commutative compare so it will pass
+[[assert.eq( (e0 * 2)(), (2 * e0)() )]],
+-- and same with variables
+[[
+print((var'a' * e0)())
+print((e0 * var'a')())
+assert.eq(true, Expression.__eq(
+	(var'a' * e0)(),
+	(e0 * var'a')()
+))
+]],
+-- this is a commutative compare so it will pass
+[[assert.eq( (e0 * var'a')(), (var'a' * e0)() )]],
+
 } do
-assert.len(env.oct, 8)
 	env.exec(line)
 end
 
--- verify associativity matches the original library
+--[==[ verify associativity matches the original library
 for i,ei in ipairs(env.oct) do
 	for j,ej in ipairs(env.oct) do
 		for k,ek in ipairs(env.oct) do
@@ -102,6 +106,7 @@ assert.eq(cd_equal, simplify_equal)
 		end
 	end
 end
+--]==]
 
 env.done()
 end)

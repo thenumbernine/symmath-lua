@@ -870,6 +870,13 @@ add.rules = {
 		{apply = function(factor, expr)
 			assert(#expr > 1)
 
+			-- TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
+			if expr.addNonCommutative
+			or expr.addNonAssociative
+			or expr.mulNonCommutative
+			or expr.mulNonAssociative
+			then return end
+
 			symmath = symmath or require 'symmath'
 --DEBUG:local print = symmath.tostring.print or print
 			local mul = symmath.op.mul

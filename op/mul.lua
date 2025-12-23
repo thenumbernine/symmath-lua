@@ -1350,9 +1350,10 @@ require 'ext.assert'.ge(#expr, 2)
 			for i=1,#expr-1 do
 				for j=i,#expr-1 do
 					local k = j + 1
-					if not expr[j].mulNonCommutative
-					and not expr[k].mulNonCommutative
-					then
+					if not (
+						expr[j].mulNonCommutative
+						and expr[k].mulNonCommutative
+					) then
 						if not compare(expr[j], expr[k]) then
 							--modifyExpr()
 							expr[j], expr[k] = expr[k], expr[j]

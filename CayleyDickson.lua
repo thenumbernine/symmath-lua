@@ -10,12 +10,15 @@ local CayleyDicksonBasis = Expression:subclass()
 
 CayleyDicksonBasis.name = 'CayleyDicksonBasis'
 CayleyDicksonBasis.precedence = 10
-CayleyDicksonBasis.mulNonCommutative = true
-CayleyDicksonBasis.mulNonAssociative = true
 
 function CayleyDicksonBasis:init(cayleyDicksonBasisList, index)
 	self.cayleyDicksonBasisList = cayleyDicksonBasisList
 	self.index = assert.type(index, 'number')
+
+	-- maybe deduce this from the mul table itself? or nah, it will just tell us what we know here already:
+	local n = #cayleyDicksonBasisList.impl	-- dimension of underlying multiplication table
+	self.mulNonCommutative = n >= 4	-- quaternions lose commutativity
+	self.mulNonAssociative = n >= 8	-- octonions lose associativity
 end
 
 function CayleyDicksonBasis:clone()
@@ -38,12 +41,12 @@ end
 create a tuple of Cayley-Dickson constructions
 n = such that 2^n is how many basis elements
 --]]
+-- TODO maybe subclass-and-cache different dimensions of n, and generate their mulNonCommutative/mulNonAssociative accordingly (instead of storing as a member element)
 local function makeCayleyDickson(n)
 	local cd = CayleyDickson(n)
 	local cayleyDicksonBasisList = table{impl=cd}
 	for i=1,#cd do
-		local e = CayleyDicksonBasis(cayleyDicksonBasisList, i-1)
-		cayleyDicksonBasisList:insert(e)
+		cayleyDicksonBasisList:insert(CayleyDicksonBasis(cayleyDicksonBasisList, i-1))
 	end
 	return cayleyDicksonBasisList
 end

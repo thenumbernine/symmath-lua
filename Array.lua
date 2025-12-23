@@ -324,15 +324,15 @@ local function matrixMatrixMul(a,b,aj,bj)
 		ia:insert(aj, 'false')
 		local ib = table{table.unpack(i,#sa)}
 		ib:insert(bj, 'false')
-		local sum = symmath.Constant(0)
+		local sum = table()
 		for u=1,saj do
 			ia[aj] = u
 			ib[bj] = u
 			local ai = a[ia]
 			local bi = b[ib]
-			sum = sum + ai * bi
+			sum:insert(ai * bi)
 		end
-		return sum
+		return Expression.tableToSum(sum)
 	end)
 end
 
@@ -418,11 +418,11 @@ end
 function Array:normSq()
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
-	local sum = Constant(0)
+	local sum = table()
 	for i,x in self:iter() do
-		sum = sum + x * x
+		sum:insert(x * x)
 	end
-	return sum()
+	return Expression.tableToSum(sum)()
 end
 
 -- L2 norm
