@@ -1,0 +1,37 @@
+:root {
+	--font-color: #000000;
+	--bg-color: rgb(243,243,243);
+	--link-color: #0000EE;
+	--link-visited-color: #551A8B;
+	--link-active-color: #EE0000;
+}
+[data-theme="dark"] {
+	--font-color: #ffffff;
+	--bg-color: #000000;
+	--link-color: rgb(127,127,255);
+	--link-color: #7F7FEE;
+	--link-visited-color: #FF1AFF;
+	--link-active-color: #EE7F7F;
+}
+
+body {
+	overflow : scroll;
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
+input {
+	background : var(--bg-color);
+	color : var(--font-color);
+}
+
+a:link {
+	color : var(--link-color);
+}
+a:visited {
+	color : var(--link-visited-color);
+}
+a:active {
+	color : var(--link-active-color);
+}
