@@ -31,9 +31,7 @@ function mul:init(...)
 	end
 end
 
--- TODO fix this too to not require multiple calls?
--- or can we just assert that the visitor will be called on the children so it doesn't matter?
-function mul:flattenAndClone()
+function mul:flatten()
 	local expr = self
 	local cloned = false
 	local i = #expr
@@ -819,7 +817,7 @@ mul.rules = {
 			-- but not recursively ... hmm ...
 
 			-- flatten multiplications
-			local flat = expr:flattenAndClone()
+			local flat = expr:flatten()
 			if flat then return factorDivision:apply(flat) end
 
 			-- distribute multiplication
@@ -895,7 +893,7 @@ mul.rules = {
 
 		{flatten = function(prune, expr)
 			-- flatten multiplications
-			local flat = expr:flattenAndClone()
+			local flat = expr:flatten()
 			if flat then return prune:apply(flat) end
 		end},
 
@@ -1748,7 +1746,7 @@ so when we find mul -> pow -> add
 			return result
 			--]]
 			-- [[
-			return expr:flattenAndClone()	-- flatten() is in-place
+			return expr:flatten()
 			--]]
 		end},
 

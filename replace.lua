@@ -86,7 +86,7 @@ local function replace(expr, ...)
 	assert(expr)
 	local result = replaceRecurse(expr, ...)
 	if not result then return expr end
-	result = result:flattenAndClone() or result
+	result = result:flatten() or result
 	return result
 end
 

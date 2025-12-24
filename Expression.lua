@@ -269,7 +269,7 @@ function Expression.__add(a,b)
 
 	add = add or require 'symmath.op.add'
 	local result = add(a,b)
-	return result:flattenAndClone() or result
+	return result:flatten() or result
 end
 
 function Expression.__sub(a,b)
@@ -324,7 +324,7 @@ function Expression.__mul(a,b)
 
 	mul = mul or require 'symmath.op.mul'
 	local result = mul(a,b)
-	return result:flattenAndClone() or result
+	return result:flatten() or result
 end
 
 function Expression.__div(a,b)
@@ -391,14 +391,14 @@ function Expression.__mod(a,b)
 	return mod(a,b)
 end
 
-function Expression:flattenAndClone()
+function Expression:flatten()
 	if require 'symmath.Constant':isa(self) then assert.len(self, 0) end
 	local expr = self:clone()
 	for i,x in ipairs(expr) do
-		if not x.flattenAndClone then
-			error("no flattenAndClone in child of class type "..tostring(expr.name).." with child of type "..tostring(x.name))
+		if not x.flatten then
+			error("no flatten in child of class type "..tostring(expr.name).." with child of type "..tostring(x.name))
 		end
-		expr[i] = x:flattenAndClone() or x
+		expr[i] = x:flatten() or x
 	end
 	return expr
 end

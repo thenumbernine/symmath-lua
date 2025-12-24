@@ -916,7 +916,7 @@ if makeFluxForGaugeVars then
 	dt_alpha_def = before
 	dt_alpha_def[2] = (dt_alpha_def[2] - alpha'_,i' * beta'^i')()
 	dt_alpha_def[2] = dt_alpha_def[2] + (alpha * beta'^r')'_,r' - alpha * tr_b
-	dt_alpha_def = dt_alpha_def:flattenAndClone() or dt_alpha_def 
+	dt_alpha_def = dt_alpha_def:flatten() or dt_alpha_def 
 	printbr(dt_alpha_def)
 end
 
@@ -1034,7 +1034,7 @@ if makeFluxForGaugeVars then
 		+ (gamma'_ij' * beta'^r')'_,r'
 		- gamma'_ij' * tr_b
 --]]
-	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:flattenAndClone() or dt_gamma_ll_def[2]
+	dt_gamma_ll_def[2] = dt_gamma_ll_def[2]:flatten() or dt_gamma_ll_def[2]
 	printbr(dt_gamma_ll_def)
 end
 
@@ -1123,7 +1123,7 @@ Ricci_ll_def = Ricci_ll_def
 	-- 3) factoring deltas inside derivatives (so i can combine the derivatives later)
 	:replace(d'_i,j', (frac(1,2) * (d'_i' * delta'^k_j' + d'_j' * delta'^k_i'))'_,k')
 	:splitOffDerivIndexes()	-- split Gamma'^k_ij,k' into Gamma'^k_ij''_,k' for the sake of 'combineCommaDerivativesAndRelabel' next
---Ricci_ll_def = Ricci_ll_def:flattenAndClone() or Ricci_ll_def 
+--Ricci_ll_def = Ricci_ll_def:flatten() or Ricci_ll_def 
 printbr(Ricci_ll_def)
 
 -- TODO HERE collect the derivative terms of Ricci_ll, leave the source alone
@@ -1239,7 +1239,7 @@ printbr(dt_K_ll_def)
 
 printbr'combining derivatives into flux:'
 -- hmm, where does this go wrong?
-dt_K_ll_def = dt_K_ll_def:flattenAndClone() or dt_K_ll_def
+dt_K_ll_def = dt_K_ll_def:flatten() or dt_K_ll_def
 Tensor.Ref:pushRule'Prune/evalDeriv'
 dt_K_ll_def[2] = combineCommaDerivatives(dt_K_ll_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
@@ -1366,7 +1366,7 @@ dt_Theta_def = dt_Theta_def:replace(
 printbr(dt_Theta_def)
 
 printbr'combining derivatives into flux:'
-dt_Theta_def = dt_Theta_def:flattenAndClone() or dt_Theta_def
+dt_Theta_def = dt_Theta_def:flatten() or dt_Theta_def
 Tensor.Ref:pushRule'Prune/evalDeriv'
 dt_Theta_def[2] = combineCommaDerivatives(dt_Theta_def[2])
 printbr(dt_Theta_def)
@@ -1488,7 +1488,7 @@ local dt_Z_l_def = Z'_k,t':eq(
 --]]
 printbr(dt_Z_l_def)
 
-dt_Z_l_def = dt_Z_l_def:flattenAndClone() or dt_Z_l_def
+dt_Z_l_def = dt_Z_l_def:flatten() or dt_Z_l_def
 Tensor.Ref:pushRule'Prune/evalDeriv'
 dt_Z_l_def[2] = combineCommaDerivatives(dt_Z_l_def[2])
 Tensor.Ref:popRule'Prune/evalDeriv'
@@ -1559,14 +1559,14 @@ function makeShift(args)
 	end
 	printbr()
 
-	dt_beta_u_def = dt_beta_u_def:flattenAndClone() or dt_beta_u_def
+	dt_beta_u_def = dt_beta_u_def:flatten() or dt_beta_u_def
 	local _, dt_beta_u_negflux, dt_beta_u_rhs = combineCommaDerivativesAndRelabel(dt_beta_u_def:rhs(), 'r', {'l'})
 	printbr(beta'^l_,t', 'flux term:', -dt_beta_u_negflux)
 	printbr(beta'^l_,t', 'source term:', dt_beta_u_rhs)
 	
 	local _, dt_B_u_negflux, dt_B_u_rhs
 	if useHyperbolic then
-		dt_B_u_def = dt_B_u_def:flattenAndClone() or dt_B_u_def
+		dt_B_u_def = dt_B_u_def:flatten() or dt_B_u_def
 		_, dt_B_u_negflux, dt_B_u_rhs = combineCommaDerivativesAndRelabel(dt_B_u_def:rhs(), 'r', {'l'})
 		printbr(B'^l_,t', 'flux term:', -dt_B_u_negflux)
 		printbr(B'^l_,t', 'source term:', dt_B_u_rhs)
@@ -1587,12 +1587,12 @@ function makeShift(args)
 			(beta'^i' * beta'^l')'_,i',
 			beta'^l' * tr_b + beta'^i' * b'^l_i'
 		)
-		dt_b_ul_def = dt_b_ul_def:flattenAndClone() or dt_b_ul_def 
+		dt_b_ul_def = dt_b_ul_def:flatten() or dt_b_ul_def 
 		dt_b_ul_def = dt_b_ul_def:replace(
 			beta'^l' * tr_b - beta'^l' * tr_b,
 			0
 		)
-		dt_b_ul_def = dt_b_ul_def:flattenAndClone() or dt_b_ul_def
+		dt_b_ul_def = dt_b_ul_def:flatten() or dt_b_ul_def
 
 		--[[ would be nice to introduce the shift to the flux
 		-- but then we end up with this extra 1st deriv term
@@ -1616,7 +1616,7 @@ function makeShift(args)
 	-- β^l_,t = B^l + β^m β^l_,m + (β^m β^l)_,m - β^m β^l_,m - β^m_,m β^l
 	-- β^l_,t = B^l + (β^m β^l)_,m - β^l b^m_m
 
-	dt_b_ul_def = dt_b_ul_def:flattenAndClone() or dt_b_ul_def
+	dt_b_ul_def = dt_b_ul_def:flatten() or dt_b_ul_def
 	local _, dt_b_ul_negflux, dt_b_ul_rhs = combineCommaDerivativesAndRelabel(dt_b_ul_def:rhs(), 'r', {'l', 'k'})
 	printbr(b'^l_k,t', 'flux term:', -dt_b_ul_negflux)
 	printbr(b'^l_k,t', 'source term:', dt_b_ul_rhs)

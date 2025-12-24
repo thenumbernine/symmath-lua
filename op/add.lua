@@ -31,7 +31,7 @@ function add:init(...)
 	end
 end
 
-function add:flattenAndClone()
+function add:flatten()
 	local expr = self
 	local cloned = false
 	local i = #expr
@@ -1265,7 +1265,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 				return prune:apply(add(table.unpack(flattenArgs)))
 			end
 --]=]
-			local flat = expr:flattenAndClone()
+			local flat = expr:flatten()
 			if flat then return prune:apply(flat) end
 		end},
 
