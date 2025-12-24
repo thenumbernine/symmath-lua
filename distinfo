@@ -485,6 +485,7 @@ deps = {
 	"template",
 	"vec",
 	"dkjson",
+	"cayley-dickson",	-- TODO just merge this
 	--"grem",
 	--"http",	-- for standalone server
 	--"solver",	-- in tests
