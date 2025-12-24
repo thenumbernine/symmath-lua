@@ -13,284 +13,354 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e0 * e0, e0)</code>
+<pre>simplifyAssertEq(e0 * e0, e0)</pre>
 </td><td>
 ${{{{e_{0}}}} {{{e_{0}}}}} = {{e_{0}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.136000ms<br>
+time: 1.799000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e1 * e1, -e0)</code>
+<pre>simplifyAssertEq(e1 * e1, -e0)</pre>
 </td><td>
 ${{{{e_{1}}}} {{{e_{1}}}}} = {-{{e_{0}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.823000ms<br>
+time: 4.879000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e1 * e2, e3)</code>
+<pre>simplifyAssertEq(e1 * e2, e3)</pre>
 </td><td>
 ${{{{e_{1}}}} {{{e_{2}}}}} = {{e_{3}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.456000ms<br>
+time: 0.555000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e2 * e1, -e3)</code>
+<pre>simplifyAssertEq(e2 * e1, -e3)</pre>
 </td><td>
 ${{{{e_{2}}}} {{{e_{1}}}}} = {-{{e_{3}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.304000ms<br>
+time: 1.276000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>zero-associator</b><br>
-<code>simplifyAssertEq((e1 * e2) * e3, -e0)</code>
+<pre>simplifyAssertEq((e1 * e2) * e3, -e0)</pre>
 </td><td>
 ${{{{{{e_{1}}}} {{{e_{2}}}}}} {{{e_{3}}}}} = {-{{e_{0}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.058000ms<br>
+time: 1.305000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e1 * (e2 * e3), -e0)</code>
+<pre>simplifyAssertEq(e1 * (e2 * e3), -e0)</pre>
 </td><td>
 ${{{{e_{1}}}} {{{{{e_{2}}}} {{{e_{3}}}}}}} = {-{{e_{0}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.491000ms<br>
+time: 1.565000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>nonzero associator</b><br>
-<code>simplifyAssertEq((e1 * e2) * e4, e7)</code>
+<pre>simplifyAssertEq((e1 * e2) * e4, e7)</pre>
 </td><td>
 ${{{{{{e_{1}}}} {{{e_{2}}}}}} {{{e_{4}}}}} = {{e_{7}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.316000ms<br>
+time: 0.611000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(e1 * (e2 * e4), -e7)</code>
+<pre>simplifyAssertEq(e1 * (e2 * e4), -e7)</pre>
 </td><td>
 ${{{{e_{1}}}} {{{{{e_{2}}}} {{{e_{4}}}}}}} = {-{{e_{7}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.120000ms<br>
+time: 1.091000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( (var'a' * e1) * var'a', var'a'^2 * e1)</code>
+<pre>simplifyAssertEq( (var'a' * e1) * var'a', var'a'^2 * e1)</pre>
 </td><td>
 ${{{a}} {{{e_{1}}}} {{a}}} = {{{{a}^{2}}} {{{e_{1}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.373000ms<br>
+time: 2.230000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( (var'a' * e1 * e2) * var'a', var'a'^2 * e3)</code>
+<pre>simplifyAssertEq( (var'a' * e1 * e2) * var'a', var'a'^2 * e3)</pre>
 </td><td>
 ${{{a}} {{{{{e_{1}}}} {{{e_{2}}}}}} {{a}}} = {{{{a}^{2}}} {{{e_{3}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.588000ms<br>
+time: 2.235000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( var'a' * (var'a' * e1 * e2) , var'a'^2 * e3)</code>
+<pre>simplifyAssertEq( var'a' * (var'a' * e1 * e2) , var'a'^2 * e3)</pre>
 </td><td>
 ${{{a}} {{a}} {{{{{e_{1}}}} {{{e_{2}}}}}}} = {{{{a}^{2}}} {{{e_{3}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.252000ms<br>
+time: 4.227000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( (var'a' * e1 * e2) * e4, var'a' * e7 )</code>
+<pre>simplifyAssertEq( (var'a' * e1 * e2) * e4, var'a' * e7 )</pre>
 </td><td>
 ${{{a}} {{{{{e_{1}}}} {{{e_{2}}}}}} {{{e_{4}}}}} = {{{a}} {{{e_{7}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.318000ms<br>
+time: 1.478000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>with coefficients:</b><br>
-<code>simplifyAssertEq((var'a' * e1 * e2) * e4, var'a' * e7)</code>
+<pre>simplifyAssertEq((var'a' * e1 * e2) * e4, var'a' * e7)</pre>
 </td><td>
 ${{{a}} {{{{{e_{1}}}} {{{e_{2}}}}}} {{{e_{4}}}}} = {{{a}} {{{e_{7}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.569000ms<br>
+time: 1.148000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(((e1 + e2) * e2)(), e3 - e0)</code>
+<pre>simplifyAssertEq(((e1 + e2) * e2)(), e3 - e0)</pre>
 </td><td>
-${{{e_{3}}}{-{{e_{0}}}}} = {{{e_{3}}}{-{{e_{0}}}}}$
+${{-{{e_{0}}}} + {{e_{3}}}} = {{{e_{3}}}{-{{e_{0}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.816000ms<br>
-stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 3.134000ms<br>
+stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(((e1 + e2) * e2) * e2, -e1 - e2)</code>
+<pre>simplifyAssertEq(((e1 + e2) * e2) * e2, -e1 - e2)</pre>
 </td><td>
 ${{{{{\left({{{e_{1}}} + {{e_{2}}}}\right)}} {{{e_{2}}}}}} {{{e_{2}}}}} = {{-{{e_{1}}}}{-{{e_{2}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.470000ms<br>
-stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
+time: 5.996000ms<br>
+stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
-<b></b><br>
-<code>assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0))</code>
+<b>assert that we are moving commutative scalars to the left</b><br>
+<pre>assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.230000ms<br>
+time: 0.248000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))</code>
+<pre>assert.eq(true, Expression.__eq((e0 * 2)(), 2 * e0))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.217000ms<br>
+time: 0.279000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert.eq(true, Expression.__eq((e0 * 2)(), 2 * e0))</code>
+<pre>assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.307000ms<br>
+time: 0.260000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert.eq( (e0 * 2)(), (2 * e0)() )</code>
+<pre>assert.eq( (e0 * 2)(), (2 * e0)() )</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.244000ms<br>
+time: 0.785000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>print((var'a' * e0)())
-print((e0 * var'a')())
-assert.eq(true, Expression.__eq(
-	(var'a' * e0)(),
-	(e0 * var'a')()
-))</code>
-</td><td>
-${{a}} {{{e_{0}}}}$
-${{a}} {{{e_{0}}}}$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 1.501000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert.eq( (e0 * var'a')(), (var'a' * e0)() )</code>
+<pre>assert.eq(true, Expression.__eq( (var'a' * e0)(), (e0 * var'a')() ))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.646000ms<br>
+time: 1.066000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local a = var'a' a.mulNonCommutative = true
+<pre>assert.eq( (e0 * var'a')(), (var'a' * e0)() )</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.421000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
-assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))</code>
+assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.245000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 5.056000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local a = var'a' a.mulNonCommutative = true
+<pre>local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
-assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), a * e0 + b * e1 ))</code>
+printbr(a * e0 + b * e1)
+printbr(e0 * a + e1 * b)
+assert.ne(a * e0 + b * e1, e0 * a + e1 * b)</pre>
 </td><td>
+${{{a}} {{{e_{0}}}}} + {{{b}} {{{e_{1}}}}}$
+<br>
+${{{{e_{0}}}} {{a}}} + {{{{e_{1}}}} {{b}}}$
+<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.162000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 0.414000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local a = var'a' a.mulNonCommutative = true
+<pre>local a = var'a'
+local b = var'b'
+printbr(a * e0 + b * e1)
+printbr(e0 * a + e1 * b)
+assert.eq(a * e0 + b * e1, e0 * a + e1 * b)</pre>
+</td><td>
+${{{a}} {{{e_{0}}}}} + {{{b}} {{{e_{1}}}}}$
+<br>
+${{{{e_{0}}}} {{a}}} + {{{{e_{1}}}} {{b}}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.322000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
-assert.eq(true, Expression.__eq( (e0 * a + e1 * b)(), e0 * a + e1 * b ))</code>
+assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), a * e0 + b * e1 ))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.696000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+time: 1.313000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local a = var'a' a.mulNonCommutative = true
+local b = var'b' b.mulNonCommutative = true
+printbr((e0 * a + e1 * b)())
+assert.eq(true, Expression.__eq( (e0 * a + e1 * b)(), e0 * a + e1 * b ))</pre>
+</td><td>
+${{{{e_{0}}}} {{a}}} + {{{{e_{1}}}} {{b}}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.212000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local a,b = vars('a', 'b')
+simplifyAssertEq((2 * a + 2 * b) / 2, a + b)</pre>
+</td><td>
+${{\frac{1}{2}}{\left({{{{2}} {{a}}} + {{{2}} {{b}}}}\right)}} = {{a} + {b}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 3.345000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local a,b = vars('a', 'b')
+simplifyAssertEq((2 * a * e0 + 2 * b * e1) / 2, a * e0 + b * e1)</pre>
+</td><td>
+${{\frac{1}{2}}{\left({{{{2}} {{a}} {{{e_{0}}}}} + {{{2}} {{b}} {{{e_{1}}}}}}\right)}} = {{{{a}} {{{e_{0}}}}} + {{{b}} {{{e_{1}}}}}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 6.695000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq((2 * e0 + 2 * e1) / 2, e0 + e1)</pre>
+</td><td>
+${{\frac{1}{2}}{\left({{{{2}} {{{e_{0}}}}} + {{{2}} {{{e_{1}}}}}}\right)}} = {{{e_{0}}} + {{e_{1}}}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.234000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

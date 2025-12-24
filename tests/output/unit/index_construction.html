@@ -13,153 +13,42 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b>upper by default</b><br>
-<code>local x=a'i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</code>
+<pre>local x=a'i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</pre>
 </td><td>
 ${ a} ^i$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.076000ms<br>
+time: 0.057000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'^i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</code>
+<pre>local x=a'^i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</pre>
 </td><td>
 ${ a} ^i$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.052000ms<br>
+time: 0.039000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'_i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true})</code>
+<pre>local x=a'_i' 	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true})</pre>
 </td><td>
 ${ a} _i$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.111000ms<br>
+time: 0.062000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=false})</code>
+<pre>local x=a'ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=false})</pre>
 </td><td>
 ${{ a} ^i} ^j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.094000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a'i_j' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=true})</code>
-</td><td>
-${{ a} ^i} _j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.073000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a'^ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=false})</code>
-</td><td>
-${{ a} ^i} ^j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.166000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a'^i_j'	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=true})</code>
-</td><td>
-${{ a} ^i} _j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.118000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a'_i^j'	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true} and x[3]==Tensor.Index{symbol='j', lower=false})</code>
-</td><td>
-${{ a} _i} ^j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.125000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a'_ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true} and x[3]==Tensor.Index{symbol='j', lower=true})</code>
-</td><td>
-${{ a} _i} _j$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.111000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>multi-char</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>upper by default</b><br>
-<code>local x=a' i' 			print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</code>
-</td><td>
-${ a} ^i$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.201000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b>upper by default</b><br>
-<code>local x=a' \\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false})</code>
-</td><td>
-${ a} ^{\mu}$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.061000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a' ^\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false})</code>
-</td><td>
-${ a} ^{\mu}$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.069000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>local x=a' _\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=true})</code>
-</td><td>
-${ a} _{\mu}$
 
 <span style="color:green">GOOD</span>
 </td><td>
@@ -168,109 +57,220 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a' \\mu \\nu' print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false} and x[3]==Tensor.Index{symbol='\\nu', lower=false})</code>
+<pre>local x=a'i_j' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=true})</pre>
+</td><td>
+${{ a} ^i} _j$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.040000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a'^ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=false})</pre>
+</td><td>
+${{ a} ^i} ^j$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.063000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a'^i_j'	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false} and x[3]==Tensor.Index{symbol='j', lower=true})</pre>
+</td><td>
+${{ a} ^i} _j$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.203000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a'_i^j'	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true} and x[3]==Tensor.Index{symbol='j', lower=false})</pre>
+</td><td>
+${{ a} _i} ^j$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.108000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a'_ij' 	print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true} and x[3]==Tensor.Index{symbol='j', lower=true})</pre>
+</td><td>
+${{ a} _i} _j$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.085000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>multi-char</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>upper by default</b><br>
+<pre>local x=a' i' 			print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false})</pre>
+</td><td>
+${ a} ^i$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.060000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b>upper by default</b><br>
+<pre>local x=a' \\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false})</pre>
+</td><td>
+${ a} ^{\mu}$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.064000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a' ^\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false})</pre>
+</td><td>
+${ a} ^{\mu}$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.165000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a' _\\mu' 		print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=true})</pre>
+</td><td>
+${ a} _{\mu}$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.064000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>local x=a' \\mu \\nu' print(x)	assert(#x==3 and x[1]==a and x[2]==Tensor.Index{symbol='\\mu', lower=false} and x[3]==Tensor.Index{symbol='\\nu', lower=false})</pre>
 </td><td>
 ${{ a} ^{\mu}} ^{\nu}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.066000ms<br>
+time: 0.076000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>commas are lower by default</b><br>
-<code>local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</code>
+<pre>local x=a',i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</pre>
 </td><td>
 ${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.055000ms<br>
+time: 0.057000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false, derivative=','})</code>
+<pre>local x=a',^i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false, derivative=','})</pre>
 </td><td>
 ${ a} ^{,i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.089000ms<br>
+time: 0.049000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</code>
+<pre>local x=a',_i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</pre>
 </td><td>
 ${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.136000ms<br>
+time: 0.048000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false, derivative=','})</code>
+<pre>local x=a'^,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=false, derivative=','})</pre>
 </td><td>
 ${ a} ^{,i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.080000ms<br>
+time: 0.050000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</code>
+<pre>local x=a'_,i'	print(x)	assert(#x==2 and x[1]==a and x[2]==Tensor.Index{symbol='i', lower=true, derivative=','})</pre>
 </td><td>
 ${ a} _{,i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.043000ms<br>
+time: 0.065000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>TODO multiple indexes with commas mixed</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>TODO multiple indexes with commas mixed with multiple chars</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertNe(a'^,i', a'_,i')</code>
+<pre>simplifyAssertNe(a'^,i', a'_,i')</pre>
 </td><td>
 ${{ a} ^{,i}} \ne {{ a} _{,i}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.991000ms<br>
+time: 1.681000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

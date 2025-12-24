@@ -13,37 +13,47 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(x, x)</code>
+<pre>simplifyAssertEq(x, x)</pre>
 </td><td>
 ${x} = {x}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.291000ms<br>
+time: 0.243000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertNe(x, y)</code>
+<pre>simplifyAssertNe(x, y)</pre>
 </td><td>
 ${x} \ne {y}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.300000ms<br>
+time: 0.279000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(x:match(x))</code>
+<pre>assert(x:match(x))</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.011000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert(not x:match(y))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -53,35 +63,25 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(not x:match(y))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.010000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>constants</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>implicit mul by 1</b><br>
-<code>simplifyAssertAllEq({const(2):match(const(2)*W(1))}, {const(1)})</code>
+<pre>simplifyAssertAllEq({const(2):match(const(2)*W(1))}, {const(1)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -92,12 +92,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.964000ms<br>
+time: 0.719000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({const(2):match(const(1)*W(1))}, {const(2)})</code>
+<pre>simplifyAssertAllEq({const(2):match(const(1)*W(1))}, {const(2)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -108,12 +108,12 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.860000ms<br>
+time: 0.652000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>implicit divide by 1</b><br>
-<code>simplifyAssertAllEq({const(2):match(const(2)/W(1))}, {const(1)})</code>
+<pre>simplifyAssertAllEq({const(2):match(const(2)/W(1))}, {const(1)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -131,33 +131,33 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:180: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(2):match(const(2)/..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390	16
+	[C]: at 0x634c1bf9e390	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[C]: in function 'error'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(2):match(const(2)/..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390
+	[C]: at 0x634c1bf9e390
 </td><td>
-time: 0.596000ms<br>
+time: 0.377000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>implicit integer factoring</b><br>
-<code>simplifyAssertAllEq({const(4):match(const(2)*W(1))}, {const(2)})</code>
+<pre>simplifyAssertAllEq({const(4):match(const(2)*W(1))}, {const(2)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -175,51 +175,51 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:180: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(4):match(const(2)*..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390	16
+	[C]: at 0x634c1bf9e390	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[C]: in function 'error'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: in function 'simplifyAssertAllEq'<br>
 	[string "simplifyAssertAllEq({const(4):match(const(2)*..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390
+	[C]: at 0x634c1bf9e390
 </td><td>
-time: 0.982000ms<br>
+time: 0.552000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>functions</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({sin(x):match(sin(W(1)))}, {x})</code>
+<pre>simplifyAssertAllEq({sin(x):match(sin(W(1)))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -230,24 +230,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.207000ms<br>
+time: 0.971000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>functions and mul mixed</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({sin(2*x):match(sin(W(1)))}, {2 * x})</code>
+<pre>simplifyAssertAllEq({sin(2*x):match(sin(W(1)))}, {2 * x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -258,18 +258,18 @@ ${{{2}} {{x}}} = {{{2}} {{x}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.289000ms<br>
+time: 2.803000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({sin(2*x):match(sin(2 * W(1)))}, {x})</code>
+<pre>simplifyAssertAllEq({sin(2*x):match(sin(2 * W(1)))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -280,24 +280,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.828000ms<br>
+time: 0.585000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>matching c*f(x) => c*sin(a*x)</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {sin(2*x), one})</code>
+<pre>simplifyAssertAllEq({sin(2*x):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {sin(2*x), one})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -312,12 +312,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.492000ms<br>
+time: 2.103000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({sin(2*x):match(sin(W{1, cannotDependOn=x} * x))}, {const(2)})</code>
+<pre>simplifyAssertAllEq({sin(2*x):match(sin(W{1, cannotDependOn=x} * x))}, {const(2)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -328,30 +328,30 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.713000ms<br>
+time: 0.311000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>add</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({x:match(W{2, cannotDependOn=x} + W{1, dependsOn=x})}, {x, zero})</code>
+<pre>simplifyAssertAllEq({x:match(W{2, cannotDependOn=x} + W{1, dependsOn=x})}, {x, zero})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -366,46 +366,46 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.457000ms<br>
+time: 0.376000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq((x + y), (x + y))</code>
+<pre>simplifyAssertEq((x + y), (x + y))</pre>
 </td><td>
 ${{x} + {y}} = {{x} + {y}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.706000ms<br>
+time: 1.840000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert((x + y):match(x + y))</code>
+<pre>assert((x + y):match(x + y))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.049000ms<br>
+time: 0.075000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>add match to first term</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W(1) + y)}, {x})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W(1) + y)}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -416,24 +416,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.364000ms<br>
+time: 0.437000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>add match to second term</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(x + W(1))}, {y})</code>
+<pre>simplifyAssertAllEq({(x + y):match(x + W(1))}, {y})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -444,24 +444,24 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.554000ms<br>
+time: 0.549000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>change order</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(y + W(1))}, {x})</code>
+<pre>simplifyAssertAllEq({(x + y):match(y + W(1))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -472,24 +472,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.454000ms<br>
+time: 0.337000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>add match to zero, because nothing's left</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(x + y + W(1))}, {zero})</code>
+<pre>simplifyAssertAllEq({(x + y):match(x + y + W(1))}, {zero})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -500,18 +500,18 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.655000ms<br>
+time: 0.345000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W(1))}, {x + y})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W(1))}, {x + y})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -522,46 +522,46 @@ ${{x} + {y}} = {{x} + {y}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.767000ms<br>
+time: 1.540000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>doubled-up matches should only work if they match</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(not (x + y):match(W(1) + W(1)))</code>
+<pre>assert(not (x + y):match(W(1) + W(1)))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.888000ms<br>
+time: 0.528000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>this too, this would work only if x + x and not x + y</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + x):match(W(1) + W(1))}, {x})</code>
+<pre>simplifyAssertAllEq({(x + x):match(W(1) + W(1))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -572,24 +572,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.463000ms<br>
+time: 0.413000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>this too</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + x):match(W{1, atMost=1} + W{2, atMost=1})}, {x, x})</code>
+<pre>simplifyAssertAllEq({(x + x):match(W{1, atMost=1} + W{2, atMost=1})}, {x, x})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -604,24 +604,24 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.525000ms<br>
+time: 0.398000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>this should match (x+y), 0</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W(1) + W(2))}, {x + y, zero})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W(1) + W(2))}, {x + y, zero})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -636,18 +636,18 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.101000ms<br>
+time: 1.811000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W{1, atMost=1} + W{2, atMost=1})}, {x, y})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W{1, atMost=1} + W{2, atMost=1})}, {x, y})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -662,30 +662,82 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.357000ms<br>
+time: 0.691000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>for these to work, I have to add the multi-wildcard stuff to the non-wildcard elements, handled in add.wildcardMatches</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({x:match(W(1) + W(2))}, {x, zero})</code>
+<pre>simplifyAssertAllEq({x:match(W(1) + W(2))}, {x, zero})</pre>
 </td><td>
 ${2} = {2}$
 <br>
 ${x} = {x}$
 <br>
 ${x} = {x}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.867000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({x:match(x + W(1) + W(2))}, {zero, zero})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.708000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({x:match(W(1) + x + W(2))}, {zero, zero})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
 <br>
 ${0} = {0}$
 <br>
@@ -699,65 +751,13 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({x:match(x + W(1) + W(2))}, {zero, zero})</code>
-</td><td>
-${2} = {2}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.279000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({x:match(W(1) + x + W(2))}, {zero, zero})</code>
-</td><td>
-${2} = {2}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.282000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W(1) + W(2))}, {x * y, zero})</code>
+<pre>simplifyAssertAllEq({(x * y):match(W(1) + W(2))}, {x * y, zero})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -772,24 +772,24 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.018000ms<br>
+time: 0.958000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>make sure within add.wildcardMatches we greedy-match any wildcards with 'atLeast' before assigning the rest to zero</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({x:match(W(1) + W{2,atLeast=1} + W(3))}, {zero, x, zero})</code>
+<pre>simplifyAssertAllEq({x:match(W(1) + W{2,atLeast=1} + W(3))}, {zero, x, zero})</pre>
 </td><td>
 ${3} = {3}$
 <br>
@@ -808,24 +808,24 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.803000ms<br>
+time: 0.428000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>now we match wildcards left-to-right, so the cannot-depend-on will match first</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {y, x})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W{1, cannotDependOn=x} + W{2, dependsOn=x})}, {y, x})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -840,18 +840,18 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.872000ms<br>
+time: 0.487000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})}, {y, x})</code>
+<pre>simplifyAssertAllEq({(x + y):match(W{1, cannotDependOn=x, atLeast=1} + W{2, dependsOn=x})}, {y, x})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -866,36 +866,36 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.646000ms<br>
+time: 0.570000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>same with mul</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(y * W(1))}, {x})</code>
+<pre>simplifyAssertAllEq({(x * y):match(y * W(1))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -906,18 +906,18 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.444000ms<br>
+time: 0.164000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(x * y * W(1))}, {one})</code>
+<pre>simplifyAssertAllEq({(x * y):match(x * y * W(1))}, {one})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -928,18 +928,18 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.521000ms<br>
+time: 0.391000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({ (x * y):match(W(1))}, {x * y})</code>
+<pre>simplifyAssertAllEq({ (x * y):match(W(1))}, {x * y})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -950,295 +950,19 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.305000ms<br>
+time: 1.548000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(not (x * y):match(W(1) * W(1)))</code>
+<pre>assert(not (x * y):match(W(1) * W(1)))</pre>
 </td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.464000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * x):match(W(1) * W(1))}, {x})</code>
-</td><td>
-${1} = {1}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.586000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>verify wildcards are greedy with multiple mul matching</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>the first will take all expressions, the second gets the empty set</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W(1) * W(2))}, {x * y, one})</code>
-</td><td>
-${2} = {2}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 3.674000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>verify 'atMost' works - since both need at least 1 entry, it will only match when each gets a separate term</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * x):match(W{1, atMost=1} * W{2, atMost=1})}, {x, x})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.648000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>verify 'atMost' cooperates with non-atMost wildcards</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${y} = {y}$
-<br>
-${y} = {y}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.581000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${y} = {y}$
-<br>
-${y} = {y}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.460000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert( not( Constant(0):match(x) ) )</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.031000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert( not( Constant(0):match(x * y) ) )</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.037000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertEq( zero:match(W(1) * x), zero )</code>
-</td><td>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.166000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert( not zero:match(W{1, dependsOn=x} * x) )</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.091000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertEq( zero:match(W(1) * x * y), zero )</code>
-</td><td>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.129000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertEq( one:match(1 + W(1)), zero )</code>
-</td><td>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.101000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertEq( one:match(1 + W(1) * x), zero )</code>
-</td><td>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.155000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertEq( one:match(1 + W(1) * x * y), zero )</code>
-</td><td>
-${0} = {0}$
-<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
@@ -1247,687 +971,13 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>how can you take x*y and match only the 'x'?</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W{index=2, cannotDependOn=x} * W{1, dependsOn=x})}, {x, y})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${y} = {y}$
-<br>
-${y} = {y}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.630000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {x*y, 1})</code>
-</td><td>
-${2} = {2}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 2.455000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W{index=2, cannotDependOn=x} * W(1))}, {x, y})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${y} = {y}$
-<br>
-${y} = {y}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.783000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W(1) * W{index=2, cannotDependOn=x})}, {x*y, 1})</code>
-</td><td>
-${2} = {2}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 2.384000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x * y):match(W(1) * W(2))}, {x*y, 1})</code>
-</td><td>
-${2} = {2}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${{{x}} {{y}}} = {{{x}} {{y}}}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 2.029000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>combinations of add and mul</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i,j,k = x:match(W(1) + W(2) * W(3)) assertEq(i, x) assert(j == zero or k == zero) end</code>
-</td><td>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.538000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>cross over add and mul ... not yet working</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>local i = (x):match(W(1) + x)	-- works</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (x * y):match(W(1) + x * y) assertEq(i, zero) end</code>
-</td><td>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.138000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>either 1 or 2 must be zero, and either 3 or 4 must be zero</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j == zero) assert(k == zero or l == zero) end</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.327000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, x) end</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.330000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, x) end</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.492000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, 1/x) end</code>
-</td><td>
-${2} = {2}$
-<br>
-${\frac{1}{x}} = {\frac{1}{x}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 4.442000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assertEq(c, const(2)) assertEq(f, 1/x) end</code>
-</td><td>
-${2} = {2}$
-<br>
-${\frac{1}{x}} = {\frac{1}{x}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 4.128000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({ (x + 2*y):match(W(1) + W(2) * y) }, {x,2})</code>
-</td><td>
-${2} = {2}$
-<br>
-${x} = {x}$
-<br>
-${x} = {x}$
-<br>
-${2} = {2}$
-<br>
-${2} = {2}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 1.641000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({ (x + 2*y):match(W(1) * x + W(2) * y) }, {1,2})</code>
-</td><td>
-${2} = {2}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-${2} = {2}$
-<br>
-${2} = {2}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 3.220000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq( {x:match( W(1)*x + W(2))}, {1, 0})</code>
-</td><td>
-${2} = {2}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.959000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq( {x:match( W(1)*x + W(2)*y)}, {1, 0})</code>
-</td><td>
-${2} = {2}$
-<br>
-${1} = {1}$
-<br>
-${1} = {1}$
-<br>
-${0} = {0}$
-<br>
-${0} = {0}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.774000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>div</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (1/x):match(1 / W(1)) assertEq(i, x) end</code>
-</td><td>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.113000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (1/x):match(1 / (W(1) * x)) assertEq(i, one) end</code>
-</td><td>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.216000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x)) assertEq(i, one) end</code>
-</td><td>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.145000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert((2 * 1/x):match(2 * 1/x))</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.033000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (2 * 1/x):match(2 * 1/W(1)) assertEq(i, x) end</code>
-</td><td>
-${x} = {x}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.058000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i = (2 * 1/x):match(2 * 1/(W(1) * x)) assertEq(i, one) end</code>
-</td><td>
-${1} = {1}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.089000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assertEq(i, const(2)) assertEq(j, 1/x) end</code>
-</td><td>
-${2} = {2}$
-<br>
-${\frac{1}{x}} = {\frac{1}{x}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 3.264000ms<br>
-stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x}))) assertEq(a, const(3)) assertEq(b, const(4)) end</code>
-</td><td>
-${3} = {3}$
-<br>
-${4} = {4}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.544000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>do local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assertEq(a, const(3)) assertEq(b, const(4)) end</code>
-</td><td>
-${3} = {3}$
-<br>
-${4} = {4}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 16.395000ms<br>
-stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>*:FactorDivision:apply<br><li>*:FactorDivision:apply</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>pow</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x^2):match(x^W(1))}, {const(2)})</code>
-</td><td>
-${1} = {1}$
-<br>
-${2} = {2}$
-<br>
-${2} = {2}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.328000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>simplifyAssertAllEq({(x^2):match(W(1)^2)}, {x})</code>
+<pre>simplifyAssertAllEq({(x * x):match(W(1) * W(1))}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -1943,7 +993,625 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2):match(W(1)^W(2))}, {x, 2})</code>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>verify wildcards are greedy with multiple mul matching</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>the first will take all expressions, the second gets the empty set</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W(1) * W(2))}, {x * y, one})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.068000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>verify 'atMost' works - since both need at least 1 entry, it will only match when each gets a separate term</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * x):match(W{1, atMost=1} * W{2, atMost=1})}, {x, x})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.199000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>verify 'atMost' cooperates with non-atMost wildcards</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W(1) * W{2, atLeast=1})}, {x, y})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${y} = {y}$
+<br>
+${y} = {y}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.212000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W{1, atMost=1} * W{2, atMost=1})}, {x, y})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${y} = {y}$
+<br>
+${y} = {y}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.318000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert( not( Constant(0):match(x) ) )</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.015000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert( not( Constant(0):match(x * y) ) )</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.017000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq( zero:match(W(1) * x), zero )</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.042000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert( not zero:match(W{1, dependsOn=x} * x) )</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.103000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq( zero:match(W(1) * x * y), zero )</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.067000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq( one:match(1 + W(1)), zero )</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.111000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq( one:match(1 + W(1) * x), zero )</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.113000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq( one:match(1 + W(1) * x * y), zero )</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.082000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>how can you take x*y and match only the 'x'?</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W{index=2, cannotDependOn=x} * W{1, dependsOn=x})}, {x, y})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${y} = {y}$
+<br>
+${y} = {y}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.439000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W{1, dependsOn=x} * W{index=2, cannotDependOn=x})}, {x*y, 1})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.762000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W{index=2, cannotDependOn=x} * W(1))}, {x, y})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${y} = {y}$
+<br>
+${y} = {y}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.324000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W(1) * W{index=2, cannotDependOn=x})}, {x*y, 1})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.594000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x * y):match(W(1) * W(2))}, {x*y, 1})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${{{x}} {{y}}} = {{{x}} {{y}}}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.123000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>combinations of add and mul</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>for this to work, add.wildcardMatches must call the wildcard-capable objects' own wildcard handlers correctly (and use push/pop match states, instead of assigning to wildcard indexes directly?)</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>also, because add.wildcardMatches assigns the extra wildcards to zero, it will be assigning (W(2) * W(3)) to zero ... which means it must (a) handle mul.wildcardMatches and (b) pick who of mul's children gets the zero and who doesn't</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>it also means that a situation like add->mul->add might have problems ... x:match(W(1) + (W(2) + W(3)) * (W(4) + W(5)))</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i,j,k = x:match(W(1) + W(2) * W(3)) assertEq(i, x) assert(j == zero or k == zero) end</pre>
+</td><td>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.386000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>cross over add and mul ... not yet working</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>local i = (x):match(W(1) + x)	-- works</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (x * y):match(W(1) + x * y) assertEq(i, zero) end</pre>
+</td><td>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.135000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>either 1 or 2 must be zero, and either 3 or 4 must be zero</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i,j,k,l = x:match(x + W(1) * W(2) + W(3) * W(4)) assert(i == zero or j == zero) assert(k == zero or l == zero) end</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.437000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, x) end</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.448000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local c, f = (2 * x):match(W{1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, x) end</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.861000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>Put the 'cannotDependOn' wildcard first (leftmost) in the mul for it to greedily match non-dep-on-x terms</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>otherwise 'dependsOn' will match everything, since the mul of a non-dep and a dep itself is dep on 'x', so it will include non-dep-on-terms</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, 1/x) end</pre>
+</td><td>
+${2} = {2}$
+<br>
+${\frac{1}{x}} = {\frac{1}{x}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.814000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assertEq(c, const(2)) assertEq(f, 1/x) end</pre>
+</td><td>
+${2} = {2}$
+<br>
+${\frac{1}{x}} = {\frac{1}{x}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 3.265000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({ (x + 2*y):match(W(1) + W(2) * y) }, {x,2})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -1958,18 +1626,350 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.463000ms<br>
+time: 0.540000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({ (x + 2*y):match(W(1) * x + W(2) * y) }, {1,2})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+${2} = {2}$
+<br>
+${2} = {2}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.647000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq( {x:match( W(1)*x + W(2))}, {1, 0})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.346000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq( {x:match( W(1)*x + W(2)*y)}, {1, 0})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${1} = {1}$
+<br>
+${1} = {1}$
+<br>
+${0} = {0}$
+<br>
+${0} = {0}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.335000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>div</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (1/x):match(1 / W(1)) assertEq(i, x) end</pre>
+</td><td>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.074000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (1/x):match(1 / (W(1) * x)) assertEq(i, one) end</pre>
+</td><td>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.080000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (1/x):match(1 / (W{1, cannotDependOn=x} * x)) assertEq(i, one) end</pre>
+</td><td>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.171000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert((2 * 1/x):match(2 * 1/x))</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.029000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (2 * 1/x):match(2 * 1/W(1)) assertEq(i, x) end</pre>
+</td><td>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.062000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i = (2 * 1/x):match(2 * 1/(W(1) * x)) assertEq(i, one) end</pre>
+</td><td>
+${1} = {1}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.306000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assertEq(i, const(2)) assertEq(j, 1/x) end</pre>
+</td><td>
+${2} = {2}$
+<br>
+${\frac{1}{x}} = {\frac{1}{x}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 2.849000ms<br>
+stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local a, b = (1/(x*(3*x+4))):match(1 / (x * (W{1, cannotDependOn=x} * x + W{2, cannotDependOn=x}))) assertEq(a, const(3)) assertEq(b, const(4)) end</pre>
+</td><td>
+${3} = {3}$
+<br>
+${4} = {4}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.213000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>do local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assertEq(a, const(3)) assertEq(b, const(4)) end</pre>
+</td><td>
+${3} = {3}$
+<br>
+${4} = {4}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 10.125000ms<br>
+stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>*:FactorDivision:apply<br><li>*:FactorDivision:apply</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>pow</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x^2):match(x^W(1))}, {const(2)})</pre>
+</td><td>
+${1} = {1}$
+<br>
+${2} = {2}$
+<br>
+${2} = {2}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.222000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x^2):match(W(1)^2)}, {x})</pre>
+</td><td>
+${1} = {1}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.216000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertAllEq({(x^2):match(W(1)^W(2))}, {x, 2})</pre>
+</td><td>
+${2} = {2}$
+<br>
+${x} = {x}$
+<br>
+${x} = {x}$
+<br>
+${2} = {2}$
+<br>
+${2} = {2}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.248000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>defaults:</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x):match(x^W(1))}, {const(1)})</code>
+<pre>simplifyAssertAllEq({(x):match(x^W(1))}, {const(1)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -1980,12 +1980,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.280000ms<br>
+time: 0.193000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x):match(W(1)^1)}, {x})</code>
+<pre>simplifyAssertAllEq({(x):match(W(1)^1)}, {x})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -1996,12 +1996,12 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.186000ms<br>
+time: 0.206000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x):match(W(1)^W(2))}, {x, const(1)})</code>
+<pre>simplifyAssertAllEq({(x):match(W(1)^W(2))}, {x, const(1)})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -2016,58 +2016,58 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.338000ms<br>
+time: 0.323000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>etc</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = sin(2*x) + cos(3*x) local a,b = expr:match( sin(W(1)) + cos(W(2)) ) print(a[1], a[2] ,b) end</code>
+<pre>do local expr = sin(2*x) + cos(3*x) local a,b = expr:match( sin(W(1)) + cos(W(2)) ) print(a[1], a[2] ,b) end</pre>
 </td><td>
 $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.130000ms<br>
+time: 0.178000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)) ) print(a[1], a[2] ,b) end</code>
+<pre>do local expr = sin(2*x) * cos(3*x) local a,b = expr:match( sin(W(1)) * cos(W(2)) ) print(a[1], a[2] ,b) end</pre>
 </td><td>
 $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.218000ms<br>
+time: 0.204000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (3*x^2 + 1) printbr('expr', expr) local a, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x}) printbr('a', a) printbr('c', c) simplifyAssertAllEq({a, c}, {3, 1}) end</code>
+<pre>do local expr = (3*x^2 + 1) printbr('expr', expr) local a, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x}) printbr('a', a) printbr('c', c) simplifyAssertAllEq({a, c}, {3, 1}) end</pre>
 </td><td>
 expr	${{{3}} {{{x}^{2}}}} + {1}$
 <br>
@@ -2088,18 +2088,18 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.835000ms<br>
+time: 0.921000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (3*x^2 + 2*x + 1) printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</code>
+<pre>do local expr = (3*x^2 + 2*x + 1) printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
 expr	${{{3}} {{{x}^{2}}}} + {{{2}} {{x}}} + {1}$
 <br>
@@ -2126,18 +2126,18 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.607000ms<br>
+time: 0.830000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (3*x^2 + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 0, 1}) end</code>
+<pre>do local expr = (3*x^2 + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 0, 1}) end</pre>
 </td><td>
 expr	${1} + {{{3}} {{{x}^{2}}}}$
 <br>
@@ -2192,33 +2192,33 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:180: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (3*x^2 + 1):factorDivision() ..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390	14
+	[C]: at 0x634c1bf9e390	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[C]: in function 'error'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (3*x^2 + 1):factorDivision() ..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390
+	[C]: at 0x634c1bf9e390
 </td><td>
-time: 7.130000ms<br>
+time: 3.228000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</code>
+<pre>do local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
 expr	${1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}$
 <br>
@@ -2245,12 +2245,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.092000ms<br>
+time: 6.514000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (1/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</code>
+<pre>do local expr = (1/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
 expr	$\frac{1}{{1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}}$
 <br>
@@ -2277,12 +2277,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.634000ms<br>
+time: 7.176000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>do local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</code>
+<pre>do local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
 expr	${{x}} {{\frac{1}{{1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}}}}$
 <br>
@@ -2337,57 +2337,57 @@ stack traceback:<br>
 	[C]: in function 'xpcall'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:180: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (x/(3*x*x + 2*x + 1)):factorD..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390	14
+	[C]: at 0x634c1bf9e390	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[C]: in function 'error'<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: in function 'simplifyAssertAllEq'<br>
 	[string "do local expr = (x/(3*x*x + 2*x + 1)):factorD..."]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x59c29f3f1390
+	[C]: at 0x634c1bf9e390
 </td><td>
-time: 14.358000ms<br>
+time: 12.634000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>TensorRef</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>local a = x'^i':match(Tensor.Ref(x, W(1))) simplifyAssertEq(a, Tensor.Index{symbol='i', lower=false})</code>
+<pre>local a = x'^i':match(Tensor.Ref(x, W(1))) simplifyAssertEq(a, Tensor.Index{symbol='i', lower=false})</pre>
 </td><td>
 ${^i} = {^i}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.195000ms<br>
+time: 0.223000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

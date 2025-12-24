@@ -13,457 +13,457 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>printbr(Array(1,2,3))</code>
+<pre>printbr(Array(1,2,3))</pre>
 </td><td>
 $\left[\begin{matrix} 1 \\ 2 \\ 3\end{matrix}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.183000ms<br>
+time: 0.148000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Array(1,2) + Array(3,4))</code>
+<pre>printbr(Array(1,2) + Array(3,4))</pre>
 </td><td>
 ${\left[\begin{matrix} 1 \\ 2\end{matrix}\right]} + {\left[\begin{matrix} 3 \\ 4\end{matrix}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.240000ms<br>
+time: 0.608000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((Array(1,2) + Array(3,4))())</code>
+<pre>printbr((Array(1,2) + Array(3,4))())</pre>
 </td><td>
 $\left[\begin{matrix} 4 \\ 6\end{matrix}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.203000ms<br>
+time: 1.463000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:Array.pruneAdd<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq((Array(1,2) + Array(3,4))(), Array(4,6))</code>
+<pre>simplifyAssertEq((Array(1,2) + Array(3,4))(), Array(4,6))</pre>
 </td><td>
 ${\left[\begin{matrix} 4 \\ 6\end{matrix}\right]} = {\left[\begin{matrix} 4 \\ 6\end{matrix}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.098000ms<br>
+time: 3.509000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({1,2},{3,4}))</code>
+<pre>printbr(Matrix({1,2},{3,4}))</pre>
 </td><td>
 $\left[\begin{array}{cc} 1& 2\\ 3& 4\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.181000ms<br>
+time: 0.212000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({1,2},{3,4}):inverse())</code>
+<pre>printbr(Matrix({1,2},{3,4}):inverse())</pre>
 </td><td>
 $\left[\begin{array}{cc} -{2}& 1\\ \frac{3}{2}& -{\frac{1}{2}}\end{array}\right]$	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.779000ms<br>
+time: 8.048000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(Matrix({1,2},{3,4}):inverse(), Matrix({-2,1},{frac(3,2),-frac(1,2)}))</code>
+<pre>simplifyAssertEq(Matrix({1,2},{3,4}):inverse(), Matrix({-2,1},{frac(3,2),-frac(1,2)}))</pre>
 </td><td>
 ${\left[\begin{array}{cc} -{2}& 1\\ \frac{3}{2}& -{\frac{1}{2}}\end{array}\right]} = {\left[\begin{array}{cc} -2& 1\\ \frac{3}{2}& -{\frac{1}{2}}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.754000ms<br>
+time: 13.682000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({a,b},{c,d}))</code>
+<pre>printbr(Matrix({a,b},{c,d}))</pre>
 </td><td>
 $\left[\begin{array}{cc} a& b\\ c& d\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.288000ms<br>
+time: 0.151000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({a,b},{c,d}):inverse())</code>
+<pre>printbr(Matrix({a,b},{c,d}):inverse())</pre>
 </td><td>
 $\left[\begin{array}{cc} \frac{d}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}& -{\frac{b}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}}\\ -{\frac{c}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}}& \frac{a}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}\end{array}\right]$	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 39.564000ms<br>
+time: 40.282000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(Matrix({a,b},{c,d}):inverse(), Matrix( {frac(d, a*d-b*c), frac(-b, a*d-b*c)}, {frac(-c, a*d-b*c), frac(a, a*d-b*c)} ))</code>
+<pre>simplifyAssertEq(Matrix({a,b},{c,d}):inverse(), Matrix( {frac(d, a*d-b*c), frac(-b, a*d-b*c)}, {frac(-c, a*d-b*c), frac(a, a*d-b*c)} ))</pre>
 </td><td>
 ${\left[\begin{array}{cc} \frac{d}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}& -{\frac{b}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}}\\ -{\frac{c}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}}& \frac{a}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}\end{array}\right]} = {\left[\begin{array}{cc} \frac{d}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}& \frac{-{b}}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}\\ \frac{-{c}}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}& \frac{a}{{{{a}} {{d}}}{-{{{b}} {{c}}}}}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 59.409000ms<br>
+time: 62.089000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}))</code>
+<pre>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}))</pre>
 </td><td>
 $\left[\begin{array}{cccc} 1& 0& 0& {t_x}\\ 0& 1& 0& {t_y}\\ 0& 0& 1& {t_z}\\ 0& 0& 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.357000ms<br>
+time: 0.325000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse())</code>
+<pre>printbr(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse())</pre>
 </td><td>
 $\left[\begin{array}{cccc} 1& 0& 0& -{{t_x}}\\ 0& 1& 0& -{{t_y}}\\ 0& 0& 1& -{{t_z}}\\ 0& 0& 0& 1\end{array}\right]$	$\left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.237000ms<br>
+time: 10.793000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse(), Matrix({1,0,0,-t_x},{0,1,0,-t_y},{0,0,1,-t_z},{0,0,0,1}))</code>
+<pre>simplifyAssertEq(Matrix({1,0,0,t_x},{0,1,0,t_y},{0,0,1,t_z},{0,0,0,1}):inverse(), Matrix({1,0,0,-t_x},{0,1,0,-t_y},{0,0,1,-t_z},{0,0,0,1}))</pre>
 </td><td>
 ${\left[\begin{array}{cccc} 1& 0& 0& -{{t_x}}\\ 0& 1& 0& -{{t_y}}\\ 0& 0& 1& -{{t_z}}\\ 0& 0& 0& 1\end{array}\right]} = {\left[\begin{array}{cccc} 1& 0& 0& -{{t_x}}\\ 0& 1& 0& -{{t_y}}\\ 0& 0& 1& -{{t_z}}\\ 0& 0& 0& 1\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.460000ms<br>
+time: 11.905000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m + mInv)</code>
+<pre>printbr(m + mInv)</pre>
 </td><td>
 ${\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right)}\\ \sin\left(  \theta\right)& \cos\left(  \theta\right)\end{array}\right]} + {\left[\begin{array}{cc} \cos\left(  \theta\right)& \sin\left(  \theta\right)\\ -{\sin\left(  \theta\right)}& \cos\left(  \theta\right)\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.656000ms<br>
+time: 0.568000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m + mInv)())</code>
+<pre>printbr((m + mInv)())</pre>
 </td><td>
 $\left[\begin{array}{cc} {{2}} {{\cos\left(  \theta\right)}}& 0\\ 0& {{2}} {{\cos\left(  \theta\right)}}\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.420000ms<br>
+time: 3.356000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:flattenAddMul<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:Array.pruneAdd<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flattenAddMul<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m * mInv)</code>
+<pre>printbr(m * mInv)</pre>
 </td><td>
 ${{\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right)}\\ \sin\left(  \theta\right)& \cos\left(  \theta\right)\end{array}\right]}} {{\left[\begin{array}{cc} \cos\left(  \theta\right)& \sin\left(  \theta\right)\\ -{\sin\left(  \theta\right)}& \cos\left(  \theta\right)\end{array}\right]}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.424000ms<br>
+time: 0.456000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m * mInv)())</code>
+<pre>printbr((m * mInv)())</pre>
 </td><td>
 $\left[\begin{array}{cc} {{\cos\left(  \theta\right)}^{2}} + {{\sin\left(  \theta\right)}^{2}}& 0\\ 0& {{\cos\left(  \theta\right)}^{2}} + {{\sin\left(  \theta\right)}^{2}}\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.173000ms<br>
+time: 9.574000ms<br>
 stack: size: 34<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>+:Prune:combineMultipliedConstants<br><li>*:Prune:apply<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:matrixMul<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( (m*mInv)(), Matrix({1,0},{0,1}) )</code>
+<pre>simplifyAssertEq( (m*mInv)(), Matrix({1,0},{0,1}) )</pre>
 </td><td>
 ${\left[\begin{array}{cc} {{\cos\left(  \theta\right)}^{2}} + {{\sin\left(  \theta\right)}^{2}}& 0\\ 0& {{\cos\left(  \theta\right)}^{2}} + {{\sin\left(  \theta\right)}^{2}}\end{array}\right]} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 22.502000ms<br>
+time: 10.502000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m*m)</code>
+<pre>printbr(m*m)</pre>
 </td><td>
 ${{\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right)}\\ \sin\left(  \theta\right)& \cos\left(  \theta\right)\end{array}\right]}} {{\left[\begin{array}{cc} \cos\left(  \theta\right)& -{\sin\left(  \theta\right)}\\ \sin\left(  \theta\right)& \cos\left(  \theta\right)\end{array}\right]}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.486000ms<br>
+time: 0.488000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m*m)())</code>
+<pre>printbr((m*m)())</pre>
 </td><td>
 $\left[\begin{array}{cc} {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \theta\right)}}\right)}} {{\left({{\cos\left(  \theta\right)}{-{\sin\left(  \theta\right)}}}\right)}}& -{{{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}}\\ {{2}} {{\cos\left(  \theta\right)}} {{\sin\left(  \theta\right)}}& {{\left({{\cos\left(  \theta\right)} + {\sin\left(  \theta\right)}}\right)}} {{\left({{\cos\left(  \theta\right)}{-{\sin\left(  \theta\right)}}}\right)}}\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 31.855000ms<br>
+time: 23.837000ms<br>
 stack: size: 52<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineMultipliedConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:matrixMul<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m1)</code>
+<pre>printbr(m1)</pre>
 </td><td>
 $\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.076000ms<br>
+time: 0.085000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m2)</code>
+<pre>printbr(m2)</pre>
 </td><td>
 $\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.039000ms<br>
+time: 0.056000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m1*m2):eq((m1*m2)()))</code>
+<pre>printbr((m1*m2):eq((m1*m2)()))</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}} = {\left[\begin{array}{cc} {1} + {{{a}} {{b}}}& a\\ b& 1\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.180000ms<br>
+time: 2.027000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m2*m1):eq((m2*m1)()))</code>
+<pre>printbr((m2*m1):eq((m2*m1)()))</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& a\\ b& {1} + {{{a}} {{b}}}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.467000ms<br>
+time: 2.019000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(m1:eq(m2))</code>
+<pre>printbr(m1:eq(m2))</pre>
 </td><td>
 ${\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]} = {\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.170000ms<br>
+time: 0.243000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertNe(m1, m2)</code>
+<pre>simplifyAssertNe(m1, m2)</pre>
 </td><td>
 ${\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]} \ne {\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.077000ms<br>
+time: 0.561000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m1*m2):eq(m2*m1))</code>
+<pre>printbr((m1*m2):eq(m2*m1))</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}} = {{{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.995000ms<br>
+time: 0.201000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertNe(m1*m2, m2*m1)</code>
+<pre>simplifyAssertNe(m1*m2, m2*m1)</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}} \ne {{{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.021000ms<br>
+time: 4.434000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m1*m2):eq(m1*m2))</code>
+<pre>printbr((m1*m2):eq(m1*m2))</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}} = {{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.294000ms<br>
+time: 0.309000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq(m1*m2, m1*m2)</code>
+<pre>simplifyAssertEq(m1*m2, m1*m2)</pre>
 </td><td>
 ${{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}} = {{{\left[\begin{array}{cc} 1& a\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ b& 1\end{array}\right]}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.538000ms<br>
+time: 4.231000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((m1*m2):eq(m2*m1)())</code>
+<pre>printbr((m1*m2):eq(m2*m1)())</pre>
 </td><td>
 ${\left[\begin{array}{cc} {1} + {{{a}} {{b}}}& a\\ b& 1\end{array}\right]} = {\left[\begin{array}{cc} 1& a\\ b& {1} + {{{a}} {{b}}}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.040000ms<br>
+time: 2.268000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertNe((m1*m2)(), (m2*m1)())</code>
+<pre>simplifyAssertNe((m1*m2)(), (m2*m1)())</pre>
 </td><td>
 ${\left[\begin{array}{cc} {1} + {{{a}} {{b}}}& a\\ b& 1\end{array}\right]} \ne {\left[\begin{array}{cc} 1& a\\ b& {1} + {{{a}} {{b}}}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.725000ms<br>
+time: 3.715000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((Matrix({a},{b}) + Matrix({c},{d})) / t)</code>
+<pre>printbr((Matrix({a},{b}) + Matrix({c},{d})) / t)</pre>
 </td><td>
 ${\frac{1}{t}}{\left({{\left[\begin{array}{c} a\\ b\end{array}\right]} + {\left[\begin{array}{c} c\\ d\end{array}\right]}}\right)}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.324000ms<br>
+time: 0.245000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(((Matrix({a},{b}) + Matrix({c},{d})) / t)())</code>
+<pre>printbr(((Matrix({a},{b}) + Matrix({c},{d})) / t)())</pre>
 </td><td>
 $\left[\begin{array}{c} {\frac{1}{t}}{\left({{a} + {c}}\right)}\\ {\frac{1}{t}}{\left({{b} + {d}}\right)}\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.775000ms<br>
+time: 5.670000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>+:Prune:Array.pruneAdd<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:matrixMul<br><li>/:Prune:matrixScalar<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)}, {frac(b+d,t)}) )</code>
+<pre>simplifyAssertEq( ((Matrix({a},{b}) + Matrix({c},{d})) / t)(), Matrix({frac(a+c,t)}, {frac(b+d,t)}) )</pre>
 </td><td>
 ${\left[\begin{array}{c} {\frac{1}{t}}{\left({{a} + {c}}\right)}\\ {\frac{1}{t}}{\left({{b} + {d}}\right)}\end{array}\right]} = {\left[\begin{array}{c} {\frac{1}{t}}{\left({{a} + {c}}\right)}\\ {\frac{1}{t}}{\left({{b} + {d}}\right)}\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.979000ms<br>
+time: 15.846000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))</code>
+<pre>printbr(Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))</pre>
 </td><td>
 $\left[\begin{array}{c} -{4}\\ \frac{9}{2}\end{array}\right]$	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.229000ms<br>
+time: 4.660000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())</code>
+<pre>printbr((Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))())</pre>
 </td><td>
 $\left[\begin{array}{c} 5\\ 6\end{array}\right]$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.479000ms<br>
+time: 5.320000ms<br>
 stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>*:Prune:matrixMul<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertEq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )</code>
+<pre>simplifyAssertEq( (Matrix({1,2},{3,4})*Matrix({1,2},{3,4}):inverse(Matrix({5},{6})))(), Matrix({5},{6}) )</pre>
 </td><td>
 ${\left[\begin{array}{c} 5\\ 6\end{array}\right]} = {\left[\begin{array}{c} 5\\ 6\end{array}\right]}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.514000ms<br>
+time: 4.686000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

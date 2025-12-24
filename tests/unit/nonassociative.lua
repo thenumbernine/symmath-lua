@@ -41,21 +41,15 @@ for _,line in ipairs{
 -- trying to prevent add/Factor from shifting around non-commutative / non-associative terms
 -- without breaking everything
 -- Expression.__eq will non-commutative compare nodes
-[[assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0))]],
-[[assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))]],
+[[assert.eq(true, Expression.__eq((2 * e0)(), 2 * e0)) -- assert that we are moving commutative scalars to the left ]],
 -- so lets make sure that our commutative & associative number coefficients go left
 [[assert.eq(true, Expression.__eq((e0 * 2)(), 2 * e0))]],
+-- and make sure the comparison isn't giving false-positives for when the scalar is on the right (which will happen if you use mul's __eq ... FIXME) 
+[[assert.eq(false, Expression.__eq((2 * e0)(), e0 * 2))]],
 -- this is a commutative compare so it will pass
 [[assert.eq( (e0 * 2)(), (2 * e0)() )]],
 -- and same with variables
-[[
-print((var'a' * e0)())
-print((e0 * var'a')())
-assert.eq(true, Expression.__eq(
-	(var'a' * e0)(),
-	(e0 * var'a')()
-))
-]],
+[[assert.eq(true, Expression.__eq( (var'a' * e0)(), (e0 * var'a')() ))]],
 -- this is a commutative compare so it will pass
 [[assert.eq( (e0 * var'a')(), (var'a' * e0)() )]],
 
@@ -67,6 +61,38 @@ local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
 assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))
 ]],
+
+-- same with mul's __eq ...
+[[
+local a = var'a' a.mulNonCommutative = true
+local b = var'b' b.mulNonCommutative = true
+printbr(a * e0 + b * e1)
+printbr(e0 * a + e1 * b)
+assert.ne(a * e0 + b * e1, e0 * a + e1 * b)
+]],
+
+-- does mul's __eq handle commutative scalars and non-commutative?
+[[
+local a = var'a'
+local b = var'b'
+printbr(a * e0 + b * e1)
+printbr(e0 * a + e1 * b)
+assert.eq(a * e0 + b * e1, e0 * a + e1 * b)
+]],
+
+--[=[
+-- TODO this is unnecessarily strict ... 
+-- if neither has addNonAssociative then the add-order shouldn't matter
+-- and the differing add-order is where Expression.__eq is failing
+[[
+-- but if a and b are commutative then they should equate despite order, despite being a prdocut with non-commutative e0 ...
+local a, b = vars('a', 'b')
+printbr( (a * e0 + b * e1)() )
+printbr( (e1 * b + e0 * a)() )
+assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), (e1 * b + e0 * a)() ))
+]],
+--]=]
+
 [[
 local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
@@ -75,7 +101,21 @@ assert.eq(true, Expression.__eq( (a * e0 + b * e1)(), a * e0 + b * e1 ))
 [[
 local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
+printbr((e0 * a + e1 * b)())
 assert.eq(true, Expression.__eq( (e0 * a + e1 * b)(), e0 * a + e1 * b ))
+]],
+
+-- add factor rule that needs to become compatible with non-mul-assoc
+[[
+local a,b = vars('a', 'b')
+simplifyAssertEq((2 * a + 2 * b) / 2, a + b)
+]],
+[[
+local a,b = vars('a', 'b')
+simplifyAssertEq((2 * a * e0 + 2 * b * e1) / 2, a * e0 + b * e1)
+]],
+[[
+simplifyAssertEq((2 * e0 + 2 * e1) / 2, e0 + e1)
 ]],
 
 } do

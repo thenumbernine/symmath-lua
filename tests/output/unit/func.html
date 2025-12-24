@@ -13,7 +13,91 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>x = var'x'</code>
+<pre>x = var'x'</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.017000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>y = func('y', {x}, x^2)</pre>
+</td><td>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.040000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b>TODO what to display...</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>y = x</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>y(x) = x</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b>y(x) := x</b><br>
+<pre></pre>
+</td><td>
+</td><td>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>print(y(x))</pre>
+</td><td>
+$y\left(  x\right)$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.088000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>print(y(x)())</pre>
+</td><td>
+${x}^{2}$
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 1.530000ms<br>
+stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>printbr(y:defeq())</pre>
+</td><td>
+${y\left(  x\right)} = {{x}^{2}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 0.272000ms<br>
+stack: size: 0<br><ul style="margin:0px"></ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>assert(UserFunction.registeredFunctions.y == y)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
@@ -23,275 +107,191 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>y = func('y', {x}, x^2)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.217000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b>TODO what to display...</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>y = x</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>y(x) = x</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b>y(x) := x</b><br>
-<code></code>
-</td><td>
-</td><td>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>print(y(x))</code>
-</td><td>
-$y\left(  x\right)$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.051000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>print(y(x)())</code>
-</td><td>
-${x}^{2}$
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 1.692000ms<br>
-stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>printbr(y:defeq())</code>
-</td><td>
-${y\left(  x\right)} = {{x}^{2}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.240000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code>assert(UserFunction.registeredFunctions.y == y)</code>
-</td><td>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 0.030000ms<br>
-stack: size: 0<br><ul style="margin:0px"></ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>if UserFunction is not a Variable then this is invalid</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>because you cannot have Functions as Variables in the arg list</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>f = func('f', {x, y}, x*y)</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>print(f:defeq())</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>assert(UserFunction.registeredFunctions.f == f)</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>instead, if UserFunction returns Functions, this is what you would see</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>and with this the derivative evaluation is obvious</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>f = func('f', {x}, x*y(x))</code>
+<pre>f = func('f', {x}, x*y(x))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.146000ms<br>
+time: 0.080000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>print(f:defeq())</code>
+<pre>print(f:defeq())</pre>
 </td><td>
 ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.129000ms<br>
+time: 0.359000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(UserFunction.registeredFunctions.f == f)</code>
+<pre>assert(UserFunction.registeredFunctions.f == f)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.026000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>diff() is partial derivative</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>totalDiff() is total derivative</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>total derivative evaluation</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>substitute chain rule for all terms</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>df/dx, when simplified, does not go anywhere, because f is dependent on x</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>for that reason, I can just build the equality f:eq(f.def) and apply :diff() to the whole thing:</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>print(f:defeq():diff(x):prune())</code>
+<pre>print(f:defeq():diff(x):prune())</pre>
 </td><td>
 ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.381000ms<br>
+time: 4.004000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
 <b>but TODO wrt total derivatives ... diff(y) ...</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>y(x) above is a UserFunction subclass</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>which means it isn't a Variable</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>which means you can't diff(y) ...</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>though you could diff(y(x)) ...</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>but that would be diff'ing wrt expressions, which I don't have support for</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>print(f:defeq():diff(y):prune())</code>
+<pre>print(f:defeq():diff(y):prune())</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:46: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:46: in function 'clone'<br>
@@ -304,192 +304,192 @@ stack traceback:<br>
 	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:367: in function 'func'<br>
 	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
 	[string "print(f:defeq():diff(y):prune())"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 1.884000ms<br>
+time: 2.021000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>print(f:defeq():diff(y(x)):prune())</code>
+<pre>print(f:defeq():diff(y(x)):prune())</pre>
 </td><td>
 ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.170000ms<br>
+time: 2.422000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>s = var's'</code>
+<pre>s = var's'</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.016000ms<br>
+time: 0.030000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>t = var't'</code>
+<pre>t = var't'</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.017000ms<br>
+time: 0.014000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>x = func('x', {s,t})</code>
+<pre>x = func('x', {s,t})</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.047000ms<br>
+time: 0.038000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>y = func('y', {s,t})</code>
+<pre>y = func('y', {s,t})</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.034000ms<br>
+time: 0.029000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>f = func('f', {x,y})</code>
+<pre>f = func('f', {x,y})</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/UserFunction..."]:140: args must be a table of Variables<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[C]: in function 'assert'<br>
 	[string "/home/chris/Projects/lua/symmath/UserFunction..."]:140: in function 'func'<br>
 	[string "f = func('f', {x,y})"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 0.101000ms<br>
+time: 0.080000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>∂f/∂x</b><br>
-<code>print(f:diff(x):prune())</code>
+<pre>print(f:diff(x):prune())</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:365: in function 'func'<br>
 	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
 	[string "print(f:diff(x):prune())"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 0.187000ms<br>
+time: 0.190000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>∂f/∂y</b><br>
-<code>print(f:diff(y):prune())</code>
+<pre>print(f:diff(y):prune())</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:365: in function 'func'<br>
 	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
 	[string "print(f:diff(y):prune())"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 0.276000ms<br>
+time: 0.190000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>∂f/∂x ∂x/∂s + ∂f/∂y ∂y/∂s</b><br>
-<code>print(f:diff(s):prune())</code>
+<pre>print(f:diff(s):prune())</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:365: in function 'func'<br>
 	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
 	[string "print(f:diff(s):prune())"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 0.179000ms<br>
+time: 0.400000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>∂f/∂x ∂x/∂t + ∂f/∂y ∂y/∂t</b><br>
-<code>print(f:diff(t):prune())</code>
+<pre>print(f:diff(t):prune())</pre>
 </td><td>
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:259: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:258><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
 	[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: in function 'clone'<br>
 	[string "/home/chris/Projects/lua/symmath/Derivative.lua"]:365: in function 'func'<br>
 	[string "/home/chris/Projects/lua/symmath/visitor/Visi..."]:224: in function 'prune'<br>
 	[string "print(f:diff(t):prune())"]:1: in main chunk<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:250><br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:252: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:251><br>
 	[C]: in function 'xpcall'<br>
-	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:250: in function 'exec'<br>
+	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:251: in function 'exec'<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x60689f27d390
+	[C]: at 0x630ec06c7390
 </td><td>
-time: 0.331000ms<br>
+time: 0.156000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b>TODO I need something to represent ∂/∂x "the def of f", rather than ∂/∂x "f", which is zero.</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b>in contrast ∂/∂x "the def of f" would be a placeholder (in absense of f's provided definition)</b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>

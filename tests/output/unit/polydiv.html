@@ -13,7 +13,7 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x - a):polydivr(x - a, x, verbose)}, {1,0})</code>
+<pre>simplifyAssertAllEq({(x - a):polydivr(x - a, x, verbose)}, {1,0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -28,12 +28,12 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.563000ms<br>
+time: 9.630000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})</code>
+<pre>simplifyAssertAllEq({(x^2 - a):polydivr(x - sqrt(a), x, verbose)}, {x + sqrt(a),0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -48,18 +48,18 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 28.736000ms<br>
+time: 33.449000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})</code>
+<pre>simplifyAssertAllEq({(x^2 + 2 * x * a + a^2):polydivr(x + a, x, verbose)}, {x + a, 0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -74,12 +74,12 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.125000ms<br>
+time: 11.076000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})</code>
+<pre>simplifyAssertAllEq({(x^2 - 2 * x * a + a^2):polydivr(x - a, x, verbose)}, {x - a, 0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -94,18 +94,18 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 20.837000ms<br>
+time: 11.843000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})</code>
+<pre>simplifyAssertAllEq({(x^2 - a^2):polydivr(x - a, x, verbose)}, {x + a, 0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -120,12 +120,12 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.529000ms<br>
+time: 6.377000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})</code>
+<pre>simplifyAssertAllEq({(x^2 - a^2):polydivr(x + a, x, verbose)}, {x - a, 0})</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -140,6 +140,6 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.140000ms<br>
+time: 9.850000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

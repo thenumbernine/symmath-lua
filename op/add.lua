@@ -2,6 +2,7 @@ local class = require 'ext.class'
 local table = require 'ext.table'
 local string = require 'ext.string'
 local math = require 'ext.math'
+local assert = require 'ext.assert'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
@@ -694,7 +695,27 @@ function ProdList:toExpr()
 		return not Constant.isValue(x, 1)
 	end)
 
+	--[[ use builtin sort
 	list:sort(compare)
+	--]]
+	-- [[ use sort that respects mulNonCommutative
+	-- same as in op.mul.rules.Prune.apply,
+	-- and similar below in ProdLists:sort() but for addNonCommutative
+	for i=1,#list-1 do
+		for j=i,#list-1 do
+			local k = j + 1
+			if not (
+				list[j].mulNonCommutative
+				and list[k].mulNonCommutative
+			) then
+				if not compare(list[j], list[k]) then
+					list[j], list[k] = list[k], list[j]
+				end
+			end
+		end
+	end
+	--]]
+
 	return symmath.tableToMul(list)
 end
 
@@ -791,7 +812,8 @@ local function getProductList(x)
 					for _,p in ipairs(math.primeFactorization(c)) do
 						ppow[p] = (ppow[p] or 0) + 1
 					end
-					for p,power in pairs(ppow) do
+					for _,p in ipairs(table.keys(ppow):sort()) do
+						local power = ppow[p]
 						if power == 1 then
 							newProdList:insert(ProdTerm{
 								term = Constant(p),
@@ -827,53 +849,77 @@ where each pi is a ProdList above a1^b1 * a2^b2 * ...
 local ProdLists = class()
 
 function ProdLists:init(expr)
+	assert.is(expr, add)
 	for i,x in ipairs(expr) do
 		self[i] = getProductList(x)
 	end
 end
 
-function ProdLists:sort()
+local function prodListsCmp(a,b)
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
-	table.sort(self, function(a,b)
-		-- [[ strip out any -1's before comparing ... which are -1^1's by now
-		if #a > 0
-		and Constant.isValue(a[1].power, 1)
-		and Constant.isValue(a[1].term, -1)
-		then
-			local na = ProdList()
-			for i=2,#a do
-				na[i-1] = a[i]
-			end
-			a = na
-		end
-		if #b > 0
-		and Constant.isValue(b[1].power, 1)
-		and Constant.isValue(b[1].term, -1)
-		then
-			local nb = ProdList()
-			for i=2,#b do
-				nb[i-1] = b[i]
-			end
-			b = nb
-		end
-		--]]
 
-		if #a ~= #b then return #a < #b end
-		for i=1,#a do
-			if a[i].power ~= b[i].power then return compare(a[i].power, b[i].power) end
-			if a[i].term ~= b[i].term then return compare(a[i].term, b[i].term) end
+	local astart = 1
+	local bstart = 1
+
+	-- [[ ignore any leading 1's or -1's ... which are -1^1's by now
+	if #a > 0
+	and Constant.isValue(a[1].power, 1)
+	and Constant.isValue(a[1].term, -1)
+	then
+		astart = 2
+	end
+	if #b > 0
+	and Constant.isValue(b[1].power, 1)
+	and Constant.isValue(b[1].term, -1)
+	then
+		bstart = 2
+	end
+	--]]
+
+	local alen = #a - astart + 1
+	local blen = #b - bstart + 1
+	if alen ~= blen then return alen < blen end
+	for i=0,alen-1 do
+		local ai = a[i+astart]
+		local bi = b[i+bstart]
+		if ai.power ~= bi.power then
+			return compare(ai.power, bi.power) 
 		end
-	end)
+		if ai.term ~= bi.term then
+			return compare(ai.term, bi.term) 
+		end
+	end
+end
+
+function ProdLists:sort()
+	--[[ use builtin sort
+	table.sort(self, prodListsCmp)
+	--]]
+	-- [[ use sort that respects addNonCommutative
+	-- same as in op.mul.rules.Prune.apply for sorting mul, except that uses mulNonCommutative
+	for i=1,#self-1 do
+		for j=i,#self-1 do
+			local k = j + 1
+			if not (
+				self[j].addNonCommutative
+				and self[k].addNonCommutative
+			) then
+				if not prodListsCmp(self[j], self[k]) then
+					self[j], self[k] = self[k], self[j]
+				end
+			end
+		end
+	end
+	--]]
 end
 
 function ProdLists:toExpr()
 	local expr = table.mapi(self, function(prodList)
 		return prodList:toExpr()
 	end)
-	return #expr == 1
-		and expr[1]
-		or add(table.unpack(expr))
+	symmath = symmath or require 'symmath'
+	return symmath.Expression.tableToSum(expr)
 end
 
 function ProdLists:__tostring()
@@ -885,15 +931,12 @@ ProdLists.__concat = string.concat
 add.rules = {
 	Factor = {
 		{apply = function(factor, expr)
-			assert(#expr > 1)
+			assert.gt(#expr, 1)
 
-			-- [[ TODO eventually I need to modify this to support addNonCommutative, addNonAssociative, mulNonCommutative, mulNonAssociative...
-			if expr.addNonCommutative
-			or expr.addNonAssociative
-			or expr.mulNonCommutative
-			or expr.mulNonAssociative
-			then return end
-			--]]
+			local addNonCommutative = expr.addNonCommutative
+			local addNonAssociative = expr.addNonAssociative 
+			local mulNonCommutative = expr.mulNonCommutative
+			local mulNonAssociative = expr.mulNonAssociative 
 
 			symmath = symmath or require 'symmath'
 --DEBUG:local print = symmath.tostring.print or print
@@ -913,6 +956,10 @@ add.rules = {
 
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
+
+--DEBUG:printbr'add.rules.Facctor.apply begin'
+--DEBUG:printbr'prodLists:'
+--DEBUG:printbr(prodLists)
 
 			-- [[ combine any matching terms
 			-- TODO should this be done in the ProdLists() ctor?
@@ -939,10 +986,17 @@ add.rules = {
 				until not found
 			end
 			--]]
---DEBUG(@5):print('a prodLists', prodLists)
 
-			-- sort by prodLists[i].term, excluding all constants
-			prodLists:sort()
+--DEBUG:printbr'after summing like-terms powers:'
+--DEBUG:printbr(prodLists)
+
+			if not addNonCommutative then
+				-- sort by prodLists[i].term, excluding all constants
+				prodLists:sort()
+			end
+
+--DEBUG:printbr'after prodLists:sort():'
+--DEBUG:printbr(prodLists)
 
 --[[
 -- maybe changing sort can fix this?
@@ -1000,7 +1054,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					(isSquarePow(xi) and squares or notsquares):insert(i)
 				end
 				if #squares == 2 then
-					assert(#notsquares == 1)
+					assert.len(notsquares, 1)
 					local a,c = expr[squares[1]], expr[squares[2]]
 					local b = expr[notsquares[1]]
 					if b == symmath.op.mul(2, a[1], c[1]) then
@@ -1016,9 +1070,9 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 
 			-- rebuild exprs accordingly
-			assert(#prodLists == #expr)
+			assert.len(prodLists, #expr)
 			expr = prodLists:toExpr()
-			assert(#expr > 1)
+			assert.gt(#expr, 1)
 
 --DEBUG(@5):print('e prodLists', prodLists)
 
@@ -1208,7 +1262,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 			terms:insert(lastTerm)
 
-			local result = #terms == 1 and terms[1] or mul(terms:unpack())
+			local result = symmath.Expression.tableToMul(terms)
 
 --DEBUG(@5):print('returning result')
 --DEBUG(@5):print(result)
@@ -1335,7 +1389,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 						table.insert(expr, 1, Constant(cval))
 					end
 				end
-				assert(#expr > 0)
+				assert.gt(#expr, 0)
 				if #expr == 1 then
 					return expr[1]	-- no need to prune:apply since we applied to all children first.  the only way this isn't a previous child that hasn't been modified is if it is a newly created Constant, in which case what can prune() do?
 				else
@@ -1344,13 +1398,13 @@ print('prodList', prodLists:toExpr(), '<br>')
 
 			-- haven't found a Constant elsewhere, but there's a Constant(0) in the 1st entry ...
 			else
-				assert(#expr > 1)
+				assert.gt(#expr, 1)
 				if Constant.isValue(expr[1], 0) then
 					-- if we only have two children: 0 + x, return x, no need to clone
 					if #expr == 2 then
 						return expr[2]
 					end
-					assert(#expr > 2)
+					assert.gt(#expr, 2)
 					expr = expr:clone()	-- haven't cloned yet, so clone now
 					table.remove(expr, 1)	-- and remove the Constant(0) child
 					-- #expr must be >1, so no need to avoid add()'s with only one child
@@ -1473,12 +1527,8 @@ print('prodList', prodLists:toExpr(), '<br>')
 					end
 					if not didntFind then
 						local terms = table{baseConst, baseTerms:unpack()}
-						assert(#terms > 0)	-- at least baseConst should exist
-						if #terms == 1 then
-							terms = terms[1]
-						else
-							terms = mul(terms:unpack())
-						end
+						assert.gt(#terms, 0)	-- at least baseConst should exist
+						terms = symmath.Expression.tableToMul(terms)
 
 						local expr
 						if #nonMuls == 0 then
@@ -1631,7 +1681,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 			-- [[ divs: c + a/b => (c * b + a) / b
 			for i,x in ipairs(expr) do
 				if div:isa(x) then
-					assert(#x == 2)
+					assert.len(x, 2)
 					local a,b = table.unpack(x)
 					expr = expr:shallowCopy()
 					table.remove(expr, i)
@@ -1835,11 +1885,11 @@ print('op.add.rules.Tidy.apply with', symmath.Verbose(expr))
 					assert(b)
 					table.insert(expr, i, a - b)
 
-					assert(#expr > 0)
+					assert.gt(#expr, 0)
 					if #expr == 1 then
 						expr = expr[1]
 					end
-					assert(#expr > 1)
+					assert.gt(#expr, 1)
 					return tidy:apply(expr)
 --]=]
 -- [=[ new ... not working?
@@ -1849,11 +1899,11 @@ print('op.add.rules.Tidy.apply with', symmath.Verbose(expr))
 					local b = table.remove(expr, i)[1]
 					assert(b)
 					table.insert(expr, i, symmath.op.sub(a, b))
-					assert(#expr > 0)
+					assert.gt(#expr, 0)
 					if #expr == 1 then
 						return expr[1]
 					end
-					assert(#expr > 1)
+					assert.gt(#expr, 1)
 					return tidy:apply(expr)
 --]=]
 				end

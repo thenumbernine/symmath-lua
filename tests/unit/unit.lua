@@ -242,7 +242,8 @@ return function(env, title)
 
 		print'<tr><td>'
 		print('<b>'..comment..'</b><br>')
-		print('<code>'..code..'</code>')
+		--print('<code>'..code..'</code>')
+		print('<pre>'..code..'</pre>')
 		print'</td><td>'
 		local startTime = os.clock()
 		local err

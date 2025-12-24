@@ -13,117 +13,117 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>a,b,c = symmath.vars('a', 'b', 'c')</code>
+<pre>a,b,c = symmath.vars('a', 'b', 'c')</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.029000ms<br>
+time: 0.026000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>x,y,z = symmath.vars('x', 'y', 'z')</code>
+<pre>x,y,z = symmath.vars('x', 'y', 'z')</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.031000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>expr = a * x + b * y + c * z</code>
+<pre>expr = a * x + b * y + c * z</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.243000ms<br>
+time: 0.324000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(a * x, 1) == 1 + b * y + c * z)</code>
+<pre>assert(expr:replace(a * x, 1) == 1 + b * y + c * z)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.402000ms<br>
+time: 0.639000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(b * y, 1) == 1 + a * x + c * z)</code>
+<pre>assert(expr:replace(b * y, 1) == 1 + a * x + c * z)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.162000ms<br>
+time: 0.441000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(c * z, 1) == 1 + a * x + b * y)</code>
+<pre>assert(expr:replace(c * z, 1) == 1 + a * x + b * y)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
+time: 0.279000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(a * x + b * y, 1) == 1 + c * z)</code>
+<pre>assert(expr:replace(a * x + b * y, 1) == 1 + c * z)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.286000ms<br>
+time: 0.235000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(a * x + c * z, 1) == 1 + b * y)</code>
+<pre>assert(expr:replace(a * x + c * z, 1) == 1 + b * y)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.190000ms<br>
+time: 0.249000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(b * y + c * z, 1) == 1 + a * x)</code>
+<pre>assert(expr:replace(b * y + c * z, 1) == 1 + a * x)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.209000ms<br>
+time: 0.146000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(b * y + c * z, 1) == 1 + a * x)</code>
+<pre>assert(expr:replace(b * y + c * z, 1) == 1 + a * x)</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.173000ms<br>
+time: 0.184000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>assert(expr:replace(a * x + b * y + c * z, 1) == symmath.Constant(1))</code>
+<pre>assert(expr:replace(a * x + b * y + c * z, 1) == symmath.Constant(1))</pre>
 </td><td>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.140000ms<br>
+time: 0.093000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

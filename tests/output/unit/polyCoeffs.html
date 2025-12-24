@@ -13,25 +13,25 @@
 <table border="1" style="border-collapse:collapse">
 <tr><td>
 <b></b><br>
-<code>for k,v in pairs( const(1):polyCoeffs(x) ) do printbr(k, '=', v) end</code>
+<pre>for k,v in pairs( const(1):polyCoeffs(x) ) do printbr(k, '=', v) end</pre>
 </td><td>
 0	=	$1$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.246000ms<br>
+time: 0.284000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq( const(1):polyCoeffs(x), {[0]=const(1)})</code>
+<pre>simplifyAssertAllEq( const(1):polyCoeffs(x), {[0]=const(1)})</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -42,18 +42,18 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.925000ms<br>
+time: 0.751000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code></code>
+<pre></pre>
 </td><td>
 </td><td>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq( x:polyCoeffs(x), {[1]=const(1)} )</code>
+<pre>simplifyAssertAllEq( x:polyCoeffs(x), {[1]=const(1)} )</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -64,12 +64,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.789000ms<br>
+time: 0.480000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq( sin(x):polyCoeffs(x), {extra=sin(x)} )</code>
+<pre>simplifyAssertAllEq( sin(x):polyCoeffs(x), {extra=sin(x)} )</pre>
 </td><td>
 ${1} = {1}$
 <br>
@@ -80,12 +80,12 @@ ${\sin\left(  x\right)} = {\sin\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.610000ms<br>
+time: 1.163000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq( (x^2 - a):polyCoeffs(x), {[0]=-a, [2]=const(1)} )</code>
+<pre>simplifyAssertAllEq( (x^2 - a):polyCoeffs(x), {[0]=-a, [2]=const(1)} )</pre>
 </td><td>
 ${2} = {2}$
 <br>
@@ -100,12 +100,12 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.020000ms<br>
+time: 4.575000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
-<code>simplifyAssertAllEq( (x^2 - 2 * a * x + a^2):polyCoeffs(x), {[0]=a^2, [1]=-2*a, [2]=const(1)} )</code>
+<pre>simplifyAssertAllEq( (x^2 - 2 * a * x + a^2):polyCoeffs(x), {[0]=a^2, [1]=-2*a, [2]=const(1)} )</pre>
 </td><td>
 ${3} = {3}$
 <br>
@@ -124,6 +124,6 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.956000ms<br>
+time: 3.316000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
