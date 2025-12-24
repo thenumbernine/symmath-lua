@@ -6,6 +6,7 @@ name = "symmath"
 files = {
 	[".github/FUNDING.yml"] = "symmath/.github/FUNDING.yml",
 	["Array.lua"] = "symmath/Array.lua",
+	["CayleyDickson.lua"] = "symmath/CayleyDickson.lua",
 	["Constant.lua"] = "symmath/Constant.lua",
 	["Derivative.lua"] = "symmath/Derivative.lua",
 	["Expression.lua"] = "symmath/Expression.lua",
