@@ -1012,6 +1012,8 @@ simplifyAssertEq(eig.R, Matrix.identity(2))">✓</span></td></tr>
 <span style="color:green" title="assert.eq( (e0 * var&#39;a&#39;)(), (var&#39;a&#39; * e0)() )">✓</span>
 <span style="color:green" title="local a = var&#39;a&#39; a.mulNonCommutative = true
 local b = var&#39;b&#39; b.mulNonCommutative = true
+printbr((a * e0 + b * e1)())
+printbr((e0 * a + e1 * b)())
 assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))">✓</span>
 <span style="color:green" title="local a = var&#39;a&#39; a.mulNonCommutative = true
 local b = var&#39;b&#39; b.mulNonCommutative = true

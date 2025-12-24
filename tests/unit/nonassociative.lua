@@ -59,6 +59,8 @@ for _,line in ipairs{
 [[
 local a = var'a' a.mulNonCommutative = true
 local b = var'b' b.mulNonCommutative = true
+printbr((a * e0 + b * e1)())
+printbr((e0 * a + e1 * b)())
 assert.eq(false, Expression.__eq( (a * e0 + b * e1)(), (e0 * a + e1 * b)() ))
 ]],
 

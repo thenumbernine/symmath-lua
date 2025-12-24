@@ -30,11 +30,11 @@ simplifyAssertEq(eig.L, Matrix({-frac(4,13), frac(1,13)}, {frac(4, 13), frac(12,
 simplifyAssertEq(eig.R, Matrix({-3, frac(1,4)}, {1, 1}))
 simplifyAssertEq(eig.Lambda, Matrix.diagonal(-7, 6))</pre>
 </td><td>
-${-{\left({{12} + {{{\left({{5}{-{\lambda}}}\right)}} {{\left({{6} + {\lambda}}\right)}}}}\right)}} = {0}$
+${-{\left({{12} + {{{\left({{6} + {\lambda}}\right)}} {{\left({{5}{-{\lambda}}}\right)}}}}\right)}} = {0}$
 <br>
 ${\lambda} = {6}$,${\lambda} = {-{7}}$
 <br>
-${{-{\left({{12} + {{{\left({{5}{-{\lambda}}}\right)}} {{\left({{6} + {\lambda}}\right)}}}}\right)}} = {0}} = {{{{{\lambda}^{2}} + {\lambda}}{-{42}}} = {0}}$
+${{-{\left({{12} + {{{\left({{6} + {\lambda}}\right)}} {{\left({{5}{-{\lambda}}}\right)}}}}\right)}} = {0}} = {{{{{\lambda}^{2}} + {\lambda}}{-{42}}} = {0}}$
 <br>
 ${\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]} = {\left[\begin{array}{cc} -{\frac{4}{13}}& \frac{1}{13}\\ \frac{4}{13}& \frac{12}{13}\end{array}\right]}$
 <br>
@@ -45,7 +45,7 @@ ${\left[\begin{array}{cc} -{7}& 0\\ 0& 6\end{array}\right]} = {\left[\begin{arra
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 92.895000ms<br>
+time: 86.354000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -79,7 +79,7 @@ ${\left[\begin{array}{ccc} 2& 0& 0\\ 0& -{1}& 0\\ 0& 0& 8\end{array}\right]} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 82.020000ms<br>
+time: 80.652000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -110,17 +110,17 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</pre>
 </td><td>
 <b>without generalization:</b>
 <br>
-Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
+charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
 <br>
-allLambdas	=	table: 0x7f9f8f3593c0
+allLambdas	=	table: 0x7686556f1bd8
 <br>
-lambdas	=	table: 0x7f9f8f358de0
+lambdas	=	table: 0x7686556f1600
 <br>
 defective	=	true
 <br>
-R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
+Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
 <br>
-charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
 ${\left[\begin{array}{c} 1\\ 0\end{array}\right]} = {\left[\begin{array}{c} 1\\ 0\end{array}\right]}$
 <br>
@@ -184,19 +184,19 @@ verify:
 <br>
 ${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
-allLambdas	=	table: 0x7f9f8f3a38e0
-<br>
-lambdas	=	table: 0x7f9f8f3a35f8
-<br>
-defective	=	true
-<br>
-R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
 L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+allLambdas	=	table: 0x768655613268
+<br>
+lambdas	=	table: 0x768655612f80
+<br>
+defective	=	true
+<br>
+Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
+<br>
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 #allLambdas	2
 <br>
@@ -211,6 +211,6 @@ ${\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]} = {\left[\begin{array}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 23.391000ms<br>
+time: 23.291000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

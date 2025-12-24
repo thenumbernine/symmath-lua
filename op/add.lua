@@ -6,6 +6,41 @@ local assert = require 'ext.assert'
 local Binary = require 'symmath.op.Binary'
 local symmath
 
+
+-- same as in op.mul.rules.Prune.apply for sorting mul, except that uses mulNonCommutative
+local function bubbleSortRespectingMulNonCommutative(list, compare)
+	for i=#list-1,1,-1 do
+		for j=i,1,-1 do
+			local k = j + 1
+			if not (
+				list[j].mulNonCommutative
+				and list[k].mulNonCommutative
+			) then
+				if not compare(list[j], list[k]) then
+					list[j], list[k] = list[k], list[j]
+				end
+			end
+		end
+	end
+end
+
+local function bubbleSortRespectingAddNonCommutative(list, compare)
+	for i=#list-1,1,-1 do
+		for j=i,1,-1 do
+			local k = j + 1
+			if not (
+				list[j].addNonCommutative
+				and list[k].addNonCommutative
+			) then
+				if not compare(list[j], list[k]) then
+					list[j], list[k] = list[k], list[j]
+				end
+			end
+		end
+	end
+end
+
+
 local add = Binary:subclass()
 add.precedence = 2
 add.name = '+'
@@ -626,7 +661,7 @@ local function compare(a,b)
 		-- sort by degree
 		if na ~= nb then return na < nb end
 		-- sort by wrapped expression
-		return compare(a[1], b[1])
+		compare(a[1], b[1])
 	end
 	if ta ~= tb then return ta end
 
@@ -678,7 +713,34 @@ ProdList.insert = table.insert
 ProdList.mapi = table.mapi
 ProdList.find = table.find
 
+local function prodListCmp(a,b)
+	if a.power ~= b.power then
+		return compare(a.power, b.power)
+	end
+	if a.term ~= b.term then
+		return compare(a.term, b.term)
+	end
+end
+
+-- used by ProdLists when it is asked to sort
+-- NOTICE I'm also sorting when producing toExpr() so ... can I remove that one too?
+function ProdList:sort()
+	--[[ use builtin sort
+	table.sort(self, prodListCmp)
+	--]]
+	-- [[ use sort that respects mulNonCommutative
+	
+	-- consolidate ProdList non-commutative flags
+	for _,p in ipairs(self) do
+		p.mulNonCommutative = p.term.mulNonCommutative or p.power.mulNonCommutative
+	end
+	-- and so far the conslidated flags are nly used in this call:
+	bubbleSortRespectingMulNonCommutative(self, prodListCmp)
+	--]]
+end
+
 function ProdList:toExpr()
+--DEBUG:print('ProdList:toExpr', self)
 	symmath = symmath or require 'symmath'
 	local Constant = symmath.Constant
 
@@ -699,21 +761,7 @@ function ProdList:toExpr()
 	list:sort(compare)
 	--]]
 	-- [[ use sort that respects mulNonCommutative
-	-- same as in op.mul.rules.Prune.apply,
-	-- and similar below in ProdLists:sort() but for addNonCommutative
-	for i=1,#list-1 do
-		for j=i,#list-1 do
-			local k = j + 1
-			if not (
-				list[j].mulNonCommutative
-				and list[k].mulNonCommutative
-			) then
-				if not compare(list[j], list[k]) then
-					list[j], list[k] = list[k], list[j]
-				end
-			end
-		end
-	end
+	bubbleSortRespectingMulNonCommutative(list, compare)
 	--]]
 
 	return symmath.tableToMul(list)
@@ -881,36 +929,21 @@ local function prodListsCmp(a,b)
 	local blen = #b - bstart + 1
 	if alen ~= blen then return alen < blen end
 	for i=0,alen-1 do
-		local ai = a[i+astart]
-		local bi = b[i+bstart]
-		if ai.power ~= bi.power then
-			return compare(ai.power, bi.power) 
-		end
-		if ai.term ~= bi.term then
-			return compare(ai.term, bi.term) 
-		end
+		local result = prodListCmp(a[i+astart], b[i+bstart])
+		if result ~= nil then return result end
 	end
 end
 
 function ProdLists:sort()
+	for _,p in ipairs(self) do
+		p:sort()
+	end
+
 	--[[ use builtin sort
 	table.sort(self, prodListsCmp)
 	--]]
 	-- [[ use sort that respects addNonCommutative
-	-- same as in op.mul.rules.Prune.apply for sorting mul, except that uses mulNonCommutative
-	for i=1,#self-1 do
-		for j=i,#self-1 do
-			local k = j + 1
-			if not (
-				self[j].addNonCommutative
-				and self[k].addNonCommutative
-			) then
-				if not prodListsCmp(self[j], self[k]) then
-					self[j], self[k] = self[k], self[j]
-				end
-			end
-		end
-	end
+	bubbleSortRespectingAddNonCommutative(self, prodListsCmp)
 	--]]
 end
 
@@ -957,9 +990,9 @@ add.rules = {
 			-- 1) get all terms and powers
 			local prodLists = ProdLists(expr)
 
---DEBUG:printbr'add.rules.Facctor.apply begin'
---DEBUG:printbr'prodLists:'
---DEBUG:printbr(prodLists)
+--DEBUG:print'add.rules.Facctor.apply begin'
+--DEBUG:print'prodLists:'
+--DEBUG:print(prodLists)
 
 			-- [[ combine any matching terms
 			-- TODO should this be done in the ProdLists() ctor?
@@ -987,16 +1020,16 @@ add.rules = {
 			end
 			--]]
 
---DEBUG:printbr'after summing like-terms powers:'
---DEBUG:printbr(prodLists)
+--DEBUG:print'after summing like-terms powers:'
+--DEBUG:print(prodLists)
 
 			if not addNonCommutative then
 				-- sort by prodLists[i].term, excluding all constants
 				prodLists:sort()
 			end
 
---DEBUG:printbr'after prodLists:sort():'
---DEBUG:printbr(prodLists)
+--DEBUG:print'after prodLists:sort():'
+--DEBUG:print(prodLists)
 
 --[[
 -- maybe changing sort can fix this?
