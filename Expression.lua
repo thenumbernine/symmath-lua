@@ -1260,15 +1260,15 @@ this puts things in the order of add -> mul -> div
 it does so very poorly, using both simplify() and factorDivision() (which is probably improperly named)
 --]]
 function Expression:simplifyAddMulDiv()
-	symmath = symmath or require 'symmath'
+	add = add or require 'symmath.op.add'
 	return self():factorDivision()
 	:map(function(y)
-		if symmath.op.add:isa(y) then
+		if add:isa(y) then
 			local newadd = table()
 			for i=1,#y do
 				newadd[i] = y[i]():factorDivision()
 			end
-			return #newadd == 1 and newadd[1] or symmath.op.add(newadd:unpack())
+			return Expression.tableToSum(newadd)
 		end
 	end)
 end
