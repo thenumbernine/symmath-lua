@@ -11,12 +11,6 @@ add.name = '+'
 
 function add:init(...)
 	add.super.init(self, ...)
-	--[[
-	-- auto flatten any adds ...?
-	-- I don't think anyone depends on nested adds ...
-	-- and flattening here will make the API easier, requiring less simplify's for matching and ==
-	self:flatten()
-	--]]
 
 	-- cache commutativity flag
 	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
@@ -35,48 +29,6 @@ function add:init(...)
 			self.mulNonAssociative = true
 		end
 	end
-end
-
--- in-place flatten
-function add:flatten()
-	local i = #self
-	while i >= 1 do
-		local ch = self[i]
-		if add:isa(ch) then
-			if ch.addNonAssociative then
-				ch = ch:clone()
-				local chloc = i
-				for j=#ch,1,-1 do
-					local chj = ch[j]
-					if not chj.addNonAssociative then
-						table.remove(ch, j)
-						table.insert(self, i, chj)
-						chloc = chloc + 1
-					end
-				end
-				i = chloc
-				if #ch == 0 then
-					table.remove(self, chloc)
-				elseif #ch == 1 then
-					while add:isa(ch) and #ch == 1 do
-						ch = ch[1]
-					end
-					self[chloc] = ch
-					i = i + 1
-				else
-					self[chloc] = ch
-				end
-			else
-				table.remove(self, i)
-				for j=#ch,1,-1 do
-					table.insert(self, i, ch[j])
-				end
-				i = i + #ch
-			end
-		end
-		i = i - 1
-	end
-	return self
 end
 
 function add:flattenAndClone()

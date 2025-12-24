@@ -5,46 +5,8 @@
 		<title>tests/unit/polyCoeffs</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 
-		<style>
-:root {
-	--font-color: #000000;
-	--bg-color: rgb(243,243,243);
-}
-[data-theme="dark"] {
-	--font-color: #ffffff;
-	--bg-color: #000000;
-}
-
-body {
-	overflow : scroll;
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-
-/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
-input {
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-		</style>
-		<script type='text/javascript'>
-//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-//window.addEventListener('load', () =>
-{
-	let darkMode = false;
-	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		darkMode = true;
-	}
-	if (darkMode) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.removeAttribute('data-theme', 'dark');
-	}
-}
-//);
-		</script>
-
-
+		<link rel='stylesheet' href='../darkmode.css'></link>
+		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
 	<body>
 
@@ -58,7 +20,7 @@ input {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.268000ms<br>
+time: 0.236000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -80,7 +42,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.120000ms<br>
+time: 1.512000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -102,7 +64,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.020000ms<br>
+time: 1.159000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -118,7 +80,7 @@ ${\sin\left(  x\right)} = {\sin\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.476000ms<br>
+time: 2.860000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -138,7 +100,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.175000ms<br>
+time: 3.342000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -162,6 +124,6 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.879000ms<br>
+time: 5.416000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

@@ -5,46 +5,8 @@
 		<title>tests/unit/tensor sub-index</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 
-		<style>
-:root {
-	--font-color: #000000;
-	--bg-color: rgb(243,243,243);
-}
-[data-theme="dark"] {
-	--font-color: #ffffff;
-	--bg-color: #000000;
-}
-
-body {
-	overflow : scroll;
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-
-/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
-input {
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-		</style>
-		<script type='text/javascript'>
-//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-//window.addEventListener('load', () =>
-{
-	let darkMode = false;
-	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		darkMode = true;
-	}
-	if (darkMode) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.removeAttribute('data-theme', 'dark');
-	}
-}
-//);
-		</script>
-
-
+		<link rel='stylesheet' href='../darkmode.css'></link>
+		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
 	<body>
 
@@ -58,7 +20,7 @@ $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}&
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.346000ms<br>
+time: 0.228000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -90,7 +52,7 @@ ${\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {T_{xx}}& {T_{xy}}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.484000ms<br>
+time: 4.896000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -104,7 +66,7 @@ ${{T_{xx}}} = {{T_{xx}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.228000ms<br>
+time: 1.581000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -118,7 +80,7 @@ ${{T_{xy}}} = {{T_{xy}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.484000ms<br>
+time: 1.592000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -132,7 +94,7 @@ ${{T_{xz}}} = {{T_{xz}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.118000ms<br>
+time: 1.230000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -146,7 +108,7 @@ ${{T_{yx}}} = {{T_{yx}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.026000ms<br>
+time: 1.037000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -160,7 +122,7 @@ ${{T_{yy}}} = {{T_{yy}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.138000ms<br>
+time: 0.966000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -174,7 +136,7 @@ ${{T_{yz}}} = {{T_{yz}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.012000ms<br>
+time: 1.195000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -188,7 +150,7 @@ ${{T_{zx}}} = {{T_{zx}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.228000ms<br>
+time: 1.049000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -202,7 +164,7 @@ ${{T_{zy}}} = {{T_{zy}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.999000ms<br>
+time: 0.827000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -216,7 +178,7 @@ ${{T_{zz}}} = {{T_{zz}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.917000ms<br>
+time: 1.163000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -230,7 +192,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{xy}} \\ {T_{xz}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.686000ms<br>
+time: 1.857000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -244,7 +206,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{yz}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.093000ms<br>
+time: 2.864000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -258,7 +220,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{zy}} \\ {T_{zz}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.366000ms<br>
+time: 1.719000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -272,7 +234,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{yx}} \\ {T_{zx}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.800000ms<br>
+time: 2.430000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -286,7 +248,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{yy}} \\ {T_{zy}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.766000ms<br>
+time: 2.037000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -300,7 +262,7 @@ ${\overset{p\downarrow}{\left[\begin{matrix} {T_{yz}} \\ {T_{zz}}\end{matrix}\ri
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.065000ms<br>
+time: 1.400000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -314,7 +276,7 @@ ${\overset{p\downarrow q\rightarrow}{\left[\begin{array}{cc} {T_{yy}}& {T_{yz}}\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.040000ms<br>
+time: 1.343000ms<br>
 stack: size: 2<br><ul style="margin:0px"><li>Tensor.Ref:Prune:apply<br><li>Tensor.Ref:Prune:apply</ul>
 </td></tr>
 <tr><td>

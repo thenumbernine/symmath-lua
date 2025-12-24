@@ -41,7 +41,7 @@ local expr = (a + d):replace(d, b + c)	simplifyAssertAllEq(expr, {a,b,c})
 local expr = (a * d):replace(d, b * c)	simplifyAssertAllEq(expr, {a,b,c})
 
 -- assert flatten of add after mul works
-local expr = (f * (a + d)):replace(d, b + c):flatten() print(Verbose(expr)) assertEq(#expr[2], 3)
+local expr = (f * (a + d)):replace(d, b + c) expr=expr:flattenAndClone() or expr print(Verbose(expr)) assertEq(#expr[2], 3)
 
 -- TODO just call all this simplify()
 

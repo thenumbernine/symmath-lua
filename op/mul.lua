@@ -11,12 +11,6 @@ mul.nameForExporterTable.LaTeX = ''	-- implicit mul, no symbol, but export/LaTeX
 
 function mul:init(...)
 	mul.super.init(self, ...)
-	--[[
-	-- auto flatten any muls
-	-- this is useful for find/replace, since otherwise the API user has to simplify() everything to get it to match what the CAS produces
-	-- the problem is, this modifies in-place, which breaks our cardinal rule (and a lot of our code)
-	self:flatten()
-	--]]
 
 	-- cache commutativity flag
 	-- cache all, since the add() of mul-non-commutatives becomes mul-non-commutative
@@ -35,62 +29,6 @@ function mul:init(...)
 			self.mulNonAssociative = true
 		end
 	end
-end
-
--- in-place modifications
--- TODO don't use this ever anymore.  use flattenAndClone() instead.
-function mul:flatten()
-	local i = #self
-	while i >= 1 do
-		local ch = self[i]
-		if mul:isa(ch) then
-			if ch.mulNonAssociative then
-				ch = ch:clone()
-				-- [[
-				-- if the mul is mul-non-associative then that means it shouldn't be moved ...
-				-- i.e. ((a * mul) * b) ~= (a * (mul * b))
-				-- but really, currently, a mul has this flag only if a member of the mul has the flag
-				-- (TODO maybe in the future make it mul.hasChildWithMulNonAssociative, but then I'd need two tests to prevent mul-non-associativity ... maybe ...)
-				-- so in this case, we still want to move mul's children which are *NOT* mulNonAssociative out of mul
-				--  and then if mul is only left we can move it out as well
-				--  but only if mul has >=2 non-associative children we keep mul around.
-				local chloc = i
-				for j=#ch,1,-1 do
-					local chj = ch[j]
-					if not chj.mulNonAssociative then
-						table.remove(ch, j)
-						table.insert(self, i, chj)
-						chloc = chloc + 1
-					end
-				end
-				-- skip past newly added elements so we can test them too
-				i = chloc
-				if #ch == 0 then
-					table.remove(self, chloc)
-				elseif #ch == 1 then
-					while mul:isa(ch) and #ch == 1 do
-						ch = ch[1]
-					end
-					self[chloc] = ch
-					i = i + 1
-				else
-					-- leave it there with its >=2 non-associative children
-					-- but reassign it because ch has been cloned and changed, so it's a new object
-					self[chloc] = ch
-				end
-				--]]
-			else
-				table.remove(self, i)
-				for j=#ch,1,-1 do
-					table.insert(self, i, ch[j])
-				end
-				-- skip past newly added elements so we can test them too
-				i = i + #ch
-			end
-		end
-		i = i - 1
-	end
-	return self
 end
 
 -- TODO fix this too to not require multiple calls?

@@ -5,46 +5,8 @@
 		<title>tests/unit/polydiv</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 
-		<style>
-:root {
-	--font-color: #000000;
-	--bg-color: rgb(243,243,243);
-}
-[data-theme="dark"] {
-	--font-color: #ffffff;
-	--bg-color: #000000;
-}
-
-body {
-	overflow : scroll;
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-
-/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
-input {
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-		</style>
-		<script type='text/javascript'>
-//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-//window.addEventListener('load', () =>
-{
-	let darkMode = false;
-	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		darkMode = true;
-	}
-	if (darkMode) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.removeAttribute('data-theme', 'dark');
-	}
-}
-//);
-		</script>
-
-
+		<link rel='stylesheet' href='../darkmode.css'></link>
+		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
 	<body>
 
@@ -66,7 +28,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.047000ms<br>
+time: 8.717000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -86,7 +48,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 31.403000ms<br>
+time: 27.304000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -112,7 +74,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.207000ms<br>
+time: 13.872000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -132,7 +94,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.987000ms<br>
+time: 8.752000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -158,7 +120,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.525000ms<br>
+time: 8.588000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -178,6 +140,6 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.997000ms<br>
+time: 6.424000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

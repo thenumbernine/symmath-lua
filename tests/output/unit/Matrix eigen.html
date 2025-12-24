@@ -5,46 +5,8 @@
 		<title>tests/unit/Matrix eigen</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
 
-		<style>
-:root {
-	--font-color: #000000;
-	--bg-color: rgb(243,243,243);
-}
-[data-theme="dark"] {
-	--font-color: #ffffff;
-	--bg-color: #000000;
-}
-
-body {
-	overflow : scroll;
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-
-/* desktop chrome inputs have white background black font.  mobile chrome inputs have clear background black font. */
-input {
-	background : var(--bg-color);
-	color : var(--font-color);
-}
-		</style>
-		<script type='text/javascript'>
-//https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-//window.addEventListener('load', () =>
-{
-	let darkMode = false;
-	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		darkMode = true;
-	}
-	if (darkMode) {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	} else {
-		document.documentElement.removeAttribute('data-theme', 'dark');
-	}
-}
-//);
-		</script>
-
-
+		<link rel='stylesheet' href='../darkmode.css'></link>
+		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
 	<body>
 
@@ -83,7 +45,7 @@ ${\left[\begin{array}{cc} -{7}& 0\\ 0& 6\end{array}\right]} = {\left[\begin{arra
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 94.240000ms<br>
+time: 87.605000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -117,7 +79,7 @@ ${\left[\begin{array}{ccc} 2& 0& 0\\ 0& -{1}& 0\\ 0& 0& 8\end{array}\right]} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 88.195000ms<br>
+time: 83.813000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -148,17 +110,17 @@ simplifyAssertEq(eig.R, Matrix.identity(2))</code>
 </td><td>
 <b>without generalization:</b>
 <br>
-R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
-<br>
 defective	=	true
 <br>
 Lambda	=	$\left[\begin{array}{c} 1\end{array}\right]$
 <br>
-allLambdas	=	table: 0x702b323899f8
+allLambdas	=	table: 0x738c5a327670
 <br>
-lambdas	=	table: 0x702b32389910
+lambdas	=	table: 0x738c5a327588
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+R	=	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$
 <br>
 ${\left[\begin{array}{c} 1\\ 0\end{array}\right]} = {\left[\begin{array}{c} 1\\ 0\end{array}\right]}$
 <br>
@@ -222,19 +184,19 @@ verify:
 <br>
 ${{{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}} {{\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}}} = {\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]}$
 <br>
-R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
-<br>
 defective	=	true
 <br>
 Lambda	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
-allLambdas	=	table: 0x702b32197068
+allLambdas	=	table: 0x738c5a440a58
 <br>
-lambdas	=	table: 0x702b32196d80
+lambdas	=	table: 0x738c5a440770
 <br>
 L	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 charPoly	=	${{\left({{1}{-{λ}}}\right)}^{2}} = {0}$
+<br>
+R	=	$\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]$
 <br>
 #allLambdas	2
 <br>
@@ -249,6 +211,6 @@ ${\left[\begin{array}{cc} 1& 0\\ 0& 1\end{array}\right]} = {\left[\begin{array}{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 23.370000ms<br>
+time: 22.736000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

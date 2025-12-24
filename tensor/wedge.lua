@@ -7,7 +7,9 @@ wedge.name = '/\\'
 
 -- copied from mul
 -- is this in add as well?  put in parent class?
-function wedge:flatten()
+-- TODO can I just set it to non-commutative?
+-- or should I add a new flag for anti-commutative?
+function wedge:flattenAndClone()
 	for i=#self,1,-1 do
 		local ch = self[i]
 		if wedge:isa(ch) then

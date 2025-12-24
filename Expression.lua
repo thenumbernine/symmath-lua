@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local table = require 'ext.table'
 local string = require 'ext.string'
+local assert = require 'ext.assert'
 
 local Expression = class()
 
@@ -268,10 +269,7 @@ function Expression.__add(a,b)
 
 	add = add or require 'symmath.op.add'
 	local result = add(a,b)
-	-- I don't want to ever modify-in-place non-mutable nodes...
 	return result:flattenAndClone() or result
-	-- ... but this is a throw-away node so :shrug: ...
-	--return result:flatten()
 end
 
 function Expression.__sub(a,b)
@@ -326,11 +324,7 @@ function Expression.__mul(a,b)
 
 	mul = mul or require 'symmath.op.mul'
 	local result = mul(a,b)
-	-- I don't want to ever modify-in-place non-mutable nodes...
-	-- TODO causing one random error in one random place ...
 	return result:flattenAndClone() or result
-	-- ... but this is a throw-away node so :shrug: ...
-	--return result:flatten()
 end
 
 function Expression.__div(a,b)
@@ -397,16 +391,16 @@ function Expression.__mod(a,b)
 	return mod(a,b)
 end
 
--- TODO NOTICE this modifies in-place
-function Expression:flatten()
-if require 'symmath.Constant':isa(self) then assert(#self == 0) end
-	for i=1,#self do
-if not self[i].flatten then
-	error("no flatten in child of class type "..tostring(self.name).." with child of type "..tostring(self[i].name))
-end
-		self[i]:flatten()
+function Expression:flattenAndClone()
+	if require 'symmath.Constant':isa(self) then assert.len(self, 0) end
+	local expr = self:clone()
+	for i,x in ipairs(expr) do
+		if not x.flattenAndClone then
+			error("no flattenAndClone in child of class type "..tostring(expr.name).." with child of type "..tostring(x.name))
+		end
+		expr[i] = x:flattenAndClone() or x
 	end
-	return self
+	return expr
 end
 
 -- root-level functions that always apply to expressions
