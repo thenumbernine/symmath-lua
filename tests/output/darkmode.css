@@ -8,8 +8,7 @@
 [data-theme="dark"] {
 	--font-color: #ffffff;
 	--bg-color: #000000;
-	--link-color: rgb(127,127,255);
-	--link-color: #7F7FEE;
+	--link-color: #9F9FEE;
 	--link-visited-color: #FF1AFF;
 	--link-active-color: #EE7F7F;
 }
