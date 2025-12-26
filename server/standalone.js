@@ -30,7 +30,7 @@ window.MathJax = {
 // ... then load mathjax ...
 await import('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 
-function fail(e) {
+const fail = e => {
 console.log(arguments);
 console.log(e);
 	throw 'failed';
@@ -82,6 +82,36 @@ class ServerBase {
 }
 
 const serverBase = new ServerBase();
+
+// disable everything,
+// load file
+// complain on errors
+// enable everything when done or after complaining
+const loadFileName = (args) => {
+	serverBase.setAllControlsEnabled(false);
+	serverBase.server.getWorksheet({
+		filename : args.filename,
+		done : cellsjson => {
+console.log("getWorksheet results", cellsjson);
+			rebuildHtmlFromCells({
+				cellsjson : cellsjson,
+				done : () => {
+					serverBase.setAllControlsEnabled(true);
+				},
+				fail : () => {
+					serverBase.setAllControlsEnabled(true);
+					if (args.fail) args.fail();
+				},
+			});
+		},
+		fail : () => {
+			serverBase.setAllControlsEnabled(true);
+			if (args.fail) args.fail();
+		},
+	});
+};
+
+
 
 class CellControl {
 	constructor(
@@ -705,13 +735,14 @@ function writeAllCells(args) {
 args:
 	server
 	root
-	worksheets
-	worksheetFilename
+	worksheets <- list of worksheets in Open menu
+	worksheetFilename <- just shows the title
+	openURL <- does an open on init
 	symmathPath
 	done
 	disableQuit
 */
-async function init(args) {
+const init = async args => {
 	serverBase.server = assertExists(args, 'server');
 	const root = args ? args.root : document.body;
 
@@ -775,29 +806,29 @@ async function init(args) {
 						innerText : 'Save',
 						events : {
 							click : e => {
-	console.log("save click, writing cells...");
+console.log("save click, writing cells...");
 								const scrollTop = window.scrollTop;
 								serverBase.setAllControlsEnabled(false);
 								window.scrollTop = scrollTop;
 								writeAllCells({
 									done : () => {
-	console.log("..done writing cells, giving save cmd...");
+console.log("..done writing cells, giving save cmd...");
 										serverBase.server.save({
 											done : () => {
-	console.log("...done giving save cmd.");
+console.log("...done giving save cmd.");
 												serverBase.setAllControlsEnabled(true);
 												//something is making my scroll position jump around, and maybe it's this?
 												window.scrollTop = scrollTop;
 											},
 											fail : () => {
-	console.log("...failed giving save cmd.");
+console.log("...failed giving save cmd.");
 												//TODO on fail, popup warning and re-enable controls
 												fail();
 											},
 										});
 									},
 									fail : () => {
-	console.log("...failed writing cells.");
+console.log("...failed writing cells.");
 										//TODO on fail, popup warning and re-enable controls
 										fail();
 									},
@@ -832,26 +863,9 @@ async function init(args) {
 							innerText : filename,
 							events : {
 								click : e => {
-									serverBase.setAllControlsEnabled(false);
-									serverBase.server.getWorksheet({
-										filename : 'tests/'+filename+'.symmath',
-										done : cellsjson => {
-	console.log("getWorksheet results", cellsjson);
-											rebuildHtmlFromCells({
-												cellsjson : cellsjson,
-												done : () => {
-													serverBase.setAllControlsEnabled(true);
-												},
-												fail : () => {
-													serverBase.setAllControlsEnabled(true);
-													fail();
-												},
-											});
-										},
-										fail : () => {
-											serverBase.setAllControlsEnabled(true);
-											fail();
-										},
+									loadFileName({
+										filename : 'tests/'+args.filename+'.symmath',
+										fail : fail,
 									});
 								},
 							},
@@ -1014,13 +1028,13 @@ async function init(args) {
 					const showdown = await require('https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js');
 
 					const readmeURL = assertExists(args, 'symmathPath')+'/README.reference.md';
-	//console.log('getting readme', readmeURL); 
+//console.log('getting readme', readmeURL); 
 					fetch(readmeURL)
 					.then(response => {
 						if (!response.ok) return Promise.reject('not ok');
 						response.text()
 						.then(text => {
-	//console.log("got reference", text);
+//console.log("got reference", text);
 							let converter = new showdown.Converter();
 							let help = converter.makeHtml(text);
 							helpDiv.append(Button({
@@ -1033,7 +1047,7 @@ async function init(args) {
 							helpDiv.append(Div({innerHTML : help}));
 						});
 					}).catch(e => {
-	console.log("failed to get readme", e);
+console.log("failed to get readme", e);
 					});
 
 					return addMenu(
@@ -1061,6 +1075,15 @@ async function init(args) {
 	getAllCellsFromServerAndRebuildHtml({
 		done : () => {
 			serverBase.setAllControlsEnabled(true);
+
+			// this is probabl out of order ...
+			if (args.openURL) {
+console.log('loading', args.openURL);
+				loadFileName({
+					filename : args.openURL,
+					fail : fail,
+				});
+			}
 
 			if (serverBase.ctrls.length == 0) {
 				//no cells in our file?  at least load the first cell

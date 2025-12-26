@@ -274,6 +274,11 @@ console.log("haserror?", s);
 	*/
 	getWorksheet(args) {
 console.log("getWorksheet", args);
+		let filename = args.filename;
+		if (filename.substr(0,1) != '/') {
+			filename = 'symmath/' + filename;
+		}
+
 		//TODO read file from the lua.vm-util.js preloader
 		//and then convert it from a lua object to a json object
 		//and then return it
@@ -283,10 +288,10 @@ console.log("getWorksheet", args);
 			callback : () => {
 				lua.run(`
 local data
-data = 'symmath/`+args.filename+`'
-data = require 'ext.io'.readfile(data)
-data = require 'ext.fromlua'(data)
-data = require 'dkjson'.encode(data)
+data = '`+filename+`'
+data = assert(require 'ext.io'.readfile(data))
+data = assert(require 'ext.fromlua'(data))
+data = assert(require 'dkjson'.encode(data))
 print(data)
 `);
 			},
@@ -596,6 +601,7 @@ lua.outputBuffer = '';
 // TODO replace this with lua-packages.js
 let worksheets = [];
 
+// TODO luaPackages.symmath no longer has any tests in it...
 luaPackages.symmath.forEach(fileset => {
 	fileset.files.forEach(file => {
 		const entry = {
@@ -629,6 +635,7 @@ await server.fwdInit({
 	},
 	worksheets : worksheets,
 	worksheetFilename : initArgs.worksheetFilename,
+	openURL : initArgs.openURL,
 	symmathPath : initArgs.symmathPath,
 	disableQuit : true,	// no need to quit in js ...
 });
