@@ -71,7 +71,7 @@ class ServerBase {
 			this.lastAddNewCellButton.disabled = !enabled;
 		}
 	}
-	
+
 	findCtrlForUID(uid) {
 		for (let i = 0; i < this.cells.length; ++i) {
 			if (this.cells[i].uid == uid) {
@@ -478,7 +478,7 @@ console.log("...successfully set output type to ", ctrl.cell.outputtype);
 
 		nextSibling.parentNode.insertBefore(ctrl.div, nextSibling);
 	}
-	
+
 	setEnabled(enabled) {
 		let ctrl = this;
 		[
@@ -760,7 +760,7 @@ const init = async args => {
 				})),
 				Div({
 					classList : ['dropdown-content'],
-					children : buttonArgs.map(args => 
+					children : buttonArgs.map(args =>
 						addMenuButton(A(merge({href:'#'}, args)))
 					),
 				}),
@@ -857,14 +857,14 @@ console.log("...failed writing cells.");
 					},
 				])))
 			].concat(!args.worksheets ? []
-				: addMenu.apply(null, 
+				: addMenu.apply(null,
 					['Open'].concat(
 						args.worksheets.map(filename => {return{
 							innerText : filename,
 							events : {
 								click : e => {
 									loadFileName({
-										filename : 'tests/'+args.filename+'.symmath',
+										filename : 'tests/'+filename+'.symmath',
 										fail : fail,
 									});
 								},
@@ -1028,7 +1028,7 @@ console.log("...failed writing cells.");
 					const showdown = await require('https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js');
 
 					const readmeURL = assertExists(args, 'symmathPath')+'/README.reference.md';
-//console.log('getting readme', readmeURL); 
+//console.log('getting readme', readmeURL);
 					fetch(readmeURL)
 					.then(response => {
 						if (!response.ok) return Promise.reject('not ok');
@@ -1055,8 +1055,8 @@ console.log("failed to get readme", e);
 						{
 							innerText : 'Help',
 							events : {
-								click : e => { 
-									show(helpDiv); 
+								click : e => {
+									show(helpDiv);
 								},
 							},
 						},

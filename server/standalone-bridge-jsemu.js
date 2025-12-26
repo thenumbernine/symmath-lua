@@ -1,6 +1,6 @@
 // local / emulated lua in javascript ?
 import {Div} from '/js/dom.js';
-import {removeFromParent, loadPackageAndDeps} from '/js/util.js';
+import {removeFromParent, loadPackageAndDeps, loadPackageTests} from '/js/util.js';
 import {init as initStandalone, fail, serverBase} from './standalone.js';
 import {newLua} from '/js/lua-interop.js';
 
@@ -52,7 +52,7 @@ window.lua = lua;
 const FS = lua.lib.FS;
 const luaPackages = {};
 await loadPackageAndDeps(FS, ['langfix', 'symmath'], luaPackages);
-
+await loadPackageTests(FS, 'symmath', luaPackages);
 
 lua.run(` package.path = './?.lua;/?.lua;/?/?.lua' `);
 FS.chdir('/');
@@ -632,6 +632,8 @@ await server.fwdInit({
 		const worksheetDiv = document.querySelector('[class="worksheetDiv"]');
 		worksheetDiv.style.padding = '10px';
 		worksheetDiv.style.marginRight = '10px';
+
+		if (loadingHeader) removeFromParent(loadingHeader);
 	},
 	worksheets : worksheets,
 	worksheetFilename : initArgs.worksheetFilename,
