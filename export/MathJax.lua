@@ -103,7 +103,6 @@ function init() {
 		<meta charset='utf-8'>
 		<title>]=] .. self.title .. [=[</title>
 		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href=']=] .. self.pathToTryToFindMathJax .. [=[/darkmode.css'></link>
 		<script type='text/javascript' src=']=] .. self.pathToTryToFindMathJax .. [=[/darkmode.js'></script>
 	</head>

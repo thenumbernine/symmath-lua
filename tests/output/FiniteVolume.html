@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Finite Volume</title>
+		<script type='text/javascript' src='./tryToFindMathJax.js'></script>
+		<link rel='stylesheet' href='./darkmode.css'></link>
+		<script type='text/javascript' src='./darkmode.js'></script>
+	</head>
+	<body>
+
+Let $g_{ab} = \partial_a \cdot \partial_b$ be the spacetime grid metric.  Let it be diagonal.
+<br>
+Let the $\hat{i}$ indexes be coefficients of a non-coordinate normalized basis.
+<br>
+Let $e_\hat{i} = {e^i}_\hat{i} \partial_i$ be the non-coordinate normalized basis.
+<br>
+Let ${e^i}_\hat{i}$ be the linear transform from the coordinate basis to the normalized non-coordinate basis, also diagonal.
+<br>
+Let ${e_i}^\hat{i}$ be the transform from the normalized non-coordinate basis to the coordinate basis, such that $[{e_i}^\hat{i}] = [{e^i}_\hat{i}]^{-1}$.
+<br>
+Let $V = det([{e_i}^\hat{i}])$ be the grid metric volume.
+<br>
+Let $\nabla$ be Levi-Civita tensor of the coordinate basis.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}{{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{{\nabla_a}}\left(  { {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^a\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}d {u_0}} = {0}$
+<br>
+Can we integrate non-coordinate values across an integral of a coordinate?
+<br>
+Or do we need to factor in the rescaling values as well?
+<br>
+Separate space and time, assume extrinsic curvature is zero.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}{{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{\partial_ {{{u_0}}}\left({{{{{ e} ^0} _{\hat{0}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{0}}}}}\right)} + {{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}d {u_0}} = {0}$
+<br>
+Let $U = F^\hat{0} = F^0$, i.e. the state is the flux through time.
+<br>
+Let $t = u_0$.
+<br>
+Let ${e^0}_\hat{0}$ = 1.
+<br>
+${\int\limits_{{{u_{0,L}}}}^{{{u_{0,R}}}}{{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{\partial_ {{t}}\left( {{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}\right)} + {{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}d {u_0}} = {0}$
+<br>
+Separate the integrals.
+<br>
+Rearrange time integral to be first next to $U$.
+<br>
+${{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\int\limits_{{{t_L}}}^{{{t_R}}}{{\left({{{\partial_ {{t}}\left( {{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}\right)}} {{V}}}\right)}}d t}}d {u_n}}}}\right)}}d {u_1}} + {\int\limits_{{{t_L}}}^{{{t_R}}}{{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}d t}} = {0}$
+<br>
+Apply FTC to $U$, separate $\partial_t$ from $F$.
+<br>
+${{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)}{-{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}} + {{{\int\limits_{{{t_L}}}^{{{t_R}}}{{1}}d t}} {{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}}} = {0}$
+<br>
+Factor out $U(t=t_R) - U(t=t_L)$, substitute $t_R - t_L = \Delta t$.
+<br>
+${{{{\left({{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)}{-{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}}}\right)}} {{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}} + {{{\Delta t}} \cdot {{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}}} = {0}$
+<br>
+Move $U(t=t_R)$ to the other side of the equation.
+<br>
+${{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}{-{{{\Delta t}} \cdot {{\frac{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{{\nabla_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}}}}}$
+<br>
+Expand $\nabla_i$.  Don't forget that you will need to rescale the indexes associated with the connection pseudotensor that you are multiplying with the F tensor.
+<br>
+${{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}} {{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{{{\partial_k}}\left( {{{{{ e} ^k} _{\hat{k}}}} {{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)} + {{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} _i} _l} ^{\hat{i}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_{l-1}}} ^m} ^{\hat{i}_{l+1}}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^{i_l}} _k} _m}}}{-{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} ^j} _l} _{\hat{j}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_{l-1}}} _m} _{\hat{j}_{l-+}}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^m} _k} _{j_l}}}}} + {{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^m}} {{{{{ \Gamma} ^k} _k} _m}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}}}}$
+<br>
+Let ${\Gamma^k}_{km} = ln(\sqrt{det(g_{ij})})$, so $\partial_k (\cdot) + (\cdot) {\Gamma^k}_{km} = \frac{1}{V} \partial_k(V (\cdot) )$
+<br>
+${{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}} {{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{\partial_k}}\left( {{{V}} {{{{ e} ^k} _{\hat{k}}}} {{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)} + {{{\left({{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} _i} _l} ^{\hat{i}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_{l-1}}} ^m} ^{\hat{i}_{l+1}}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^{i_l}} _k} _m}}}{-{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} ^j} _l} _{\hat{j}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_{l-1}}} _m} _{\hat{j}_{l-+}}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^m} _k} _{j_l}}}}}}\right)}} {{V}}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}}}}$
+<br>
+Separate the integrals of the flux.  Rearrange integrals next to the partial so $u_k$ is inner-most.
+<br>
+${{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}} {{\left({{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{\overset{- \{k\}}{...}}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\int\limits_{{{u_{k,L}}}}^{{{u_{k,R}}}}{{{{\partial_k}}\left( {{{V}} {{{{ e} ^k} _{\hat{k}}}} {{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}}}\right)}}d {u_k}}}d {u_n}}}}\right)}}d {u_1}} + {\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} _i} _l} ^{\hat{i}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_{l-1}}} ^m} ^{\hat{i}_{l+1}}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^{i_l}} _k} _m}}}{-{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} ^j} _l} _{\hat{j}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_{l-1}}} _m} _{\hat{j}_{l-+}}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^m} _k} _{j_l}}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}\right)}}}}}$
+<br>
+Apply FTC to $u_k$.
+<br>
+${{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_R}}}\right)} = {{{{{{{{{{ U} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{V}}d {u_n}}}}\right)}}d {u_1}}}} {{\left({{\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{\overset{- \{k\}}{...}}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{{({{V}} {{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}})}}\left( {{{u_k}} = {{u_{k,R}}}}\right)}{-{{{({{V}} {{{{ e} ^k} _{\hat{k}}}} {{{ {{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}})}}\left( {{{u_k}} = {{u_{k,L}}}}\right)}}}\right)}}d {u_n}}}}\right)}}d {u_1}} + {\int\limits_{{{u_{1,L}}}}^{{{u_{1,R}}}}{{\left({{{...}} \cdot {{\int\limits_{{{u_{n,L}}}}^{{{u_{n,R}}}}{{\left({{{\left({{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} _i} _l} ^{\hat{i}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_{l-1}}} ^m} ^{\hat{i}_{l+1}}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^{i_l}} _k} _m}}}{-{{{{{ e} ^k} _{\hat{k}}}} {{{ {{ e} ^j} _l} _{\hat{j}_l}}} {{{{{{{{{{{{{ F} ^{\hat{i}_1}} ^{...}} ^{\hat{i}_p}} _{\hat{j}_1}} _{...}} _{\hat{j}_{l-1}}} _m} _{\hat{j}_{l-+}}} _{...}} _{\hat{j}_q}} ^{\hat{k}}}} {{{{{ \Gamma} ^m} _k} _{j_l}}}}}}\right)}} {{V}}}\right)}}d {u_n}}}}\right)}}d {u_1}}}\right)}}}}}$
+<br>
+<hr>
+<br>
+<h2>Specific Examples</h2>
+<br>
+<h3>Polar, Anholonomic, Normalized</h3>
+<br>
+$n = 2, u_1 = r, u_2 = \phi$
+<br>
+${e_r}^\hat{r} = 1, {e^r}_\hat{r} = 1$
+<br>
+${e_\phi}^\hat{\phi} = r, {e^\phi}_\hat{\phi} = \frac{1}{r}$
+<br>
+$V = r$
+<br>
+<h4>scalar case</h4>
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{r_L}}}^{{{r_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{r}}d \phi}}d r}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{ F} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{ F} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi} + {\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{ F} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{ F} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}\right)}}}}}$
+<br>
+evaluate...
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{{\left({{{\phi_R}}{-{{\phi_L}}}}\right)}} {{\left({{{\frac{1}{2}} {{{r_R}}^{2}}}{-{{\frac{1}{2}} {{{r_L}}^{2}}}}}\right)}}}}} {{\left({{{{\left({{{\phi_R}}{-{{\phi_L}}}}\right)}} {{\left({{{{{r_R}}} \cdot {{{{{ F} ^{\hat{r}}}}\left(  {r_R}\right)}}}{-{{{{r_L}}} \cdot {{{{{ F} ^{\hat{r}}}}\left(  {r_L}\right)}}}}}\right)}}} + {{{\left({{{{{ F} ^{\hat{\phi}}}}\left(  {\phi_R}\right)}{-{{{{ F} ^{\hat{\phi}}}}\left(  {\phi_L}\right)}}}\right)}} {{\left({{{r_R}}{-{{r_L}}}}\right)}}}}\right)}}}}}$
+<br>
+${U\left( {{t} = {{t_R}}}\right)} = {{U\left( {{t} = {{t_L}}}\right)}{-{{{\Delta t}} \cdot {{\left({{\frac{{{{{r_R}}} \cdot {{{{{ F} ^{\hat{r}}}}\left(  {r_R}\right)}}}{-{{{{r_L}}} \cdot {{{{{ F} ^{\hat{r}}}}\left(  {r_L}\right)}}}}}{{{\frac{1}{2}} {{{r_R}}^{2}}}{-{{\frac{1}{2}} {{{r_L}}^{2}}}}}} + {\frac{{{\left({{{{{ F} ^{\hat{\phi}}}}\left(  {\phi_R}\right)}{-{{{{ F} ^{\hat{\phi}}}}\left(  {\phi_L}\right)}}}\right)}} {{\left({{{r_R}}{-{{r_L}}}}\right)}}}{{{\left({{{\phi_R}}{-{{\phi_L}}}}\right)}} {{\left({{{\frac{1}{2}} {{{r_R}}^{2}}}{-{{\frac{1}{2}} {{{r_L}}^{2}}}}}\right)}}}}}\right)}}}}}$
+<br>
+<hr>
+<h3>Polar</h3>
+<br>
+${n} = {2}$
+<br>
+	${{u_1}} = {r}$
+,	${{u_2}} = {\phi}$
+
+<br>
+	${{{ e} _r} ^{\hat{r}}} = {1}$
+,	${{{ e} _{\phi}} ^{\hat{\phi}}} = {r}$
+
+<br>
+	${{{ e} ^r} _{\hat{r}}} = {1}$
+,	${{{ e} ^{\phi}} _{\hat{\phi}}} = {\frac{1}{r}}$
+
+<br>
+${V} = {r}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 0\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{r}}d r}}d \phi}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi} + {\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}\right)}}}}}$
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{2}}{\left({{{{{\phi_L}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_L}}} \cdot {{{{r_R}}^{2}}}}}{-{{{{\phi_R}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{{r_R}}^{2}}}}}\right)}}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi} + {\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}\right)}}}}}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{r}}d r}}d \phi}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi} + {\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}\right)}}}}}$
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{2}}{\left({{{{{\phi_L}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_L}}} \cdot {{{{r_R}}^{2}}}}}{-{{{{\phi_R}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{{r_R}}^{2}}}}}\right)}}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi} + {\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}\right)}}}}}$
+<br>
+<hr>
+<h3>Cylindrical</h3>
+<br>
+${n} = {3}$
+<br>
+	${{u_1}} = {r}$
+,	${{u_2}} = {\phi}$
+,	${{u_3}} = {z}$
+
+<br>
+	${{{ e} _r} ^{\hat{r}}} = {1}$
+,	${{{ e} _{\phi}} ^{\hat{\phi}}} = {r}$
+,	${{{ e} _z} ^{\hat{z}}} = {1}$
+
+<br>
+	${{{ e} ^r} _{\hat{r}}} = {1}$
+,	${{{ e} ^{\phi}} _{\hat{\phi}}} = {\frac{1}{r}}$
+,	${{{ e} ^z} _{\hat{z}}} = {1}$
+
+<br>
+${V} = {r}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 0\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{r}}d r}}d \phi}}d z}}} {{\left({{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi}}d z} + {\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d z} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_L}}}\right)}}}\right)}}d r}}d \phi}}\right)}}}}}$
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{2}}{\left({{-{{{{\phi_L}}} \cdot {{{z_L}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_L}}} \cdot {{{z_L}}} \cdot {{{{r_R}}^{2}}}} + {{{{\phi_L}}} \cdot {{{z_R}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_L}}} \cdot {{{z_R}}} \cdot {{{{r_R}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{z_L}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_R}}} \cdot {{{z_L}}} \cdot {{{{r_R}}^{2}}}}}{-{{{{\phi_R}}} \cdot {{{z_R}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{z_R}}} \cdot {{{{r_R}}^{2}}}}}\right)}}}} {{\left({{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi}}d z} + {\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d z} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_R}}}\right)}{-{{{({{r}} {{{{ F} _{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_L}}}\right)}}}\right)}}d r}}d \phi}}\right)}}}}}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{r}}d r}}d \phi}}d z}}} {{\left({{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi}}d z} + {\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d z} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_L}}}\right)}}}\right)}}d r}}d \phi}}\right)}}}}}$
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{2}}{\left({{-{{{{\phi_L}}} \cdot {{{z_L}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_L}}} \cdot {{{z_L}}} \cdot {{{{r_R}}^{2}}}} + {{{{\phi_L}}} \cdot {{{z_R}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_L}}} \cdot {{{z_R}}} \cdot {{{{r_R}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{z_L}}} \cdot {{{{r_L}}^{2}}}}{-{{{{\phi_R}}} \cdot {{{z_L}}} \cdot {{{{r_R}}^{2}}}}}{-{{{{\phi_R}}} \cdot {{{z_R}}} \cdot {{{{r_L}}^{2}}}}} + {{{{\phi_R}}} \cdot {{{z_R}}} \cdot {{{{r_R}}^{2}}}}}\right)}}}} {{\left({{\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \phi}}d z} + {\int\limits_{{{z_L}}}^{{{z_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{{\frac{1}{r}} {r}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d z} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_R}}}\right)}{-{{{({{r}} {{{{ F} ^{\hat{r}}} ^{\hat{z}}}})}}\left( {{z} = {{z_L}}}\right)}}}\right)}}d r}}d \phi}}\right)}}}}}$
+<br>
+<hr>
+<h3>Spherical</h3>
+<br>
+${n} = {3}$
+<br>
+	${{u_1}} = {r}$
+,	${{u_2}} = {\theta}$
+,	${{u_3}} = {\phi}$
+
+<br>
+	${{{ e} _r} ^{\hat{r}}} = {1}$
+,	${{{ e} _{\theta}} ^{\hat{\theta}}} = {r}$
+,	${{{ e} _{\phi}} ^{\hat{\phi}}} = {{{r}} {{\sin\left(  \theta\right)}}}$
+
+<br>
+	${{{ e} ^r} _{\hat{r}}} = {1}$
+,	${{{ e} ^{\theta}} _{\hat{\theta}}} = {\frac{1}{r}}$
+,	${{{ e} ^{\phi}} _{\hat{\phi}}} = {\frac{1}{{{r}} {{\sin\left(  \theta\right)}}}}$
+
+<br>
+${V} = {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 0\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{r}^{2}}} {{\sin\left(  \theta\right)}}}\right)}}d r}}d \theta}}d \phi}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\left({{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \theta}}d \phi} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_R}}}\right)}{-{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_L}}}\right)}}}\right)}}d r}}d \phi} + {\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d \theta}}\right)}}}}}$
+<br>
+${{{{ U} _{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} _{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{3}}{\left({{{{{\phi_L}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}{-{{{{\phi_L}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}}{-{{{{\phi_L}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}} + {{{{\phi_L}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}{-{{{{\phi_R}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}} + {{{{\phi_R}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_L}\right)}}} + {{{{\phi_R}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}{-{{{{\phi_R}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}}}\right)}}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\left({{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} _{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \theta}}d \phi} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_R}}}\right)}{-{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_L}}}\right)}}}\right)}}d r}}d \phi} + {\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} _{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d \theta}}\right)}}}}}$
+<br>
+<h4>degree 	$\left[\begin{array}{c} 1\\ 0\end{array}\right]$	case</h4>
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{r}^{2}}} {{\sin\left(  \theta\right)}}}\right)}}d r}}d \theta}}d \phi}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\left({{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \theta}}d \phi} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_R}}}\right)}{-{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_L}}}\right)}}}\right)}}d r}}d \phi} + {\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d \theta}}\right)}}}}}$
+<br>
+${{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_R}}}\right)} = {{{{{ U} ^{\hat{r}}}}\left( {{t} = {{t_L}}}\right)}{-{{{\frac{\Delta t}{{\frac{1}{3}}{\left({{{{{\phi_L}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}{-{{{{\phi_L}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}}{-{{{{\phi_L}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}} + {{{{\phi_L}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}{-{{{{\phi_R}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_L}\right)}}}} + {{{{\phi_R}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_L}\right)}}} + {{{{\phi_R}}} \cdot {{{{r_L}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}{-{{{{\phi_R}}} \cdot {{{{r_R}}^{3}}} {{\cos\left(  {\theta_R}\right)}}}}}\right)}}}} {{\left({{\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\left({{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_R}}}\right)}{-{{{({{{r}^{2}}} {{\sin\left(  \theta\right)}} {{{{ F} ^{\hat{r}}} ^{\hat{r}}}})}}\left( {{r} = {{r_L}}}\right)}}}\right)}}d \theta}}d \phi} + {\int\limits_{{{\phi_L}}}^{{{\phi_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_R}}}\right)}{-{{{({{{\frac{1}{r}} {{{{r}^{2}}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\theta}}}})}}\left( {{\theta} = {{\theta_L}}}\right)}}}\right)}}d r}}d \phi} + {\int\limits_{{{\theta_L}}}^{{{\theta_R}}}{{\int\limits_{{{r_L}}}^{{{r_R}}}{{\left({{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_R}}}\right)}{-{{{({{\frac{{{{r}^{2}}} {{\sin\left(  \theta\right)}}}{{{r}} {{\sin\left(  \theta\right)}}}}} {{{{ F} ^{\hat{r}}} ^{\hat{\phi}}}})}}\left( {{\phi} = {{\phi_L}}}\right)}}}\right)}}d r}}d \theta}}\right)}}}}}$
+<br>

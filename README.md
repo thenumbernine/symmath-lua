@@ -1314,8 +1314,6 @@ Output Examples:
 
 [tests/output/rotation group](https://thenumbernine.github.io/lua/symmath/tests/output/rotation%20group.html)
 
-[tests/output/run all tests](https://thenumbernine.github.io/lua/symmath/tests/output/run%20all%20tests.html)
-
 [tests/output/scalar metric](https://thenumbernine.github.io/lua/symmath/tests/output/scalar%20metric.html)
 
 [tests/output/solve cubic](https://thenumbernine.github.io/lua/symmath/tests/output/solve%20cubic.html)
