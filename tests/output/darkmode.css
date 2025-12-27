@@ -1,13 +1,13 @@
 :root {
 	--font-color: #000000;
-	--bg-color: rgb(243,243,243);
+	--bg-color: #F3F3F3;
 	--link-color: #0000EE;
 	--link-visited-color: #551A8B;
 	--link-active-color: #EE0000;
 	--table-border-color: #000000;
 }
 [data-theme="dark"] {
-	--font-color: #ffffff;
+	--font-color: #FFFFFF;
 	--bg-color: #000000;
 	--link-color: #9F9FEE;
 	--link-visited-color: #FF1AFF;

@@ -231,7 +231,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
--- [=[
+--[=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -378,15 +378,15 @@ local shapes = {
 		end)(),
 	}
 --]=]
---[=[
+-- [=[
 	{
 		name = '8-cell',	--aka hypercube
 		dual = '16-cell',
 		dim = 4,
 		
 		--vtx1 = Matrix{1/sqrt(4), 1/sqrt(4), 1/sqrt(4), 1/sqrt(4)}:T(),
-		--vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),
-		vtx1 = Matrix{1, 1, 1, 1}:T(),
+		vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),	-- unit length
+		--vtx1 = Matrix{1, 1, 1, 1}:T(),	-- least terms
 
 		xforms = {
 			Matrix(	-- xy
