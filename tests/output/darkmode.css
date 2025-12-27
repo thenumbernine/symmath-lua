@@ -4,6 +4,7 @@
 	--link-color: #0000EE;
 	--link-visited-color: #551A8B;
 	--link-active-color: #EE0000;
+	--table-border-color: #000000;
 }
 [data-theme="dark"] {
 	--font-color: #ffffff;
@@ -11,6 +12,7 @@
 	--link-color: #9F9FEE;
 	--link-visited-color: #FF1AFF;
 	--link-active-color: #EE7F7F;
+	--table-border-color: #7F7F7F;
 }
 
 body {
@@ -33,4 +35,9 @@ a:visited {
 }
 a:active {
 	color : var(--link-active-color);
+}
+
+table, tbody, th, td {
+	border : 1px solid var(--table-border-color);
+	border-collapse : collapse;
 }

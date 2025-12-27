@@ -231,7 +231,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
---[=[
+-- [=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -645,18 +645,6 @@ for _,shape in ipairs(shapes) do
 	end
 
 	print(MathJax.header)
-
-	print[[
-<style>
-table {
-	border : 1px solid black;
-	border-collapse : collapse;
-}
-table td {
-	border : 1px solid black;
-}
-</style>
-]]
 
 	local shapeCache = cache[shape.name]
 	if not shapeCache then
