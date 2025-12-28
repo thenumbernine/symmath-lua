@@ -378,7 +378,7 @@ local shapes = {
 		end)(),
 	}
 --]=]
--- [=[
+--[=[
 	{
 		name = '8-cell',	--aka hypercube
 		dual = '16-cell',
