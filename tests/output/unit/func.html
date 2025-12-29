@@ -17,7 +17,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.025000ms<br>
+time: 0.021000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -33,7 +33,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.074000ms<br>
+time: 0.273000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -68,19 +68,18 @@ $y\left(  x\right)$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.068000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>print(y(x)())</pre>
 </td><td>
-differenceOfSquares	x * x
 ${x}^{2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.502000ms<br>
+time: 2.382000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>y:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -92,7 +91,7 @@ ${y\left(  x\right)} = {{x}^{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.909000ms<br>
+time: 0.354000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -102,7 +101,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.106000ms<br>
+time: 0.019000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -166,7 +165,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.219000ms<br>
+time: 0.345000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -177,7 +176,7 @@ ${f\left(  x\right)} = {{{x}} {{y\left(  x\right)}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.325000ms<br>
+time: 0.651000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -187,7 +186,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.018000ms<br>
+time: 0.029000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -242,15 +241,11 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <pre>print(f:defeq():diff(x):prune())</pre>
 </td><td>
-differenceOfSquares	x * x^2
-differenceOfSquares	x * x^2
-differenceOfSquares	3 * x^2
-differenceOfSquares	3 * x^2
 ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.472000ms<br>
+time: 4.775000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:self<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -293,8 +288,6 @@ stack: size: 12<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 <b></b><br>
 <pre>print(f:defeq():diff(y):prune())</pre>
 </td><td>
-differenceOfSquares	x * x^2
-differenceOfSquares	x * x^2
 <span style="color:red">BAD</span><br>[string "/home/chris/Projects/lua/symmath/Expression.lua"]:49: attempt to call a table value<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
@@ -316,22 +309,20 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 2.338000ms<br>
+time: 2.139000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>print(f:defeq():diff(y(x)):prune())</pre>
 </td><td>
-differenceOfSquares	x * x^2
-differenceOfSquares	x * x^2
 ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.835000ms<br>
+time: 1.877000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>y:Prune:apply<br><li>y:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>Derivative:Prune:eval<br><li>Derivative:Prune:eval</ul>
 </td></tr>
 <tr><td>
@@ -347,7 +338,7 @@ stack: size: 15<br><ul style="margin:0px"><li>f:Prune:apply<br><li>y:Prune:apply
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.020000ms<br>
+time: 0.018000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -357,7 +348,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.014000ms<br>
+time: 0.016000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -367,7 +358,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.053000ms<br>
+time: 0.067000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -377,7 +368,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.040000ms<br>
+time: 0.051000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -396,9 +387,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 0.113000ms<br>
+time: 0.157000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -418,9 +409,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 0.558000ms<br>
+time: 0.345000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -440,9 +431,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 0.464000ms<br>
+time: 0.265000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -462,9 +453,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 0.406000ms<br>
+time: 0.346000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -484,9 +475,9 @@ stack traceback:<br>
 	func.lua:65: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	func.lua:6: in main chunk<br>
-	[C]: at 0x5ba068983390
+	[C]: at 0x5c21304ca390
 </td><td>
-time: 0.248000ms<br>
+time: 0.185000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>

@@ -25,7 +25,7 @@ ${\int{{1}}d x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.852000ms<br>
+time: 0.606000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -34,11 +34,10 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\int{{y}}d x} = {{{x}} {{y}}}$
 <br>
-differenceOfSquares	x * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.806000ms<br>
+time: 2.559000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -53,17 +52,10 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\int\limits_{{xL}}^{{xR}}{{1}}d x} = {{xR}{-{xL}}}$
 <br>
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
-differenceOfSquares	-1 * xL
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.705000ms<br>
+time: 6.631000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -90,42 +82,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{\int\limits_{{xL}}^{{xR}}{{x}}d x}{-{{\frac{1}{2}}{\left({{{xR}^{2}}{-{{xL}^{2}}}}\right)}}}} = {0}$
 <br>
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	-1 * (xR^2 + -1 * xL^2) / 2
-differenceOfSquares	-1 * (xR^2 + -1 * xL^2)
-found two sum	xR^2 + -1 * xL^2
-differenceOfSquares	1 / 2 * xR^2
-differenceOfSquares	1 / 2 * xL^2
-differenceOfSquares	-1 * xL^2 / 2
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	-1 * (xR^2 + -1 * xL^2)
-found two sum	xR^2 + -1 * xL^2
-differenceOfSquares	2 * (-1 * (xR^2 + -1 * xL^2)) / 2
-differenceOfSquares	-2 * (xR^2 + -1 * xL^2)
-found two sum	xR^2 + -1 * xL^2
-differenceOfSquares	-1 * (xR^2 + -1 * xL^2)
-found two sum	xR^2 + -1 * xL^2
-differenceOfSquares	2 * (-1 * (xR^2 + -1 * xL^2) + -1 * xL^2) / 2
-differenceOfSquares	2 * (-1 * (xR^2 + -1 * xL^2) + -1 * xL^2)
-found two sum	-1 * (xR^2 + -1 * xL^2) + -1 * xL^2
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	-1 * (xR^2 + -1 * xL^2)
-found two sum	xR^2 + -1 * xL^2
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	xR * xR
-differenceOfSquares	-1 * xR^2
-differenceOfSquares	xL * xL
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	xL * xL
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	xR * xR
-differenceOfSquares	-1 * xL^2
-differenceOfSquares	-1 * xL^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 19.783000ms<br>
+time: 19.384000ms<br>
 stack: size: 73<br><ul style="margin:0px"><li>Init<br><li>Integral:Prune:apply<br><li>Integral:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:factorOutDivs<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>Constant:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:flatten<br><li>+:Prune:factorOutDivs<br><li>+:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>+:Prune:flattenAddMul<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>/:Prune:zeroOverX<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -146,20 +106,10 @@ stack: size: 73<br><ul style="margin:0px"><li>Init<br><li>Integral:Prune:apply<b
 </td><td>
 ${\int{{x}}d x} = {{\frac{1}{2}} {{x}^{2}}}$
 <br>
-differenceOfSquares	x * x
-differenceOfSquares	1 / 2 * x^2
-differenceOfSquares	2 * x^2 / 2
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	2 * x^2 / 2
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	2 * x^2 / 2
-differenceOfSquares	2 * x^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.965000ms<br>
+time: 8.443000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -168,20 +118,10 @@ stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${\int{{{x}^{2}}}d x} = {{\frac{1}{3}} {{x}^{3}}}$
 <br>
-differenceOfSquares	x * x
-differenceOfSquares	1 / 3 * x^3
-differenceOfSquares	3 * x^3 / 3
-differenceOfSquares	3 * x^3
-differenceOfSquares	x * x * x
-differenceOfSquares	3 * x^3 / 3
-differenceOfSquares	3 * x^3
-differenceOfSquares	x * x * x
-differenceOfSquares	3 * x^3 / 3
-differenceOfSquares	3 * x^3
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.985000ms<br>
+time: 8.173000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -190,16 +130,10 @@ stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${{\int{{{x}^{-2}}}d x}{-{\frac{-1}{x}}}} = {0}$
 <br>
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * -1 / x
-differenceOfSquares	-1 * x * 1 / x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.612000ms<br>
+time: 6.163000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>^:Prune:xToTheNegY<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -211,7 +145,7 @@ ${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.033000ms<br>
+time: 3.449000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -223,7 +157,7 @@ ${\int{{{x}^{-1}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.878000ms<br>
+time: 1.616000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -232,40 +166,10 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\int{{\frac{1}{{{2}} {{{x}^{2}}}}}}d x} = {-{\frac{1}{{{2}} {{x}}}}}$
 <br>
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	2 * x^2
-differenceOfSquares	2 * x^2
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	2 * x^2
-differenceOfSquares	2 * x^2
-differenceOfSquares	2 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 / 2 * 1 / x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	-2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	-2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * 1 / (2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	-2 * x
-differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.154000ms<br>
+time: 8.662000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -280,28 +184,10 @@ stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*
 </td><td>
 ${\int{{{x}^{\frac{1}{2}}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
 <br>
-differenceOfSquares	2 / 3 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x * x^(1 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.096000ms<br>
+time: 11.580000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -310,28 +196,10 @@ stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><l
 </td><td>
 ${\int{{\sqrt{x}}}d x} = {{\frac{1}{3}} {{{2}} {{x}} {{\sqrt{x}}}}}$
 <br>
-differenceOfSquares	2 / 3 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x * x^(1 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
-differenceOfSquares	3 * (2 * x^(3 / 2)) / 3
-differenceOfSquares	6 * x^(3 / 2)
-differenceOfSquares	2 * x^(3 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.319000ms<br>
+time: 13.061000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>*:Prune:combinePows<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -349,7 +217,7 @@ ${\int{{\frac{1}{x}}}d x} = {\log\left( {\left| x\right|}\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.610000ms<br>
+time: 1.284000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -364,16 +232,10 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\int{{\frac{2}{x}}}d x} = {{{2}} {{\log\left( {\left| x\right|}\right)}}}$
 <br>
-differenceOfSquares	2 * x / 2
-differenceOfSquares	2 * x
-differenceOfSquares	2 * log(|x|)
-differenceOfSquares	2 * log(|x|)
-differenceOfSquares	2 * log(|x|)
-differenceOfSquares	2 * log(|x|)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.811000ms<br>
+time: 3.669000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:logPow<br><li>Prune<br><li>^:Expand:integerPower<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:logPow<br><li>+:Prune:flattenAddMul<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -382,21 +244,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:logPow<br><li>
 </td><td>
 ${\int{{\frac{1}{{{2}} {{x}}}}}d x} = {{\frac{1}{2}} {\log\left( {\left| x\right|}\right)}}$
 <br>
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	1 / 2 * log(|x|)
-differenceOfSquares	1 / 2 * log(|x|)
-differenceOfSquares	1 / 2 * log(|x|)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.076000ms<br>
+time: 5.071000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>/:Prune:logPow<br><li>Prune<br><li>log:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -409,192 +260,12 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>/:Prune:logPow<br><li>
 <b></b><br>
 <pre>simplifyAssertEq((1/(x*(3*x+4))):integrate(x)(), log(1 / abs( (4 + 3 * x) / x)^frac(1,4)))</pre>
 </td><td>
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	x * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	4 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x * x
-differenceOfSquares	3 * x^2
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	4 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x * x
-differenceOfSquares	3 * x^2
-differenceOfSquares	3 * x
-differenceOfSquares	x * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	x * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	4 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x * x
-differenceOfSquares	3 * x^2
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	x * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	x * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	4 * x
-differenceOfSquares	3 * x * x
-differenceOfSquares	3 * x^2
-differenceOfSquares	4 * x
-differenceOfSquares	3 * x^2
-differenceOfSquares	2 * x
-differenceOfSquares	6 * x
-differenceOfSquares	6 * x
-differenceOfSquares	3 * x
-differenceOfSquares	2 * (2 + 3 * x)
-found two sum	2 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	6 * x
-differenceOfSquares	3 * x
-differenceOfSquares	2 * (2 + 3 * x)
-found two sum	2 + 3 * x
-differenceOfSquares	-1 * 1 / 4
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 / 4 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	-1 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	1 / 3 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * (4 + 3 * x) / 3
-differenceOfSquares	-1 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-1 * 4 / 3
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	|(4 + 3 * x) / x| * 1 / |(4 + 3 * x) / x|
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * 1 / 4 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	-1 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	1 / 3 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * (4 + 3 * x) / 3
-differenceOfSquares	-1 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-1 * 4 / 3
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	|(4 + 3 * x) / x| * 1 / |(4 + 3 * x) / x|
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
 ${\log\left( {{\left({\frac{1}{\left|{{\frac{1}{x}}{\left({{4} + {{{3}} {{x}}}}\right)}}\right|}}\right)}^{\frac{1}{4}}}\right)} = {\log\left( {\frac{1}{{\left|{{\frac{1}{x}}{\left({{4} + {{{3}} {{x}}}}\right)}}\right|}^{\frac{1}{4}}}}\right)}$
 <br>
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * 1 / 4 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	-1 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	1 / 3 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * (4 + 3 * x) / 3
-differenceOfSquares	-1 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-1 * 4 / 3
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	|(4 + 3 * x) / x| * 1 / |(4 + 3 * x) / x|
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * 1 / 4 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	-1 * log(|(4 + 3 * x) / x|)
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	1 / 3 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-1 * (4 + 3 * x) / 3
-differenceOfSquares	-1 * (4 + 3 * x)
-found two sum	4 + 3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	-3 * x
-differenceOfSquares	-1 * 4 / 3
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
-differenceOfSquares	|(4 + 3 * x) / x| * 1 / |(4 + 3 * x) / x|
-differenceOfSquares	3 * x
-differenceOfSquares	3 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 63.066000ms<br>
+time: 50.451000ms<br>
 stack: size: 20<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>log:Expand:apply<br><li>unm:Expand:apply<br><li>log:Expand:apply<br><li>Expand<br><li>log:Prune:apply<br><li>^:Prune:xToTheNegY<br><li>*:Prune:logPow<br><li>/:Prune:logPow<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -612,7 +283,7 @@ ${f} = {f}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.814000ms<br>
+time: 0.559000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -624,7 +295,7 @@ ${f} = {f}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.228000ms<br>
+time: 1.084000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:integrals<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -636,7 +307,7 @@ ${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.549000ms<br>
+time: 1.191000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -648,7 +319,7 @@ ${\int{{f}}d x} = {\int{{f}}d x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.419000ms<br>
+time: 3.289000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -660,7 +331,7 @@ ${\frac{\partial f}{\partial x}} = {\frac{\partial f}{\partial x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.368000ms<br>
+time: 0.913000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -673,19 +344,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq(sin(x):integrate(x)(), -cos(x))</pre>
 </td><td>
-differenceOfSquares	-1 * cos(x)
-differenceOfSquares	-1 * cos(x)
-differenceOfSquares	-1 * cos(x)
-differenceOfSquares	-1 * cos(x)
 ${-{\cos\left(  x\right)}} = {-{\cos\left(  x\right)}}$
 <br>
-differenceOfSquares	-1 * cos(x)
-differenceOfSquares	-1 * cos(x)
-differenceOfSquares	-1 * cos(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.058000ms<br>
+time: 1.599000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -697,7 +361,7 @@ ${\sin\left(  x\right)} = {\sin\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.351000ms<br>
+time: 0.995000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -710,71 +374,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq(sin(2*x):integrate(x)(), (-cos(2*x)/2))</pre>
 </td><td>
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * 1 / 2
-differenceOfSquares	2 * x
-differenceOfSquares	-1 / 2 * cos(2 * x)
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * (-1 * cos(2 * x)) / 2
-differenceOfSquares	-2 * cos(2 * x)
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * (-1 * cos(2 * x)) / 2
-differenceOfSquares	-2 * cos(2 * x)
-differenceOfSquares	-1 * cos(2 * x)
 ${-{{\frac{1}{2}} {\cos\left( {{{2}} {{x}}}\right)}}} = {{\frac{1}{2}}{\left({-{\cos\left( {{{2}} {{x}}}\right)}}\right)}}$
 <br>
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	-1 * cos(2 * x)
-differenceOfSquares	2 * (-1 * cos(2 * x)) / 2
-differenceOfSquares	-2 * cos(2 * x)
-differenceOfSquares	-1 * cos(2 * x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.098000ms<br>
+time: 9.918000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(cos(y*x):integrate(x)(), (sin(y*x)/y))</pre>
 </td><td>
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	sin(x * y) * 1 / y
-differenceOfSquares	x * y
-differenceOfSquares	y * sin(x * y) / y
-differenceOfSquares	y * sin(x * y)
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	y * sin(x * y) / y
-differenceOfSquares	y * sin(x * y)
 ${{\frac{1}{y}} {\sin\left( {{{x}} {{y}}}\right)}} = {{\frac{1}{y}} {\sin\left( {{{y}} {{x}}}\right)}}$
 <br>
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	y * sin(x * y) / y
-differenceOfSquares	y * sin(x * y)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.618000ms<br>
+time: 7.658000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -789,12 +406,10 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br
 </td><td>
 ${\int{{\frac{\cos\left(  x\right)}{\sin\left(  x\right)}}}d x} = {\log\left( {\left|{\sin\left(  x\right)}\right|}\right)}$
 <br>
-differenceOfSquares	sin(x) * cos(x) / sin(x)
-differenceOfSquares	cos(x) * sin(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.768000ms<br>
+time: 2.289000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -807,70 +422,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((cos(x)^2):integrate(x)(), frac(1,4) * (2 * x + sin(2 * x)))</pre>
 </td><td>
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	1 / 2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	1 / 2 * sin(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	1 / 2 * sin(2 * x) / 2
-differenceOfSquares	2 * sin(2 * x) / 4
-differenceOfSquares	2 * sin(2 * x)
-differenceOfSquares	1 / 2 * sin(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	4 * (sin(2 * x) + 2 * x) / 4
-differenceOfSquares	4 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * 1 / 2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	4 * (sin(2 * x) + 2 * x) / 4
-differenceOfSquares	4 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * 1 / 2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
 ${{\frac{1}{4}}{\left({{\sin\left( {{{2}} {{x}}}\right)} + {{{2}} {{x}}}}\right)}} = {{{\frac{1}{4}}} {{\left({{{{2}} {{x}}} + {\sin\left( {{{2}} {{x}}}\right)}}\right)}}}$
 <br>
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	1 / 4 * (2 * x + sin(2 * x))
-found two sum	2 * x + sin(2 * x)
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	4 * (sin(2 * x) + 2 * x) / 4
-differenceOfSquares	4 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * 1 / 2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * (sin(2 * x) + 2 * x)
-found two sum	sin(2 * x) + 2 * x
-differenceOfSquares	2 * x
-differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 20.518000ms<br>
+time: 13.263000ms<br>
 stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -888,7 +445,7 @@ ${\int{{\sinh\left(  x\right)}}d x} = {\cosh\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.084000ms<br>
+time: 0.943000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -900,7 +457,7 @@ ${\int{{\cosh\left(  x\right)}}d x} = {\sinh\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.153000ms<br>
+time: 0.679000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -933,280 +490,58 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\int{{\left({{{x}} {{y}}}\right)}}d x} = {{{\frac{1}{2}}} {{{x}^{2}}} {{y}}}$
 <br>
-differenceOfSquares	x * y
-differenceOfSquares	x * x
-differenceOfSquares	x^2 * y / 2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	1 / 2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.605000ms<br>
+time: 4.725000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * y):integrate(x)():integrate(y)(), frac(1,4) * x^2 * y^2)</pre>
 </td><td>
-differenceOfSquares	x * y
-differenceOfSquares	x * x
-differenceOfSquares	x^2 * y / 2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	1 / 2 * x^2
-differenceOfSquares	y * y
-differenceOfSquares	y^2 * x^2 / 4
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * x
-differenceOfSquares	y * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
 ${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^{2}}}}$
 <br>
-differenceOfSquares	1 / 4 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * x
-differenceOfSquares	y * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 24.232000ms<br>
+time: 16.246000ms<br>
 stack: size: 30<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * y):integrate(x):integrate(y)(), frac(1,4) * x^2 * y^2)</pre>
 </td><td>
-differenceOfSquares	x * y
-differenceOfSquares	x * x
-differenceOfSquares	x^2 * y / 2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	2 * (y * x^2) / 2
-differenceOfSquares	2 * y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	y * x^2
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	1 / 2 * x^2
-differenceOfSquares	y * y
-differenceOfSquares	y^2 * x^2 / 4
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * x
-differenceOfSquares	y * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
 ${{\frac{1}{4}} {{{{x}^{2}}} {{{y}^{2}}}}} = {{{\frac{1}{4}}} {{{x}^{2}}} {{{y}^{2}}}}$
 <br>
-differenceOfSquares	1 / 4 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * x
-differenceOfSquares	y * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	4 * (x^2 * y^2) / 4
-differenceOfSquares	4 * x^2 * y^2
-differenceOfSquares	2 * 1 / 2 * x^2 * y^2
-differenceOfSquares	2 * x^2 * y^2
-differenceOfSquares	x^2 * y^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 23.974000ms<br>
+time: 17.459000ms<br>
 stack: size: 30<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Factor:polydiv<br><li>Factor<br><li>^:Prune:expandMulOfLikePow<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheNegY<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((r * cos(x)):integrate(r)():integrate(x)(), frac(1,2) * r^2 * sin(x))</pre>
 </td><td>
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * cos(x) / 2
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	2 * (r^2 * cos(x)) / 2
-differenceOfSquares	2 * r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	2 * (r^2 * cos(x)) / 2
-differenceOfSquares	2 * r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	2 * (r^2 * cos(x)) / 2
-differenceOfSquares	2 * r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r^2 * cos(x)
-differenceOfSquares	r * r
-differenceOfSquares	r * r
-differenceOfSquares	1 / 2 * r^2
-differenceOfSquares	sin(x) * r^2 / 2
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
 ${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}^{2}}} {{\sin\left(  x\right)}}}$
 <br>
-differenceOfSquares	1 / 2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 19.930000ms<br>
+time: 14.302000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((r * cos(x)):integrate(x)():integrate(r)(), frac(1,2) * r^2 * sin(x))</pre>
 </td><td>
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * cos(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * sin(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * sin(x) / 2
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
 ${{\frac{1}{2}} {{{{r}^{2}}} {{\sin\left(  x\right)}}}} = {{{\frac{1}{2}}} {{{r}^{2}}} {{\sin\left(  x\right)}}}$
 <br>
-differenceOfSquares	1 / 2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r * r
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
-differenceOfSquares	2 * (r^2 * sin(x)) / 2
-differenceOfSquares	2 * r^2 * sin(x)
-differenceOfSquares	r^2 * sin(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.606000ms<br>
+time: 9.254000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1221,66 +556,10 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>*:Prune:factorDenomina
 </td><td>
 ${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{a}} {{x}}}\right)}}}\right)}}d x} = {\frac{{\cosh\left( {{{a}} {{x}}}\right)}^{2}}{{{2}} {{a}}}}$
 <br>
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * sinh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x)^2 * 1 / (2 * a)
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x)^2 * (2 * a) / cosh(a * x)^2
-differenceOfSquares	a * x
-differenceOfSquares	2 * a * cosh(a * x)^2
-differenceOfSquares	2 * a
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x)^2 * (2 * a) / cosh(a * x)^2
-differenceOfSquares	a * x
-differenceOfSquares	2 * a * cosh(a * x)^2
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	2 * a
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(a * x)
-differenceOfSquares	2 * a
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x)^2 * (2 * a) / cosh(a * x)^2
-differenceOfSquares	a * x
-differenceOfSquares	2 * a * cosh(a * x)^2
-differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.602000ms<br>
+time: 12.746000ms<br>
 stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1289,1249 +568,10 @@ stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${\int{{\left({{{\cosh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{b}} {{x}}}\right)}}}\right)}}d x} = {{{\frac{1}{{{\left({{a} + {b}}\right)}} {{\left({{a}{-{b}}}\right)}}}}} {{\left({{ {-{b}} {{\cosh\left( {{{a}} {{x}}}\right)}} {{\cosh\left( {{{b}} {{x}}}\right)}}} + {{{a}} {{\sinh\left( {{{a}} {{x}}}\right)}} {{\sinh\left( {{{b}} {{x}}}\right)}}}}\right)}}}$
 <br>
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * sinh(b * x)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * sinh(b * x) * sinh(a * x) * 1 / (a^2 + -1 * b^2)
-differenceOfSquares	a * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b^2
-differenceOfSquares	-1 * b * 1 / (a^2 + -1 * b^2) * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a^2 + -1 * b^2) * (-1 * b * cosh(b * x) * cosh(a * x)) / (a^2 + -1 * b^2)
-found two sum	a^2 + -1 * b^2
-differenceOfSquares	-1 * b^2
-differenceOfSquares	-1 * b * (a^2 + -1 * b^2) * cosh(a * x) * cosh(b * x)
-found two sum	a^2 + -1 * b^2
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * 1 / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * a * 1 / (sinh(a * x) * sinh(b * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (sinh(a * x) * sinh(b * x))
-differenceOfSquares	-1 * a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * sinh(b * x) * sinh(a * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * a * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(a * x) * sinh(b * x)) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * sinh(a * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(b * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	b * sinh(b * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(a * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * 1 / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * b * 1 / (cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (cosh(b * x) * cosh(a * x))
-differenceOfSquares	-1 * b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * cosh(a * x) * cosh(b * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(b * x) * cosh(a * x)) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(b * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(a * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * cosh(a * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(b * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) / ((a + b) * (a + -1 * b)) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * (a + -1 * b) * (a + b)
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * 1 / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * a * 1 / (sinh(a * x) * sinh(b * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (sinh(a * x) * sinh(b * x))
-differenceOfSquares	-1 * a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * sinh(b * x) * sinh(a * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * a * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(a * x) * sinh(b * x)) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * sinh(a * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(b * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	b * sinh(b * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(a * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * 1 / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * b * 1 / (cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (cosh(b * x) * cosh(a * x))
-differenceOfSquares	-1 * b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * cosh(a * x) * cosh(b * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(b * x) * cosh(a * x)) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(b * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(a * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * cosh(a * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(b * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) / ((a + b) * (a + -1 * b)) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * (a + -1 * b) * (a + b)
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	(-1 * b * cosh(b * x) * cosh(a * x) + a * sinh(a * x) * sinh(b * x)) * 1 / ((a + -1 * b) * (a + b))
-found two sum	-1 * b * cosh(b * x) * cosh(a * x) + a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * 1 / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * a * 1 / (sinh(a * x) * sinh(b * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (sinh(a * x) * sinh(b * x))
-differenceOfSquares	-1 * a * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * sinh(b * x) * sinh(a * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * a * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	sinh(b * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(a * x) * sinh(b * x)) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * sinh(a * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(b * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	sinh(b * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x) * (b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))) / (sinh(b * x) * sinh(a * x)) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	b * sinh(b * x) * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)) * sinh(a * x)
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * (-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x))
-found two sum	-1 * b * sinh(a * x) * sinh(b * x) + a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * b^2 * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * 1 / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * b * 1 / (cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * (b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))) / (cosh(b * x) * cosh(a * x))
-differenceOfSquares	-1 * b * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x))
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * cosh(a * x) * cosh(b * x) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b^2 * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * a * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	cosh(a * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(b * x) * cosh(a * x)) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(b * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(a * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	cosh(a * x) * cosh(b * x)
-differenceOfSquares	cosh(b * x) * (a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))) / (cosh(a * x) * cosh(b * x)) * cosh(a * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	a * cosh(a * x) * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)) * cosh(b * x)
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * (a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x))
-found two sum	a * cosh(a * x) * cosh(b * x) + -1 * b * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * cosh(a * x) * cosh(b * x)
-differenceOfSquares	a * a * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a^2 * cosh(b * x) * cosh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	-1 * a * b * sinh(b * x) * sinh(a * x)
-differenceOfSquares	a * a
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * b
-differenceOfSquares	-1 * b^2
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	a * x
-differenceOfSquares	b * x
-differenceOfSquares	-1 * b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + -1 * b) * (a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) / ((a + b) * (a + -1 * b)) * (a + b)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	(a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)) * (a + -1 * b) * (a + b)
-found two sum	a * sinh(a * x) * sinh(b * x) + -1 * b * cosh(b * x) * cosh(a * x)
-found two sum	a + -1 * b
-found two sum	a + b
-differenceOfSquares	a * sinh(a * x) * sinh(b * x)
-differenceOfSquares	b * x
-differenceOfSquares	a * x
-differenceOfSquares	b * cosh(b * x) * cosh(a * x)
-differenceOfSquares	-1 * b * cosh(a * x) * cosh(b * x)
-differenceOfSquares	-1 * b
-differenceOfSquares	(a + b) * (a + -1 * b)
-found two sum	a + b
-found two sum	a + -1 * b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 252.936000ms<br>
+time: 165.536000ms<br>
 stack: size: 68<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>*:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2546,56 +586,9 @@ stack: size: 68<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\int{{\left({{{{\sinh\left( {{{a}} {{x}}}\right)}^{2}}} {{\cosh\left( {{{a}} {{x}}}\right)}}}\right)}}d x} = {\frac{{\sinh\left( {{{a}} {{x}}}\right)}^{3}}{{{3}} {{a}}}}$
 <br>
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x)^2 * cosh(a * x)
-differenceOfSquares	sinh(a * x) * sinh(a * x)
-differenceOfSquares	sinh(a * x)^2 * cosh(a * x)
-differenceOfSquares	sinh(a * x)^2 * cosh(a * x)
-differenceOfSquares	sinh(a * x)^2 * cosh(a * x)
-differenceOfSquares	sinh(a * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	3 * a
-differenceOfSquares	3 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	3 * a
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x)^3 * (3 * a) / sinh(a * x)^3
-differenceOfSquares	a * x
-differenceOfSquares	3 * a * sinh(a * x)^3
-differenceOfSquares	3 * a
-differenceOfSquares	a * x
-differenceOfSquares	3 * a
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	3 * a
-differenceOfSquares	3 * a
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x) * sinh(a * x) * sinh(a * x)
-differenceOfSquares	3 * a
-differenceOfSquares	a * x
-differenceOfSquares	sinh(a * x)^3 * (3 * a) / sinh(a * x)^3
-differenceOfSquares	a * x
-differenceOfSquares	3 * a * sinh(a * x)^3
-differenceOfSquares	3 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.947000ms<br>
+time: 9.872000ms<br>
 stack: size: 24<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

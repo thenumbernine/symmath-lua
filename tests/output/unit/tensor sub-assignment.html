@@ -10,31 +10,6 @@
 	<body>
 
 <table border="1" style="border-collapse:collapse">
-differenceOfSquares	-1 * ∂^2/{∂t^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂x}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂x}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂t ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂z^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂y}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y^2}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂x ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂y ∂z}[\zeta]
-differenceOfSquares	-1 * ∂^2/{∂z^2}[\zeta]
 <tr><td>
 <b></b><br>
 <pre>B = Tensor('^ij', function(i,j) return var'b'('^'..coords[i+1].name..' '..coords[j+1].name) end)</pre>
@@ -42,7 +17,7 @@ differenceOfSquares	-1 * ∂^2/{∂z^2}[\zeta]
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.080000ms<br>
+time: 1.377000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -54,7 +29,7 @@ $\left[\begin{array}{cc} 3& 3\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.353000ms<br>
+time: 0.196000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -72,7 +47,7 @@ $\overset{i\downarrow}{\left[\begin{matrix} {{ b} ^x} ^x \\ {{ b} ^y} ^x \\ {{ b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.861000ms<br>
+time: 7.908000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -84,7 +59,7 @@ $\left[\begin{array}{c} 3\end{array}\right]$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.371000ms<br>
+time: 5.753000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -118,7 +93,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.474000ms<br>
+time: 0.523000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -130,7 +105,7 @@ A = $\overset{a\downarrow}{\left[\begin{matrix} { a} ^t \\ { a} ^x \\ { a} ^y \\
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.199000ms<br>
+time: 0.272000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -140,7 +115,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.040000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -150,7 +125,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.077000ms<br>
+time: 0.037000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -160,7 +135,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.036000ms<br>
+time: 0.212000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -170,7 +145,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.036000ms<br>
+time: 0.072000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -192,7 +167,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.412000ms<br>
+time: 0.273000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -204,7 +179,7 @@ B = $\overset{i\downarrow}{\left[\begin{matrix} { b} ^x \\ { b} ^y \\ { b} ^z\en
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.620000ms<br>
+time: 0.379000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -214,7 +189,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.050000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -224,7 +199,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.046000ms<br>
+time: 0.034000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -234,7 +209,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.037000ms<br>
+time: 0.031000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -256,7 +231,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.085000ms<br>
+time: 0.135000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -266,7 +241,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.297000ms<br>
+time: 6.276000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -278,7 +253,7 @@ A2 = $\overset{a\downarrow}{\left[\begin{matrix} { a} ^t \\ { b} ^x \\ { b} ^y \
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.405000ms<br>
+time: 0.377000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -290,7 +265,7 @@ ${{ a} ^t} = {{ a} ^t}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.273000ms<br>
+time: 0.297000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -302,7 +277,7 @@ ${{ b} ^x} = {{ b} ^x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.230000ms<br>
+time: 0.174000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -314,7 +289,7 @@ ${{ b} ^y} = {{ b} ^y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.313000ms<br>
+time: 0.258000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -326,7 +301,7 @@ ${{ b} ^z} = {{ b} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.279000ms<br>
+time: 0.159000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -338,7 +313,7 @@ ${\overset{a\downarrow}{\left[\begin{matrix} { a} ^t \\ { b} ^x \\ { b} ^y \\ { 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.892000ms<br>
+time: 1.660000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -366,7 +341,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.748000ms<br>
+time: 2.382000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -378,7 +353,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.395000ms<br>
+time: 1.462000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -420,7 +395,7 @@ ${{{ a} ^z} ^z} = {{{ a} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.816000ms<br>
+time: 3.834000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -436,7 +411,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.690000ms<br>
+time: 1.171000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -448,7 +423,7 @@ B = $\overset{i\downarrow j\rightarrow}{\left[\begin{array}{ccc} {{ b} ^x} ^x& {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.236000ms<br>
+time: 0.375000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -476,7 +451,7 @@ ${{{ b} ^z} ^z} = {{{ b} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.568000ms<br>
+time: 0.842000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -492,7 +467,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.120000ms<br>
+time: 28.463000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -504,7 +479,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.654000ms<br>
+time: 0.841000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -522,7 +497,7 @@ ${{{ a} ^t} ^z} = {{{ a} ^t} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.379000ms<br>
+time: 0.349000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -540,7 +515,7 @@ ${{{ a} ^z} ^t} = {{{ a} ^z} ^t}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.312000ms<br>
+time: 0.449000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -568,7 +543,7 @@ ${{{ b} ^z} ^z} = {{{ b} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.685000ms<br>
+time: 1.067000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -584,7 +559,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.119000ms<br>
+time: 0.244000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -596,7 +571,7 @@ C = $\overset{i\downarrow}{\left[\begin{matrix} { c} ^x \\ { c} ^y \\ { c} ^z\en
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.243000ms<br>
+time: 0.227000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -612,7 +587,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.624000ms<br>
+time: 10.523000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -624,7 +599,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.334000ms<br>
+time: 0.663000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -640,7 +615,7 @@ ${{ c} ^z} = {{ c} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
+time: 0.450000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -658,7 +633,7 @@ ${{{ a} ^z} ^t} = {{{ a} ^z} ^t}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.289000ms<br>
+time: 0.366000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -686,7 +661,7 @@ ${{{ b} ^z} ^z} = {{{ b} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.549000ms<br>
+time: 0.952000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -702,7 +677,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.492000ms<br>
+time: 13.869000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -714,7 +689,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} {{ a} ^t} ^t& 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.325000ms<br>
+time: 0.687000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -726,7 +701,7 @@ ${{{ a} ^t} ^t} = {{{ a} ^t} ^t}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.096000ms<br>
+time: 0.131000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -742,7 +717,7 @@ ${{ c} ^z} = {{ c} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.327000ms<br>
+time: 0.283000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -758,7 +733,7 @@ ${{{ b} ^z} ^x} = {{{ b} ^z} ^x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.190000ms<br>
+time: 0.372000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -786,7 +761,7 @@ ${{{ b} ^z} ^z} = {{{ b} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.468000ms<br>
+time: 1.035000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -802,7 +777,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.361000ms<br>
+time: 6.530000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -814,7 +789,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} 2& { c} ^x& { 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.914000ms<br>
+time: 1.049000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -826,7 +801,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.077000ms<br>
+time: 0.147000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -842,7 +817,7 @@ ${{ c} ^z} = {{ c} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.452000ms<br>
+time: 1.275000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -858,7 +833,7 @@ ${{{ b} ^z} ^x} = {{{ b} ^z} ^x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.601000ms<br>
+time: 0.837000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -886,7 +861,7 @@ ${{{ b} ^z} ^z} = {{{ b} ^z} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.027000ms<br>
+time: 2.357000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -902,7 +877,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.718000ms<br>
+time: 8.075000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -914,7 +889,7 @@ A = $\overset{a\downarrow b\rightarrow}{\left[\begin{array}{cccc} 2& { c} ^x& { 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.599000ms<br>
+time: 0.459000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -926,7 +901,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.094000ms<br>
+time: 0.141000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -942,7 +917,7 @@ ${{ c} ^z} = {{ c} ^z}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.237000ms<br>
+time: 0.558000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -958,7 +933,7 @@ ${{{ b} ^z} ^x} = {{{ b} ^z} ^x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.295000ms<br>
+time: 0.275000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -986,6 +961,6 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.535000ms<br>
+time: 0.702000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

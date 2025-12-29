@@ -49,7 +49,7 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.727000ms<br>
+time: 1.672000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -73,7 +73,7 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.090000ms<br>
+time: 1.668000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -109,7 +109,7 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.918000ms<br>
+time: 1.354000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -133,7 +133,7 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.514000ms<br>
+time: 1.390000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -168,9 +168,9 @@ stack traceback:<br>
 	test.lua:182: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	test.lua:8: in main chunk<br>
-	[C]: at 0x56e4db78f390
+	[C]: at 0x5a23188dc390
 </td><td>
-time: 0.600000ms<br>
+time: 0.827000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -206,7 +206,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.727000ms<br>
+time: 0.323000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -218,7 +218,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.954000ms<br>
+time: 0.707000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -230,7 +230,7 @@ ${-1} = {-{1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.754000ms<br>
+time: 0.923000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -242,7 +242,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.160000ms<br>
+time: 0.500000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -266,7 +266,7 @@ ${{x} + {y}} = {{y} + {x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.762000ms<br>
+time: 3.405000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -275,12 +275,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{x}} {{y}}} = {{{y}} {{x}}}$
 <br>
-differenceOfSquares	x * y
-differenceOfSquares	x * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.621000ms<br>
+time: 1.855000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -304,7 +302,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.147000ms<br>
+time: 0.114000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -316,7 +314,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.041000ms<br>
+time: 0.105000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -328,7 +326,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.245000ms<br>
+time: 0.367000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -340,7 +338,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.272000ms<br>
+time: 0.370000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -353,15 +351,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq(x^2, (x*x)())</pre>
 </td><td>
-differenceOfSquares	x * x
-differenceOfSquares	x * x
 ${{x}^{2}} = {{x}^{2}}$
 <br>
-differenceOfSquares	x * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.825000ms<br>
+time: 2.104000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -380,147 +375,84 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <pre>simplifyAssertEq(((x+1)*y)(), (x*y + y)())</pre>
 </td><td>
-differenceOfSquares	y * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * y
-differenceOfSquares	y * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * y
-differenceOfSquares	y * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * y
-differenceOfSquares	y * (1 + x)
-found two sum	1 + x
 ${{{y}} {{\left({{1} + {x}}\right)}}} = {{{y}} {{\left({{1} + {x}}\right)}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.734000ms<br>
+time: 6.831000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(((x+1)*(y+1))(), (x*y + x + y + 1)())</pre>
 </td><td>
-differenceOfSquares	(1 + y) * (1 + x)
-found two sum	1 + y
-found two sum	1 + x
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
 ${{1} + {x} + {y} + {{{x}} {{y}}}} = {{1} + {x} + {{{x}} {{y}}} + {y}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.094000ms<br>
+time: 9.574000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((2/(2*x*y))(), (1/(x*y))())</pre>
 </td><td>
-differenceOfSquares	2 * x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
 ${\frac{1}{{{x}} {{y}}}} = {\frac{1}{{{x}} {{y}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.065000ms<br>
+time: 7.315000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((1-(1-x))(), x)</pre>
 </td><td>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
 ${x} = {x}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.047000ms<br>
+time: 2.052000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>+:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(((1-(1-x))/x)(), 1)</pre>
 </td><td>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
 ${1} = {1}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.441000ms<br>
+time: 1.928000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((1 + 1/x + 1/x)(), (1 + 2/x)())</pre>
 </td><td>
-differenceOfSquares	2 * 1 / x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (2 + x)
-found two sum	2 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (2 + x)
-found two sum	2 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 ${{\frac{1}{x}}{\left({{2} + {x}}\right)}} = {{\frac{1}{x}}{\left({{2} + {x}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.315000ms<br>
+time: 14.859000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((1 + 1/x + 2/x)(), (1 + 3/x)())</pre>
 </td><td>
-differenceOfSquares	x * (2 + x) / x
-differenceOfSquares	x * (2 + x)
-found two sum	2 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (3 + x)
-found two sum	3 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (3 + x)
-found two sum	3 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 ${{\frac{1}{x}}{\left({{3} + {x}}\right)}} = {{\frac{1}{x}}{\left({{3} + {x}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.262000ms<br>
+time: 17.634000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -544,7 +476,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.156000ms<br>
+time: 0.237000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -556,7 +488,7 @@ ${\frac{1}{2}} = {\frac{1}{2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.809000ms<br>
+time: 2.925000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -569,49 +501,24 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq(((2*x + 2*y)/2)(), (x+y)())</pre>
 </td><td>
-differenceOfSquares	2 * x
-differenceOfSquares	2 * y
-differenceOfSquares	2 * x
-differenceOfSquares	2 * y
-differenceOfSquares	2 * (x + y)
-found two sum	x + y
-differenceOfSquares	2 * (x + y)
-found two sum	x + y
 ${{x} + {y}} = {{x} + {y}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.098000ms<br>
+time: 5.486000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(((-2*x + 2*y)/2)(), (-x+y)())</pre>
 </td><td>
-differenceOfSquares	-2 * x
-differenceOfSquares	2 * y
-differenceOfSquares	-2 * x
-differenceOfSquares	2 * y
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	2 * (y + -1 * x)
-found two sum	y + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	2 * (y + -1 * x)
-found two sum	y + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 ${{-{x}} + {y}} = {{-{x}} + {y}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.313000ms<br>
+time: 9.969000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -626,22 +533,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{-1}{-{x}}} = {-{\left({{1} + {x}}\right)}}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.328000ms<br>
+time: 5.344000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -656,11 +551,10 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{\frac{1}{x}}{\left({-{x}}\right)}} = {-1}$
 <br>
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.943000ms<br>
+time: 1.131000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -669,12 +563,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{x}{-{x}}} = {-1}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.026000ms<br>
+time: 1.571000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -683,26 +575,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{{-{x}}{-{1}}}{{x} + {1}}} = {-1}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.071000ms<br>
+time: 7.023000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -711,22 +587,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{{x}{-{1}}}{{1}{-{x}}}} = {-1}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.590000ms<br>
+time: 5.140000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -741,20 +605,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{{{x}} {{y}}}{{\left({{{x}} {{y}}}\right)}^{2}}} = {\frac{1}{{{x}} {{y}}}}$
 <br>
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x^2 * y^2
-differenceOfSquares	1 / y * 1 / x
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
-differenceOfSquares	x * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.543000ms<br>
+time: 4.944000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -775,22 +629,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{1}{{1}{-{x}}}} = {\frac{-1}{{x}{-{1}}}}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.923000ms<br>
+time: 7.593000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -805,13 +647,10 @@ stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{\left({{x}{-{1}}}\right)}} {{\left({{x} + {1}}\right)}}}{{x} + {1}}} = {{x}{-{1}}}$
 <br>
-differenceOfSquares	(1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.984000ms<br>
+time: 2.696000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -820,13 +659,10 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{\left({{x}{-{1}}}\right)}} {{\left({{x} + {1}}\right)}}}{{x}{-{1}}}} = {{x} + {1}}$
 <br>
-differenceOfSquares	(1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.492000ms<br>
+time: 3.056000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -835,13 +671,10 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstant
 </td><td>
 ${\frac{{x}{-{1}}}{{{\left({{x} + {1}}\right)}} {{\left({{x}{-{1}}}\right)}}}} = {\frac{1}{{x} + {1}}}$
 <br>
-differenceOfSquares	(-1 + x) * (1 + x)
-found two sum	-1 + x
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.003000ms<br>
+time: 5.823000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -850,13 +683,10 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 </td><td>
 ${\frac{{x} + {1}}{{{\left({{x} + {1}}\right)}} {{\left({{x}{-{1}}}\right)}}}} = {\frac{1}{{x}{-{1}}}}$
 <br>
-differenceOfSquares	(-1 + x) * (1 + x)
-found two sum	-1 + x
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.561000ms<br>
+time: 3.977000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -871,42 +701,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{x}^{2}}{-{1}}}{{x} + {1}}} = {{x}{-{1}}}$
 <br>
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.708000ms<br>
+time: 14.106000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -915,57 +713,10 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{x}^{2}}{-{1}}}{{x}{-{1}}}} = {{x} + {1}}$
 <br>
-differenceOfSquares	-1 * (-1 + x^2)
-found two sum	-1 + x^2
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + -1 * x) * (1 + x)
-found two sum	1 + -1 * x
-found two sum	1 + x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.730000ms<br>
+time: 15.152000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -974,60 +725,10 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstant
 </td><td>
 ${\frac{{x}{-{1}}}{{{x}^{2}}{-{1}}}} = {\frac{1}{{x} + {1}}}$
 <br>
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * (-1 + x^2)
-found two sum	-1 + x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + -1 * x)
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + -1 * x) * (1 + x)
-found two sum	1 + -1 * x
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.976000ms<br>
+time: 20.868000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1036,43 +737,10 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 </td><td>
 ${\frac{{x} + {1}}{{{x}^{2}}{-{1}}}} = {\frac{1}{{x}{-{1}}}}$
 <br>
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	x * x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.141000ms<br>
+time: 14.941000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1087,46 +755,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{1}{-{{x}^{2}}}}{{x} + {1}}} = {-{\left({{x}{-{1}}}\right)}}$
 <br>
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + x) * (1 + -1 * x)
-found two sum	1 + x
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 10.153000ms<br>
+time: 14.252000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1135,54 +767,10 @@ stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{1}{-{{x}^{2}}}}{{x}{-{1}}}} = {-{\left({{x} + {1}}\right)}}$
 <br>
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(-1 + x) * (-1 + -1 * x)
-found two sum	-1 + x
-found two sum	-1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.227000ms<br>
+time: 15.439000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1191,52 +779,10 @@ stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 </td><td>
 ${\frac{{x}{-{1}}}{{1}{-{{x}^{2}}}}} = {\frac{-1}{{x} + {1}}}$
 <br>
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(-1 + x) * (-1 + -1 * x)
-found two sum	-1 + x
-found two sum	-1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.403000ms<br>
+time: 18.430000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1245,50 +791,10 @@ stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 </td><td>
 ${\frac{{x} + {1}}{{1}{-{{x}^{2}}}}} = {\frac{-1}{{x}{-{1}}}}$
 <br>
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * (1 + x)
-found two sum	1 + x
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	x * x
-differenceOfSquares	-1 * x^2
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * (1 + x)
-found two sum	1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	(1 + x) * (1 + -1 * x)
-found two sum	1 + x
-found two sum	1 + -1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.198000ms<br>
+time: 15.938000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1309,16 +815,10 @@ stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{y}{-{a}}} = {{-{a}} + {y}}$
 <br>
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.597000ms<br>
+time: 2.366000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1327,374 +827,10 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{y}{-{a}}}{{b}{-{a}}}} = {{\frac{y}{{b}{-{a}}}}{-{\frac{a}{{b}{-{a}}}}}}$
 <br>
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	(-1 * a + y) * (-1 * (-1 * a + b)) / (-1 * (-1 * a + y))
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y) * (-1 * a + b)
-found two sum	-1 * a + y
-found two sum	-1 * a + b
-differenceOfSquares	(-1 * a + b) * (-1 * a + y)
-found two sum	-1 * a + b
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	(-1 * a + y) * (-1 * a + y)
-found two sum	-1 * a + y
-found two sum	-1 * a + y
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	(a + -1 * y) * (a + -1 * b) / (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	(a + -1 * b) * (a + -1 * y)
-found two sum	a + -1 * b
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	(a + -1 * y) * (a + -1 * b) / (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	(a + -1 * b) * (a + -1 * y)
-found two sum	a + -1 * b
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a / (b + -1 * a)
-differenceOfSquares	-1 * a
-differenceOfSquares	(b + -1 * a) * (-1 * a) / (b + -1 * a)
-found two sum	b + -1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a * (b + -1 * a)
-found two sum	b + -1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	(-1 * a + y) * (-1 * (-1 * a + b)) / (-1 * (-1 * a + y))
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * (-1 * a + y) * (-1 * a + b)
-found two sum	-1 * a + y
-found two sum	-1 * a + b
-differenceOfSquares	(-1 * a + b) * (-1 * a + y)
-found two sum	-1 * a + b
-found two sum	-1 * a + y
-differenceOfSquares	-1 * a
-differenceOfSquares	(-1 * a + y) * (-1 * a + y)
-found two sum	-1 * a + y
-found two sum	-1 * a + y
-differenceOfSquares	-1 * (-1 * a + y)
-found two sum	-1 * a + y
-differenceOfSquares	-1 * (-1 * a + b)
-found two sum	-1 * a + b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	(a + -1 * y) * (a + -1 * b) / (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	(a + -1 * b) * (a + -1 * y)
-found two sum	a + -1 * b
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * (a + -1 * b)
-found two sum	a + -1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * b
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	(a + -1 * y) * (a + -1 * b) / (a + -1 * y)
-found two sum	a + -1 * y
-differenceOfSquares	(a + -1 * b) * (a + -1 * y)
-found two sum	a + -1 * b
-found two sum	a + -1 * y
-differenceOfSquares	-1 * b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 59.739000ms<br>
+time: 88.110000ms<br>
 stack: size: 28<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:factorOutDivs<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1707,58 +843,11 @@ stack: size: 28<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b>just printing this, i was getting simplification loops</b><br>
 <pre>print((a^2 * x^2 - a^2)())</pre>
 </td><td>
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	x * x
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * x
-differenceOfSquares	a * x
-differenceOfSquares	-1 * a
-differenceOfSquares	(a * x + -1 * a) * (a * x + a)
-found two sum	a * x + -1 * a
-found two sum	a * x + a
-differenceOfSquares	a * (-1 + x)
-found two sum	-1 + x
-differenceOfSquares	a * (1 + x)
-found two sum	1 + x
-differenceOfSquares	a * a * (1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
-differenceOfSquares	a^2 * (1 + x) * (-1 + x)
-found two sum	1 + x
-found two sum	-1 + x
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	x * a^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * x * a^2
-differenceOfSquares	a * a
-differenceOfSquares	x * x * a^2
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	x * a^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	x * x
-differenceOfSquares	a^2 * x^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * x
-differenceOfSquares	a^2 * x^2
 ${-{{a}^{2}}} + {{{{a}^{2}}} {{{x}^{2}}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.431000ms<br>
+time: 13.457000ms<br>
 stack: size: 68<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1773,121 +862,10 @@ stack: size: 68<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{t}{-{r}}}{{-{{r}^{2}}}{-{{t}^{2}}} + {{{2}} {{r}} {{t}}}}} = {\frac{-1}{{t}{-{r}}}}$
 <br>
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r^2
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	r * r
-differenceOfSquares	-1 * r^2
-differenceOfSquares	t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	r * r
-differenceOfSquares	-1 * r^2
-differenceOfSquares	t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r
-differenceOfSquares	r * r
-differenceOfSquares	-1 * r^2
-differenceOfSquares	t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r^2
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	r * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	-1 * r * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	r * r
-differenceOfSquares	-1 * r^2
-differenceOfSquares	t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	r * r
-differenceOfSquares	-1 * r * t
-differenceOfSquares	-1 * r^2
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	2 * r * t
-differenceOfSquares	-1 * r * t
-differenceOfSquares	r * t
-differenceOfSquares	-1 * t
-differenceOfSquares	t * (-1 * t + r)
-found two sum	-1 * t + r
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	r * t
-differenceOfSquares	-1 * t
-differenceOfSquares	t * (-1 * t + r)
-found two sum	-1 * t + r
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	r * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	t * (-1 * t + r)
-found two sum	-1 * t + r
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * t * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	t * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r * t
-differenceOfSquares	t * t
-differenceOfSquares	-1 * t^2
-differenceOfSquares	r * t
-differenceOfSquares	r * t
-differenceOfSquares	-1 * r * t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * r
-differenceOfSquares	(-1 * r + t) * (r + -1 * t)
-found two sum	-1 * r + t
-found two sum	r + -1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * (-1 * r + t)
-found two sum	-1 * r + t
-differenceOfSquares	-1 * r
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
-differenceOfSquares	-1 * t
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 27.021000ms<br>
+time: 34.836000ms<br>
 stack: size: 42<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>/:Prune:negOverNeg<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1902,230 +880,10 @@ stack: size: 42<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{-128} + {{{64}} {{\sqrt{5}}}}}{{{64}} {{\sqrt{5}}}}} = {{\frac{-2}{\sqrt{5}}} + {1}}$
 <br>
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-128 + 64 * 5^(1 / 2))
-found two sum	-128 + 64 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	64 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	64 * 5^(1 / 2)
-differenceOfSquares	64 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	32 * 1 / 32 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	32 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	32 * 5^(1 / 2) * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	32 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-64 + 32 * 5^(1 / 2))
-found two sum	-64 + 32 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-64 + 32 * 5^(1 / 2))
-found two sum	-64 + 32 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-64 + 32 * 5^(1 / 2))
-found two sum	-64 + 32 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	32 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	32 * 5^(1 / 2)
-differenceOfSquares	32 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	16 * 1 / 16 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	16 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	16 * 5^(1 / 2) * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	16 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-32 + 16 * 5^(1 / 2))
-found two sum	-32 + 16 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-32 + 16 * 5^(1 / 2))
-found two sum	-32 + 16 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-32 + 16 * 5^(1 / 2))
-found two sum	-32 + 16 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	16 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	16 * 5^(1 / 2)
-differenceOfSquares	16 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	8 * 1 / 8 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	8 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	8 * 5^(1 / 2) * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	8 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-16 + 8 * 5^(1 / 2))
-found two sum	-16 + 8 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-16 + 8 * 5^(1 / 2))
-found two sum	-16 + 8 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-16 + 8 * 5^(1 / 2))
-found two sum	-16 + 8 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	8 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	8 * 5^(1 / 2)
-differenceOfSquares	8 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	4 * 1 / 4 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	4 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	4 * 5^(1 / 2) * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	4 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-8 + 4 * 5^(1 / 2))
-found two sum	-8 + 4 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-8 + 4 * 5^(1 / 2))
-found two sum	-8 + 4 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-8 + 4 * 5^(1 / 2))
-found two sum	-8 + 4 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	4 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	4 * 5^(1 / 2)
-differenceOfSquares	4 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	2 * 1 / 2 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	2 * 5^(1 / 2) * 5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	4
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	2 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	5^(1 / 2) * (-4 + 2 * 5^(1 / 2))
-found two sum	-4 + 2 * 5^(1 / 2)
-differenceOfSquares	5^(-1 / 2) * (-4 + 2 * 5^(1 / 2))
-found two sum	-4 + 2 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	5^(-1 / 2) * 5^(1 / 2) * (-4 + 2 * 5^(1 / 2))
-found two sum	-4 + 2 * 5^(1 / 2)
-differenceOfSquares	2 * 1 / 2
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	-1 * -1 / 2
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	2 * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	2 * 5^(1 / 2)
-differenceOfSquares	2 * 5^(1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	3
-differenceOfSquares	5^(-1 / 2) * (-2 + 5^(1 / 2))
-found two sum	-2 + 5^(1 / 2)
-...adding index	2
-differenceOfSquares	-2 * 5^(-1 / 2)
-differenceOfSquares	5^(1 / 2) * 5^(-1 / 2)
-differenceOfSquares	2 * -1 / 2
-differenceOfSquares	-2 * 5^(-1 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 77.590000ms<br>
+time: 111.298000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2174,101 +932,48 @@ stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><l
 <b></b><br>
 <pre>simplifyAssertEq((sin(x)^2+cos(x)^2)(), 1)</pre>
 </td><td>
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	sin(x) * sin(x)
 ${1} = {1}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.559000ms<br>
+time: 3.286000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((y*sin(x)^2+y*cos(x)^2)(), y)</pre>
 </td><td>
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	y * (cos(x)^2 + sin(x)^2)
-found two sum	cos(x)^2 + sin(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * y * sin(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * sin(x)^2
 ${y} = {y}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.349000ms<br>
+time: 6.972000ms<br>
 stack: size: 17<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((y+y*sin(x)^2+y*cos(x)^2)(), 2*y)</pre>
 </td><td>
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	y * (1 + cos(x)^2 + sin(x)^2)
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * y * sin(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	2 * y
-differenceOfSquares	2 * y
-differenceOfSquares	2 * y
-differenceOfSquares	2 * y
 ${{{2}} {{y}}} = {{{2}} {{y}}}$
 <br>
-differenceOfSquares	2 * y
-differenceOfSquares	2 * y
-differenceOfSquares	2 * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.367000ms<br>
+time: 8.025000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((1+y*sin(x)^2+y*cos(x)^2)(), 1+y)</pre>
 </td><td>
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	y * cos(x)^2
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * y * sin(x)^2
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y * sin(x)^2
-differenceOfSquares	y * sin(x)^2
 ${{1} + {y}} = {{1} + {y}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.210000ms<br>
+time: 7.682000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2283,38 +988,10 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{1} + {{\cos\left(  x\right)}^{2}} + {{\cos\left(  x\right)}^{2}}} = {{1} + {{{2}} {{{\cos\left(  x\right)}^{2}}}}}$
 <br>
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.952000ms<br>
+time: 15.285000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2323,38 +1000,10 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${{-1} + {{\cos\left(  x\right)}^{2}} + {{\cos\left(  x\right)}^{2}}} = {{-1} + {{{2}} {{{\cos\left(  x\right)}^{2}}}}}$
 <br>
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-2 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
-differenceOfSquares	2 * cos(x)^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.400000ms<br>
+time: 13.896000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2369,15 +1018,10 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${{{\cos\left(  x\right)}^{2}} + {{\sin\left(  x\right)}^{2}}} = {1}$
 <br>
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	sin(x) * sin(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.732000ms<br>
+time: 4.136000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2386,35 +1030,10 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{\left({{{\cos\left(  x\right)}} {{y}}}\right)}^{2}} + {{\left({{{\sin\left(  x\right)}} {{y}}}\right)}^{2}}} = {{y}^{2}}$
 <br>
-differenceOfSquares	y * cos(x)
-differenceOfSquares	y^2 * cos(x)^2
-differenceOfSquares	y * sin(x)
-differenceOfSquares	y^2 * sin(x)^2
-differenceOfSquares	y * y
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	y^2 * cos(x)^2
-differenceOfSquares	y * y
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y^2 * sin(x)^2
-differenceOfSquares	y * cos(x)
-differenceOfSquares	y^2 * cos(x)^2
-differenceOfSquares	y * sin(x)
-differenceOfSquares	y^2 * sin(x)^2
-differenceOfSquares	y * y
-differenceOfSquares	y * y
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * y^2 * sin(x)^2
-differenceOfSquares	y * y
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	y^2 * sin(x)^2
-differenceOfSquares	y^2 * sin(x)^2
-differenceOfSquares	y * y
-differenceOfSquares	y * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.659000ms<br>
+time: 8.349000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2427,24 +1046,12 @@ stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <pre>simplifyLHSAssertEq( (sin(x)^2)(), sin(x)^2)</pre>
 </td><td>
-differenceOfSquares	sin(x) * sin(x)
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	-1 * sin(x) * sin(x)
-differenceOfSquares	-1 * sin(x)^2
-differenceOfSquares	-1 * cos(x) * cos(x)
-differenceOfSquares	-1 * cos(x)^2
-differenceOfSquares	-1 * cos(x)^2
 ${{\sin\left(  x\right)}^{2}} = {{\sin\left(  x\right)}^{2}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.772000ms<br>
+time: 7.559000ms<br>
 stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>^:Expand:integerPower<br><li>unm:Expand:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2457,39 +1064,24 @@ stack: size: 18<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <pre>simplifyLHSAssertEq( (cos(b)^2 - 1)(), -sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
 ${-{{\sin\left(  b\right)}^{2}}} = {-{{\sin\left(  b\right)}^{2}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.115000ms<br>
+time: 4.439000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyLHSAssertEq( (1 - cos(b)^2)(), sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
 ${{\sin\left(  b\right)}^{2}} = {{\sin\left(  b\right)}^{2}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.370000ms<br>
+time: 4.586000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2502,95 +1094,24 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a * cos(b)^2 - a)(), -(a * sin(b)^2))</pre>
 </td><td>
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	a * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a * sin(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a * sin(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	a * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	a * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a * sin(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * a * sin(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	a * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
 ${-{{{a}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{a}} {{{\sin\left(  b\right)}^{2}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.199000ms<br>
+time: 11.970000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a - a * cos(b)^2)(), a * sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	a * cos(b)^2
-differenceOfSquares	-1 * a * cos(b)^2
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * a * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a * sin(b)^2
-differenceOfSquares	a * sin(b)^2
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	-1 * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a * sin(b)^2
-differenceOfSquares	a * sin(b)^2
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
 ${{{a}} {{{\sin\left(  b\right)}^{2}}}} = {{{a}} {{{\sin\left(  b\right)}^{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.057000ms<br>
+time: 15.443000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2603,93 +1124,6 @@ stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b>the only one that doesn't work</b><br>
 <pre>simplifyLHSAssertEq( (a^2 * cos(b)^2 - a^2)(), -(a^2 * sin(b)^2))</pre>
 </td><td>
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a * cos(b)
-differenceOfSquares	-1 * a
-differenceOfSquares	(a * cos(b) + -1 * a) * (a * cos(b) + a)
-found two sum	a * cos(b) + -1 * a
-found two sum	a * cos(b) + a
-differenceOfSquares	a * (-1 + cos(b))
-found two sum	-1 + cos(b)
-differenceOfSquares	a * (1 + cos(b))
-found two sum	1 + cos(b)
-differenceOfSquares	a * a * (1 + cos(b)) * (-1 + cos(b))
-found two sum	1 + cos(b)
-found two sum	-1 + cos(b)
-differenceOfSquares	a^2 * (1 + cos(b)) * (-1 + cos(b))
-found two sum	1 + cos(b)
-found two sum	-1 + cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	a^2 * cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2 * cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	a^2 * cos(b) * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a^2 * cos(b)
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^2 * sin(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * sin(b)
-differenceOfSquares	a^2 * sin(b)^2
-differenceOfSquares	-1 * a^2 * sin(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^2 * sin(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * sin(b)
-differenceOfSquares	a^2 * sin(b)^2
-differenceOfSquares	-1 * a^2 * sin(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a^2 * cos(b)^2
 ${{-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}} = {-{{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}}$
 <br>
 expected ${-{{a}^{2}}} + {{{{a}^{2}}} {{{\cos\left(  b\right)}^{2}}}}$ to equal $-{{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}$<br>
@@ -2843,69 +1277,15 @@ stack traceback:<br>
 	test.lua:182: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	test.lua:8: in main chunk<br>
-	[C]: at 0x56e4db78f390
+	[C]: at 0x5a23188dc390
 </td><td>
-time: 55.031000ms<br>
+time: 44.808000ms<br>
 stack: size: 68<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b>also the only one that doesn't work</b><br>
 <pre>simplifyLHSAssertEq( (a^2 - a^2 * cos(b)^2)(), a^2 * sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2 * cos(b)^2
-differenceOfSquares	a * a
-differenceOfSquares	a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * a^2 * cos(b)^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a * cos(b)
-differenceOfSquares	-1 * a * cos(b)
-differenceOfSquares	(a + -1 * a * cos(b)) * (a + a * cos(b))
-found two sum	a + -1 * a * cos(b)
-found two sum	a + a * cos(b)
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	a * (1 + -1 * cos(b))
-found two sum	1 + -1 * cos(b)
-differenceOfSquares	a * (1 + cos(b))
-found two sum	1 + cos(b)
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	a * a * (1 + cos(b)) * (1 + -1 * cos(b))
-found two sum	1 + cos(b)
-found two sum	1 + -1 * cos(b)
-differenceOfSquares	a^2 * (1 + cos(b)) * (1 + -1 * cos(b))
-found two sum	1 + cos(b)
-found two sum	1 + -1 * cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	a * a
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	-1 * a^2 * cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	a^2 * cos(b)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	-1 * a^2 * cos(b) * cos(b)
-differenceOfSquares	-1 * a^2 * cos(b)^2
-differenceOfSquares	-1 * a^2 * cos(b)
-differenceOfSquares	-1 * a^2 * cos(b)^2
-differenceOfSquares	a * cos(b)
-differenceOfSquares	a * cos(b)
-differenceOfSquares	-1 * a * cos(b)
-differenceOfSquares	(a + -1 * a * cos(b)) * (a + a * cos(b))
-found two sum	a + -1 * a * cos(b)
-found two sum	a + a * cos(b)
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	a * (1 + -1 * cos(b))
-found two sum	1 + -1 * cos(b)
-differenceOfSquares	a * (1 + cos(b))
-found two sum	1 + cos(b)
-differenceOfSquares	-1 * cos(b)
-differenceOfSquares	a * a * (1 + cos(b)) * (1 + -1 * cos(b))
-found two sum	1 + cos(b)
-found two sum	1 + -1 * cos(b)
-differenceOfSquares	a^2 * (1 + cos(b)) * (1 + -1 * cos(b))
-found two sum	1 + cos(b)
-found two sum	1 + -1 * cos(b)
 ${{{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}} = {{{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}}$
 <br>
 expected ${{{a}^{2}}} {{\left({{1} + {\cos\left(  b\right)}}\right)}} {{\left({{1}{-{\cos\left(  b\right)}}}\right)}}$ to equal ${{{a}^{2}}} {{{\sin\left(  b\right)}^{2}}}$<br>
@@ -3109,9 +1489,9 @@ stack traceback:<br>
 	test.lua:182: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	test.lua:8: in main chunk<br>
-	[C]: at 0x56e4db78f390
+	[C]: at 0x5a23188dc390
 </td><td>
-time: 28.084000ms<br>
+time: 26.725000ms<br>
 stack: size: 93<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:flattenAddMul<br><li>+:Prune:flatten<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>/:Prune:xOverX<br><li>^:Prune:xToTheOne<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>+:Factor:apply<br><li>+:Factor:apply<br><li>Factor<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3124,123 +1504,24 @@ stack: size: 93<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a^3 * cos(b)^2 - a^3)(), -(a^3 * sin(b)^2))</pre>
 </td><td>
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a^3 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^3 * sin(b)^2
-differenceOfSquares	-1 * a^3
-differenceOfSquares	-1 * a^3 * sin(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	a^3 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	a^3 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^3 * sin(b)^2
-differenceOfSquares	-1 * a^3
-differenceOfSquares	-1 * a^3 * sin(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	a^3 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
 ${-{{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 18.816000ms<br>
+time: 23.991000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a^3 - a^3 * cos(b)^2)(), a^3 * sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	a^3 * cos(b)^2
-differenceOfSquares	-1 * a^3 * cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * a^3 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a^3 * sin(b)^2
-differenceOfSquares	a^3 * sin(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^3 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^3 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * a^3
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a^3 * sin(b)^2
-differenceOfSquares	a^3 * sin(b)^2
-differenceOfSquares	a * a * a
-differenceOfSquares	a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^3 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^3 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
 ${{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}} = {{{{a}^{3}}} {{{\sin\left(  b\right)}^{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 22.353000ms<br>
+time: 14.977000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3253,123 +1534,24 @@ stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a^4 * cos(b)^2 - a^4)(), -(a^4 * sin(b)^2))</pre>
 </td><td>
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a^4 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^4 * sin(b)^2
-differenceOfSquares	-1 * a^4
-differenceOfSquares	-1 * a^4 * sin(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	a^4 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	a^4 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	-1 * a^4 * sin(b)^2
-differenceOfSquares	-1 * a^4
-differenceOfSquares	-1 * a^4 * sin(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	a^4 * (-1 + cos(b)^2)
-found two sum	-1 + cos(b)^2
 ${-{{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}} = {-{{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 14.747000ms<br>
+time: 15.644000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyLHSAssertEq( (a^4 - a^4 * cos(b)^2)(), a^4 * sin(b)^2)</pre>
 </td><td>
-differenceOfSquares	a^4 * cos(b)^2
-differenceOfSquares	-1 * a^4 * cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * a^4 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a^4 * sin(b)^2
-differenceOfSquares	a^4 * sin(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^4 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^4 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * a^4
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * sin(b) * sin(b)
-differenceOfSquares	-1 * sin(b)^2
-differenceOfSquares	a^4 * sin(b)^2
-differenceOfSquares	a^4 * sin(b)^2
-differenceOfSquares	a * a * a * a
-differenceOfSquares	a * a * a * a
-differenceOfSquares	-1 * cos(b) * cos(b)
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	-1 * a^4 * cos(b)^2
-differenceOfSquares	-1 * cos(b)^2
-differenceOfSquares	a^4 * (1 + -1 * cos(b)^2)
-found two sum	1 + -1 * cos(b)^2
 ${{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}} = {{{{a}^{4}}} {{{\sin\left(  b\right)}^{2}}}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.483000ms<br>
+time: 15.588000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3402,27 +1584,10 @@ stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{y}{-{x}}}{{x}{-{y}}}} = {-1}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (x + -1 * y)
-found two sum	x + -1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * y
-differenceOfSquares	-1 * (x + -1 * y)
-found two sum	x + -1 * y
-differenceOfSquares	-1 * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.840000ms<br>
+time: 5.102000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3434,7 +1599,7 @@ ${\frac{{x} + {y}}{{\left({{x} + {y}}\right)}^{2}}} = {\frac{1}{{x} + {y}}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.620000ms<br>
+time: 7.421000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3443,19 +1608,10 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${\frac{{-{x}} + {y}}{{\left({{-{x}} + {y}}\right)}^{2}}} = {\frac{1}{{-{x}} + {y}}}$
 <br>
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
-differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.290000ms<br>
+time: 3.140000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>/:Factor:polydiv<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3470,131 +1626,10 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{{\gamma^{xy}}}^{2}}{-{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}}}\right)}}}{{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}{-{{{\gamma^{xy}}}^{2}}}}} = {-{{\gamma^{xy}}}}$
 <br>
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy}^3
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy}^3
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy}^3
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy}^2 + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xy}^3
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^3
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy}^2 + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 25.439000ms<br>
+time: 19.234000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3603,119 +1638,10 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{\gamma^{xy}}}{-{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}}}\right)}}}{{{{{\gamma^{xx}}}} \cdot {{{\gamma^{yy}}}}}{-{{\gamma^{xy}}}}}} = {-{{\gamma^{xy}}}}$
 <br>
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy})
-found two sum	-1 * \gamma^{xy} + \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{yy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 24.169000ms<br>
+time: 16.217000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3724,58 +1650,10 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${\frac{{{{\gamma^{xy}}}} \cdot {{\left({{{\gamma^{xy}}}{-{{\gamma^{xx}}}}}\right)}}}{{{\gamma^{xx}}}{-{{\gamma^{xy}}}}}} = {-{{\gamma^{xy}}}}$
 <br>
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xy} + -1 * \gamma^{xx})
-found two sum	\gamma^{xy} + -1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xx} + -1 * \gamma^{xy})
-found two sum	\gamma^{xx} + -1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * (\gamma^{xx} + -1 * \gamma^{xy})
-found two sum	\gamma^{xx} + -1 * \gamma^{xy}
-differenceOfSquares	\gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}^2
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xx} * \gamma^{xy}
-differenceOfSquares	\gamma^{xx} * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy} * (\gamma^{xx} + -1 * \gamma^{xy})
-found two sum	\gamma^{xx} + -1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
-differenceOfSquares	-1 * \gamma^{xy}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.686000ms<br>
+time: 8.982000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3791,7 +1669,7 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.033000ms<br>
+time: 0.034000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3801,7 +1679,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.054000ms<br>
+time: 0.026000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3813,7 +1691,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.338000ms<br>
+time: 0.320000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3825,7 +1703,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.265000ms<br>
+time: 0.243000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3837,7 +1715,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.203000ms<br>
+time: 0.094000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3849,7 +1727,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.098000ms<br>
+time: 0.128000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -3870,69 +1748,10 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 ${{{ {-{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}}}{-{{{{f}^{5}}} {{{a}^{2}}}}}} = { {-{f}} {{{a}^{2}}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
 <br>
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a^2 * f^5
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f * f
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * a^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	f * a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * f * a^2 * f^4
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * a^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * f * a^2 * (1 + -1 * f^2 + f^4)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	f * a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f * a^2 * f^4
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * a^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	f * a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * f * a^2 * f^4
-differenceOfSquares	-1 * a^2 * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * a^2 * (-1 + f^2 + -1 * f^4)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 25.026000ms<br>
+time: 19.080000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -3941,69 +1760,10 @@ stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{{ {-{f}} {{{g}^{2}}}} + {{{{f}^{3}}} {{{g}^{2}}}}}{-{{{{f}^{5}}} {{{g}^{2}}}}}} = { {-{f}} {{{g}^{2}}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
 <br>
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f * g^2
-differenceOfSquares	f^3 * g^2
-differenceOfSquares	f^5 * g^2
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	g * g
-differenceOfSquares	-1 * f * g^2
-differenceOfSquares	f * f * f
-differenceOfSquares	g * g
-differenceOfSquares	f^3 * g^2
-differenceOfSquares	f * f * f * f * f
-differenceOfSquares	g * g
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * g^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	g * g
-differenceOfSquares	-1 * f * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f
-differenceOfSquares	f * f^2 * g^2
-differenceOfSquares	f^3 * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * f * f^4 * g^2
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * g^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * f * g^2 * (1 + -1 * f^2 + f^4)
-differenceOfSquares	g * g
-differenceOfSquares	-1 * f * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	f * f^2 * g^2
-differenceOfSquares	f^3 * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f * f^4 * g^2
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * g^2 * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	g * g
-differenceOfSquares	-1 * f * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f
-differenceOfSquares	f * f^2 * g^2
-differenceOfSquares	f^3 * g^2
-differenceOfSquares	g * g
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * f * f^4 * g^2
-differenceOfSquares	-1 * f^5 * g^2
-differenceOfSquares	-1 * f^4
-differenceOfSquares	f * g^2 * (-1 + f^2 + -1 * f^4)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 20.812000ms<br>
+time: 21.765000ms<br>
 stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -4012,45 +1772,10 @@ stack: size: 33<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{{{f}} {{{a}^{2}}}} + {{{{f}^{3}}} {{{a}^{2}}}} + {{{{f}^{5}}} {{{a}^{2}}}}} = {{{f}} {{{a}^{2}}} {{\left({{1} + {{f}^{2}} + {{f}^{4}}}\right)}}}$
 <br>
-differenceOfSquares	f * a^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a^2 * f^5
-differenceOfSquares	a * a
-differenceOfSquares	f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f * f
-differenceOfSquares	a^2 * f^5
-differenceOfSquares	f * a^2 * (1 + f^2 + f^4)
-differenceOfSquares	a * a
-differenceOfSquares	f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	f * a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f
-differenceOfSquares	f * a^2 * f^4
-differenceOfSquares	a^2 * f^5
-differenceOfSquares	f * a^2 * (1 + f^2 + f^4)
-differenceOfSquares	f * a^2 * (1 + f^2 + f^4)
-differenceOfSquares	a * a
-differenceOfSquares	f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	f * a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f * f
-differenceOfSquares	f * a^2 * f^4
-differenceOfSquares	a^2 * f^5
-differenceOfSquares	f * a^2 * (1 + f^2 + f^4)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 12.054000ms<br>
+time: 11.122000ms<br>
 stack: size: 25<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -4059,57 +1784,10 @@ stack: size: 25<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${{{ {-{f}} {{a}}} + {{{{f}^{3}}} {{a}}}}{-{{{{f}^{5}}} {{a}}}}} = { {-{f}} {{a}} {{\left({{1}{-{{f}^{2}}} + {{f}^{4}}}\right)}}}$
 <br>
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * a * f
-differenceOfSquares	a * f^3
-differenceOfSquares	a * f^5
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * a * f
-differenceOfSquares	f * f * f
-differenceOfSquares	a * f^3
-differenceOfSquares	f * f * f * f * f
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	a * f * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	-1 * a * f
-differenceOfSquares	f * f
-differenceOfSquares	a * f * f^2
-differenceOfSquares	a * f^3
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * a * f * f^4
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	a * f * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * f^2
-differenceOfSquares	-1 * a * f * (1 + -1 * f^2 + f^4)
-differenceOfSquares	-1 * a * f
-differenceOfSquares	f * f
-differenceOfSquares	-1 * f^2
-differenceOfSquares	a * f * f^2
-differenceOfSquares	a * f^3
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * a * f * f^4
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	a * f * (-1 + f^2 + -1 * f^4)
-differenceOfSquares	-1 * a * f
-differenceOfSquares	f * f
-differenceOfSquares	a * f * f^2
-differenceOfSquares	a * f^3
-differenceOfSquares	f * f * f * f
-differenceOfSquares	-1 * f^4
-differenceOfSquares	-1 * a * f * f^4
-differenceOfSquares	-1 * a * f^5
-differenceOfSquares	-1 * f^4
-differenceOfSquares	a * f * (-1 + f^2 + -1 * f^4)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.540000ms<br>
+time: 14.160000ms<br>
 stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -4118,58 +1796,10 @@ stack: size: 26<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{{ {-{f}} {{{a}^{2}}}} + {{{{f}^{2}}} {{{a}^{2}}}}}{-{{{{f}^{3}}} {{{a}^{2}}}}}} = { {-{f}} {{{a}^{2}}} {{\left({{1}{-{f}} + {{f}^{2}}}\right)}}}$
 <br>
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	a^2 * f^3
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	a * f
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f
-differenceOfSquares	-1 * f * a^2 * (1 + -1 * f + f^2)
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f
-differenceOfSquares	f * f * a^2
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	-1 * f * a^2 * f^2
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	a * f
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	a * a
-differenceOfSquares	f * f
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	a * a
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	a * a
-differenceOfSquares	f * f * f
-differenceOfSquares	-1 * a^2 * f^3
-differenceOfSquares	a * f
-differenceOfSquares	a^2 * f^2
-differenceOfSquares	-1 * f * a^2
-differenceOfSquares	-1 * a^2 * f^3
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.750000ms<br>
+time: 9.070000ms<br>
 stack: size: 31<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>*:Prune:flatten<br><li>Prune<br><li>^:Expand:integerPower<br><li>^:Expand:integerPower<br><li>*:Expand:apply<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>*:Prune:flatten<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>*:Factor:combineMulOfLikePow<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
