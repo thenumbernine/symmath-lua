@@ -4,6 +4,15 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 
+-- uppercase `Matrix` = symbolic,
+-- lowercase `matrix` = numeric
+local matrix = require 'matrix'
+
+--[[ i made this to fix one tests but now I'm suspicious it is slowing things down ...
+-- nah, time couldn't show a difference
+assert(symmath.op.mul:pushRule'Prune/differenceOfSquares')
+--]]
+
 -- force means don't use cache ... but still write to cache
 local force = cmdline.force or false
 
@@ -32,11 +41,11 @@ R v
 	= v - a (v.a) - b (v.b)
 	+ (a (v.a) + b (v.b)) cos(θ)
 	+ (b (v.a) - a (v.b)) sin(θ)
-	
+
 	= v - a (v.a) - b (v.b)
 	+ (a (v.a) + b (v.b)) cos(θ)
 	+ (b (v.a) - a (v.b)) sin(θ)
-	
+
 	= (I + (cos(θ)-1) aa' - sin(θ) ab' + sin(θ) ba' + (cos(θ)-1) bb') v
 	= (I + (cos(θ)-1) (aa' + bb') + sin(θ) (ba' - ab')) v
 --]]
@@ -236,16 +245,16 @@ local shapes = {
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
 		vtx1 = (tetRot * Matrix{0, 0, 1}:T())(),
-		
+
 		dim = 3,
 		xforms = (function()
 			local a = {-sqrt(frac(2,3)), -sqrt(2)/3, -frac(1,3)}
 			local b = {sqrt(frac(2,3)), -sqrt(2)/3, -frac(1,3)}
 			local c = {0, sqrt(8)/3, -frac(1,3)}
 			local d = {0, 0, 1}
-			
+
 			return table{
-				
+
 				(tetRot *
 					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	0, 					sqrt(frac(8,9))		})
 					rotfromto(
@@ -254,7 +263,7 @@ local shapes = {
 						frac(2*pi,3)
 					)
 					* tetRot:T())(),
-				
+
 				(tetRot *
 					--Matrix.rotation(frac(2*pi,3), {	-frac(1,3),	-sqrt(frac(2,3)), 	-sqrt(frac(2,9))	})
 					rotfromto(
@@ -272,10 +281,10 @@ local shapes = {
 		name = 'Cube',
 		dual = 'Octahedron',
 		dim = 3,
-		
+
 		vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T())(),
 		--vtx1 = (cubeRot * Matrix{ 1, 1, 1 }:T())(),
-		
+
 		-- same transforms as its dual
 		xforms = {
 			(cubeRot * Matrix.rotation(frac(pi,2), {1,0,0}) * cubeRot:T())(),
@@ -288,7 +297,7 @@ local shapes = {
 		name = 'Octahedron',
 		dual = 'Cube',
 		dim = 3,
-		
+
 		-- same transforms as its dual
 		xforms = {
 			Matrix.rotation(frac(pi,2), {1,0,0})(),
@@ -320,7 +329,6 @@ local shapes = {
 
 		xforms = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
-			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 		},
 		--]==]
@@ -331,13 +339,12 @@ local shapes = {
 		name = 'Icosahedron',
 		dual = 'Dodecahedron',
 		dim = 3,
-	
+
 		--vtx1 = (icoRot * Matrix{ 0, 1, phiminus }:T():unit())(),
 		vtx1 = (icoRot * Matrix{ 0, frac(1,2), phiminus/2 }:T())(),		-- don't unit.
 
 		xforms = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
-			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{-1, phiminus, 0}:unit()[1] ) * icoRot:T())(),
 		},
 	},
@@ -347,7 +354,7 @@ local shapes = {
 		name = '5-cell',
 		dual = '5-cell',
 		dim = 4,
-		
+
 		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
 		--vtx1 = Matrix{0, 0, 0, 1}:T(),
 
@@ -385,7 +392,7 @@ local shapes = {
 		name = '8-cell',	--aka hypercube
 		dual = '16-cell',
 		dim = 4,
-		
+
 		--vtx1 = Matrix{1/sqrt(4), 1/sqrt(4), 1/sqrt(4), 1/sqrt(4)}:T(),
 		vtx1 = Matrix{frac(1,2), frac(1,2), frac(1,2), frac(1,2)}:T(),	-- unit length
 		--vtx1 = Matrix{1, 1, 1, 1}:T(),	-- least terms
@@ -417,7 +424,7 @@ local shapes = {
 		name = '16-cell',
 		dual = '8-cell',
 		dim = 4,
-		
+
 		vtx1 = Matrix{1, 0, 0, 0}:T(),
 
 		xforms = {
@@ -442,12 +449,12 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = '24-cell',
 		dual = '24-cell',
 		dim = 4,
-		
+
 		-- these vtxs look nice but without a vtx at [0,0,0,1] i can't just copy over any octahedron transforms
 		vtx1 = (_24cellRot * Matrix{1/sqrt(2),1/sqrt(2),0,0}:T())(),	-- whole numbers for coordinate-aligned
 		--vtx1 = (_24cellRot * Matrix{1,1,0,0}:T())(),	-- whole numbers for identity _24cellRot
@@ -478,7 +485,7 @@ local shapes = {
 		end),
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = '120-cell',
 		dual = '600-cell',
@@ -504,7 +511,7 @@ local shapes = {
 				{0,0,1,0},
 				{1,0,0,0}
 			)(),
-			
+
 			-- rotate from {0,0,2,2} to {1,1,1,sqrt(5)}
 			rotfromto(
 				Matrix{0,0,2,2}:T(),
@@ -513,12 +520,12 @@ local shapes = {
 			)(),
 			-- rotate to {1/φ^2, φ, φ, φ},
 			-- rotate to {φ^2, 1/φ, 1/φ, 1/φ},
-			
+
 			-- even-permutations of...
 			-- {0, 1/φ^2, 1, φ^2}
 			-- {0, 1/φ, φ, √5},
 			-- {1/φ, 1, φ, 2}
-		
+
 			-- for φ = (1 + √5)/2
 		},
 		--]==]
@@ -533,7 +540,7 @@ local shapes = {
 		-- so T2 gives us a triangle ... hopefully a triangle on the surface and this will work.
 		-- V123 avg = unit([0, -1, -1, 2]) = [0, -1/sqrt(6), -1/sqrt(6), sqrt(2/3)]
 		vtx1 = Matrix{0, -1/(sqrt(2)*sqrt(3)), -1/(sqrt(2)*sqrt(3)), frac(sqrt(2),sqrt(3))}:T(),	-- midpoint of some triplet of vertexes in the 600-cell
-	
+
 		-- copied of 600-cell's xforms
 		xforms = table{
 			rotfromto(
@@ -561,7 +568,7 @@ local shapes = {
 		dual = '120-cell',
 		dim = 4,
 		vtx1 = Matrix{0,0,0,1}:T(),
-		
+
 		-- TODO rearrange prioritize whole numbers first, then fractions, then sqrts last, and try to get rid of the +1 transform (maybe get rid of the diag(-1,-1,1,1) too)
 		xforms = table{
 			-- [[ 16 vertexes permutations of (±1/2, ±1/2, ±1/2, ±1/2)
@@ -705,7 +712,7 @@ for _,shape in ipairs(shapes) do
 	local xforms = table(shape.xforms)
 	xforms:insert(1, Matrix.identity(n))
 	shapeCache.xforms = xforms
-	
+
 	printbr'Transforms for vertex generation:'
 	printbr()
 	-- can't use \left\{ \right\} unless we merge the $'s
@@ -727,15 +734,44 @@ for _,shape in ipairs(shapes) do
 	end
 
 
+	-- for perf's sake, the slowest thing is building the mul tables.
+	-- by this point in the script all vtxs and xforms are found
+	-- so we can assert the will be epsilon apart
+	-- so numerically searching is equivalent to analytically searching (and a whole lot faster)
+	-- so I will keep numerical copies of the xforms and vectors, and use those for searches.
+
+	local function buildNumXForm(xform)
+		return matrix(xform:eval())
+--			:map(function(x) return math.round(x * 1e+7) * 1e-7 end)
+	end
+	local numxforms = xforms:mapi(buildNumXForm)
+	local numallxforms 
+	
+	-- track mirror numeric vtxs for fast lookups
+	-- since right now the find() of expressions is whats slowing us down the most
+	local function buildNumVtx(vtx)
+		-- vtx is a col-matrix so ...
+		return matrix(vtx:T()[1]:eval())
+--			:map(function(x) return math.round(x * 1e+7) * 1e-7 end)
+	end
+	local numvtxs
+
+	-- [[ compare two numeric-matrices , true if they are within epsilon
+	local function matrixfindeps(a,b)
+		return (a - b):normLInf() < 1e-7
+	end
+	--]] -- or just round to nearest 1e-7 and do equality-compare.  faster? nah, equality is failling.
+
 	local vtxs
 	local vtxsrcinfo
+
 	if not force
 	and shapeCache.vtxs
 	and shapeCache.vtxsrcinfo
 	then
 		printerr'using old vtxs'
 		vtxs = table(shapeCache.vtxs)
-		vtxsrcinfo = table(shapeCache.vtxsrcinfo)
+		vtxsrcinfo = shapeCache.vtxsrcinfo
 		-- TODO need to save more information to output equivalent html here or else the page will be missing it
 		if #vtxs ~= #vtxsrcinfo then
 			error("#vtxs == "..#vtxs.." but #vtxsrcinfo == "..#vtxsrcinfo)
@@ -743,6 +779,7 @@ for _,shape in ipairs(shapes) do
 		for k=2,#vtxs do
 			printbr((var'T'('_'..vtxsrcinfo[k].xform) * var'V'('_'..vtxsrcinfo[k].vtx)):eq(vtxs[k]):eq(var'V'('_'..k)))
 		end
+		numvtxs = vtxs:mapi(buildNumVtx)
 	else
 		printerr'building vtxs'
 
@@ -753,7 +790,9 @@ for _,shape in ipairs(shapes) do
 		vtxsrcinfo = table{{}}	-- one dummy entry
 		shapeCache.vtxs = vtxs
 		shapeCache.vtxsrcinfo = vtxsrcinfo
-				
+	
+		numvtxs = vtxs:mapi(buildNumVtx)
+
 		local zerovec = Matrix:zeros{n, 1}
 		local vtx1norm = (vtx1:T() * vtx1)()[1][1]
 
@@ -761,27 +800,35 @@ for _,shape in ipairs(shapes) do
 		local function buildvtxs(j, depth)
 			depth = depth or 1
 			local v = vtxs[j]
+			local nv = numvtxs[j]
 			--local vnorm = (v:T() * v)()[1][1]
 			--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
 			--assert(Matrix(v:dim()) == Matrix{4,1})
 			for i,xform in ipairs(xforms) do
 				local xv = (xform * v)()
+				local nxv = numxforms[i] * numvtxs[j]
 				--local xvnorm = (xv:T() * xv)()[1][1]
 				--assert(Matrix(xv:dim()) == Matrix{4,1})
 				--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
 				--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
 				--end
-				-- [[ can 'find' work?  can equality work?
+				--[[ can 'find' work?  can equality work?  yes. yes it does.
 				local k = vtxs:find(xv)
 				--]]
+				-- [[ how about numeric comparison? faster...
+				local k = numvtxs:find(nxv, matrixfindeps)
+				--]]
+				-- TODO numeric vtx to serialized key, or even raw binary key to string key, would be even faster ...
 				--[[ or should i try subtracting?  does that help?
 				local k = vtxs:find(nil, function(xv2)
 					return (xv - xv2)() == zerovec
 				end)
 				--]]
+
 				if not k then
 					vtxs:insert(xv)
 					vtxsrcinfo:insert{xform=i, vtx=j}
+					numvtxs:insert(buildNumVtx(xv))
 					k = #vtxs
 					printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 					printerr('T_'..i..' * V_'..j..' = V_'..k)
@@ -800,6 +847,7 @@ for _,shape in ipairs(shapes) do
 
 	local allxforms
 	local allxformsrcinfo
+
 	if not force
 	and shapeCache.allxforms
 	and shapeCache.allxformsrcinfo
@@ -813,6 +861,7 @@ for _,shape in ipairs(shapes) do
 		for k=#xforms+1,#allxforms do
 			printbr((var'T'('_'..allxformsrcinfo[k].i) * var'T'('_'..allxformsrcinfo[k].j)):eq(allxforms[k]):eq(var'T'('_'..k)))
 		end
+		numallxforms = allxforms:mapi(buildNumXForm)
 	else
 		printerr'building allxforms'
 		allxforms = table(xforms)
@@ -820,6 +869,9 @@ for _,shape in ipairs(shapes) do
 		assert.eq(#allxforms, #allxformsrcinfo)
 		shapeCache.allxforms = allxforms
 		shapeCache.allxformsrcinfo = allxformsrcinfo
+
+		numallxforms = allxforms:mapi(buildNumXForm)
+
 	-- [[
 		printbr'All Transforms:'
 		printbr()
@@ -829,12 +881,21 @@ for _,shape in ipairs(shapes) do
 			while #xformstack > 0 do
 				local j = xformstack:remove(1)
 				local M = allxforms[j]
+				local numM = numallxforms[j]
 				for i,xform in ipairs(xforms) do
+					local numxform = numxforms[i]
 					local xM = (xform * M)()
+					local numxM = numxform * numM
+					--[[
 					local k = allxforms:find(xM)
+					--]]
+					-- [[
+					local k = numallxforms:find(numxM, matrixfindeps)
+					--]]
 					if not k then
 						allxforms:insert(xM)
 						allxformsrcinfo:insert{i=i, j=j}
+						numallxforms:insert(numxM)
 						assert.eq(#allxforms, #allxformsrcinfo)
 						k = #allxforms
 						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
@@ -864,51 +925,47 @@ for _,shape in ipairs(shapes) do
 -- so maybe restructure this all to not need to do that?
 -- or ... atm the relabeling is optional, and probably should be especially for higher sized/dimension solids.
 	do
-		local matrix = require 'matrix'
-		local lvtxs = vtxs:mapi(function(v)
-			return matrix(table.mapi(v, function(vi) return vi[1]:eval() end))
-		end)
 		local rename = range(#vtxs)
 			--[=[ option #1: sort by inner product from vtx1
 			:sort(function(a,b)
-				return (lvtxs[1] * lvtxs[a]) > (lvtxs[1] * lvtxs[b])
+				return (numvtxs[1] * numvtxs[a]) > (numvtxs[1] * numvtxs[b])
 			end)
 			--]=]
 			-- option #2 (same but more detailed) - construct a basis orthogonal to vtx1 and sort by each axis
 			--[=[ option #3 (detailed but lazy) -- just sort by cartesian basis
 			:sort(function(a,b)
 				for j=1,n-1 do
-					if lvtxs[a][j] > lvtxs[b][j] then return true end
-					if lvtxs[a][j] < lvtxs[b][j] then return false end
+					if numvtxs[a][j] > numvtxs[b][j] then return true end
+					if numvtxs[a][j] < numvtxs[b][j] then return false end
 				end
-				return lvtxs[a][n] > lvtxs[b][n]
+				return numvtxs[a][n] > numvtxs[b][n]
 			end)
 			--]=]
 			-- [=[ combine #1 and #3?
 			:sort(function(a,b)
 				-- option #1 part:
-				local a1 = lvtxs[1] * lvtxs[a]
-				local b1 = lvtxs[1] * lvtxs[b]
+				local a1 = numvtxs[1] * numvtxs[a]
+				local b1 = numvtxs[1] * numvtxs[b]
 				if a1 > b1 then return true end
 				if a1 < b1 then return false end
 				-- option #3 part:
 				for j=n,2,-1 do
-					if lvtxs[a][j] > lvtxs[b][j] then return true end
-					if lvtxs[a][j] < lvtxs[b][j] then return false end
+					if numvtxs[a][j] > numvtxs[b][j] then return true end
+					if numvtxs[a][j] < numvtxs[b][j] then return false end
 				end
-				return lvtxs[a][1] > lvtxs[b][1]
-			end)		
+				return numvtxs[a][1] > numvtxs[b][1]
+			end)
 			--]=]
-		
+
 		if matrix(rename) ~= matrix(range(#vtxs)) then
 
 			printbr()
 			printbr('relabeled vertexes as', tolua(rename))
 			printbr()
-		
+
 			vtxs = rename:mapi(function(i) return vtxs[i] end)
 			vtxsrcinfo = rename:mapi(function(i) return vtxsrcinfo[i] end)
-			
+
 			shapeCache.vtxs = vtxs
 			shapeCache.vtxsrcinfo = vtxsrcinfo
 		end
@@ -949,7 +1006,7 @@ for _,shape in ipairs(shapes) do
 	end
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
-	
+
 	printerr'...done vertex inner products'
 --]]
 	printerr'writing...'
@@ -982,10 +1039,10 @@ this is slow, and too slow for the 120-cell and 600-cell
 		local rx = Matrix:lambda({nvtxs, nvtxs}, function(i,j)
 			return xvT[j]() == VmatT[i]() and 1 or 0
 		end)
-		
+
 		printbr((var'T'('_'..i) * var'V'):eq(xv):eq(var'V' * rx))
 		printbr()
-		
+
 		printerr('found permutations for T_'..i)
 
 		local Vmat_rx = (Vmat * rx)()
@@ -1011,11 +1068,17 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printerr'building vtxMulTable'
 		vtxMulTable = {}
 		shapeCache.vtxMulTable = vtxMulTable
-		for i,xi in ipairs(allxforms) do
+		for i,numxi in ipairs(numallxforms) do
 			vtxMulTable[i] = vtxMulTable[i] or {}
-			for j,vj in ipairs(vtxs) do
-				local k = vtxs:find((xi * vj)())
-				vtxMulTable[i][j] = k
+			for j,numvj in ipairs(numvtxs) do
+				--[[
+				local xv = (xi * vj)()
+				vtxMulTable[i][j] = assert(vtxs:find(xv))
+				--]]
+				-- [[
+				local numxv = numxi * numvj
+				vtxMulTable[i][j] = assert(numvtxs:find(numxv, matrixfindeps))
+				--]]
 			end
 		end
 		printerr'done finding vertex multiplication table'
@@ -1059,10 +1122,17 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printerr'building mulTable'
 		mulTable = {}
 		shapeCache.mulTable = mulTable
-		for i,xi in ipairs(allxforms) do
+		for i,numxi in ipairs(numallxforms) do
 			mulTable[i] = {}
-			for j,xj in ipairs(allxforms) do
-				mulTable[i][j] = allxforms:find((xi * xj)())
+			for j,numxj in ipairs(numallxforms) do
+				--[[
+				local xk = (xi * xj)()
+				mulTable[i][j] = assert(allxforms:find(xk))
+				--]]
+				-- [[
+				local numxk = numxi * numxj
+				mulTable[i][j] = assert(numallxforms:find(numxk, matrixfindeps))
+				--]]
 			end
 		end
 		printerr'done finding transform multiplication table'
@@ -1101,7 +1171,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 -- or another way would be to just sort transforms in spherical coordinates
 
 --[=[ rename by trying to put the Ti*Tj=T1 transforms closest to the diagonal:
-	
+
 	local dist = table()
 	for i=1,#allxforms do
 		for j=1,#allxforms do
@@ -1128,7 +1198,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 	local whatsleft = range(#allxforms)
 	local rename = table()
 	rename:insert(whatsleft:remove(1))
-	
+
 	local function process(last)
 		if not last then
 			if #whatsleft == 0 then return end
@@ -1136,11 +1206,11 @@ this is slow, and too slow for the 120-cell and 600-cell
 			rename:insert(last)
 			return process(last)
 		end
-		
+
 		local next = mulTable[2][last]
 		local k = whatsleft:find(next)
 		if not k then return process() end
-		
+
 		whatsleft:remove(k)
 		rename:insert(next)
 		return process(next)
@@ -1161,7 +1231,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 			mulTableRenamed[rename[i]][rename[j]] = rename[mulTable[i][j]]
 		end
 	end
-	
+
 	printbr('relabeled', tolua(rename))
 	printbr()
 
@@ -1213,7 +1283,7 @@ printerr'...done writing'
 local s = table()
 s:insert'{'
 for k,v in pairs(cache) do
-	
+
 end
 s:insert'}'
 cacheFilename:write(s:concat'\n')
