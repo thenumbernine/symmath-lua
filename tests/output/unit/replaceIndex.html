@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/replaceIndex</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,7 +19,7 @@ ${b} = {b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.221000ms<br>
+time: 0.546000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -38,7 +37,7 @@ ${{ a} _a} = {{ a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.513000ms<br>
+time: 2.206000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -50,7 +49,7 @@ ${{ b} ^a} = {{ b} ^a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.102000ms<br>
+time: 1.863000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -62,7 +61,7 @@ ${{{ b} ^a} + {{ c} ^a}} = {{{ b} ^a} + {{ c} ^a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.779000ms<br>
+time: 5.304000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -71,10 +70,16 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{ b} ^a} ^b}} {{{ c} _b}}} = {{{{{ b} ^a} ^b}} {{{ c} _b}}}$
 <br>
+differenceOfSquares	c_b * b^ab
+differenceOfSquares	c_b * b^ab
+differenceOfSquares	c_b * b^ab
+differenceOfSquares	c_b * b^ab
+differenceOfSquares	c_b * b^ab
+differenceOfSquares	c_b * b^ab
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.337000ms<br>
+time: 4.091000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -83,10 +88,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{ b} ^a} + {{{{{ c} ^a} ^b}} {{{ d} _b}}}} = {{{ b} ^a} + {{{{{ c} ^a} ^b}} {{{ d} _b}}}}$
 <br>
+differenceOfSquares	d_b * c^ab
+differenceOfSquares	d_b * c^ab
+differenceOfSquares	d_b * c^ab
+differenceOfSquares	d_b * c^ab
+differenceOfSquares	d_b * c^ab
+differenceOfSquares	d_b * c^ab
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.237000ms<br>
+time: 8.026000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -104,7 +115,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.766000ms<br>
+time: 1.371000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -116,7 +127,7 @@ ${{{ b} _b} _a} = {{{ b} _b} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.747000ms<br>
+time: 1.119000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -128,7 +139,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.998000ms<br>
+time: 0.957000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -140,7 +151,7 @@ ${{{ b} _b} _a} = {{{ b} _b} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.786000ms<br>
+time: 0.924000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -152,7 +163,7 @@ ${{{ b} _a} _b} = {{{ b} _a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.722000ms<br>
+time: 0.960000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -176,7 +187,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.581000ms<br>
+time: 1.815000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -200,7 +211,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.609000ms<br>
+time: 1.405000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -212,7 +223,7 @@ ${{{{ c} ^a} _b} _c} = {{{{ c} ^a} _b} _c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.724000ms<br>
+time: 1.307000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -227,10 +238,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{ b} _a} + {{{{{ b} _a} _b}} {{{ c} ^b}}}} = {{{ b} _a} + {{{{{ b} _a} _b}} {{{ c} ^b}}}}$
 <br>
+differenceOfSquares	c^b * b_ab
+differenceOfSquares	c^b * b_ab
+differenceOfSquares	c^b * b_ab
+differenceOfSquares	c^b * b_ab
+differenceOfSquares	c^b * b_ab
+differenceOfSquares	c^b * b_ab
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.519000ms<br>
+time: 6.828000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -245,10 +262,16 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{ a} _a} + {{{{{ c} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ c} _a} _b}} {{{ c} ^b}}}}$
 <br>
+differenceOfSquares	c^b * c_ab
+differenceOfSquares	c^b * c_ab
+differenceOfSquares	c^b * c_ab
+differenceOfSquares	c^b * c_ab
+differenceOfSquares	c^b * c_ab
+differenceOfSquares	c^b * c_ab
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.506000ms<br>
+time: 5.866000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -263,10 +286,16 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{ a} _a} + {{{{{ d} _a} _b}} {{{ c} ^b}}}} = {{{ a} _a} + {{{{{ d} _a} _b}} {{{ c} ^b}}}}$
 <br>
+differenceOfSquares	c^b * d_ab
+differenceOfSquares	c^b * d_ab
+differenceOfSquares	c^b * d_ab
+differenceOfSquares	c^b * d_ab
+differenceOfSquares	c^b * d_ab
+differenceOfSquares	c^b * d_ab
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.753000ms<br>
+time: 4.525000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -284,7 +313,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.845000ms<br>
+time: 0.834000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -296,7 +325,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.489000ms<br>
+time: 1.135000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -311,10 +340,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}} = {{{{{ b} ^a} _a}} {{{{ b} ^b} _b}}}$
 <br>
+differenceOfSquares	b^a_a * b^b_b
+differenceOfSquares	b^a_a * b^b_b
+differenceOfSquares	b^a_a * b^b_b
+differenceOfSquares	b^a_a * b^b_b
+differenceOfSquares	b^a_a * b^b_b
+differenceOfSquares	b^a_a * b^b_b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.935000ms<br>
+time: 3.898000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -332,7 +367,7 @@ ${{ b} _b} = {{ b} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.402000ms<br>
+time: 0.603000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -344,7 +379,7 @@ ${{{ b} _b} + {{{{ c} _a} ^a} _b}} = {{{ b} _b} + {{{{ c} _a} ^a} _b}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.862000ms<br>
+time: 1.928000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -368,7 +403,7 @@ ${b} = {b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.136000ms<br>
+time: 0.210000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -380,7 +415,7 @@ ${{ b} _u} = {{ b} _u}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.422000ms<br>
+time: 0.455000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -395,10 +430,17 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{{ c} _u}} {{{{ d} ^b} _b}}}} {{{{ b} ^a} _a}}} = {{{{ c} _u}} {{{{ b} ^a} _a}} {{{{ d} ^b} _b}}}$
 <br>
+differenceOfSquares	c_u * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
+differenceOfSquares	c_u * b^a_a * d^b_b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.880000ms<br>
+time: 4.289000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -425,10 +467,17 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{ a} _i} _j} + {{{{{c}} {{{{ d} ^a} _a}}}} {{{{ b} _i} _j}}}} = {{{{ a} _i} _j} + {{{c}} {{{{ d} ^a} _a}} {{{{ b} _i} _j}}}}$
 <br>
+differenceOfSquares	c * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.805000ms<br>
+time: 5.776000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -437,10 +486,17 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{ a} _a} _b} + {{{{{c}} {{{{ d} ^c} _c}}}} {{{{ b} _a} _b}}}} = {{{{ a} _a} _b} + {{{c}} {{{{ d} ^c} _c}} {{{{ b} _a} _b}}}}$
 <br>
+differenceOfSquares	c * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
+differenceOfSquares	c * b_ab * d^c_c
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.322000ms<br>
+time: 6.723000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -467,10 +523,34 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{ a} _i} _j} + {{{\left({{{{c}} {{{{ d} ^a} _a}}} + {{{ e} ^a} _a}}\right)}} {{{{ b} _i} _j}}}} = {{{{ a} _i} _j} + {{{\left({{{{c}} {{{{ d} ^a} _a}}} + {{{ e} ^a} _a}}\right)}} {{{{ b} _i} _j}}}}$
 <br>
+differenceOfSquares	c * d^a_a
+differenceOfSquares	b_ij * (c * d^a_a + e^a_a)
+found two sum	c * d^a_a + e^a_a
+differenceOfSquares	c * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	c * d^a_a
+differenceOfSquares	b_ij * (c * d^a_a + e^a_a)
+found two sum	c * d^a_a + e^a_a
+differenceOfSquares	c * d^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
+differenceOfSquares	b_ij * e^a_a
+differenceOfSquares	c * b_ij * d^a_a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.719000ms<br>
+time: 14.883000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:flatten<br><li>+:Prune:flatten<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -488,7 +568,7 @@ ${{{{ g} _i} _j} _{,t}} = {{{d}} {{\left({{{{{d}} {{{{ b} ^k} _{,i}}} {{{{ g} _k
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.291000ms<br>
+time: 5.207000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -509,10 +589,16 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 ${{{{{{ g} _a} _b} _{,t}}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{{ g} _a} _b} _{,t}}} {{{{{ g} _c} _d} _{,e}}}}$
 <br>
+differenceOfSquares	g_a_b_,t * g_c_d_,e
+differenceOfSquares	g_a_b_,t * g_c_d_,e
+differenceOfSquares	g_a_b_,t * g_c_d_,e
+differenceOfSquares	g_a_b_,t * g_c_d_,e
+differenceOfSquares	g_a_b_,t * g_c_d_,e
+differenceOfSquares	g_a_b_,t * g_c_d_,e
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.850000ms<br>
+time: 4.183000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -521,10 +607,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{ c} _a} _b}} {{{{{ g} _c} _d} _{,e}}}} = {{{{{ c} _a} _b}} {{{{{ g} _c} _d} _{,e}}}}$
 <br>
+differenceOfSquares	c_ab * g_c_d_,e
+differenceOfSquares	c_ab * g_c_d_,e
+differenceOfSquares	c_ab * g_c_d_,e
+differenceOfSquares	c_ab * g_c_d_,e
+differenceOfSquares	c_ab * g_c_d_,e
+differenceOfSquares	c_ab * g_c_d_,e
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.855000ms<br>
+time: 3.993000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -548,7 +640,7 @@ ${{{ b} ^a} _a} = {{{ b} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.511000ms<br>
+time: 0.653000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -560,7 +652,7 @@ ${{{ a} ^a} _b} = {{{ a} ^a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.736000ms<br>
+time: 0.817000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -569,10 +661,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}} = {{{{{ a} ^a} _b}} {{{{ b} ^c} _c}}}$
 <br>
+differenceOfSquares	a^a_b * b^c_c
+differenceOfSquares	a^a_b * b^c_c
+differenceOfSquares	a^a_b * b^c_c
+differenceOfSquares	a^a_b * b^c_c
+differenceOfSquares	a^a_b * b^c_c
+differenceOfSquares	a^a_b * b^c_c
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.360000ms<br>
+time: 1.638000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -590,7 +688,7 @@ ${{{ a} ^a} _a} = {{{ a} ^a} _a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.387000ms<br>
+time: 0.516000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -602,7 +700,7 @@ ${{{ a} ^a} _b} = {{{ a} ^a} _b}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.444000ms<br>
+time: 0.944000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -611,10 +709,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{{{{ a} ^a} _b}} {{b}}} = {{{{{ a} ^a} _b}} {{b}}}$
 <br>
+differenceOfSquares	b * a^a_b
+differenceOfSquares	b * a^a_b
+differenceOfSquares	b * a^a_b
+differenceOfSquares	b * a^a_b
+differenceOfSquares	b * a^a_b
+differenceOfSquares	b * a^a_b
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.458000ms<br>
+time: 2.569000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -632,7 +736,7 @@ ${{ d} _{,t}} = {{{\frac{1}{6}}} {{d}} {{\left({{{{{{2}} {{e}} {{a}}}{-{{{{{ b} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.918000ms<br>
+time: 8.598000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -644,7 +748,7 @@ ${{ d} _{,t}} = {{{{{{2}} {{e}} {{a}}}{-{{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.998000ms<br>
+time: 2.194000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -659,10 +763,27 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 </td><td>
 ${{{ d} _{,t}} = {{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} = {{{ d} _{,t}} = {\frac{{{{{ b} ^k} _{,i}}} {{{{ g} ^i} ^j}} {{{{ c} _j} _k}}}{{d}^{2}}}}$
 <br>
+differenceOfSquares	b^k_,i * g^ij * c_jk / d^2
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	d * d
+differenceOfSquares	d * d
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	d^2 * (b^k_,i * c_jk * g^ij) / d^2
+differenceOfSquares	b^k_,i * c_jk * g^ij * d^2
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	d * d
+differenceOfSquares	d * d
+differenceOfSquares	b^k_,i * c_jk * g^ij
+differenceOfSquares	d^2 * (b^k_,i * c_jk * g^ij) / d^2
+differenceOfSquares	b^k_,i * c_jk * g^ij * d^2
+differenceOfSquares	b^k_,i * c_jk * g^ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.070000ms<br>
+time: 11.465000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -677,10 +798,27 @@ stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 </td><td>
 ${{{ d} _{,t}} = {{{{{ g} ^j} ^k}} {{\frac{{{ c} _j} _k}{{d}^{2}}}}}} = {{{ d} _{,t}} = {\frac{{{{{ g} ^j} ^k}} {{{{ c} _j} _k}}}{{d}^{2}}}}$
 <br>
+differenceOfSquares	g^jk * c_jk / d^2
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	d * d
+differenceOfSquares	d * d
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	d^2 * (c_jk * g^jk) / d^2
+differenceOfSquares	c_jk * g^jk * d^2
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	d * d
+differenceOfSquares	d * d
+differenceOfSquares	c_jk * g^jk
+differenceOfSquares	d^2 * (c_jk * g^jk) / d^2
+differenceOfSquares	c_jk * g^jk * d^2
+differenceOfSquares	c_jk * g^jk
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.867000ms<br>
+time: 10.418000ms<br>
 stack: size: 21<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -704,7 +842,7 @@ ${{{ b} ^i} _i} = {{{ b} ^i} _i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.241000ms<br>
+time: 0.605000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -733,7 +871,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.355000ms<br>
+time: 0.274000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -744,7 +882,7 @@ ${{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.286000ms<br>
+time: 0.305000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -755,7 +893,7 @@ ${{{ c} _b}} {{{ a} ^a}} {{{ a} _a}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.522000ms<br>
+time: 0.745000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -788,8 +926,8 @@ stack traceback:<br>
 	replaceIndex.lua:136: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	replaceIndex.lua:6: in main chunk<br>
-	[C]: at 0x579318252390
+	[C]: at 0x611765f8c390
 </td><td>
-time: 0.273000ms<br>
+time: 0.614000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>

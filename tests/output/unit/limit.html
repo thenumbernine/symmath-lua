@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/limit</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,7 +19,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.343000ms<br>
+time: 0.868000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -32,7 +31,7 @@ ${{\underset{ x\rightarrow{ a{}^+}}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.487000ms<br>
+time: 0.507000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -44,7 +43,7 @@ ${{\underset{ x\rightarrow{ a{}^-}}{\lim}}{{x}}} = {a}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.225000ms<br>
+time: 0.553000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -68,7 +67,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{0}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.698000ms<br>
+time: 1.562000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -80,7 +79,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{1}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.617000ms<br>
+time: 1.779000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -104,7 +103,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {2}}\right)}}} = {{a} + {2}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.131000ms<br>
+time: 6.199000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -113,10 +112,18 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstant
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {x}}\right)}}} = {{{2}} {{a}}}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.752000ms<br>
+time: 3.914000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -125,10 +132,17 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\left({{x} + {a}}\right)}}} = {{{2}} {{a}}}$
 <br>
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.963000ms<br>
+time: 5.194000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -137,10 +151,18 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\left({{a} + {a}}\right)}}} = {{{2}} {{a}}}$
 <br>
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.231000ms<br>
+time: 4.493000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -149,10 +171,18 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{2}}}\right)}}} = {{{2}} {{a}}}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.009000ms<br>
+time: 2.055000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -161,10 +191,14 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{{\frac{1}{2}} {x}}}} = {{\frac{1}{2}} {a}}$
 <br>
+differenceOfSquares	2 * a / 2
+differenceOfSquares	2 * a
+differenceOfSquares	2 * a / 2
+differenceOfSquares	2 * a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.618000ms<br>
+time: 5.287000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -188,7 +222,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.389000ms<br>
+time: 0.568000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -200,7 +234,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{x}}} = {-{\infty}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.318000ms<br>
+time: 1.858000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -212,7 +246,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{x}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.220000ms<br>
+time: 0.424000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -224,7 +258,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{1}{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.640000ms<br>
+time: 0.931000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -236,7 +270,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\frac{1}{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.988000ms<br>
+time: 1.385000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -245,10 +279,12 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{1}{x}}}} = {¿}$
 <br>
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.266000ms<br>
+time: 3.421000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -263,10 +299,11 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{x}}}} = {\infty}$
 <br>
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.611000ms<br>
+time: 0.895000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -275,10 +312,11 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><l
 </td><td>
 ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{x}}}} = {-{\infty}}$
 <br>
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.691000ms<br>
+time: 1.656000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -293,10 +331,19 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNa
 </td><td>
 ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
 <br>
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	x * (-1 + x)
+found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.706000ms<br>
+time: 4.247000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -305,10 +352,19 @@ stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><
 </td><td>
 ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\frac{1}{{x}^{2}}}}} = {\infty}$
 <br>
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	x * (-1 + x)
+found two sum	-1 + x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.728000ms<br>
+time: 7.490000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -332,7 +388,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\sqrt{x}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.153000ms<br>
+time: 2.320000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -344,7 +400,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\sqrt{x}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.781000ms<br>
+time: 1.940000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -356,7 +412,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\sqrt{x}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.081000ms<br>
+time: 1.322000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -374,7 +430,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.209000ms<br>
+time: 1.329000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -386,7 +442,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.019000ms<br>
+time: 1.577000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -398,7 +454,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{2}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.824000ms<br>
+time: 0.994000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -416,7 +472,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.705000ms<br>
+time: 2.447000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -428,7 +484,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.748000ms<br>
+time: 2.830000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -440,7 +496,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{{x}^{\frac{1}{4}}}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.846000ms<br>
+time: 3.102000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -506,7 +562,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.654000ms<br>
+time: 1.138000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -518,7 +574,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.460000ms<br>
+time: 0.477000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -530,7 +586,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.873000ms<br>
+time: 0.713000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -548,7 +604,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.660000ms<br>
+time: 0.601000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -560,7 +616,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.372000ms<br>
+time: 0.347000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -572,7 +628,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.298000ms<br>
+time: 0.499000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -590,7 +646,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\left| x\right|}}} = {\left| a\right|}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.296000ms<br>
+time: 1.032000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -602,7 +658,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\left| x\right|}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.521000ms<br>
+time: 0.887000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>*:Prune:handleInfAndNan<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -614,7 +670,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\left| x\right|}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.172000ms<br>
+time: 0.303000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>abs:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -632,7 +688,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\exp\left( x\right)}}} = {\exp\left( a\rig
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.445000ms<br>
+time: 0.742000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -644,7 +700,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\exp\left( x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.528000ms<br>
+time: 0.637000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -656,7 +712,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\exp\left( x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.317000ms<br>
+time: 0.337000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -674,7 +730,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atan\left(  x\right)}}} = {atan\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.629000ms<br>
+time: 0.700000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -683,10 +739,21 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atan\left(  x\right)}}} = {{\frac{1}{2}}{\left({-{π}}\right)}}$
 <br>
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	2 * (-1 * π) / 2
+differenceOfSquares	-2 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	2 * (-1 * π) / 2
+differenceOfSquares	-2 * π
+differenceOfSquares	-1 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.700000ms<br>
+time: 8.888000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>*:Prune:flatten<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -695,10 +762,14 @@ stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{\underset{ x\rightarrow \infty}{\lim}}{{atan\left(  x\right)}}} = {{\frac{1}{2}} {π}}$
 <br>
+differenceOfSquares	2 * π / 2
+differenceOfSquares	2 * π
+differenceOfSquares	2 * π / 2
+differenceOfSquares	2 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.671000ms<br>
+time: 4.053000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -716,7 +787,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\tanh\left(  x\right)}}} = {\tanh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.514000ms<br>
+time: 0.778000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -728,7 +799,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tanh\left(  x\right)}}} = {-1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.527000ms<br>
+time: 0.921000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -740,7 +811,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\tanh\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.274000ms<br>
+time: 0.527000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -758,7 +829,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asinh\left(  x\right)}}} = {asinh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.352000ms<br>
+time: 1.032000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -770,7 +841,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asinh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.579000ms<br>
+time: 2.080000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -782,7 +853,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{asinh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.121000ms<br>
+time: 0.666000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>asinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -800,7 +871,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cosh\left(  x\right)}}} = {\cosh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.255000ms<br>
+time: 1.272000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -812,7 +883,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cosh\left(  x\right)}}} = {\infty
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.469000ms<br>
+time: 0.583000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -824,7 +895,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cosh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.155000ms<br>
+time: 0.414000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>cosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -842,7 +913,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sinh\left(  x\right)}}} = {\sinh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.254000ms<br>
+time: 1.387000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -854,7 +925,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sinh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.240000ms<br>
+time: 1.475000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -866,7 +937,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sinh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.177000ms<br>
+time: 0.423000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>sinh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -884,7 +955,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\sin\left(  x\right)}}} = {\sin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.354000ms<br>
+time: 0.623000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -896,7 +967,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.469000ms<br>
+time: 1.061000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -908,7 +979,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\sin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.182000ms<br>
+time: 0.268000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -926,7 +997,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\cos\left(  x\right)}}} = {\cos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.309000ms<br>
+time: 0.943000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -938,7 +1009,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.377000ms<br>
+time: 0.597000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -950,7 +1021,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\cos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.277000ms<br>
+time: 0.350000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -965,10 +1036,14 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  a\right)}$
 <br>
+differenceOfSquares	cos(a) * sin(a) / cos(a)
+differenceOfSquares	sin(a) * cos(a)
+differenceOfSquares	cos(a) * sin(a) / cos(a)
+differenceOfSquares	sin(a) * cos(a)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.342000ms<br>
+time: 7.683000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -980,7 +1055,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.561000ms<br>
+time: 1.557000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -989,10 +1064,15 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow{{\frac{1}{2}} {{{-3}} {{π}}}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 <br>
+differenceOfSquares	-3 * π
+differenceOfSquares	-3 * π
+differenceOfSquares	-3 * π
+differenceOfSquares	-3 * π
+differenceOfSquares	-3 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.776000ms<br>
+time: 6.432000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1001,10 +1081,18 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow -{π}}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  -{π}\right)}$
 <br>
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.951000ms<br>
+time: 3.024000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1013,10 +1101,15 @@ stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{\underset{ x\rightarrow{{\frac{1}{2}}{\left({-{π}}\right)}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 <br>
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
+differenceOfSquares	-1 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.248000ms<br>
+time: 4.140000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1028,7 +1121,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  0\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.604000ms<br>
+time: 1.698000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>/:Prune:xOverOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1040,7 +1133,7 @@ ${{\underset{ x\rightarrow{{\frac{1}{2}} {π}}}{\lim}}{{\tan\left(  x\right)}}} 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.755000ms<br>
+time: 2.660000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1052,7 +1145,7 @@ ${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^+}}{\lim}}{{\tan\left(  x\righ
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.978000ms<br>
+time: 1.672000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1064,7 +1157,7 @@ ${{\underset{ x\rightarrow{{{\frac{1}{2}} {π}}{}^-}}{\lim}}{{\tan\left(  x\righ
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.555000ms<br>
+time: 0.869000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>tan:Prune:apply<br><li>Limit:Prune:apply<br><li>sin:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>cos:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1076,7 +1169,7 @@ ${{\underset{ x\rightarrow π}{\lim}}{{\tan\left(  x\right)}}} = {\tan\left(  π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.682000ms<br>
+time: 1.303000ms<br>
 stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li>cos:Prune:apply<br><li>*:Prune:apply<br><li>/:Prune:xOverMinusOne<br><li>tan:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1085,10 +1178,15 @@ stack: size: 12<br><ul style="margin:0px"><li>Init<br><li>sin:Prune:apply<br><li
 </td><td>
 ${{\underset{ x\rightarrow{{\frac{1}{2}} {{{3}} {{π}}}}}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 <br>
+differenceOfSquares	3 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.384000ms<br>
+time: 2.353000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1100,7 +1198,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\tan\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.581000ms<br>
+time: 0.709000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1118,7 +1216,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {\log\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.524000ms<br>
+time: 0.945000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1130,7 +1228,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.532000ms<br>
+time: 0.561000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1141,7 +1239,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{\log\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.506000ms<br>
+time: 0.998000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1153,7 +1251,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.412000ms<br>
+time: 0.637000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1165,7 +1263,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\log\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.296000ms<br>
+time: 0.669000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1177,7 +1275,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\log\left(  x\right)}}} = {-{\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.558000ms<br>
+time: 1.531000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1189,7 +1287,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\log\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.176000ms<br>
+time: 0.405000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>log:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1207,7 +1305,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {acosh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.615000ms<br>
+time: 1.181000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>acosh:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1219,7 +1317,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.575000ms<br>
+time: 1.389000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1230,7 +1328,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{acosh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.427000ms<br>
+time: 1.476000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1242,7 +1340,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.557000ms<br>
+time: 0.622000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1254,7 +1352,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{acosh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.473000ms<br>
+time: 0.564000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1266,7 +1364,7 @@ ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{acosh\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.399000ms<br>
+time: 0.394000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1278,7 +1376,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{acosh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.501000ms<br>
+time: 0.233000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>acosh:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1296,7 +1394,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {atanh\left(  a
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.673000ms<br>
+time: 0.960000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1308,7 +1406,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.372000ms<br>
+time: 0.433000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1319,7 +1417,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{atanh\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.394000ms<br>
+time: 0.627000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1331,7 +1429,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.389000ms<br>
+time: 0.495000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1343,7 +1441,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.453000ms<br>
+time: 0.548000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1355,7 +1453,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{atanh\left(  x\right)}}} = {-{\inf
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.722000ms<br>
+time: 0.750000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1367,7 +1465,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{atanh\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.285000ms<br>
+time: 0.472000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1379,7 +1477,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.459000ms<br>
+time: 0.678000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1391,7 +1489,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{atanh\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.371000ms<br>
+time: 0.238000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1403,7 +1501,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{atanh\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.455000ms<br>
+time: 0.345000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1421,7 +1519,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {asin\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.666000ms<br>
+time: 1.020000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1433,7 +1531,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.361000ms<br>
+time: 0.577000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1444,7 +1542,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{asin\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.402000ms<br>
+time: 0.602000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1456,7 +1554,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.437000ms<br>
+time: 0.780000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1468,7 +1566,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
+time: 0.921000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1480,7 +1578,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{asin\left(  x\right)}}} = {-{\inft
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.539000ms<br>
+time: 1.112000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1492,7 +1590,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{asin\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.306000ms<br>
+time: 1.159000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1504,7 +1602,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.315000ms<br>
+time: 1.682000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1516,7 +1614,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{asin\left(  x\right)}}} = {\infty}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.234000ms<br>
+time: 0.937000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1528,7 +1626,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{asin\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.374000ms<br>
+time: 0.831000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1546,7 +1644,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {acos\left(  a\r
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.494000ms<br>
+time: 1.548000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1558,7 +1656,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.364000ms<br>
+time: 1.095000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1569,7 +1667,7 @@ ${\underset{ x\rightarrow a}{\lim}}{{acos\left(  x\right)}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.478000ms<br>
+time: 1.245000ms<br>
 stack: size: 4<br><ul style="margin:0px"><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
@@ -1581,7 +1679,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.434000ms<br>
+time: 1.051000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1593,7 +1691,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.631000ms<br>
+time: 0.862000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1605,7 +1703,7 @@ ${{\underset{ x\rightarrow{{-1}{}^+}}{\lim}}{{acos\left(  x\right)}}} = {\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.295000ms<br>
+time: 0.454000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1614,10 +1712,14 @@ stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><l
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{acos\left(  x\right)}}} = {{\frac{1}{2}} {π}}$
 <br>
+differenceOfSquares	2 * π / 2
+differenceOfSquares	2 * π
+differenceOfSquares	2 * π / 2
+differenceOfSquares	2 * π
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.715000ms<br>
+time: 3.309000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1629,7 +1731,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.469000ms<br>
+time: 0.836000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1641,7 +1743,7 @@ ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{acos\left(  x\right)}}} = {-{\infty}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.482000ms<br>
+time: 0.897000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1653,7 +1755,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{acos\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.261000ms<br>
+time: 0.545000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1671,7 +1773,7 @@ ${{\underset{ x\rightarrow a}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {\mathcal
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.236000ms<br>
+time: 0.634000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1683,7 +1785,7 @@ ${{\underset{ x\rightarrow -{\infty}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.453000ms<br>
+time: 1.114000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1695,7 +1797,7 @@ ${{\underset{ x\rightarrow{-1}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.372000ms<br>
+time: 0.397000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1707,7 +1809,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {¿}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.343000ms<br>
+time: 0.274000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1719,7 +1821,7 @@ ${{\underset{ x\rightarrow{ 0{}^-}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {0}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.193000ms<br>
+time: 0.201000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1731,7 +1833,7 @@ ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.169000ms<br>
+time: 0.690000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1743,7 +1845,7 @@ ${{\underset{ x\rightarrow 1}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.362000ms<br>
+time: 0.536000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1755,7 +1857,7 @@ ${{\underset{ x\rightarrow \infty}{\lim}}{{\mathcal{H}\left(  x\right)}}} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.151000ms<br>
+time: 0.313000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1776,10 +1878,18 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow a}{\lim}}{{\left({{{x}} {{\sin\left(  x\right)}}}\right)}}} = {{{a}} {{\sin\left(  a\right)}}}$
 <br>
+differenceOfSquares	x * sin(x)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
+differenceOfSquares	a * sin(a)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.915000ms<br>
+time: 2.494000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1800,10 +1910,22 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow 1}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {¿}$
 <br>
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.758000ms<br>
+time: 3.712000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1812,10 +1934,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {\infty}$
 <br>
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.072000ms<br>
+time: 2.101000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1824,10 +1952,16 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegati
 </td><td>
 ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{1}{{x}{-{1}}}}}} = {-{\infty}}$
 <br>
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.135000ms<br>
+time: 5.669000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1836,10 +1970,55 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNa
 </td><td>
 ${{\underset{ x\rightarrow 1}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {¿}$
 <br>
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x * x
+differenceOfSquares	-1 * x^2
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	(1 + x) * (-1 + x)
+found two sum	1 + x
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.744000ms<br>
+time: 18.819000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1848,10 +2027,49 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow{ 1{}^+}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {\infty}$
 <br>
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x * x
+differenceOfSquares	-1 * x^2
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	(1 + x) * (-1 + x)
+found two sum	1 + x
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.864000ms<br>
+time: 18.725000ms<br>
 stack: size: 40<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:simplifyConstantPowers<br><li>Limit:Prune:apply<br><li>+:Prune:combineConstants<br><li>Limit:Prune:apply<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1860,10 +2078,49 @@ stack: size: 40<br><ul style="margin:0px"><li>Init<br><li>+:Prune:combineConstan
 </td><td>
 ${{\underset{ x\rightarrow{ 1{}^-}}{\lim}}{{\frac{{x} + {1}}{{{x}^{2}}{-{1}}}}}} = {-{\infty}}$
 <br>
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x * (1 + x)
+found two sum	1 + x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x * x
+differenceOfSquares	-1 * x^2
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * (1 + x)
+found two sum	1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	(1 + x) * (-1 + x)
+found two sum	1 + x
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * (-1 + x)
+found two sum	-1 + x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.596000ms<br>
+time: 24.687000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNan<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Factor<br><li>*:Prune:handleInfAndNan<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1882,6 +2139,8 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>*:Prune:handleInfAndNa
 <b></b><br>
 <pre>difftest(x)</pre>
 </td><td>
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
 ${f\left(  x\right)} = {x}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {1}$
@@ -1893,13 +2152,19 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.603000ms<br>
+time: 2.550000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(c * x)</pre>
 </td><td>
+differenceOfSquares	-1 * c * x
+differenceOfSquares	c * x
+differenceOfSquares	-1 * c * x
+differenceOfSquares	c * (x + h)
+found two sum	x + h
+differenceOfSquares	-1 * c * x
 ${f\left(  x\right)} = {{{c}} {{x}}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {c}$
@@ -1911,13 +2176,26 @@ ${c} = {c}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.917000ms<br>
+time: 6.120000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:self<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(x^2)</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * x^2
+differenceOfSquares	-1 * x^2
+differenceOfSquares	2 * (x + h)
+found two sum	x + h
+differenceOfSquares	-1 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * h
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x
 ${f\left(  x\right)} = {{x}^{2}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {{{2}} {{x}}}$
@@ -1926,16 +2204,49 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 <br>
 ${{{2}} {{x}}} = {{{2}} {{x}}}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.409000ms<br>
+time: 11.247000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(x^3)</pre>
 </td><td>
+differenceOfSquares	3 * x^2
+differenceOfSquares	-1 * x^3
+differenceOfSquares	-1 * x^3
+differenceOfSquares	3 * (x + h)^2
+differenceOfSquares	-1 * x^3
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	h * x
+differenceOfSquares	3 * h * x
+differenceOfSquares	h * x
+differenceOfSquares	3 * h * x
+differenceOfSquares	h * h
+differenceOfSquares	3 * h^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * h * x
+differenceOfSquares	6 * h * x
+differenceOfSquares	2 * h * x
+differenceOfSquares	3 * (h^2 + x^2 + 2 * h * x)
+differenceOfSquares	h * h
+differenceOfSquares	3 * h^2
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * h * x
+differenceOfSquares	6 * h * x
+differenceOfSquares	2 * h * x
+differenceOfSquares	3 * (h^2 + x^2 + 2 * h * x)
+differenceOfSquares	2 * h * x
+differenceOfSquares	3 * (h^2 + x^2 + 2 * h * x)
+differenceOfSquares	3 * x^2
 ${f\left(  x\right)} = {{x}^{3}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {{{3}} {{{x}^{2}}}}$
@@ -1944,16 +2255,60 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 <br>
 ${{{3}} {{{x}^{2}}}} = {{{3}} {{{x}^{2}}}}$
 <br>
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 11.313000ms<br>
+time: 29.382000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(1/x)</pre>
 </td><td>
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 1 / x
+differenceOfSquares	(x + h) * -1 / x
+found two sum	x + h
+differenceOfSquares	-1 * (x + h)
+found two sum	x + h
+differenceOfSquares	-1 * (x + h)
+found two sum	x + h
+differenceOfSquares	x * (x + h)
+found two sum	x + h
+differenceOfSquares	x * h * (x + h)
+found two sum	x + h
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * (x + h)
+found two sum	x + h
+differenceOfSquares	x * (x + h)
+found two sum	x + h
+differenceOfSquares	h * x
+differenceOfSquares	x * (x + h)
+found two sum	x + h
+differenceOfSquares	h * x
+differenceOfSquares	x * x
+differenceOfSquares	h * x
+differenceOfSquares	h * x
+differenceOfSquares	2 * h * x
+differenceOfSquares	2 * h
+differenceOfSquares	x * (x + 2 * h)
+found two sum	x + 2 * h
+differenceOfSquares	x * x
+differenceOfSquares	2 * h
+differenceOfSquares	2 * h * x
+differenceOfSquares	2 * h
+differenceOfSquares	x * (x + 2 * h)
+found two sum	x + 2 * h
+differenceOfSquares	2 * h
+differenceOfSquares	x * (x + 2 * h)
+found two sum	x + 2 * h
+differenceOfSquares	x * x
 ${f\left(  x\right)} = {\frac{1}{x}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {\frac{-1}{{x}^{2}}}$
@@ -1962,10 +2317,16 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 <br>
 ${\frac{-1}{{x}^{2}}} = {\frac{-1}{{x}^{2}}}$
 <br>
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x^2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.716000ms<br>
+time: 23.308000ms<br>
 stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:integerPower<br><li>Expand<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>Prune<br><li>^:ExpandPolynomial:apply<br><li>+:Prune:combineConstants<br><li>*:Prune:combinePows<br><li>/:Factor:polydiv<br><li>Factor<br><li>/:Prune:xOverMinusOne<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Constant:Tidy:apply<br><li>/:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2008,6 +2369,15 @@ stack: size: 19<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>^:Expand:
 <b></b><br>
 <pre>difftest(sqrt(x))</pre>
 </td><td>
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	-1 * √(x)
+differenceOfSquares	-1 * lim_h→0+ √(x)
 ${f\left(  x\right)} = {\sqrt{x}}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{\sqrt{{x} + {h}}} + {{{-1}} {{\sqrt{x}}}}}\right)}}}}$
@@ -2016,16 +2386,681 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 <br>
 ${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{\sqrt{{x} + {h}}} + {{{-1}} {{\sqrt{x}}}}}\right)}}}} = {\frac{1}{{{2}} {{{x}^{\frac{1}{2}}}}}}$
 <br>
+differenceOfSquares	-1 * √(x)
+differenceOfSquares	-1 * lim_h→0+ √(x)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * √(x)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * √(x)
+differenceOfSquares	(-1 * √(x) + (h + x)^(1 / 2)) * h / (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * √(x) + (h + x)^(1 / 2)
+differenceOfSquares	h * (-1 * √(x) + (h + x)^(1 / 2))
+found two sum	-1 * √(x) + (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * √(x) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * √(x) + (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	(-1 * √(x) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * √(x) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	h * (√(x)^2 + -1 * (h + x))
+found two sum	√(x)^2 + -1 * (h + x)
+differenceOfSquares	-1 * lim_h→0+ √(x)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-2 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(1 / 2) * 1 / (2 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * 1 / (2 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(1 / 2) * 1 / (2 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	1 / (2 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(1 / 2) * 1 / (2 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * 1 / (2 * (h + x)^(1 / 2))
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	-1 * (h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * -1 / (2 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	(-1 * x^(1 / 2) + (h + x)^(1 / 2))^2 * -1 / (2 * (h + x)^(1 / 2))
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2 * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2 * (h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * ((-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))) / (2 * (h + x)^(1 / 2))
+differenceOfSquares	2 * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * (h + x)^(-1 / 2) * (h + x)^(1 / 2) * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2)
+found two sum	2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2)
+found two sum	2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2)
+found two sum	2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2)) + -1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * (-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)) * (-1 * x^(1 / 2) + (h + x)^(1 / 2))
+found two sum	-1 * x^(1 / 2) + -1 * (h + x)^(1 / 2)
+found two sum	-1 * x^(1 / 2) + (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * (-1 * x^(1 / 2) + (h + x)^(1 / 2))^2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * x^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-1 * (h + x)^(1 / 2)
+differenceOfSquares	-2 * (h + x)^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	x^(1 / 2) * x^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * x
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * (h + x)
+found two sum	h + x
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (x + -3 * (h + x) + 2 * x^(1 / 2) * (h + x)^(1 / 2))
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (x + -3 * (h + x) + 2 * x^(1 / 2) * (h + x)^(1 / 2))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (x + -3 * (h + x) + 2 * x^(1 / 2) * (h + x)^(1 / 2))
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	x * (h + x)
+found two sum	h + x
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x)) / (2 * (h + x)^(1 / 2))
+differenceOfSquares	2 * (h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * (h + x)^(1 / 2) * (h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * (h + x) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+found two sum	h + x
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * (h + x))
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-3 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-3 * h
+differenceOfSquares	-3 * x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (-2 * x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (-2 * x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (-2 * x + 2 * x^(1 / 2) * (h + x)^(1 / 2) + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	x * (h + x)
+found two sum	h + x
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h) / (2 * (h + x)^(1 / 2))
+differenceOfSquares	2 * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * (h + x) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	x * (h + x)
+found two sum	h + x
+differenceOfSquares	x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h) / (2 * (h + x)^(1 / 2))
+differenceOfSquares	2 * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * (h + x) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * h
+differenceOfSquares	-1 * h
+differenceOfSquares	-2 * h
+differenceOfSquares	-2 * h
+differenceOfSquares	-2 * h
+differenceOfSquares	-2 * h
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	-3 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * h
+differenceOfSquares	-2 * h
+differenceOfSquares	-4 * h * (h + x)^(1 / 2)
+differenceOfSquares	(h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-4 * h * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	4 * h * (h + x)
+found two sum	h + x
+differenceOfSquares	-1 * (h + x)^(-1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	4 * h
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	-1 * (h + x)^(-1 / 2) * (h + x)^(1 / 2) * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * (2 * x^(1 / 2) * (h + x)^(1 / 2) + -2 * x + -3 * h)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	4 * h * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * x^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(1 / 2) * 1 / (2 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * 1 / (2 * (h + x)^(1 / 2))
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-2 * x
+differenceOfSquares	-3 * h
+differenceOfSquares	x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * (-3 + x^(1 / 2) * (h + x)^(-1 / 2))
+found two sum	-3 + x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * x^(1 / 2) * (h + x)^(-1 / 2)
+differenceOfSquares	4 * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	(h + x)^(1 / 2) * 1 / (2 * (h + x))
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	(h + x)^(-1 / 2) * (h + x)^(1 / 2)
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * (h + x)^(1 / 2)
+differenceOfSquares	4 * h * 1 / (2 * (h + x)^(1 / 2))
+differenceOfSquares	4 * h
+differenceOfSquares	4 * h * (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * h * (h + x)^(-1 / 2)
+differenceOfSquares	4 * (h + x)^(1 / 2)
+differenceOfSquares	2 * h * (h + x)^(-1 / 2)
+differenceOfSquares	4 * (h + x)^(1 / 2)
+differenceOfSquares	2 * h * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * (h + x)
+found two sum	h + x
+differenceOfSquares	2 * (h + x)^(-1 / 2) * (2 * (h + x) + h)
+found two sum	2 * (h + x) + h
+differenceOfSquares	2 * h
+differenceOfSquares	4 * h * (h + x)^(-1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * x * (h + x)^(-1 / 2)
+differenceOfSquares	2 * h * (h + x)^(-1 / 2)
+differenceOfSquares	2 * h * (h + x)^(-1 / 2)
+differenceOfSquares	6 * h * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	2 * (h + x)^(-1 / 2) * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	2 * x
+differenceOfSquares	4 * x * (h + x)^(-1 / 2)
+differenceOfSquares	3 * h
+differenceOfSquares	6 * h * (h + x)^(-1 / 2)
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * 1 / 2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	2 * (h + x)^(-1 / 2) * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	x^(1 / 2) * 1 / (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2) / (h + x)^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	3 * (h + x)^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	3 * h
+differenceOfSquares	2 * 1 / (h + x)^(1 / 2) * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	2 * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	(h + x)^(1 / 2) * (2 * (2 * x + 3 * h)) / (h + x)^(1 / 2)
+differenceOfSquares	2 * (h + x)^(1 / 2) * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	2 * (2 * x + 3 * h)
+found two sum	2 * x + 3 * h
+differenceOfSquares	3 * x^(1 / 2)
+differenceOfSquares	-1 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * x
+differenceOfSquares	1 / 2 * x^(-1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * 1 / (2 * x^(1 / 2))
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2) * 1 / (2 * x^(1 / 2))
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x^(1 / 2)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	x^(1 / 2) * x^(-1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * -1 / 2
+differenceOfSquares	2 * x^(1 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 143.994000ms<br>
+time: 305.099000ms<br>
 stack: size: 89<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>/:Prune:xOverX<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>+:Prune:factorOutDivs<br><li>+:Prune:combineConstants<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>+:Prune:combineConstants<br><li>/:Prune:zeroOverX<br><li>+:Prune:factorOutDivs<br><li>^:Prune:xToTheZero<br><li>*:Prune:combinePows<br><li>*:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>/:Prune:prodOfSqrtOverProdOfSqrt<br><li>/:Prune:divToPowSub<br><li>/:Prune:mulBySqrtConj<br><li>Prune<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(sin(x))</pre>
 </td><td>
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * sin(x)
 ${f\left(  x\right)} = {\sin\left(  x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {\cos\left(  x\right)}$
@@ -2037,13 +3072,22 @@ ${\cos\left(  x\right)} = {\cos\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.958000ms<br>
+time: 7.820000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(cos(x))</pre>
 </td><td>
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * sin(x + h)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * sin(x + h)
+differenceOfSquares	-1 * sin(h + x)
+differenceOfSquares	-1 * sin(h + x)
+differenceOfSquares	-1 * sin(x)
 ${f\left(  x\right)} = {\cos\left(  x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {{{-1}} {{\sin\left(  x\right)}}}$
@@ -2052,16 +3096,23 @@ derivative:	${{\frac{\partial}{\partial x}}\left({f\left(  x\right)}\right)} = {
 <br>
 ${{{-1}} {{\sin\left(  x\right)}}} = {{{-1}} {{\sin\left(  x\right)}}}$
 <br>
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * sin(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.811000ms<br>
+time: 8.537000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>difftest(exp(x))</pre>
 </td><td>
+differenceOfSquares	-1 * _e^x
+differenceOfSquares	-1 * _e^x
+differenceOfSquares	-1 * _e^x
 ${f\left(  x\right)} = {\exp\left( x\right)}$
 <br>
 limit:	${{\underset{ h\rightarrow{ 0{}^+}}{\lim}}{{{\frac{1}{h}}{\left({{f\left( {{x} + {h}}\right)}{-{f\left(  x\right)}}}\right)}}}} = {\exp\left( x\right)}$
@@ -2073,7 +3124,7 @@ ${\exp\left( x\right)} = {\exp\left( x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.926000ms<br>
+time: 9.489000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2097,7 +3148,7 @@ ${{\underset{ x\rightarrow 0}{\lim}}{{{\frac{1}{x}} {\sin\left(  x\right)}}}} = 
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.997000ms<br>
+time: 3.122000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2106,10 +3157,14 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow \infty}{\lim}}{{\frac{\exp\left( x\right)}{{x}^{2}}}}} = {\infty}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.891000ms<br>
+time: 4.062000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>^:Prune:handleInfAndNan<br><li>Limit:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2118,10 +3173,20 @@ stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>Limit:Prune:apply<br><
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{\exp\left( x\right)}{-{1}}}{{{x}^{2}} + {x}}}}} = {1}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.050000ms<br>
+time: 9.416000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2130,10 +3195,212 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{{2}} {{\sin\left(  x\right)}}}{-{\sin\left( {{{2}} {{x}}}\right)}}}{{x}{-{\sin\left(  x\right)}}}}}} = {6}$
 <br>
+differenceOfSquares	2 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * sin(x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * cos(2 * x)
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * sin(2 * x)
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	2 * (-1 * sin(x) + 2 * sin(2 * x))
+found two sum	-1 * sin(x) + 2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-2 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	4 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * (2 * sin(2 * x) + -1 * sin(x))
+found two sum	2 * sin(2 * x) + -1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * (2 * sin(2 * x) + -1 * sin(x))
+found two sum	2 * sin(2 * x) + -1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * cos(2 * x)
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	8 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
+differenceOfSquares	2 * sin(x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * cos(2 * x)
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	-2 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * (cos(x) + -1 * cos(2 * x))
+found two sum	cos(x) + -1 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * cos(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * sin(2 * x)
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	2 * (-1 * sin(x) + 2 * sin(2 * x))
+found two sum	-1 * sin(x) + 2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-2 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	4 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * (2 * sin(2 * x) + -1 * sin(x))
+found two sum	2 * sin(2 * x) + -1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * (2 * sin(2 * x) + -1 * sin(x))
+found two sum	2 * sin(2 * x) + -1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * sin(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * cos(2 * x)
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * sin(x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	8 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	-2 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
+differenceOfSquares	2 * x
+differenceOfSquares	4 * cos(2 * x)
+differenceOfSquares	-1 * cos(x)
+differenceOfSquares	2 * (4 * cos(2 * x) + -1 * cos(x))
+found two sum	4 * cos(2 * x) + -1 * cos(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 29.421000ms<br>
+time: 59.124000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2160,6 +3427,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}} = {0}$
 <br>
+differenceOfSquares	_e^x * x^n
 expected ${\underset{ x\rightarrow 0}{\lim}}{{\left({{{{x}^{n}}} {{\exp\left( x\right)}}}\right)}}$ to equal 0<br>
 found ${0}^{n}$ vs $0$<br>
 lhs stack<br>
@@ -2242,9 +3510,9 @@ stack traceback:<br>
 	limit.lua:249: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	limit.lua:6: in main chunk<br>
-	[C]: at 0x5d1d1148d390
+	[C]: at 0x58ac2ff9f390
 </td><td>
-time: 1.612000ms<br>
+time: 6.196000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2265,10 +3533,11 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow{ 0{}^+}}{\lim}}{{\left({{{x}} {{\log\left(  x\right)}}}\right)}}} = {0}$
 <br>
+differenceOfSquares	x * log(x)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.407000ms<br>
+time: 1.555000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2289,10 +3558,125 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td><td>
 ${{\underset{ x\rightarrow 0}{\lim}}{{\frac{{{a}} {{x}} {{{\left({{1} + {x}}\right)}^{n}}}}{{{\left({{1} + {x}}\right)}^{n}}{-{1}}}}}} = {{\frac{1}{n}} {a}}$
 <br>
+differenceOfSquares	a * x * (1 + x)^n
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	(1 + x)^n * n / (1 + x)
+differenceOfSquares	n * (1 + x)^n
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	n * x * 1 / (1 + x)
+differenceOfSquares	n * x
+differenceOfSquares	n * x
+differenceOfSquares	a * (1 + x)^n * (1 + x + n * x) / (1 + x)
+differenceOfSquares	a * (1 + x)^n * (1 + x + n * x)
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	a * (1 + x)^(-1 + n)
+differenceOfSquares	a * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	n * x
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	(1 + x)^n * n / (1 + x)
+differenceOfSquares	n * (1 + x)^n
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	a * (1 + x)^(-1 + n + -1 * (-1 + n)) * (1 + x + n * x)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	(1 + x)^n * n / (1 + x)
+differenceOfSquares	n * (1 + x)^n
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^n
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	n * x * 1 / (1 + x)
+differenceOfSquares	n * x
+differenceOfSquares	n * x
+differenceOfSquares	a * (1 + x)^n * (1 + x + n * x) / (1 + x)
+differenceOfSquares	a * (1 + x)^n * (1 + x + n * x)
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	a * (1 + x)^(-1 + n)
+differenceOfSquares	a * x * (1 + x)^(-1 + n)
+differenceOfSquares	a * n * x * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	-1 * n
+differenceOfSquares	n * x
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	(1 + x)^n * n / (1 + x)
+differenceOfSquares	n * (1 + x)^n
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	a * (1 + x)^(-1 + n) * (1 + x + n * x)
+differenceOfSquares	n * (1 + x)^(-1 + n)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	a * (1 + x)^(-1 + n + -1 * (-1 + n)) * (1 + x + n * x)
+differenceOfSquares	-1 * (-1 + n)
+found two sum	-1 + n
+differenceOfSquares	n * a / n
+differenceOfSquares	a * n
+differenceOfSquares	n * a / n
+differenceOfSquares	a * n
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 25.892000ms<br>
+time: 59.077000ms<br>
 stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>/:Factor:polydiv<br><li>Factor<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>*:Prune:factorDenominators<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2311,10 +3695,105 @@ stack: size: 14<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br
 <b></b><br>
 <pre>print( ((e^x + e^-x) / (e^x - e^-x)):lim(x, inf):prune() )</pre>
 </td><td>
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-1 * _e^(-2 * x)
+differenceOfSquares	_e^x * (1 + -1 * _e^(-2 * x))
+found two sum	1 + -1 * _e^(-2 * x)
+differenceOfSquares	-2 * x
+differenceOfSquares	-1 * _e^(-2 * x)
+differenceOfSquares	-1 * _e^x * _e^(-2 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-1 * _e^(-2 * x)
+differenceOfSquares	_e^x * (1 + -1 * _e^(-2 * x))
+found two sum	1 + -1 * _e^(-2 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * _e^(-1 * x)
+differenceOfSquares	_e^x * _e^x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	_e^x * (1 + _e^(2 * x)) / _e^x
+differenceOfSquares	_e^x * (1 + _e^(2 * x))
+found two sum	1 + _e^(2 * x)
+differenceOfSquares	-1 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-1 * 1 / _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	_e^x * (-1 + _e^(2 * x)) / _e^(2 * x)
+differenceOfSquares	_e^x * (-1 + _e^(2 * x))
+found two sum	-1 + _e^(2 * x)
+differenceOfSquares	-2 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	_e^(-1 * x) * (-1 + _e^(2 * x))
+found two sum	-1 + _e^(2 * x)
+differenceOfSquares	_e^(-1 * x) * _e^x * (-1 + _e^(2 * x))
+found two sum	-1 + _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
+differenceOfSquares	2 * x
+differenceOfSquares	2 * _e^(2 * x)
 $1$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 26.407000ms<br>
+time: 27.121000ms<br>
 stack: size: 27<br><ul style="margin:0px"><li>Init<br><li>Derivative:Prune:constants<br><li>Derivative:Prune:constants<br><li>*:Prune:apply<br><li>Derivative:Prune:self<br><li>*:Prune:apply<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>log:Prune:apply<br><li>*:Prune:apply<br><li>Derivative:Prune:other<br><li>*:Prune:apply<br><li>/:Prune:zeroOverX<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>+:Prune:combineConstants<br><li>Derivative:Prune:eval<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:Prune:xOverX<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply<br><li>Limit:Prune:apply</ul>
 </td></tr>

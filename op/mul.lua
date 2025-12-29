@@ -863,6 +863,7 @@ mul.rules = {
 
 			--]]
 		end},
+	
 	},
 
 	Prune = {
@@ -1305,7 +1306,106 @@ require 'ext.assert'.ge(#expr, 2)
 				return expr
 			end
 			--]]
+		end},		
+
+
+
+-- [=[
+-- here's my attempt to fix my failed simplification of (3 + √5) * (3 - √5) * √(3 + √5)
+-- specifically, let's look in mul for sums with opposing signs
+-- and if we get a match then simplify
+-- TODO if we put this after combinePows then it could combine powers with terms that need to be difference-of-square'd, and then this will fail (unless I add an extra power test to it)
+-- if I put it after ... currently this is cancelling polynomial division ... so this should really go after polynomial division or else ...
+-- hmm I can't even find where the division is going on.  It's in the parent, so it will always happen next, after this function, so this function will always sabotage it
+-- unless I change this to only operate on constants and sqrts-of-constants ....
+-- 
+-- ultimately the best way to simplify both difference-of-square and fractions-of-polynomials will be to check both for simplification...
+
+		{differenceOfSquares = function(prune, expr)
+			symmath = symmath or require 'symmath'
+--print('differenceOfSquares', symmath.export.SingleLine(expr))
+			local add = symmath.op.add
+			local mul = symmath.op.mul
+			local pow = symmath.op.pow
+			local Constant = symmath.Constant
+			
+			-- c^(1/2)
+			local function isSqrtConst(x)
+				return pow:isa(x)
+					and Constant:isa(x[1])
+					and isConstantFractionValue(x[2], 1, 2)
+			end
+			-- only look for constants, sqrts-of, or -1*'s of
+			local function isDifOfSqTerm(x)
+				return
+					-- TODO how about an isConstant flag that propagates through constructor?
+					-- is true if all children are isConstant as well
+					Constant:isa(x)
+					or isSqrtConst(x)
+					or (
+						mul:isa(x)
+						and Constant.isValue(x[1], -1)
+						and isSqrtConst(x[2])
+					)
+			end
+
+			local addIndexes
+			for i=1,#expr do
+				local ei = expr[i]
+				if add:isa(ei)
+				-- sum of two terms
+				and #ei == 2
+				then
+--print('found two sum', symmath.export.SingleLine(ei))
+					if isDifOfSqTerm(ei[1]) and isDifOfSqTerm(ei[2]) then
+--print('...adding index', i)
+						addIndexes = addIndexes or table()
+						addIndexes:insert(i)
+					end
+				end
+			end
+			if not addIndexes then return end
+			if #addIndexes < 2 then return end
+
+			-- now we have more than one sum
+			for i1=1,#addIndexes-1 do
+				local i = addIndexes[i1]
+				local ei = expr[i]
+				for j1=i1+1,#addIndexes do
+					local j = addIndexes[j1]
+					local ej = expr[j]
+					if (
+						-- 1st matches, 2nd are oppoiste
+						ei[1] == ej[1]
+						and (
+							ei[2] == Constant(-1) * ej[2]
+							or Constant(-1) * ei[2] == ej[2]
+						)
+					) or (
+						-- 2nd matches, 1st is opposites
+						ei[2] == ej[2]
+						and (
+							ei[1] == Constant(-1) * ej[1]
+							or Constant(-1) * ei[1] == ej[1]
+						)					
+					) then
+print('...i', i, 'ei', symmath.export.SingleLine(ei))
+print('...j', j, 'ej', symmath.export.SingleLine(ej))
+						local args = table{table.unpack(expr)}
+						args:remove(j)
+						args[i] = prune(ei[1] * ej[1] + ei[2] * ej[2])
+						local result = symmath.tableToMul(args)
+print('result', symmath.export.SingleLine(result))
+						return result
+					end
+					-- TODO what about 1-to-2 or 2-to-1?
+					-- I don't think the add() terms are sorted here yet ... mabe the are tho ... do children get Prune() called on them first?
+				end
+			end
 		end},
+--]=]
+
+
 
 -- [[ a^m * a^n => a^(m + n)
 -- notice that the rule before and after are important to this one
@@ -1409,6 +1509,7 @@ require 'ext.assert'.ge(#expr, 2)
 		end},
 --]]
 
+
 -- [[ factor out denominators
 -- a * b * (c / d) => (a * b * c) / d
 --  generalization:
@@ -1496,6 +1597,9 @@ require 'ext.assert'.ge(#expr, 2)
 			end
 		end},
 --]===]
+
+
+
 
 -- [[ a^n * b^n => (a * b)^n
 --[=[
@@ -1629,6 +1733,8 @@ so when we find mul -> pow -> add
 			end
 		end},
 --]]
+	
+
 
 		{logPow = function(prune, expr)
 			symmath = symmath or require 'symmath'

@@ -1551,7 +1551,7 @@ simplifyAssertEq((2 * a * e0 + 2 * b * e1) / 2, a * e0 + b * e1)">✓</span>
 <span style="color:green" title="simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))">✓</span></td></tr>
 <tr><td class="title">
 <a href="sqrt.html">sqrt</a>
-</td><td>49</td><td>3</td><td class="content">
+</td><td>49</td><td>2</td><td class="content">
 <span style="color:green" title="print(sqrt(-1)())">✓</span>
 <span style="color:green" title="simplifyAssertEq(sqrt(-1), i)">✓</span>
 
@@ -1636,7 +1636,7 @@ simplifyAssertEq((2 * a * e0 + 2 * b * e1) / 2, a * e0 + b * e1)">✓</span>
 
 <span style="color:green" title="simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)), 4 )">✓</span>
 <span style="color:green" title="assertEq( (4 * sqrt(3+sqrt(5)))(), 4 * sqrt(3+sqrt(5))  )">✓</span>
-<span style="color:red" title="simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(3+sqrt(5)) , 4 * sqrt(3+sqrt(5)))">✕</span>
+<span style="color:green" title="simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(3+sqrt(5)) , 4 * sqrt(3+sqrt(5)))">✓</span>
 <span style="color:green" title="simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(2+sqrt(5)) , 4 * sqrt(2+sqrt(5)))">✓</span>
 
 

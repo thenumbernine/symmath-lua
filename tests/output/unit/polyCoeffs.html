@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/polyCoeffs</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,7 +19,7 @@
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.216000ms<br>
+time: 0.239000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -42,7 +41,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.151000ms<br>
+time: 2.013000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -64,7 +63,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.882000ms<br>
+time: 1.639000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -80,19 +79,26 @@ ${\sin\left(  x\right)} = {\sin\left(  x\right)}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.187000ms<br>
+time: 3.309000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertAllEq( (x^2 - a):polyCoeffs(x), {[0]=-a, [2]=const(1)} )</pre>
 </td><td>
+differenceOfSquares	x * x
+differenceOfSquares	-1 * a
 ${2} = {2}$
 <br>
 ${{{-1}} {{a}}} = {-{a}}$
 <br>
 ${{{-1}} {{a}}} = {-{a}}$
 <br>
+differenceOfSquares	-1 * a
+differenceOfSquares	-1 * a
+differenceOfSquares	-1 * a
+differenceOfSquares	-1 * a
+differenceOfSquares	-1 * a
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -100,23 +106,34 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.802000ms<br>
+time: 5.897000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertAllEq( (x^2 - 2 * a * x + a^2):polyCoeffs(x), {[0]=a^2, [1]=-2*a, [2]=const(1)} )</pre>
 </td><td>
+differenceOfSquares	x * x
+differenceOfSquares	-2 * a * x
+differenceOfSquares	a * a
 ${3} = {3}$
 <br>
 ${{a}^{2}} = {{a}^{2}}$
 <br>
 ${{a}^{2}} = {{a}^{2}}$
 <br>
+differenceOfSquares	a * a
+differenceOfSquares	a * a
 ${{{-2}} {{a}}} = {{{-2}} {{a}}}$
 <br>
 ${{{-2}} {{a}}} = {{{-2}} {{a}}}$
 <br>
+differenceOfSquares	-2 * a
+differenceOfSquares	-2 * a
+differenceOfSquares	-2 * a
+differenceOfSquares	-2 * a
+differenceOfSquares	-2 * a
+differenceOfSquares	-2 * a
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -124,6 +141,6 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.997000ms<br>
+time: 11.692000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/simplifyMetrics</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,19 +19,23 @@ ${{ a} ^i} = {{ a} ^i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.374000ms<br>
+time: 2.622000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^min' * delta'_i^j'):simplifyMetrics(), a'^mjn')</pre>
 </td><td>
+differenceOfSquares	δ_i^j * a^min
+differenceOfSquares	δ_i^j * a^min
+differenceOfSquares	δ_i^j * a^min
+differenceOfSquares	δ_i^j * a^min
 ${{{{ a} ^m} ^j} ^n} = {{{{ a} ^m} ^j} ^n}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.651000ms<br>
+time: 6.784000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -51,24 +54,32 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ij' * delta'_j^k'):simplifyMetrics(), g'^ik')</pre>
 </td><td>
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
 ${{{ g} ^i} ^k} = {{{ g} ^i} ^k}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.311000ms<br>
+time: 3.212000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((delta'_j^k' * g'^ij'):simplifyMetrics(), g'^ik')</pre>
 </td><td>
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
+differenceOfSquares	g^ij * δ_j^k
 ${{{ g} ^i} ^k} = {{{ g} ^i} ^k}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.579000ms<br>
+time: 3.380000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -87,48 +98,64 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i' * delta'_i^j'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.233000ms<br>
+time: 2.409000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i' * delta'^j_i'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.783000ms<br>
+time: 5.434000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((delta'_i^j' * a'^i'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
+differenceOfSquares	a^i * δ_i^j
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.354000ms<br>
+time: 3.044000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((delta'^j_i' * a'^i'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
+differenceOfSquares	a^i * δ^j_i
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.391000ms<br>
+time: 2.140000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -147,12 +174,22 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i' * delta'_ij'):simplifyMetrics(), a'^i' * delta'_ij')</pre>
 </td><td>
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
 ${{{{ a} ^i}} {{{{ δ} _i} _j}}} = {{{{ a} ^i}} {{{{ δ} _i} _j}}}$
 <br>
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
+differenceOfSquares	a^i * δ_ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.791000ms<br>
+time: 3.003000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -171,48 +208,64 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i' * g'_ij'):simplifyMetrics(), a'_j')</pre>
 </td><td>
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
 ${{ a} _j} = {{ a} _j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.604000ms<br>
+time: 1.714000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((g'_ij' * a'^i'):simplifyMetrics(), a'_j')</pre>
 </td><td>
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
+differenceOfSquares	a^i * g_ij
 ${{ a} _j} = {{ a} _j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.254000ms<br>
+time: 2.553000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'_i' * g'^ij'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.645000ms<br>
+time: 4.398000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ij' * a'_i'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
+differenceOfSquares	a_i * g^ij
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.565000ms<br>
+time: 3.384000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -231,12 +284,16 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i' * g'_i^j'):simplifyMetrics(), a'^j')</pre>
 </td><td>
+differenceOfSquares	a^i * g_i^j
+differenceOfSquares	a^i * g_i^j
+differenceOfSquares	a^i * g_i^j
+differenceOfSquares	a^i * g_i^j
 ${{ a} ^j} = {{ a} ^j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.535000ms<br>
+time: 1.551000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -255,24 +312,32 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ik' * delta'_k^l'):simplifyMetrics(), g'^il')</pre>
 </td><td>
+differenceOfSquares	g^ik * δ_k^l
+differenceOfSquares	g^ik * δ_k^l
+differenceOfSquares	g^ik * δ_k^l
+differenceOfSquares	g^ik * δ_k^l
 ${{{ g} ^i} ^l} = {{{ g} ^i} ^l}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.232000ms<br>
+time: 1.504000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m'):simplifyMetrics(), g'^im')</pre>
 </td><td>
+differenceOfSquares	g^ik * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * δ_k^l * δ_l^m
 ${{{ g} ^i} ^m} = {{{ g} ^i} ^m}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.847000ms<br>
+time: 2.616000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -291,36 +356,48 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ik' * g'_kj'):simplifyMetrics(), delta'^i_j')</pre>
 </td><td>
+differenceOfSquares	g^ik * g_kj
+differenceOfSquares	g^ik * g_kj
+differenceOfSquares	g^ik * g_kj
+differenceOfSquares	g^ik * g_kj
 ${{{ δ} ^i} _j} = {{{ δ} ^i} _j}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.343000ms<br>
+time: 1.663000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ik' * delta'_k^l' * g'_lm'):simplifyMetrics(), delta'^i_m')</pre>
 </td><td>
+differenceOfSquares	g^ik * g_lm * δ_k^l
+differenceOfSquares	g^ik * g_lm * δ_k^l
+differenceOfSquares	g^ik * g_lm * δ_k^l
+differenceOfSquares	g^ik * g_lm * δ_k^l
 ${{{ δ} ^i} _m} = {{{ δ} ^i} _m}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.633000ms<br>
+time: 5.116000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((g'^ik' * delta'_k^l' * delta'_l^m' * g'_mn'):simplifyMetrics(), delta'^i_n')</pre>
 </td><td>
+differenceOfSquares	g^ik * g_mn * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * g_mn * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * g_mn * δ_k^l * δ_l^m
+differenceOfSquares	g^ik * g_mn * δ_k^l * δ_l^m
 ${{{ δ} ^i} _n} = {{{ δ} ^i} _n}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.362000ms<br>
+time: 3.866000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -351,72 +428,132 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'_,i' * g'^ij'):simplifyMetrics(), a'_,i' * g'^ij')</pre>
 </td><td>
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
 ${{{{ a} _{,i}}} {{{{ g} ^i} ^j}}} = {{{{ a} _{,i}}} {{{{ g} ^i} ^j}}}$
 <br>
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
+differenceOfSquares	a_,i * g^ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.690000ms<br>
+time: 2.532000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^,i' * g'_ij'):simplifyMetrics(), a'^,i' * g'_ij')</pre>
 </td><td>
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
 ${{{{ a} ^{,i}}} {{{{ g} _i} _j}}} = {{{{ a} ^{,i}}} {{{{ g} _i} _j}}}$
 <br>
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
+differenceOfSquares	a^,i * g_ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.876000ms<br>
+time: 2.637000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'_,im' * g'^ij'):simplifyMetrics(), a'_,im' * g'^ij')</pre>
 </td><td>
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
 ${{{{{ a} _{,i}} _{,m}}} {{{{ g} ^i} ^j}}} = {{{{{ a} _{,i}} _{,m}}} {{{{ g} ^i} ^j}}}$
 <br>
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
+differenceOfSquares	a_,i_,m * g^ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.631000ms<br>
+time: 3.651000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^,im' * g'_ij'):simplifyMetrics(), a'^,im' * g'_ij')</pre>
 </td><td>
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
 ${{{{{ a} ^{,i}} ^{,m}}} {{{{ g} _i} _j}}} = {{{{{ a} ^{,i}} ^{,m}}} {{{{ g} _i} _j}}}$
 <br>
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
+differenceOfSquares	a^,i^,m * g_ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.716000ms<br>
+time: 4.578000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'_i,m' * g'^ij'):simplifyMetrics(), a'_i,m' * g'^ij')</pre>
 </td><td>
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
 ${{{{{ a} _i} _{,m}}} {{{{ g} ^i} ^j}}} = {{{{{ a} _i} _{,m}}} {{{{ g} ^i} ^j}}}$
 <br>
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
+differenceOfSquares	a_i_,m * g^ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.938000ms<br>
+time: 2.387000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i,m' * g'_ij'):simplifyMetrics(), a'^i,m' * g'_ij')</pre>
 </td><td>
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
 ${{{{{ a} ^i} ^{,m}}} {{{{ g} _i} _j}}} = {{{{{ a} ^i} ^{,m}}} {{{{ g} _i} _j}}}$
 <br>
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
+differenceOfSquares	a^i^,m * g_ij
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.445000ms<br>
+time: 3.293000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -435,72 +572,96 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq((a'_,i' * delta'^i_j'):simplifyMetrics(), a'_,j')</pre>
 </td><td>
+differenceOfSquares	a_,i * δ^i_j
+differenceOfSquares	a_,i * δ^i_j
+differenceOfSquares	a_,i * δ^i_j
+differenceOfSquares	a_,i * δ^i_j
 ${{ a} _{,j}} = {{ a} _{,j}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.163000ms<br>
+time: 1.864000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^,i' * delta'_i^j'):simplifyMetrics(), a'^,j')</pre>
 </td><td>
+differenceOfSquares	a^,i * δ_i^j
+differenceOfSquares	a^,i * δ_i^j
+differenceOfSquares	a^,i * δ_i^j
+differenceOfSquares	a^,i * δ_i^j
 ${{ a} ^{,j}} = {{ a} ^{,j}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.229000ms<br>
+time: 2.298000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'_,im' * delta'^i_j'):simplifyMetrics(), a'_,jm')</pre>
 </td><td>
+differenceOfSquares	a_,i_,m * δ^i_j
+differenceOfSquares	a_,i_,m * δ^i_j
+differenceOfSquares	a_,i_,m * δ^i_j
+differenceOfSquares	a_,i_,m * δ^i_j
 ${{{ a} _{,j}} _{,m}} = {{{ a} _{,j}} _{,m}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.555000ms<br>
+time: 3.203000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^,im' * delta'_i^j'):simplifyMetrics(), a'^,jm')</pre>
 </td><td>
+differenceOfSquares	a^,i^,m * δ_i^j
+differenceOfSquares	a^,i^,m * δ_i^j
+differenceOfSquares	a^,i^,m * δ_i^j
+differenceOfSquares	a^,i^,m * δ_i^j
 ${{{ a} ^{,j}} ^{,m}} = {{{ a} ^{,j}} ^{,m}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.425000ms<br>
+time: 3.868000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'_i,m' * delta'^i_j'):simplifyMetrics(), a'_j_,m')</pre>
 </td><td>
+differenceOfSquares	a_i_,m * δ^i_j
+differenceOfSquares	a_i_,m * δ^i_j
+differenceOfSquares	a_i_,m * δ^i_j
+differenceOfSquares	a_i_,m * δ^i_j
 ${{{ a} _j} _{,m}} = {{{ a} _j} _{,m}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.420000ms<br>
+time: 3.779000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((a'^i,m' * delta'_i^j'):simplifyMetrics(), a'^j^,m')</pre>
 </td><td>
+differenceOfSquares	a^i^,m * δ_i^j
+differenceOfSquares	a^i^,m * δ_i^j
+differenceOfSquares	a^i^,m * δ_i^j
+differenceOfSquares	a^i^,m * δ_i^j
 ${{{ a} ^j} ^{,m}} = {{{ a} ^j} ^{,m}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.341000ms<br>
+time: 3.178000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>

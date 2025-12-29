@@ -2234,6 +2234,7 @@ end
 -- these are helpers that go with iteradd and itermul:
 
 -- TODO rename to 'addToTable' for consistency with 'mulToTable'
+-- TODO move these to symmath.lua, next to "tableToAdd" / "tableToMul"
 function Expression.sumToTable(s)
 	local t = table()
 	for x in s:iteradd() do
@@ -2241,7 +2242,6 @@ function Expression.sumToTable(s)
 	end
 	return t
 end
-
 function Expression.mulToTable(s)
 	local t = table()
 	for x in s:itermul() do
@@ -2252,6 +2252,8 @@ end
 
 -- inverse of Expression.sumToTable
 -- did I put this somewhere else already?
+-- yes, I put this in symmath already.
+-- TODO get rid of these and just use those
 function Expression.tableToSum(t)
 	local n = #t
 	if n == 0 then

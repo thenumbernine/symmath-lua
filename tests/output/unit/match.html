@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/match</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,7 +19,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.293000ms<br>
+time: 0.335000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -32,7 +31,7 @@ ${x} \ne {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.508000ms<br>
+time: 0.405000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -48,7 +47,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.024000ms<br>
+time: 0.020000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -58,7 +57,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.013000ms<br>
+time: 0.015000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -92,7 +91,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.948000ms<br>
+time: 2.131000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -108,7 +107,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.262000ms<br>
+time: 1.231000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -137,7 +136,7 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390	16
+	[C]: at 0x625335443390	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
@@ -150,9 +149,9 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390
+	[C]: at 0x625335443390
 </td><td>
-time: 0.401000ms<br>
+time: 1.482000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -181,7 +180,7 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390	16
+	[C]: at 0x625335443390	16
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
@@ -194,9 +193,9 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390
+	[C]: at 0x625335443390
 </td><td>
-time: 0.868000ms<br>
+time: 0.907000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -230,7 +229,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.333000ms<br>
+time: 0.858000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -255,10 +254,16 @@ ${{{2}} {{x}}} = {{{2}} {{x}}}$
 <br>
 ${{{2}} {{x}}} = {{{2}} {{x}}}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.073000ms<br>
+time: 3.074000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -280,7 +285,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.546000ms<br>
+time: 0.615000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -305,6 +310,12 @@ ${\sin\left( {{{2}} {{x}}}\right)} = {\sin\left( {{{2}} {{x}}}\right)}$
 <br>
 ${\sin\left( {{{2}} {{x}}}\right)} = {\sin\left( {{{2}} {{x}}}\right)}$
 <br>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -312,7 +323,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.694000ms<br>
+time: 5.706000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -328,7 +339,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.326000ms<br>
+time: 1.074000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -366,7 +377,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.513000ms<br>
+time: 1.123000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -378,7 +389,7 @@ ${{x} + {y}} = {{x} + {y}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.368000ms<br>
+time: 2.092000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -388,7 +399,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.071000ms<br>
+time: 0.195000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -416,7 +427,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.250000ms<br>
+time: 1.338000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -444,7 +455,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.279000ms<br>
+time: 0.699000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -472,7 +483,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.219000ms<br>
+time: 0.422000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -500,7 +511,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.150000ms<br>
+time: 0.581000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -522,7 +533,7 @@ ${{x} + {y}} = {{x} + {y}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.034000ms<br>
+time: 1.697000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -544,7 +555,7 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.403000ms<br>
+time: 0.376000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -572,7 +583,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.259000ms<br>
+time: 0.321000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -604,7 +615,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.530000ms<br>
+time: 0.288000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -636,7 +647,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.490000ms<br>
+time: 1.478000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>+:Factor:apply<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -662,7 +673,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.459000ms<br>
+time: 0.480000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -694,7 +705,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.292000ms<br>
+time: 0.298000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -720,7 +731,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.398000ms<br>
+time: 0.403000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -746,7 +757,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.249000ms<br>
+time: 0.285000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -765,6 +776,8 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 ${0} = {0}$
 <br>
 ${0} = {0}$
@@ -772,7 +785,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.939000ms<br>
+time: 2.184000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -808,7 +821,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.351000ms<br>
+time: 0.877000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -840,7 +853,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.401000ms<br>
+time: 0.742000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -866,7 +879,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.345000ms<br>
+time: 0.523000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -906,7 +919,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.206000ms<br>
+time: 0.399000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -928,7 +941,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.237000ms<br>
+time: 0.581000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -947,10 +960,12 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.334000ms<br>
+time: 3.167000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -966,7 +981,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.306000ms<br>
+time: 0.637000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -988,7 +1003,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.525000ms<br>
+time: 0.607000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1019,6 +1034,8 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -1026,7 +1043,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.843000ms<br>
+time: 1.533000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1058,7 +1075,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.244000ms<br>
+time: 0.630000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1090,7 +1107,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.252000ms<br>
+time: 0.601000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1116,7 +1133,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.280000ms<br>
+time: 0.294000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1132,7 +1149,7 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.030000ms<br>
+time: 0.035000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1142,7 +1159,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.028000ms<br>
+time: 0.096000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1160,7 +1177,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.101000ms<br>
+time: 0.115000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1170,7 +1187,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.075000ms<br>
+time: 0.154000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1188,7 +1205,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.104000ms<br>
+time: 0.112000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1206,7 +1223,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.132000ms<br>
+time: 0.233000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1224,7 +1241,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.144000ms<br>
+time: 0.295000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1242,7 +1259,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.264000ms<br>
+time: 0.196000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1286,7 +1303,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.460000ms<br>
+time: 0.628000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1305,6 +1322,8 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -1312,7 +1331,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.783000ms<br>
+time: 1.593000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1338,7 +1357,7 @@ ${y} = {y}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.360000ms<br>
+time: 0.548000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1357,6 +1376,8 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -1364,7 +1385,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.022000ms<br>
+time: 1.628000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1383,6 +1404,8 @@ ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
 ${{{x}} {{y}}} = {{{x}} {{y}}}$
 <br>
+differenceOfSquares	x * y
+differenceOfSquares	x * y
 ${1} = {1}$
 <br>
 ${1} = {1}$
@@ -1390,7 +1413,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.992000ms<br>
+time: 1.511000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1450,7 +1473,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.101000ms<br>
+time: 0.159000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1486,7 +1509,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.387000ms<br>
+time: 0.324000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1508,7 +1531,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.483000ms<br>
+time: 0.760000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1528,7 +1551,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.269000ms<br>
+time: 0.962000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1548,7 +1571,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.570000ms<br>
+time: 0.559000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1573,6 +1596,8 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <pre>do local c, f = (2 * 1/x):factorDivision():match(W{index=1, cannotDependOn=x} * W{2, dependsOn=x}) assertEq(c, const(2)) assertEq(f, 1/x) end</pre>
 </td><td>
+differenceOfSquares	2 * x / 2
+differenceOfSquares	2 * x
 ${2} = {2}$
 <br>
 ${\frac{1}{x}} = {\frac{1}{x}}$
@@ -1580,7 +1605,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.623000ms<br>
+time: 4.613000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1593,6 +1618,8 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>do local c, f = (2 * 1/x):factorDivision():match(W{1, cannotDependOn=x} * W(2)) assertEq(c, const(2)) assertEq(f, 1/x) end</pre>
 </td><td>
+differenceOfSquares	2 * x / 2
+differenceOfSquares	2 * x
 ${2} = {2}$
 <br>
 ${\frac{1}{x}} = {\frac{1}{x}}$
@@ -1600,7 +1627,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.012000ms<br>
+time: 4.241000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1626,7 +1653,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.409000ms<br>
+time: 0.841000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1652,7 +1679,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.614000ms<br>
+time: 1.393000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1678,7 +1705,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.415000ms<br>
+time: 0.747000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1704,7 +1731,7 @@ ${0} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.371000ms<br>
+time: 1.008000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1740,7 +1767,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.069000ms<br>
+time: 0.084000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1758,7 +1785,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.113000ms<br>
+time: 0.197000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1776,7 +1803,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.095000ms<br>
+time: 0.322000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1792,7 +1819,7 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.026000ms<br>
+time: 0.054000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1810,7 +1837,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.142000ms<br>
+time: 0.099000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1828,7 +1855,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.124000ms<br>
+time: 0.142000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1841,6 +1868,8 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <pre>do local i, j = (2 * 1/x):factorDivision():match(W{1, atMost=1} * W{index=2, atMost=1}) assertEq(i, const(2)) assertEq(j, 1/x) end</pre>
 </td><td>
+differenceOfSquares	2 * x / 2
+differenceOfSquares	2 * x
 ${2} = {2}$
 <br>
 ${\frac{1}{x}} = {\frac{1}{x}}$
@@ -1848,7 +1877,7 @@ ${\frac{1}{x}} = {\frac{1}{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.174000ms<br>
+time: 5.011000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>/:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1868,7 +1897,7 @@ ${4} = {4}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.175000ms<br>
+time: 0.331000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -1881,6 +1910,43 @@ stack: size: 0<br><ul style="margin:0px"></ul>
 <b></b><br>
 <pre>do local a, b = (1/(x*(3*x+4))):factorDivision():match(1 / (W{1, cannotDependOn=x} * x * x + W{2, cannotDependOn=x} * x)) assertEq(a, const(3)) assertEq(b, const(4)) end</pre>
 </td><td>
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	x * (4 + 3 * x)
+found two sum	4 + 3 * x
+differenceOfSquares	4 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	4 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x
+differenceOfSquares	x * (4 + 3 * x)
+found two sum	4 + 3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	x * (4 + 3 * x)
+found two sum	4 + 3 * x
+differenceOfSquares	4 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	x * (4 + 3 * x)
+found two sum	4 + 3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	x * (4 + 3 * x)
+found two sum	4 + 3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
+differenceOfSquares	3 * x
 ${3} = {3}$
 <br>
 ${4} = {4}$
@@ -1888,7 +1954,7 @@ ${4} = {4}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 9.552000ms<br>
+time: 17.635000ms<br>
 stack: size: 9<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy<br><li>*:FactorDivision:apply<br><li>*:FactorDivision:apply</ul>
 </td></tr>
 <tr><td>
@@ -1922,7 +1988,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.198000ms<br>
+time: 0.469000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1938,7 +2004,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.219000ms<br>
+time: 0.222000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1958,7 +2024,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.272000ms<br>
+time: 0.501000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1980,7 +2046,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.173000ms<br>
+time: 0.384000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -1996,7 +2062,7 @@ ${x} = {x}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.254000ms<br>
+time: 0.257000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2016,7 +2082,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.328000ms<br>
+time: 0.519000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2045,7 +2111,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.164000ms<br>
+time: 0.241000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -2056,7 +2122,7 @@ $2$	$x$	${{3}} {{x}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.169000ms<br>
+time: 0.129000ms<br>
 stack: size: 0<br><ul style="margin:0px"></ul>
 </td></tr>
 <tr><td>
@@ -2088,7 +2154,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.718000ms<br>
+time: 0.768000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2126,7 +2192,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.191000ms<br>
+time: 1.747000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2139,6 +2205,17 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>do local expr = (3*x^2 + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 0, 1}) end</pre>
 </td><td>
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
 expr	${1} + {{{3}} {{{x}^{2}}}}$
 <br>
 a	false
@@ -2198,7 +2275,7 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390	14
+	[C]: at 0x625335443390	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
@@ -2211,15 +2288,35 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390
+	[C]: at 0x625335443390
 </td><td>
-time: 3.078000ms<br>
+time: 8.524000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>do local expr = (3*x*x + 2*x + 1):factorDivision() printbr('expr', expr) local a, b, c = expr:match(W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x}) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
 expr	${1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}$
 <br>
 a	$3$
@@ -2245,13 +2342,43 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.951000ms<br>
+time: 6.453000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>do local expr = (1/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
 expr	$\frac{1}{{1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}}$
 <br>
 a	$3$
@@ -2277,13 +2404,60 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.239000ms<br>
+time: 16.230000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>do local expr = (x/(3*x*x + 2*x + 1)):factorDivision() printbr('expr', expr) local a, b, c = expr:match(1 / (W{1, cannotDependOn=x} * x^2 + W{2, cannotDependOn=x} * x + W{3, cannotDependOn=x})) printbr('a', a) printbr('b', b) printbr('c', c) simplifyAssertAllEq({a, b, c}, {3, 2, 1}) end</pre>
 </td><td>
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	-3 * x^2
+differenceOfSquares	-3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	-2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * x
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	3 * x^2
+differenceOfSquares	x * x
 expr	${{x}} {{\frac{1}{{1} + {{{2}} {{x}}} + {{{3}} {{{x}^{2}}}}}}}$
 <br>
 a	false
@@ -2343,7 +2517,7 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390	14
+	[C]: at 0x625335443390	14
 <span style="color:red">BAD</span><br>/home/chris/Projects/lua/symmath/tests/unit/unit.lua:196: failed<br>
 stack traceback:<br>
 	/home/chris/Projects/lua/symmath/tests/unit/unit.lua:260: in function </home/chris/Projects/lua/symmath/tests/unit/unit.lua:259><br>
@@ -2356,9 +2530,9 @@ stack traceback:<br>
 	match.lua:233: in function 'cb'<br>
 	[string "/home/chris/Projects/lua/ext/timer.lua"]:101: in function 'timer'<br>
 	match.lua:6: in main chunk<br>
-	[C]: at 0x60f2d638a390
+	[C]: at 0x625335443390
 </td><td>
-time: 9.902000ms<br>
+time: 17.232000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -2388,6 +2562,6 @@ ${^i} = {^i}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.231000ms<br>
+time: 0.210000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

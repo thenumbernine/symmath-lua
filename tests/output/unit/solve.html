@@ -4,7 +4,6 @@
 		<meta charset='utf-8'>
 		<title>tests/unit/solve</title>
 		<script type='text/javascript' src='../tryToFindMathJax.js'></script>
-
 		<link rel='stylesheet' href='../darkmode.css'></link>
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
@@ -20,7 +19,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.809000ms<br>
+time: 1.124000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -32,7 +31,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.106000ms<br>
+time: 1.844000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -50,7 +49,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.667000ms<br>
+time: 0.603000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -62,7 +61,7 @@ ${{x} = {1}} = {{x} = {1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.915000ms<br>
+time: 0.973000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -80,7 +79,7 @@ ${1} = {1}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 0.871000ms<br>
+time: 0.827000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -92,7 +91,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.160000ms<br>
+time: 1.463000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -110,7 +109,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.705000ms<br>
+time: 3.175000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -122,7 +121,7 @@ ${{x} = {1}} = {{x} = {1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.382000ms<br>
+time: 3.174000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -134,7 +133,7 @@ ${{x} = {-{1}}} = {{x} = {-1}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.789000ms<br>
+time: 3.040000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -147,36 +146,51 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x^2):eq(-1):solve(x)}, 2)</pre>
 </td><td>
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${2} = {2}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.855000ms<br>
+time: 3.953000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x^2):eq(-1):solve(x), x:eq(i))</pre>
 </td><td>
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${{x} = {i}} = {{x} = {i}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.125000ms<br>
+time: 5.930000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x^2):eq(-1):solve(x)), x:eq(-i))</pre>
 </td><td>
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${{x} = {-{i}}} = {{x} = {-{i}}}$
 <br>
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.827000ms<br>
+time: 4.291000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>*:Tidy:apply<br><li>*:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -193,7 +207,7 @@ ${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.590000ms<br>
+time: 1.944000ms<br>
 stack: size: 10<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -205,7 +219,7 @@ ${2} = {2}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.784000ms<br>
+time: 2.701000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -217,7 +231,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.331000ms<br>
+time: 4.825000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -229,7 +243,7 @@ ${{x} = {0}} = {{x} = {0}}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.518000ms<br>
+time: 1.915000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -248,59 +262,359 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>print((x^3):eq(0):solve(x))</pre>
 </td><td>
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	_i * √(3) / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	_i * -√(3) / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * 3^(1 / 2) / 2
+differenceOfSquares	-1 * 3^(1 / 2)
+differenceOfSquares	_i * (-1 * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * _i * 3^(1 / 2)) / 2
+differenceOfSquares	-2 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
 ${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 28.678000ms<br>
+time: 40.113000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:factorDenominators<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x^3):eq(0):solve(x)}, 3)</pre>
 </td><td>
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	_i * √(3) / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	_i * -√(3) / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * 3^(1 / 2) / 2
+differenceOfSquares	-1 * 3^(1 / 2)
+differenceOfSquares	_i * (-1 * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * _i * 3^(1 / 2)) / 2
+differenceOfSquares	-2 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
 ${3} = {3}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 28.356000ms<br>
+time: 34.408000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x^3):eq(0):solve(x), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	_i * √(3) / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	_i * -√(3) / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * 3^(1 / 2) / 2
+differenceOfSquares	-1 * 3^(1 / 2)
+differenceOfSquares	_i * (-1 * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * _i * 3^(1 / 2)) / 2
+differenceOfSquares	-2 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 28.790000ms<br>
+time: 32.545000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x^3):eq(0):solve(x)), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	_i * √(3) / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	_i * -√(3) / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * 3^(1 / 2) / 2
+differenceOfSquares	-1 * 3^(1 / 2)
+differenceOfSquares	_i * (-1 * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * _i * 3^(1 / 2)) / 2
+differenceOfSquares	-2 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 21.888000ms<br>
+time: 28.095000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(3, (x^3):eq(0):solve(x)), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	2 / 3 * π
+differenceOfSquares	2 * π
+differenceOfSquares	_i * √(3) / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	2 * -1 / 2
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	4 / 3 * π
+differenceOfSquares	4 * π
+differenceOfSquares	_i * -√(3) / 2
+differenceOfSquares	-1 * 1 / 2
+differenceOfSquares	-1 * 3^(1 / 2) / 2
+differenceOfSquares	-1 * 3^(1 / 2)
+differenceOfSquares	_i * (-1 * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * _i * 3^(1 / 2)) / 2
+differenceOfSquares	-2 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 22.033000ms<br>
+time: 28.324000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -319,18 +633,90 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>print((x^4):eq(0):solve(x))</pre>
 </td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${x} = {0}$	${x} = {0}$	${x} = {0}$	${x} = {0}$
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.219000ms<br>
+time: 5.391000ms<br>
 stack: size: 11<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:zeroToTheX<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x^4):eq(0):solve(x)}, 4)</pre>
 </td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${4} = {4}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 5.525000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq((x^4):eq(0):solve(x), x:eq(0))</pre>
+</td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+${{x} = {0}} = {{x} = {0}}$
+<br>
+
+<span style="color:green">GOOD</span>
+</td><td>
+time: 7.603000ms<br>
+stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
+</td></tr>
+<tr><td>
+<b></b><br>
+<pre>simplifyAssertEq(select(2, (x^4):eq(0):solve(x)), x:eq(0))</pre>
+</td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
@@ -340,50 +726,50 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 </td></tr>
 <tr><td>
 <b></b><br>
-<pre>simplifyAssertEq((x^4):eq(0):solve(x), x:eq(0))</pre>
-</td><td>
-${{x} = {0}} = {{x} = {0}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 3.770000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
-<pre>simplifyAssertEq(select(2, (x^4):eq(0):solve(x)), x:eq(0))</pre>
-</td><td>
-${{x} = {0}} = {{x} = {0}}$
-<br>
-
-<span style="color:green">GOOD</span>
-</td><td>
-time: 3.903000ms<br>
-stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
-</td></tr>
-<tr><td>
-<b></b><br>
 <pre>simplifyAssertEq(select(3, (x^4):eq(0):solve(x)), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 5.172000ms<br>
+time: 4.582000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(4, (x^4):eq(0):solve(x)), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	1 / 2 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	3 * 1 / 2
+differenceOfSquares	3 / 2 * π
+differenceOfSquares	3 * π
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
+differenceOfSquares	-1 * _i
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 4.221000ms<br>
+time: 6.763000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -426,60 +812,85 @@ stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>printbr( (x * (x^2 + 2*x + 1)):eq(0):solve(x)  )</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${x} = {0}$	${x} = {-{1}}$	${x} = {-{1}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.957000ms<br>
+time: 2.136000ms<br>
 stack: size: 22<br><ul style="margin:0px"><li>Init<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:zeroToTheX<br><li>sqrt:Prune:apply<br><li>+:Prune:combineConstants<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:xToTheZero<br><li>*:Prune:apply<br><li>/:Prune:divToPowSub<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x * (x^2 + 2*x + 1)):eq(0):solve(x)}, 3)</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${3} = {3}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.096000ms<br>
+time: 3.300000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 1.881000ms<br>
+time: 3.117000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {-{1}}} = {{x} = {-1}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.378000ms<br>
+time: 4.981000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {-{1}}} = {{x} = {-1}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.633000ms<br>
+time: 4.099000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -492,60 +903,157 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>printbr( (x^3 + 2*x^2 + x):eq(0):solve(x) )</pre>
 </td><td>
+differenceOfSquares	2 * x^2
+differenceOfSquares	x * x * x
+differenceOfSquares	x * x
+differenceOfSquares	2 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x^2
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
 ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {{{i}} {{\sqrt{3}}}}}\right)}}}$	${x} = {{\frac{1}{2}}{\left({{-{1}} + {{{i}} {{\sqrt{3}}}}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 17.060000ms<br>
+time: 26.135000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x^3 + 2*x^2 + x):eq(0):solve(x)}, 3)</pre>
 </td><td>
+differenceOfSquares	2 * x^2
+differenceOfSquares	x * x * x
+differenceOfSquares	x * x
+differenceOfSquares	2 * x^2
+differenceOfSquares	x * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x^2
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
 ${3} = {3}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 21.770000ms<br>
+time: 17.083000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * (x^2 + 2*x + 1)):eq(0):solve(x), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.085000ms<br>
+time: 5.281000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {-{1}}} = {{x} = {-1}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 2.307000ms<br>
+time: 2.960000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(3, (x * (x^2 + 2*x + 1)):eq(0):solve(x)), x:eq(-1))</pre>
 </td><td>
+differenceOfSquares	2 * x
+differenceOfSquares	2 * x
+differenceOfSquares	x * (1 + x^2 + 2 * x)
+differenceOfSquares	x * x
+differenceOfSquares	2 * x
 ${{x} = {-{1}}} = {{x} = {-1}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 3.328000ms<br>
+time: 2.957000ms<br>
 stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Constant:Tidy:apply<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -564,60 +1072,135 @@ stack: size: 8<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br>
 <b></b><br>
 <pre>printbr( (x * (x^2 + x - 1)):eq(0):solve(x)  )</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}$	${x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 8.158000ms<br>
+time: 11.043000ms<br>
 stack: size: 16<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x * (x^2 + x - 1)):eq(0):solve(x)}, 3)</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${3} = {3}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 6.985000ms<br>
+time: 7.708000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.535000ms<br>
+time: 11.072000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}} = {{x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}}$
 <br>
+differenceOfSquares	-1 * (1 + 5^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.423000ms<br>
+time: 23.058000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}} = {{x} = {{\frac{1}{2}}{\left({-{\left({{1}{-{\sqrt{5}}}}\right)}}\right)}}}$
 <br>
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + -1 * 5^(1 / 2))
+found two sum	1 + -1 * 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.753000ms<br>
+time: 15.590000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
@@ -630,59 +1213,196 @@ stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><l
 <b></b><br>
 <pre>printbr( (x^3 + x^2 - x):eq(0):solve(x) )</pre>
 </td><td>
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x^2
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
 ${x} = {0}$	${x} = {-{{\frac{1}{2}}{\left({{1} + {{{i}} {{\sqrt{3}}}}}\right)}}}$	${x} = {{\frac{1}{2}}{\left({{-{1}} + {{{i}} {{\sqrt{3}}}}}\right)}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.688000ms<br>
+time: 18.992000ms<br>
 stack: size: 15<br><ul style="margin:0px"><li>Init<br><li>unm:Prune:doubleNegative<br><li>^:Prune:simplifyConstantPowers<br><li>*:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>+:Prune:combineConstants<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>Prune<br><li>Expand<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(#{(x^3 + x^2 - x):eq(0):solve(x)}, 3)</pre>
 </td><td>
+differenceOfSquares	-1 * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * x
+differenceOfSquares	-1 * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x * x
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	x * x
+differenceOfSquares	x * x^2
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * (1 + x + x^2)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 * (1 + _i * 3^(1 / 2))) / 2
+differenceOfSquares	-2 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	-1 * (1 + _i * 3^(1 / 2))
+found two sum	1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2)) / 2
+differenceOfSquares	2 * (-1 + _i * 3^(1 / 2))
+found two sum	-1 + _i * 3^(1 / 2)
+differenceOfSquares	_i * 3^(1 / 2)
 ${3} = {3}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 13.778000ms<br>
+time: 15.016000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq((x * (x^2 + x - 1)):eq(0):solve(x), x:eq(0))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {0}} = {{x} = {0}}$
 <br>
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 7.990000ms<br>
+time: 14.244000ms<br>
 stack: size: 7<br><ul style="margin:0px"><li>Init<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(2, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 + sqrt(5))/2 ))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {-{{\frac{1}{2}}{\left({{1} + {\sqrt{5}}}\right)}}}} = {{x} = {{\frac{1}{2}}{\left({-{\left({{1} + {\sqrt{5}}}\right)}}\right)}}}$
 <br>
+differenceOfSquares	-1 * (1 + 5^(1 / 2)) / 2
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 15.965000ms<br>
+time: 34.900000ms<br>
 stack: size: 13<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>
 <tr><td>
 <b></b><br>
 <pre>simplifyAssertEq(select(3, (x * (x^2 + x - 1)):eq(0):solve(x)), x:eq( -(1 - sqrt(5))/2 ))</pre>
 </td><td>
+differenceOfSquares	x * (-1 + x^2 + x)
+differenceOfSquares	x * x
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + 5^(1 / 2))
+found two sum	1 + 5^(1 / 2)
+...adding index	2
 ${{x} = {{\frac{1}{2}}{\left({{-{1}} + {\sqrt{5}}}\right)}}} = {{x} = {{\frac{1}{2}}{\left({-{\left({{1}{-{\sqrt{5}}}}\right)}}\right)}}}$
 <br>
+differenceOfSquares	-1 * 5^(1 / 2)
+differenceOfSquares	-1 * (1 + -1 * 5^(1 / 2))
+found two sum	1 + -1 * 5^(1 / 2)
+...adding index	2
+differenceOfSquares	-1 * 5^(1 / 2)
 
 <span style="color:green">GOOD</span>
 </td><td>
-time: 16.233000ms<br>
+time: 23.975000ms<br>
 stack: size: 23<br><ul style="margin:0px"><li>Init<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>unm:Prune:doubleNegative<br><li>unm:Prune:doubleNegative<br><li>Prune<br><li>*:Expand:apply<br><li>Expand<br><li>*:Prune:apply<br><li>^:Prune:sqrtFix4<br><li>^:Tidy:replacePowerOfFractionWithRoots<br><li>^:Prune:sqrtFix4<br><li>sqrt:Prune:apply<br><li>*:Prune:apply<br><li>*:Prune:flatten<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Expand<br><li>Prune<br><li>Factor<br><li>Prune<br><li>Tidy</ul>
 </td></tr>

@@ -273,8 +273,8 @@ local shapes = {
 		dual = 'Octahedron',
 		dim = 3,
 		
-		--vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T())(),
-		vtx1 = (cubeRot * Matrix{ 1, 1, 1 }:T())(),
+		vtx1 = (cubeRot * Matrix{ 1/sqrt(3), 1/sqrt(3), 1/sqrt(3) }:T())(),
+		--vtx1 = (cubeRot * Matrix{ 1, 1, 1 }:T())(),
 		
 		-- same transforms as its dual
 		xforms = {
@@ -296,7 +296,7 @@ local shapes = {
 		},
 	},
 --]=]
---[=[
+--[=[ NOTICE these aren't normalized, and normalizing them causes simplification loops because sqrt simplification bugs...
 	{
 		name = 'Dodecahedron',
 		dual = 'Icosahedron',
@@ -315,6 +315,8 @@ local shapes = {
 		--]==]
 		-- [==[ just use Icosahedron's transforms.  if the two are dual then they should have matching transform group.
 		vtx1 = (icoRot * Matrix{(3 + sqrt(5)) / 2, 0, -1}:T())(),
+		-- normalize as well ... too many sqrts? yes, too many sqrts, gets simplification loops.
+		--vtx1 = (icoRot * Matrix{(3 + sqrt(5)) / 2, 0, -1}:T() / sqrt((3 * (3 + sqrt(5))) / 2))(),
 
 		xforms = {
 			(icoRot * Matrix.rotation(frac(2*pi,5), Matrix{0, -1, phiminus}:unit()[1] ) * icoRot:T())(),
@@ -324,7 +326,7 @@ local shapes = {
 		--]==]
 	},
 --]=]
---[=[
+--[=[ same as above, this is unnormalized, and it needs sqrt()'s simplifications to be fixed to normalize.
 	{
 		name = 'Icosahedron',
 		dual = 'Dodecahedron',
@@ -476,11 +478,12 @@ local shapes = {
 		end),
 	},
 --]=]
---[=[ TODO FIXME -- find a good vtx1 and then use the 600-cell
+-- [=[
 	{
 		name = '120-cell',
 		dual = '600-cell',
 		dim = 4,
+		--[==[ my first attempt
 		vtx1 = Matrix{0,0,2,2}:T(),
 		xforms = {
 			Matrix(
@@ -518,6 +521,38 @@ local shapes = {
 		
 			-- for φ = (1 + √5)/2
 		},
+		--]==]
+		-- [==[ using 600-cell's rotations, and using one of its face-centers as our initial vertex
+		-- still getting simplification loops
+		-- I'd better fix sqrt simplifications...
+		-- in 600-cell:
+		-- V1 = [0, 0, 0, 1]
+		-- V2 = [-1/2, -1/2, -1/2, 1/2] = T2 * V1
+		-- V3 = [1/2, -1/2, -1/2, 1/2] = T2 * V2 = T2^2 * V1
+		-- T2^3 * V1 = V1
+		-- so T2 gives us a triangle ... hopefully a triangle on the surface and this will work.
+		-- V123 avg = unit([0, -1, -1, 2]) = [0, -1/sqrt(6), -1/sqrt(6), sqrt(2/3)]
+		vtx1 = Matrix{0, -1/(sqrt(2)*sqrt(3)), -1/(sqrt(2)*sqrt(3)), frac(sqrt(2),sqrt(3))}:T(),	-- midpoint of some triplet of vertexes in the 600-cell
+	
+		-- copied of 600-cell's xforms
+		xforms = table{
+			rotfromto(
+				Matrix{1,0,0,0}:T(),
+				Matrix{frac(1,2),frac(1,2),frac(1,2),frac(1,2)}:T(),
+				frac(2*pi,3)
+			),
+			toQuatMat(phi/2, frac(1,2), phiminus/2, 0),
+			(
+				Matrix(
+					{ sqrt(5)*(3-sqrt(5))/4, -sqrt(5)/2, -sqrt(5)*(sqrt(5)-1)/4, 0 },
+					{sqrt(5)/2, sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, 0},
+					{sqrt(5)*(sqrt(5)-1)/4, sqrt(5)*(sqrt(5)-3)/4, sqrt(5)/2, 0},
+					{0, 0, 0, 3*(3+sqrt(5))/2}
+				)()
+				* Matrix.diagonal((1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (1+sqrt(5))/(2*sqrt(5)), (3-sqrt(5))/6)
+			)(),
+		},
+		--]==]
 	},
 --]=]
 --[=[
@@ -598,17 +633,17 @@ local function printerr(...)
 end
 
 local cache = {}
-local cacheFilename = 'Platonic Solids - cache.lua'
-if path(cacheFilename):exists() then
+local cacheFilename = path'Platonic Solids - cache.lua'
+if cacheFilename:exists() then
 	printerr'reading cache...'
-	cache = load('return '..path(cacheFilename):read(), nil, nil, env)()
+	cache = load('return '..cacheFilename:read(), nil, nil, env)()
 	printerr'...done reading cache'
 end
 
 local function writeShapeCaches()
 	-- can symmath.export.SymMath export Lua tables?
-	--path(cacheFilename):write(symmath.export.SymMath(cache))
-	path(cacheFilename):write(tolua(cache, {
+	--cacheFilename:write(symmath.export.SymMath(cache))
+	cacheFilename:write(tolua(cache, {
 		serializeForType = {
 			table = function(state, x, tab, pathstr, keyRef, ...)
 				local mt = getmetatable(x)
@@ -726,16 +761,16 @@ for _,shape in ipairs(shapes) do
 		local function buildvtxs(j, depth)
 			depth = depth or 1
 			local v = vtxs[j]
-	--local vnorm = (v:T() * v)()[1][1]
-	--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
-	--assert(Matrix(v:dim()) == Matrix{4,1})
+			--local vnorm = (v:T() * v)()[1][1]
+			--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
+			--assert(Matrix(v:dim()) == Matrix{4,1})
 			for i,xform in ipairs(xforms) do
 				local xv = (xform * v)()
-	--local xvnorm = (xv:T() * xv)()[1][1]
-	--assert(Matrix(xv:dim()) == Matrix{4,1})
-	--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
-	--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
-	--end
+				--local xvnorm = (xv:T() * xv)()[1][1]
+				--assert(Matrix(xv:dim()) == Matrix{4,1})
+				--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
+				--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
+				--end
 				-- [[ can 'find' work?  can equality work?
 				local k = vtxs:find(xv)
 				--]]
@@ -782,7 +817,7 @@ for _,shape in ipairs(shapes) do
 		printerr'building allxforms'
 		allxforms = table(xforms)
 		allxformsrcinfo = range(#xforms):mapi(function() return {} end)	-- one dummy entry per initial xforms
-assert(#allxforms == #allxformsrcinfo)
+		assert.eq(#allxforms, #allxformsrcinfo)
 		shapeCache.allxforms = allxforms
 		shapeCache.allxformsrcinfo = allxformsrcinfo
 	-- [[
@@ -800,7 +835,7 @@ assert(#allxforms == #allxformsrcinfo)
 					if not k then
 						allxforms:insert(xM)
 						allxformsrcinfo:insert{i=i, j=j}
-assert(#allxforms == #allxformsrcinfo)
+						assert.eq(#allxforms, #allxformsrcinfo)
 						k = #allxforms
 						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
 						printerr('T_'..i..' * T_'..j..' = T_'..k)
@@ -813,7 +848,7 @@ assert(#allxforms == #allxformsrcinfo)
 		end
 		printbr()
 		printerr'done finding transforms'
-assert(#allxforms == #allxformsrcinfo)
+		assert.eq(#allxforms, #allxformsrcinfo)
 		printerr'writing...'
 		writeShapeCaches()
 		printerr'...done writing'
@@ -1181,7 +1216,7 @@ for k,v in pairs(cache) do
 	
 end
 s:insert'}'
-path(cacheFilename):write(s:concat'\n')
+cacheFilename:write(s:concat'\n')
 --]]
 
 print(export.MathJax.footer)
