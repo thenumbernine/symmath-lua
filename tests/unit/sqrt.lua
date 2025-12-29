@@ -112,9 +112,12 @@ simplifyAssertEq( (3+sqrt(5)) * (3 - sqrt(5)) * sqrt(2+sqrt(5)) , 4 * sqrt(2+sqr
 -- these are in simplification loops
 
 -- start with -1 / ( (√√5 √(√5 - 1)) / √2 ) ... what mine gets now vs what mathematica gets
+simplifyAssertEq( sqrt(1 + sqrt(5))/sqrt(2 * sqrt(5)), sqrt((5 + sqrt(5)) / 10))			-- lhs = my simplification result, rhs = Mathematica's / what I'm testing against
+simplifyAssertEq( 1 / (sqrt(2 * sqrt(5)) / sqrt(1 + sqrt(5))), sqrt((5 + sqrt(5)) / 10))	-- invert lhs, one step closer to what my worksheet ran into
+
+simplifyAssertEq( 1 / ( sqrt(sqrt(5) * (1 - sqrt(5))) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))
 simplifyAssertEq( -1 / ( sqrt(sqrt(5) * (sqrt(5) - 1)) / sqrt(2) ), sqrt((5  + sqrt(5)) / 10))
 simplifyAssertEq( -(sqrt( 10 * (sqrt(5) - 1) ) + sqrt(2 * (sqrt(5) - 1))) / (4 * sqrt(sqrt(5))), sqrt((5  + sqrt(5)) / 10))
-
 
 ]=]), '\n')) do
 	env.exec(line)
