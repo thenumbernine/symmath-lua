@@ -1310,7 +1310,7 @@ require 'ext.assert'.ge(#expr, 2)
 
 
 
--- [=[
+--[=[
 -- here's my attempt to fix my failed simplification of (3 + √5) * (3 - √5) * √(3 + √5)
 -- specifically, let's look in mul for sums with opposing signs
 -- and if we get a match then simplify
@@ -1320,80 +1320,140 @@ require 'ext.assert'.ge(#expr, 2)
 -- unless I change this to only operate on constants and sqrts-of-constants ....
 -- 
 -- ultimately the best way to simplify both difference-of-square and fractions-of-polynomials will be to check both for simplification...
+-- I'm going to restrict this to only act on Constant's for the time being.
 
 		{differenceOfSquares = function(prune, expr)
 			symmath = symmath or require 'symmath'
---print('differenceOfSquares', symmath.export.SingleLine(expr))
+print('differenceOfSquares', symmath.export.SingleLine(expr))
 			local add = symmath.op.add
 			local mul = symmath.op.mul
+			local div = symmath.op.div
 			local pow = symmath.op.pow
 			local Constant = symmath.Constant
 			
+			local function isSqrtAsPow(x)
+				return pow:isa(x)
+				and isConstantFractionValue(x[2], 1, 2)
+			end
+
 			-- c^(1/2)
 			local function isSqrtConst(x)
-				return pow:isa(x)
-					and Constant:isa(x[1])
-					and isConstantFractionValue(x[2], 1, 2)
-			end
-			-- only look for constants, sqrts-of, or -1*'s of
-			local function isDifOfSqTerm(x)
-				return
-					-- TODO how about an isConstant flag that propagates through constructor?
-					-- is true if all children are isConstant as well
-					Constant:isa(x)
-					or isSqrtConst(x)
-					or (
-						mul:isa(x)
-						and Constant.isValue(x[1], -1)
-						and isSqrtConst(x[2])
-					)
+				return isSqrtAsPow(x)
+				and Constant:isa(x[1])
 			end
 
-			local addIndexes
+			-- TODO how about an isConstant flag that propagates through constructor?
+			-- is true if all children are isConstant as well
+			-- only look for constants, c^(1/2), -1*c^(1/2)
+			-- TODO how come I think this should be c^(d/2) ... 
+			local function isDiffOfSquareSumTerm(x)
+				return Constant:isa(x)
+				or isSqrtConst(x)
+				or (
+					mul:isa(x)
+					and Constant.isValue(x[1], -1)
+					and isSqrtConst(x[2])
+				)
+			end
+
+			local function isDiffOfSquareSum(x)
+				return add:isa(x)
+				and #x == 2
+				and isDiffOfSquareSumTerm(x[1])
+				and isDiffOfSquareSumTerm(x[2])
+			end
+
+			-- difference-of-square-sum, or same ^(1/2)
+			-- TODO or how about to any power that's an integer / 2?
+			local function isDiffOfSquareSumPow(x)
+				return isDiffOfSquareSum(x)
+				or (isSqrtAsPow(x) and isDiffOfSquareSum(x[1]))
+			end
+
+			-- tests passed, so this is either add() or pow(add(), frac(1,2))
+			local function getDiffOfSquareAddAndPower(x)
+				if add:isa(x) then return x, Constant(1) end
+				assert(pow:isa(x))
+				--assert(isConstantFractionValue(x[2], 1,2))
+				return x[1], x[2]
+			end
+
+			-- expr[i in indexes] is either add() or pow(add(), frac(1,2))
+			local indexes
 			for i=1,#expr do
 				local ei = expr[i]
-				if add:isa(ei)
-				-- sum of two terms
-				and #ei == 2
-				then
---print('found two sum', symmath.export.SingleLine(ei))
-					if isDifOfSqTerm(ei[1]) and isDifOfSqTerm(ei[2]) then
---print('...adding index', i)
-						addIndexes = addIndexes or table()
-						addIndexes:insert(i)
-					end
+				if isDiffOfSquareSumPow(ei) then
+					indexes = indexes or table()
+					indexes:insert(i)
 				end
 			end
-			if not addIndexes then return end
-			if #addIndexes < 2 then return end
+
+			if not indexes then return end
+			if #indexes < 2 then return end
+print('...indexes', indexes:unpack())
 
 			-- now we have more than one sum
-			for i1=1,#addIndexes-1 do
-				local i = addIndexes[i1]
+			for i1=1,#indexes-1 do
+				local i = indexes[i1]
 				local ei = expr[i]
-				for j1=i1+1,#addIndexes do
-					local j = addIndexes[j1]
+				local addi, powi = getDiffOfSquareAddAndPower(ei)
+				for j1=i1+1,#indexes do
+					local j = indexes[j1]
 					local ej = expr[j]
+					local addj, powj = getDiffOfSquareAddAndPower(ej)
 					if (
 						-- 1st matches, 2nd are oppoiste
-						ei[1] == ej[1]
+						addi[1] == addj[1]
 						and (
-							ei[2] == Constant(-1) * ej[2]
-							or Constant(-1) * ei[2] == ej[2]
+							addi[2] == Constant(-1) * addj[2]
+							or Constant(-1) * addi[2] == addj[2]
 						)
 					) or (
 						-- 2nd matches, 1st is opposites
-						ei[2] == ej[2]
+						addi[2] == addj[2]
 						and (
-							ei[1] == Constant(-1) * ej[1]
-							or Constant(-1) * ei[1] == ej[1]
+							addi[1] == Constant(-1) * addj[1]
+							or Constant(-1) * addi[1] == addj[1]
 						)					
 					) then
-print('...i', i, 'ei', symmath.export.SingleLine(ei))
-print('...j', j, 'ej', symmath.export.SingleLine(ej))
+print('...i', i, 'addi', symmath.export.SingleLine(addi), 'powi', symmath.export.SingleLine(powi))
+print('...j', j, 'addj', symmath.export.SingleLine(addj), 'powj', symmath.export.SingleLine(powj))
 						local args = table{table.unpack(expr)}
 						args:remove(j)
-						args[i] = prune(ei[1] * ej[1] + ei[2] * ej[2])
+					
+						-- now to replace args[i]...
+						-- give it the difference-of-squares...
+						local argi = addi[1] * addj[1] + addi[2] * addj[2]
+						-- and see how to wrap its power, depending on what i and j had powers of ...
+						if powi == powj then
+							if not Constant.isValue(powi, 1) then
+								argi = prune(pow(argi, powi))
+							end	-- else it was 1
+						else
+							-- powers are different ... TODO find the lower
+							-- until then, just subtract one from another I guess?
+							-- addi^powi * addj^powj
+							-- = addi^(powi + powj - powj) * addj^powj
+							-- = addi^(powi - powj) * (addi * addj)^powj
+							-- or switch:
+							-- = (addi * addj)^powi * addj^(powj - powi)
+							-- and note
+							-- addi * addj = addi[1]^2 + addj[1]^2 = argi
+							if div:isa(powi) and not div:isa(powj) then
+								argi = argi^powi * addj^(powj - powi)
+print('diffOfSquares recombining fraci and pruning', symmath.export.SingleLine(argi))
+								argi = prune(argi)
+							elseif div:isa(powj) and not div:isa(powi) then
+								argi = addi^(powi - powj) * argi^powj
+print('diffOfSquares recombining fracj and pruning', symmath.export.SingleLine(argi))
+								argi = prune(argi)
+							else
+								error("here with powi="..symmath.export.Verbose(powi).." powj="..symmath.export.Verbose(powj)
+									.." div:isa(powj) "..tostring(div:isa(powj))
+									.." div:isa(powi) "..tostring(div:isa(powi)))
+							end
+						end
+						args[i] = argi
 						local result = symmath.tableToMul(args)
 print('result', symmath.export.SingleLine(result))
 						return result
