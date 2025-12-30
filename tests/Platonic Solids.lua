@@ -449,7 +449,7 @@ local shapes = {
 		},
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = '24-cell',
 		dual = '24-cell',
@@ -741,26 +741,33 @@ for _,shape in ipairs(shapes) do
 	-- so I will keep numerical copies of the xforms and vectors, and use those for searches.
 
 	local function buildNumXForm(xform)
-		return matrix(xform:eval())
---			:map(function(x) return math.round(x * 1e+7) * 1e-7 end)
+		return matrix((xform:eval()))
+	end
+	-- store a copy rounded to nearest 1e-7 or so, so i can just do an equivalence test when searching
+	-- don't use this for numerics as well because subsequent errors can build up
+	local function roundForSearch(m)
+		return (m:map(function(x) return math.round(x * 1e+7) * 1e-7 end))
 	end
 	local numxforms = xforms:mapi(buildNumXForm)
-	local numallxforms 
+	local epsxforms = numxforms:mapi(roundForSearch)
+	local numallxforms
+	local epsallxforms
 	
 	-- track mirror numeric vtxs for fast lookups
 	-- since right now the find() of expressions is whats slowing us down the most
 	local function buildNumVtx(vtx)
-		-- vtx is a col-matrix so ...
-		return matrix(vtx:T()[1]:eval())
---			:map(function(x) return math.round(x * 1e+7) * 1e-7 end)
+		return matrix(vtx:T()[1]:eval())	-- vtx is a col-matrix so ...
 	end
 	local numvtxs
+	local epsvtxs
 
 	-- [[ compare two numeric-matrices , true if they are within epsilon
 	local function matrixfindeps(a,b)
 		return (a - b):normLInf() < 1e-7
 	end
-	--]] -- or just round to nearest 1e-7 and do equality-compare.  faster? nah, equality is failling.
+	--]]
+	-- TODO just round to nearest 1e-7 and do equality-compare.  faster? nah, equality is failling.
+	-- and once that's done TODO search by hash key and string of floats of binary
 
 	local vtxs
 	local vtxsrcinfo
@@ -780,6 +787,7 @@ for _,shape in ipairs(shapes) do
 			printbr((var'T'('_'..vtxsrcinfo[k].xform) * var'V'('_'..vtxsrcinfo[k].vtx)):eq(vtxs[k]):eq(var'V'('_'..k)))
 		end
 		numvtxs = vtxs:mapi(buildNumVtx)
+		epsvtxs = numvtxs:mapi(roundForSearch)
 	else
 		printerr'building vtxs'
 
@@ -792,6 +800,7 @@ for _,shape in ipairs(shapes) do
 		shapeCache.vtxsrcinfo = vtxsrcinfo
 	
 		numvtxs = vtxs:mapi(buildNumVtx)
+		epsvtxs = numvtxs:mapi(roundForSearch)
 
 		local zerovec = Matrix:zeros{n, 1}
 		local vtx1norm = (vtx1:T() * vtx1)()[1][1]
@@ -806,7 +815,8 @@ for _,shape in ipairs(shapes) do
 			--assert(Matrix(v:dim()) == Matrix{4,1})
 			for i,xform in ipairs(xforms) do
 				local xv = (xform * v)()
-				local nxv = numxforms[i] * numvtxs[j]
+				local numxv = numxforms[i] * numvtxs[j]
+				local epsxv = roundForSearch(numxv)
 				--local xvnorm = (xv:T() * xv)()[1][1]
 				--assert(Matrix(xv:dim()) == Matrix{4,1})
 				--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
@@ -815,8 +825,11 @@ for _,shape in ipairs(shapes) do
 				--[[ can 'find' work?  can equality work?  yes. yes it does.
 				local k = vtxs:find(xv)
 				--]]
-				-- [[ how about numeric comparison? faster...
-				local k = numvtxs:find(nxv, matrixfindeps)
+				--[[ how about numeric comparison? faster...
+				local k = numvtxs:find(numxv, matrixfindeps)
+				--]]
+				-- [[ how about numeric rounded equivalence search? 
+				local k = epsvtxs:find(epsxv)
 				--]]
 				-- TODO numeric vtx to serialized key, or even raw binary key to string key, would be even faster ...
 				--[[ or should i try subtracting?  does that help?
@@ -828,7 +841,13 @@ for _,shape in ipairs(shapes) do
 				if not k then
 					vtxs:insert(xv)
 					vtxsrcinfo:insert{xform=i, vtx=j}
-					numvtxs:insert(buildNumVtx(xv))
+					--[[ re-evaluate 
+					numvtxs:insert(buildNumVtx(xv))	
+					--]]
+					-- [[ or just use the numeric transform
+					numvtxs:insert(numxv)	
+					--]]
+					epsvtxs:insert(roundForSearch(numvtxs:last()))
 					k = #vtxs
 					printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 					printerr('T_'..i..' * V_'..j..' = V_'..k)
@@ -862,6 +881,7 @@ for _,shape in ipairs(shapes) do
 			printbr((var'T'('_'..allxformsrcinfo[k].i) * var'T'('_'..allxformsrcinfo[k].j)):eq(allxforms[k]):eq(var'T'('_'..k)))
 		end
 		numallxforms = allxforms:mapi(buildNumXForm)
+		epsallxforms = numallxforms:mapi(roundForSearch)
 	else
 		printerr'building allxforms'
 		allxforms = table(xforms)
@@ -871,6 +891,7 @@ for _,shape in ipairs(shapes) do
 		shapeCache.allxformsrcinfo = allxformsrcinfo
 
 		numallxforms = allxforms:mapi(buildNumXForm)
+		epsallxforms = numallxforms:mapi(roundForSearch)
 
 	-- [[
 		printbr'All Transforms:'
@@ -889,13 +910,18 @@ for _,shape in ipairs(shapes) do
 					--[[
 					local k = allxforms:find(xM)
 					--]]
-					-- [[
+					--[[
 					local k = numallxforms:find(numxM, matrixfindeps)
+					--]]
+					-- [[
+					local epsxM = roundForSearch(numxM)
+					local k = epsallxforms:find(epsxM)
 					--]]
 					if not k then
 						allxforms:insert(xM)
 						allxformsrcinfo:insert{i=i, j=j}
 						numallxforms:insert(numxM)
+						epsallxforms:insert(epsxM)
 						assert.eq(#allxforms, #allxformsrcinfo)
 						k = #allxforms
 						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
@@ -1075,9 +1101,13 @@ this is slow, and too slow for the 120-cell and 600-cell
 				local xv = (xi * vj)()
 				vtxMulTable[i][j] = assert(vtxs:find(xv))
 				--]]
-				-- [[
 				local numxv = numxi * numvj
+				--[[
 				vtxMulTable[i][j] = assert(numvtxs:find(numxv, matrixfindeps))
+				--]]
+				-- [[
+				local epsxv = roundForSearch(numxv)
+				vtxMulTable[i][j] = assert(epsvtxs:find(epsxv))
 				--]]
 			end
 		end
@@ -1129,9 +1159,13 @@ this is slow, and too slow for the 120-cell and 600-cell
 				local xk = (xi * xj)()
 				mulTable[i][j] = assert(allxforms:find(xk))
 				--]]
-				-- [[
 				local numxk = numxi * numxj
+				--[[
 				mulTable[i][j] = assert(numallxforms:find(numxk, matrixfindeps))
+				--]]
+				local epsxk = roundForSearch(numxk)
+				-- [[
+				mulTable[i][j] = assert(epsallxforms:find(epsxk))
 				--]]
 			end
 		end
