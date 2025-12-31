@@ -487,12 +487,12 @@ local shapes = {
 		end),
 	},
 --]=]
---[=[ TODO i think the same-as-600 rotations have a wrong vtx1.... nope it's not that.  the original is also failing.  it just doesn't like the numeric tests.  or the symbolic sqrt simplifications are introducing errors...
+--[=[
 	{
 		name = '120-cell',
 		dual = '600-cell',
 		dim = 4,
-		--[==[ my first attempt
+		--[==[ my first attempt ... has sqrt simplification errors.
 		vtx1 = Matrix{0,0,2,2}:T(),
 		xforms = {
 			Matrix(
@@ -541,7 +541,10 @@ local shapes = {
 		-- T2^3 * V1 = V1
 		-- so T2 gives us a triangle ... hopefully a triangle on the surface and this will work.
 		-- V123 avg = unit([0, -1, -1, 2]) = [0, -1/sqrt(6), -1/sqrt(6), sqrt(2/3)]
-		vtx1 = Matrix{0, -1/(sqrt(2)*sqrt(3)), -1/(sqrt(2)*sqrt(3)), frac(sqrt(2),sqrt(3))}:T(),	-- midpoint of some triplet of vertexes in the 600-cell
+		--vtx1 = Matrix{0, -1/(sqrt(2)*sqrt(3)), -1/(sqrt(2)*sqrt(3)), frac(sqrt(2),sqrt(3))}:T(),	-- midpoint of some triplet of vertexes in the 600-cell
+		--
+		-- just using 0,0,0,1 works
+		vtx1 = Matrix{0,0,0,1}:T(),
 
 		-- copied of 600-cell's xforms
 		xforms = table{
@@ -564,7 +567,7 @@ local shapes = {
 		--]==]
 	},
 --]=]
--- [=[
+--[=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
