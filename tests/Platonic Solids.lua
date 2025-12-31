@@ -1,4 +1,5 @@
 #!/usr/bin/env luajit
+local ffi = require 'ffi'
 require 'ext'
 local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
@@ -6,7 +7,8 @@ require 'symmath'.setup{env=env, MathJax={title='Platonic Solids'}}
 
 -- uppercase `Matrix` = symbolic,
 -- lowercase `matrix` = numeric
-local matrix = require 'matrix'
+--local matrix = require 'matrix'
+local matrix_ffi = require 'matrix.ffi'
 
 --[[ i made this to fix one tests but now I'm suspicious it is slowing things down ...
 -- nah, time couldn't show a difference
@@ -485,7 +487,7 @@ local shapes = {
 		end),
 	},
 --]=]
--- [=[
+--[=[ TODO i think the same-as-600 rotations have a wrong vtx1.... nope it's not that.  the original is also failing.  it just doesn't like the numeric tests.  or the symbolic sqrt simplifications are introducing errors...
 	{
 		name = '120-cell',
 		dual = '600-cell',
@@ -562,7 +564,7 @@ local shapes = {
 		--]==]
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = '600-cell',
 		dual = '120-cell',
@@ -741,18 +743,26 @@ for _,shape in ipairs(shapes) do
 	-- so I will keep numerical copies of the xforms and vectors, and use those for searches.
 
 	local function buildNumXForm(xform)
-		return matrix((xform:eval()))
+		return matrix_ffi((xform:eval()))
 	end
 	-- store a copy rounded to nearest 1e-7 or so, so i can just do an equivalence test when searching
 	-- don't use this for numerics as well because subsequent errors can build up
 	local function roundForSearch(m)
-		return (m:map(function(x) 
-			return math.round(x * 1e+7) * 1e-7 
+		return (m:map(function(x)
+			return math.round(x * 1e+7) * 1e-7
 			-- 120-cell fails ... why?
 			-- it has sqrt simplification errors too ... related?
 			-- maybe because i switched to storing the numerically-transformed number instead of re-evaluating the expression...
-			--return math.round(x * 1e+5) * 1e-5 
+			--return math.round(x * 1e+5) * 1e-5
 		end))
+	end
+	local function epsToKey(v)
+		--[[ naive and flexible
+		return tostring(v)
+		--]]
+		-- [[ faster and specific to matrix.ffi
+		return ffi.string(v.ptr, v.volume * ffi.sizeof(v.ctype))
+		--]]
 	end
 	local numxforms = xforms:mapi(buildNumXForm)
 	local numallxforms
@@ -762,13 +772,13 @@ for _,shape in ipairs(shapes) do
 	-- track mirror numeric vtxs for fast lookups
 	-- since right now the find() of expressions is whats slowing us down the most
 	local function buildNumVtx(vtx)
-		return matrix(vtx:T()[1]:eval())	-- vtx is a col-matrix so ...
+		return matrix_ffi(vtx:T()[1]:eval())	-- vtx is a col-matrix so ...
 	end
 	local numvtxs
 	local epsvtxs
 	local vtxIndexForEpsStr = {}
 
-	-- [[ compare two numeric-matrices , true if they are within epsilon
+	--[[ compare two numeric-matrices , true if they are within epsilon
 	local function matrixfindeps(a,b)
 		return (a - b):normLInf() < 1e-7
 	end
@@ -795,7 +805,9 @@ for _,shape in ipairs(shapes) do
 		end
 		numvtxs = vtxs:mapi(buildNumVtx)
 		epsvtxs = numvtxs:mapi(roundForSearch)
-		vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i) return i, tostring(epsvtx) end):setmetatable(nil)
+		vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i)
+			return i, epsToKey(epsvtx)
+		end):setmetatable(nil)
 	else
 		printerr'building vtxs'
 
@@ -809,7 +821,9 @@ for _,shape in ipairs(shapes) do
 
 		numvtxs = vtxs:mapi(buildNumVtx)
 		epsvtxs = numvtxs:mapi(roundForSearch)
-		vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i) return i, tostring(epsvtx) end):setmetatable(nil)
+		vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i)
+			return i, epsToKey(epsvtx)
+		end):setmetatable(nil)
 
 		local zerovec = Matrix:zeros{n, 1}
 		local vtx1norm = (vtx1:T() * vtx1)()[1][1]
@@ -842,7 +856,7 @@ for _,shape in ipairs(shapes) do
 				local k = epsvtxs:find(epsxv)
 				--]]
 				-- [[ how about with strings and hashes
-				local epsxvstr = tostring(epsxv)
+				local epsxvstr = epsToKey(epsxv)
 				local k = vtxIndexForEpsStr[epsxvstr]
 				--]]
 				-- TODO numeric vtx to serialized key, or even raw binary key to string key, would be even faster ...
@@ -858,14 +872,28 @@ for _,shape in ipairs(shapes) do
 					k = #vtxs
 					vtxsrcinfo:insert{xform=i, vtx=j}
 					-- [[ re-evaluate?  yeah maybe so, at 120-cell I'm getting numerical problems and >q0 vertexes
-					numvtxs:insert(buildNumVtx(xv))
-					epsvtxs:insert(roundForSearch(numvtxs:last()))
+					local numxvcheck = buildNumVtx(xv)
+					local epsxvcheck = roundForSearch(numxvcheck)
+					numvtxs:insert(numxvcheck)
+					epsvtxs:insert(epsxvcheck)
+					-- the two should be equal, or else we risk an infinite loop (which is happening for 120-cell)
+					-- so how about I assert that (for debug runs)?
+					-- but the original un-rounded number might not be exactly the same ...
+					--[=[
+					local epsxvstrcheck = epsToKey(epsxvcheck)
+					vtxIndexForEpsStr[epsxvstrcheck] = k
+					assert.eq(epsxvstr, epsxvstrcheck)
+					--]=]
+					-- [=[ they should be equal so don't re-serialize it
+					vtxIndexForEpsStr[epsxvstr] = k
+					--]=]
 					--]]
 					--[[ or just use the numeric transform
 					numvtxs:insert(numxv)
 					epsvtxs:insert(epsxv)
+					vtxIndexForEpsStr[epsxvstr] = k
 					--]]
-					vtxIndexForEpsStr[tostring(epsvtxs:last())] = k
+
 					printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 					printerr('T_'..i..' * V_'..j..' = V_'..k)
 					buildvtxs(k, depth + 1)
@@ -899,7 +927,9 @@ for _,shape in ipairs(shapes) do
 		end
 		numallxforms = allxforms:mapi(buildNumXForm)
 		epsallxforms = numallxforms:mapi(roundForSearch)
-		allXFormIndexForEpsStr = epsallxforms:mapi(function(epsxform,i) return i, tostring(epsxform) end):setmetatable(nil)
+		allXFormIndexForEpsStr = epsallxforms:mapi(function(epsxform,i)
+			return i, epsToKey(epsxform)
+		end):setmetatable(nil)
 	else
 		printerr'building allxforms'
 		allxforms = table(xforms)
@@ -910,7 +940,9 @@ for _,shape in ipairs(shapes) do
 
 		numallxforms = allxforms:mapi(buildNumXForm)
 		epsallxforms = numallxforms:mapi(roundForSearch)
-		allXFormIndexForEpsStr = epsallxforms:mapi(function(epsxform,i) return i, tostring(epsxform) end):setmetatable(nil)
+		allXFormIndexForEpsStr = epsallxforms:mapi(function(epsxform,i)
+			return i, epsToKey(epsxform)
+		end):setmetatable(nil)
 
 	-- [[
 		printbr'All Transforms:'
@@ -938,7 +970,7 @@ for _,shape in ipairs(shapes) do
 					local k = epsallxforms:find(epsxM)
 					--]]
 					-- [[
-					local epsxMstr = tostring(epsxM)
+					local epsxMstr = epsToKey(epsxM)
 					local k = allXFormIndexForEpsStr[epsxMstr]
 					--]]
 					if not k then
@@ -946,15 +978,25 @@ for _,shape in ipairs(shapes) do
 						allxforms:insert(xM)
 						k = #allxforms
 						allxformsrcinfo:insert{i=i, j=j}
-						-- [[ re-evaluate
-						numallxforms:insert(buildNumXForm(xM))
-						epsallxforms:insert(roundForSearch(numallxforms:last()))
+						-- [[ re-evaluate (to prevent numerical error buildup)
+						local numxMcheck = buildNumXForm(xM)
+						local epsxMcheck = roundForSearch(numxMcheck)
+						numallxforms:insert(numxMcheck)
+						epsallxforms:insert(epsxMcheck)
+						--[=[ verify they are equal
+						local epsxMstrcheck = epsToKey(epsxMcheck)
+						allXFormIndexForEpsStr[epsxMstrcheck] = k
+						assert.eq(epsxMstr, epsxMstrcheck)
+						--]=]
+						-- [=[ assert they are equal
+						allXFormIndexForEpsStr[epsxMstr] = k
+						--]=]
 						--]]
 						--[[ use numeric trnsform
 						numallxforms:insert(numxM)
 						epsallxforms:insert(epsxM)
-						--]]
 						allXFormIndexForEpsStr[epsxMstr] = k
+						--]]
 						assert.eq(#allxforms, #allxformsrcinfo)
 						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
 						printerr('T_'..i..' * T_'..j..' = T_'..k)
@@ -1015,7 +1057,7 @@ for _,shape in ipairs(shapes) do
 			end)
 			--]=]
 
-		if matrix(rename) ~= matrix(range(#vtxs)) then
+		if matrix_ffi(rename) ~= matrix_ffi(range(#vtxs)) then
 
 			printbr()
 			printbr('relabeled vertexes as', tolua(rename))
@@ -1141,7 +1183,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 				--[[
 				vtxMulTable[i][j] = assert(epsvtxs:find(epsxv))
 				--]]
-				local epsxvstr = tostring(epsxv)
+				local epsxvstr = epsToKey(epsxv)
 				-- [[
 				vtxMulTable[i][j] = assert.index(vtxIndexForEpsStr, epsxvstr)
 				--]]
@@ -1203,7 +1245,7 @@ this is slow, and too slow for the 120-cell and 600-cell
 				--[[
 				mulTable[i][j] = assert(epsallxforms:find(epsxk))
 				--]]
-				local epsxkstr = tostring(epsxk)
+				local epsxkstr = epsToKey(epsxk)
 				-- [[
 				mulTable[i][j] = assert.index(allXFormIndexForEpsStr, epsxkstr)
 				--]]
