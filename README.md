@@ -1050,10 +1050,6 @@ Output Examples:
 
 [tests/output/BSSN - generate - spherical](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20generate%20%2d%20spherical.html)
 
-[tests/output/BSSN - generate](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20generate.html)
-
-[tests/output/BSSN - index - cache](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20index%20%2d%20cache.html)
-
 [tests/output/BSSN - index](https://thenumbernine.github.io/lua/symmath/tests/output/BSSN%20%2d%20index.html)
 
 [tests/output/Building Curvature by ADM](https://thenumbernine.github.io/lua/symmath/tests/output/Building%20Curvature%20by%20ADM.html)
@@ -1118,25 +1114,65 @@ Output Examples:
 
 [tests/output/MHD symmetrization](https://thenumbernine.github.io/lua/symmath/tests/output/MHD%20symmetrization.html)
 
-[tests/output/MakeTrigLookupTables](https://thenumbernine.github.io/lua/symmath/tests/output/MakeTrigLookupTables.html)
-
 [tests/output/Maxwell equations - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Maxwell%20equations%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Navier-Stokes-Wilcox - flux eigenvectors](https://thenumbernine.github.io/lua/symmath/tests/output/Navier%2dStokes%2dWilcox%20%2d%20flux%20eigenvectors.html)
 
 [tests/output/Newton method](https://thenumbernine.github.io/lua/symmath/tests/output/Newton%20method.html)
 
-[tests/output/Platonic Solids - cache](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids%20%2d%20cache.html)
-
 [tests/output/Platonic Solids](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids.html)
 
-[tests/output/Platonic Solids/120-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/120%2dcell.html)
+[tests/output/Platonic Solids/120-cell vertex inner products](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/120%2dcell%20vertex%20inner%20products.html)
+
+[tests/output/Platonic Solids/120-cell vertex multiplication table](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/120%2dcell%20vertex%20multiplication%20table.html)
+
+[tests/output/Platonic Solids/120-cell vertexes](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/120%2dcell%20vertexes.html)
 
 [tests/output/Platonic Solids/16-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/16%2dcell.html)
 
 [tests/output/Platonic Solids/24-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/24%2dcell.html)
 
 [tests/output/Platonic Solids/5-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/5%2dcell.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 1](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%201.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 10](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2010.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 11](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2011.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 12](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2012.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 13](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2013.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 14](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2014.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 15](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2015.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 16](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2016.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 17](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2017.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 18](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2018.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 19](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2019.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 2](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%202.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 20](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%2020.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 3](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%203.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 4](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%204.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 5](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%205.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 6](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%206.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 7](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%207.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 8](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%208.html)
+
+[tests/output/Platonic Solids/600-cell transform multiplication table page 9](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transform%20multiplication%20table%20page%209.html)
 
 [tests/output/Platonic Solids/600-cell transforms 1](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20transforms%201.html)
 
@@ -1184,8 +1220,6 @@ Output Examples:
 
 [tests/output/Platonic Solids/600-cell vertexes](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell%20vertexes.html)
 
-[tests/output/Platonic Solids/600-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/600%2dcell.html)
-
 [tests/output/Platonic Solids/8-cell](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/8%2dcell.html)
 
 [tests/output/Platonic Solids/Cube](https://thenumbernine.github.io/lua/symmath/tests/output/Platonic%20Solids/Cube.html)
@@ -1218,15 +1252,9 @@ Output Examples:
 
 [tests/output/TOV](https://thenumbernine.github.io/lua/symmath/tests/output/TOV.html)
 
-[tests/output/Z4 - flux PDE noSource](https://thenumbernine.github.io/lua/symmath/tests/output/Z4%20%2d%20flux%20PDE%20noSource.html)
-
 [tests/output/Z4](https://thenumbernine.github.io/lua/symmath/tests/output/Z4.html)
 
 [tests/output/black hole brain](https://thenumbernine.github.io/lua/symmath/tests/output/black%20hole%20brain.html)
-
-[tests/output/console_spherical_metric](https://thenumbernine.github.io/lua/symmath/tests/output/console_spherical_metric.html)
-
-[tests/output/elastic plate](https://thenumbernine.github.io/lua/symmath/tests/output/elastic%20plate.html)
 
 [tests/output/electrovacuum/black hole electron](https://thenumbernine.github.io/lua/symmath/tests/output/electrovacuum/black%20hole%20electron.html)
 
@@ -1253,6 +1281,8 @@ Output Examples:
 [tests/output/metric catalog](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog.html)
 
 [tests/output/metric catalog/Cartesian, coordinate](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/Cartesian%2c%20coordinate.html)
+
+[tests/output/metric catalog/Schwarzschild, anholonomic](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/Schwarzschild%2c%20anholonomic.html)
 
 [tests/output/metric catalog/Schwarzschild](https://thenumbernine.github.io/lua/symmath/tests/output/metric%20catalog/Schwarzschild.html)
 
@@ -1316,7 +1346,7 @@ Output Examples:
 
 [tests/output/scalar metric](https://thenumbernine.github.io/lua/symmath/tests/output/scalar%20metric.html)
 
-[tests/output/solve cubic](https://thenumbernine.github.io/lua/symmath/tests/output/solve%20cubic.html)
+[tests/output/simple_ag](https://thenumbernine.github.io/lua/symmath/tests/output/simple_ag.html)
 
 [tests/output/spacetime embedding radius](https://thenumbernine.github.io/lua/symmath/tests/output/spacetime%20embedding%20radius.html)
 
@@ -1338,8 +1368,6 @@ Output Examples:
 
 [tests/output/unit/compile](https://thenumbernine.github.io/lua/symmath/tests/output/unit/compile.html)
 
-[tests/output/unit/determinant_performance](https://thenumbernine.github.io/lua/symmath/tests/output/unit/determinant_performance.html)
-
 [tests/output/unit/export](https://thenumbernine.github.io/lua/symmath/tests/output/unit/export.html)
 
 [tests/output/unit/func](https://thenumbernine.github.io/lua/symmath/tests/output/unit/func.html)
@@ -1354,11 +1382,11 @@ Output Examples:
 
 [tests/output/unit/limit](https://thenumbernine.github.io/lua/symmath/tests/output/unit/limit.html)
 
-[tests/output/unit/linear solver](https://thenumbernine.github.io/lua/symmath/tests/output/unit/linear%20solver.html)
-
 [tests/output/unit/match](https://thenumbernine.github.io/lua/symmath/tests/output/unit/match.html)
 
 [tests/output/unit/matrix](https://thenumbernine.github.io/lua/symmath/tests/output/unit/matrix.html)
+
+[tests/output/unit/nonassociative](https://thenumbernine.github.io/lua/symmath/tests/output/unit/nonassociative.html)
 
 [tests/output/unit/notfinite](https://thenumbernine.github.io/lua/symmath/tests/output/unit/notfinite.html)
 
@@ -1385,8 +1413,6 @@ Output Examples:
 [tests/output/unit/tensor sub-assignment](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20sub%2dassignment.html)
 
 [tests/output/unit/tensor sub-index](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20sub%2dindex.html)
-
-[tests/output/unit/tensor use case](https://thenumbernine.github.io/lua/symmath/tests/output/unit/tensor%20use%20case.html)
 
 [tests/output/unit/test](https://thenumbernine.github.io/lua/symmath/tests/output/unit/test.html)
 
