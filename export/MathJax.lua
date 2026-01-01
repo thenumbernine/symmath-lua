@@ -9,6 +9,7 @@ local symmath
 local MathJax = LaTeX.class:subclass()
 
 MathJax.name = 'MathJax'
+MathJax.colsep = '&amp;'	-- & but for html
 
 local Header = class()
 

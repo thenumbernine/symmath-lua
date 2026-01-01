@@ -15,9 +15,6 @@ local matrix_ffi = require 'matrix.ffi'
 assert(symmath.op.mul:pushRule'Prune/differenceOfSquares')
 --]]
 
--- force means don't use cache ... but still write to cache
-local force = cmdline.force or false
-
 printbr[[
 $n =$ dimension of manifold which our shape resides in.<br>
 $\tilde{T}_i \in \mathbb{R}^{n \times n} =$ i'th isomorphic transform in the minimal set.<br>
@@ -30,7 +27,7 @@ $v_1 \in \mathbb{R}^n =$ some arbitrary initial vertex.<br>
 $\textbf{v} = \{v_i \} = \{ T_i \cdot v_1 \} =$ the set of all vertices.<br>
 $m = |\textbf{v}| =$ the number of vertices.<br>
 (Notice that $m \le q$, i.e. the number of vertices is $\le$ the number of unique isomorphic transforms.) <br>
-$V \in \mathbb{R}^{n \times m}=$ matrix with column vectors the set of all vertices, such that $V_{ij} = (v_j)_i$.<br>
+$V \in \mathbb{R}^{n \times m}=$ matrix with column vectors the set of all vertices, such that $V_{ij} = (V_j)_i$.<br>
 $P_i \in \mathbb{R}^{m \times m} =$ permutation transform of vertices corresponding with i'th transformation, such that $T_i V = V P_i$.<br>
 <br>
 ]]
@@ -242,7 +239,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
---[=[
+-- [=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -357,8 +354,9 @@ local shapes = {
 		dual = '5-cell',
 		dim = 4,
 
-		vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
-		--vtx1 = Matrix{0, 0, 0, 1}:T(),
+		-- TODO both work, and 0,0,0,1 is in the solution of (sqrt(15)/4,0,0,-1/4), so why use anything but 0,0,0,1?
+		--vtx1 = Matrix{frac(sqrt(15),4), 0, 0, -frac(1,4)}:T(),
+		vtx1 = Matrix{0, 0, 0, 1}:T(),
 
 		-- interesting that these aren't quaternion mats (rotations that just permute vertexes), they're 4D rots from two quat mats multiplied together
 		xforms = (function()
@@ -644,34 +642,6 @@ local function printerr(...)
 	io.stderr:flush()
 end
 
-local cache = {}
-local cacheFilename = path'Platonic Solids - cache.lua'
-if cacheFilename:exists() then
-	printerr'reading cache...'
-	cache = load('return '..cacheFilename:read(), nil, nil, env)()
-	printerr'...done reading cache'
-end
-
-local function writeShapeCaches()
-	-- can symmath.export.SymMath export Lua tables?
-	--cacheFilename:write(symmath.export.SymMath(cache))
-	cacheFilename:write(tolua(cache, {
-		serializeForType = {
-			table = function(state, x, tab, pathstr, keyRef, ...)
-				local mt = getmetatable(x)
-				if mt and (
-					Expression:isa(mt)
-					-- TODO 'or' any other classes in symmath that aren't subclasses of Expression (are there any?)
-				) then
-					return symmath.export.SymMath(x):gsub('%s+', ' ')
-				end
-				return tolua.defaultSerializeForType.table(state, x, tab, pathstr, keyRef, ...)
-			end,
-		}
-	}))
-	-- is there some sort of tolua args that will encode the symmath with symmath.export.SymMath?
-end
-
 for _,shape in ipairs(shapes) do
 
 	printerr(shape.name)
@@ -683,40 +653,35 @@ for _,shape in ipairs(shapes) do
 		return f:write(...)
 	end
 	local function print(...)
-		write(table{...}:mapi(tostring):concat'\t'..'\n')
+		for i=1,select('#', ...) do
+			if i > 1 then write'\t' end
+			write(tostring((select(i, ...))))
+		end
+		write'\n'
 		f:flush()
 	end
 	local function printbr(...)
-		print(...)
+		for i=1,select('#', ...) do
+			if i > 1 then write'\t' end
+			write(tostring((select(i, ...))))
+		end
 		print'<br>'
 	end
 
 	print(MathJax.header)
 
-	local shapeCache = cache[shape.name]
-	if not shapeCache then
-		printerr'starting new shape cache'
-		shapeCache = {}
-		cache[shape.name] = shapeCache
-	else
-		printerr'found shape cache'
-	end
-
 --print('<a name="'..shape.name..'">')
 	print('<h3>'..shape.name..'</h3>')
 
 	local n = shape.dim
-	shapeCache.n = shape.dim
 
 	local vtx1 = shape.vtx1 or Matrix:lambda({n,1}, function(i,j) return i==1 and 1 or 0 end)
-	shapeCache.vtx1 = vtx1
 
-	printbr('Initial vertex:', var'v''_1':eq(vtx1))
+	printbr('Initial vertex:', var'V''_1':eq(vtx1))
 	printbr()
 
 	local xforms = table(shape.xforms)
 	xforms:insert(1, Matrix.identity(n))
-	shapeCache.xforms = xforms
 
 	printbr'Transforms for vertex generation:'
 	printbr()
@@ -792,26 +757,7 @@ for _,shape in ipairs(shapes) do
 	local vtxs
 	local vtxsrcinfo
 
-	if not force
-	and shapeCache.vtxs
-	and shapeCache.vtxsrcinfo
-	then
-		printerr'using old vtxs'
-		vtxs = table(shapeCache.vtxs)
-		vtxsrcinfo = shapeCache.vtxsrcinfo
-		-- TODO need to save more information to output equivalent html here or else the page will be missing it
-		if #vtxs ~= #vtxsrcinfo then
-			error("#vtxs == "..#vtxs.." but #vtxsrcinfo == "..#vtxsrcinfo)
-		end
-		for k=2,#vtxs do
-			printbr((var'T'('_'..vtxsrcinfo[k].xform) * var'V'('_'..vtxsrcinfo[k].vtx)):eq(vtxs[k]):eq(var'V'('_'..k)))
-		end
-		numvtxs = vtxs:mapi(buildNumVtx)
-		epsvtxs = numvtxs:mapi(roundForSearch)
-		vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i)
-			return i, epsToKey(epsvtx)
-		end):setmetatable(nil)
-	else
+	do
 		printerr'building vtxs'
 
 		printbr'Vertexes:'
@@ -819,8 +765,6 @@ for _,shape in ipairs(shapes) do
 
 		vtxs = table{vtx1()}
 		vtxsrcinfo = table{{}}	-- one dummy entry
-		shapeCache.vtxs = vtxs
-		shapeCache.vtxsrcinfo = vtxsrcinfo
 
 		numvtxs = vtxs:mapi(buildNumVtx)
 		epsvtxs = numvtxs:mapi(roundForSearch)
@@ -915,31 +859,11 @@ for _,shape in ipairs(shapes) do
 	local allxforms
 	local allxformsrcinfo
 
-	if not force
-	and shapeCache.allxforms
-	and shapeCache.allxformsrcinfo
-	then
-		printerr'using old allxforms'
-		allxforms = table(shapeCache.allxforms)
-		allxformsrcinfo = table(shapeCache.allxformsrcinfo)
-		if #allxforms ~= #allxformsrcinfo then
-			error("#allxforms == "..#allxforms.." but #allxformsrcinfo == "..#allxformsrcinfo)
-		end
-		for k=#xforms+1,#allxforms do
-			printbr((var'T'('_'..allxformsrcinfo[k].i) * var'T'('_'..allxformsrcinfo[k].j)):eq(allxforms[k]):eq(var'T'('_'..k)))
-		end
-		numallxforms = allxforms:mapi(buildNumXForm)
-		epsallxforms = numallxforms:mapi(roundForSearch)
-		allXFormIndexForEpsStr = epsallxforms:mapi(function(epsxform,i)
-			return i, epsToKey(epsxform)
-		end):setmetatable(nil)
-	else
+	do
 		printerr'building allxforms'
 		allxforms = table(xforms)
 		allxformsrcinfo = range(#xforms):mapi(function() return {} end)	-- one dummy entry per initial xforms
 		assert.eq(#allxforms, #allxformsrcinfo)
-		shapeCache.allxforms = allxforms
-		shapeCache.allxformsrcinfo = allxformsrcinfo
 
 		numallxforms = allxforms:mapi(buildNumXForm)
 		epsallxforms = numallxforms:mapi(roundForSearch)
@@ -1013,9 +937,6 @@ for _,shape in ipairs(shapes) do
 		printbr()
 		printerr'done finding transforms'
 		assert.eq(#allxforms, #allxformsrcinfo)
-		printerr'writing...'
-		writeShapeCaches()
-		printerr'...done writing'
 	--]]
 	end
 
@@ -1068,9 +989,6 @@ for _,shape in ipairs(shapes) do
 
 			vtxs = rename:mapi(function(i) return vtxs[i] end)
 			vtxsrcinfo = rename:mapi(function(i) return vtxsrcinfo[i] end)
-
-			shapeCache.vtxs = vtxs
-			shapeCache.vtxsrcinfo = vtxsrcinfo
 		end
 	end
 --]]
@@ -1079,13 +997,11 @@ for _,shape in ipairs(shapes) do
 
 	-- number of vertexes
 	local nvtxs = #vtxs
-	shapeCache.nvtxs = nvtxs
 
 -- [[ show vertex inner products
 -- before or after finding all transforms?
 	local VmatT = Matrix(vtxs:mapi(function(v) return v:T()[1] end):unpack())
 	local Vmat = VmatT:T()
-	shapeCache.Vmat = Vmat
 
 	printbr'Vertexes as column vectors:'
 	printbr()
@@ -1097,24 +1013,15 @@ for _,shape in ipairs(shapes) do
 	printbr()
 
 	local vdots
-	if not force
-	and shapeCache.vdots
-	then
-		printerr'using old vdots'
-		vdots = shapeCache.vdots
-	else
+	do
 		printerr'building vdots'
 		vdots = (Vmat:T() * Vmat)()
-		shapeCache.vdots = vdots
 	end
 	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
 	printbr()
 
 	printerr'...done vertex inner products'
 --]]
-	printerr'writing...'
-	writeShapeCaches()
-	printerr'...done writing'
 
 
 --[[
@@ -1162,15 +1069,9 @@ this is slow, and too slow for the 120-cell and 600-cell
 	-- show vtx multiplication table
 	-- btw, do i need to show the details of this above?  or should I just show this?
 	local vtxMulTable
-	if not force
-	and shapeCache.vtxMulTable
-	then
-		printerr'using old vtxMulTable'
-		vtxMulTable = shapeCache.vtxMulTable
-	else
+	do
 		printerr'building vtxMulTable'
 		vtxMulTable = {}
-		shapeCache.vtxMulTable = vtxMulTable
 		for i,numxi in ipairs(numallxforms) do
 			vtxMulTable[i] = vtxMulTable[i] or {}
 			for j,numvj in ipairs(numvtxs) do
@@ -1195,44 +1096,43 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printerr'done finding vertex multiplication table'
 	end
 	local function printVtxMulTable()
-		printbr[[Table of $T_i \cdot v_j = v_k$:]]
-		print'<table>\n'
-		print'<tr><td></td>'
+		local maxts = #tostring(#allxforms)
+		local maxvs = #tostring(#vtxs)
+		printbr[[Table of $T_i\cdot V_j=V_k$:]]
+		print'<pre>'
+
+		write((' '):rep(maxts+1))
 		for j=1,#vtxs do
-			print('<td>V'..j..'</td>')
+			local sj = tostring(j)
+			write(' V', sj)
+			if j < #vtxs then write((' '):rep(maxvs - #sj)) end
 		end
-		print'</tr>\n'
+		print()
+
 		-- print the multiplcation table
 		for i,xi in ipairs(allxforms) do
-			print('<tr><td>T'..i..'</td>')
+			local si = tostring(i)
+			write('T'..si..(' '):rep(maxts - #si))
 			for j,vj in ipairs(vtxs) do
 				local k = vtxMulTable[i][j]
-				print'<td>'
 				if not k then
-					print("couldn't find xform for ", var'T'('_'..i) * var'V'('_'..j))
-				else
-					print('V'..k)
+					error("couldn't find xform for T_"..i.." * V_"..j)
 				end
-				print'</td>'
+				local sk = tostring(k)
+				write(' V', sk)
+				if j < #vtxs then write((' '):rep(maxvs - #sk)) end
 			end
-			print('</tr>\n')
+			print()
 		end
-		print'</table>\n'
-		printbr()
+		printbr'</pre>'
 		printbr()
 	end
 	printVtxMulTable()
 
 	local mulTable
-	if not force
-	and shapeCache.mulTable
-	then
-		printerr'using old mulTable'
-		mulTable = shapeCache.mulTable
-	else
+	do
 		printerr'building mulTable'
 		mulTable = {}
-		shapeCache.mulTable = mulTable
 		for i,numxi in ipairs(numallxforms) do
 			mulTable[i] = {}
 			for j,numxj in ipairs(numallxforms) do
@@ -1257,30 +1157,34 @@ this is slow, and too slow for the 120-cell and 600-cell
 		printerr'done finding transform multiplication table'
 	end
 	local function printXformMulTable()
+		local maxts = #tostring(#allxforms)
 		printbr[[Table of $T_i \cdot T_j = T_k$:]]
-		print'<table>\n'
-		print'<tr><td></td>'
-		for i=1,#allxforms do
-			print('<td>T'..i..'</td>')
+		print'<pre>'
+
+		write((' '):rep(maxts+1))
+		for j=1,#allxforms do
+			local sj = tostring(j)
+			write(' T',sj)
+			if j < #allxforms then write((' '):rep(maxts - #sj)) end
 		end
-		print'</tr>\n'
+		print()
+
 		-- print the multiplcation table
 		for i=1,#allxforms do
-			print('<tr><td>T'..i..'</td>')
+			local si = tostring(i)
+			write('T'..si..(' '):rep(maxts - #si))
 			for j=1,#allxforms do
 				local k = mulTable[i][j]
-				print'<td>'
 				if not k then
-					print("couldn't find xform for ", var'T'('_'..i) * var'T'('_'..j))
-				else
-					print('T'..k)
+					error("couldn't find xform for T_"..i.." * T_"..j)
 				end
-				print'</td>'
+				local sk = tostring(k)
+				write(' T', sk)
+				if j < #allxforms then write((' '):rep(maxts - #sk)) end
 			end
-			print('</tr>\n')
+			print()
 		end
-		print'</table>\n'
-		printbr()
+		printbr'</pre>'
 		printbr()
 	end
 	printXformMulTable()
@@ -1393,19 +1297,5 @@ this is slow, and too slow for the 120-cell and 600-cell
 	print(MathJax.footer)
 	f:close()
 end
-
-printerr'writing...'
-writeShapeCaches()
-printerr'...done writing'
-
---[[
-local s = table()
-s:insert'{'
-for k,v in pairs(cache) do
-
-end
-s:insert'}'
-cacheFilename:write(s:concat'\n')
---]]
 
 print(export.MathJax.footer)

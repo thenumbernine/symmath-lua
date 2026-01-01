@@ -27,6 +27,9 @@ LaTeX.name = 'LaTeX'
 LaTeX.openSymbol = '$'
 LaTeX.closeSymbol = '$'
 
+-- column-separator in matrices
+LaTeX.colsep = '&'
+
 --[[
 matrix open/close
 common options:
@@ -475,78 +478,81 @@ LaTeX.lookupTable = table(LaTeX.lookupTable):union{
 			return self.lookupTable[require 'symmath.Array'](self, expr)
 		end
 
-		--[[ without row-splits, \begin{matrix} \end{matrix} is fine
-		local rows = table()
-		for i=1,#expr do
-			if type(expr[i]) ~= 'table' then
-				error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
+		-- if there's no col/row splits then use default
+		if not (expr.colsplits and next(expr.colsplits))
+		and not (expr.rowsplits and next(expr.rowsplits))
+		then
+			-- without row-splits, \begin{matrix} \end{matrix} is fine
+			local rows = table()
+			for i=1,#expr do
+				if type(expr[i]) ~= 'table' then
+					error("expected matrix children to be Arrays (or at least tables), but got ("..type(expr[i])..") "..tostring(expr[i]))
+				end
+				rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
+					return omit(self:apply(expr[i][j]))
+				end), ' '..self.colsep..' '))
+				if #expr > 1 then rows[i] = omit(rows[i]) end
 			end
-			rows[i] = omit(tableConcat(range(#expr[i]):map(function(j)
-				return omit(self:apply(expr[i][j]))
-			end), ' & '))
-			if #expr > 1 then rows[i] = omit(rows[i]) end
-		end
 
-		local result = table{self.matrixLeftSymbol, self.matrixBeginSymbol}
-		result:append(omit(tableConcat(rows, ' \\\\')))
-		result:append{self.matrixEndSymbol, self.matrixRightSymbol}
-		return omit(result)
-		--]]
-
-		-- [[ with rowsplits, have to use \begin{array} \end{array}
-		local m = #expr
-		local n = #expr[1]
-		local result = table()
-		result:insert(self.matrixLeftSymbol)
-		local cols = table{'{'}
-		local colsplits = table(expr.colsplits):sort()
-		local colsplitindex = 1
-		for j=1,n do
-			while colsplitindex <= #colsplits
-			and colsplits[colsplitindex] < j
-			do
+			local result = table{self.matrixLeftSymbol, self.matrixBeginSymbol}
+			result:append(omit(tableConcat(rows, ' \\\\')))
+			result:append{self.matrixEndSymbol, self.matrixRightSymbol}
+			return omit(result)
+		else
+			-- with rowsplits, have to use \begin{array} \end{array}
+			local m = #expr
+			local n = #expr[1]
+			local result = table()
+			result:insert(self.matrixLeftSymbol)
+			local cols = table{'{'}
+			local colsplits = table(expr.colsplits):sort()
+			local colsplitindex = 1
+			for j=1,n do
+				while colsplitindex <= #colsplits
+				and colsplits[colsplitindex] < j
+				do
+					colsplitindex = colsplitindex + 1
+					cols:insert'|'
+				end
+				cols:insert'c'
+			end
+			while colsplitindex <= #colsplits do
 				colsplitindex = colsplitindex + 1
 				cols:insert'|'
 			end
-			cols:insert'c'
-		end
-		while colsplitindex <= #colsplits do
-			colsplitindex = colsplitindex + 1
-			cols:insert'|'
-		end
-		cols:insert'}'
-		result:insert('\\begin{array}')--self.matrixBeginSymbol)
-		result:insert(cols:concat())
-		local rowsplitindex = 1
-		local rowsplits = table(expr.rowsplits):sort()
-		for i=1,m do
-			while rowsplitindex <= #rowsplits
-			and rowsplits[rowsplitindex] < i
-			do
-				rowsplitindex = rowsplitindex + 1
-				result:insert'\\hline'
-			end
-			for j=1,n do
-				if j > 1 then
-					result:insert'&'
+			cols:insert'}'
+			result:insert('\\begin{array}')--self.matrixBeginSymbol)
+			result:insert(cols:concat())
+			local rowsplitindex = 1
+			local rowsplits = table(expr.rowsplits):sort()
+			for i=1,m do
+				while rowsplitindex <= #rowsplits
+				and rowsplits[rowsplitindex] < i
+				do
+					rowsplitindex = rowsplitindex + 1
+					result:insert'\\hline'
 				end
-				result:insert((self:applyLaTeX(expr[i][j])))
+				for j=1,n do
+					if j > 1 then
+						result:insert(self.colsep)
+					end
+					result:insert((self:applyLaTeX(expr[i][j])))
+				end
+				if i < m then
+					result:insert'\\\\'
+				end
 			end
-			if i < m then
+			if rowsplitindex <= #rowsplits then
 				result:insert'\\\\'
+				while rowsplitindex <= #rowsplits do
+					rowsplitindex = rowsplitindex + 1
+					result:insert'\\hline'
+				end
 			end
+			result:insert('\\end{array}')--self.matrixEndSymbol)
+			result:insert(self.matrixRightSymbol)
+			return result
 		end
-		if rowsplitindex <= #rowsplits then
-			result:insert'\\\\'
-			while rowsplitindex <= #rowsplits do
-				rowsplitindex = rowsplitindex + 1
-				result:insert'\\hline'
-			end
-		end
-		result:insert('\\end{array}')--self.matrixEndSymbol)
-		result:insert(self.matrixRightSymbol)
-		return result
-		--]]
 	end,
 	[require 'symmath.Tensor'] = function(self, expr)
 		local s = self.lookupTable[require 'symmath.Array'](self, expr)
