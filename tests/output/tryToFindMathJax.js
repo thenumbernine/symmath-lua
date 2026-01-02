@@ -2,10 +2,19 @@
 // https://docs.mathjax.org/en/latest/web/configuration.html
 window.MathJax = {
 	tex: {
-		inlineMath: [['$', '$'], ['\\(', '\\)']]
+		inlineMath: [['$', '$'], ['\\(', '\\)']],
+
+		// MathJax can easily parse and render a 500x500 matrix of expressions,
+		// but as soon as you put as many macros in it (to cut down on file size), it feels the need to buffer everything, and you now have to request allocation of the entire string's size's worth of memory up front.
+		maxBuffer : 5 * 1024 * 1024,	// macro substitution exceeding the 5k buffer size
+		// And you have to declare to it how many macros are going to be in the expression as its macro substitution upper bound.
+		maxMacros : 1024 * 1024,		// default is 1000 or so
+		// They say this is to stop it from having a recursive macro expansion run-on.
+		// But honestly.  Just detect loops in the recursive replacement graph.  And just output as you read macros.
+		// No need for a buffer, no need to count macros, problem solved.
 	},
 	svg: {
-		fontCache: 'global'
+		fontCache: 'global',
 	}
 };
 

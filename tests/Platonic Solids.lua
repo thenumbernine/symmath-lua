@@ -677,7 +677,7 @@ for _,shape in ipairs(shapes) do
 
 	local vtx1 = shape.vtx1 or Matrix:lambda({n,1}, function(i,j) return i==1 and 1 or 0 end)
 
-	printbr('Initial vertex:', var'V''_1':eq(vtx1))
+	printbr('Initial vertex: '..var'V''_1':eq(vtx1))
 	printbr()
 
 	local xforms = table(shape.xforms)
@@ -686,9 +686,10 @@ for _,shape in ipairs(shapes) do
 	printbr'Transforms for vertex generation:'
 	printbr()
 	-- can't use \left\{ \right\} unless we merge the $'s
-	printbr('$',
-		symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i'),
-		[[\in \left\{]], xforms:mapi(function(xform)
+	printbr('$'
+		..symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i')
+		..[[\in \left\{]]
+		..xforms:mapi(function(xform)
 			return symmath.export.LaTeX:applyLaTeX(xform)
 		end):concat',', [[\right\}$]])
 	printbr()
@@ -984,7 +985,7 @@ for _,shape in ipairs(shapes) do
 		if matrix_ffi(rename) ~= matrix_ffi(range(#vtxs)) then
 
 			printbr()
-			printbr('relabeled vertexes as', tolua(rename))
+			printbr('relabeled vertexes as '..tolua(rename))
 			printbr()
 
 			vtxs = rename:mapi(function(i) return vtxs[i] end)

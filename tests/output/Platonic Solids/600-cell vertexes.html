@@ -8,261 +8,148 @@
 		<script type='text/javascript' src='../darkmode.js'></script>
 	</head>
 	<body>
-
+$
+\def\MA{{\frac{1}{2}}}
+\def\MB{{\frac{1+\sqrt{5}}{4}}}
+\def\MC{{\frac{1-\sqrt{5}}{4}}}
+\def\MD{{\frac{-1+\sqrt{5}}{4}}}
+$
 <h3>600-cell</h3>
-Initial vertex:	${{ v} _1} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ 1\end{array}\right]}$
+Initial vertex:	$V_1=\left[\begin{matrix}0\\0\\0\\1\end{matrix}\right]$<br>
 <br>
 
-<br>
-Transforms for vertex generation:
-<br>
-
-<br>
-$	 { \tilde{T}} _i	\in \left\{	 \left[\begin{array}{cccc} 1& 0& 0& 0\\ 0& 1& 0& 0\\ 0& 0& 1& 0\\ 0& 0& 0& 1\end{array}\right], \left[\begin{array}{cccc} -{\frac{1}{2}}& -{\frac{1}{2}}& -{\frac{1}{2}}& -{\frac{1}{2}}\\ \frac{1}{2}& \frac{1}{2}& -{\frac{1}{2}}& -{\frac{1}{2}}\\ \frac{1}{2}& -{\frac{1}{2}}& \frac{1}{2}& -{\frac{1}{2}}\\ \frac{1}{2}& -{\frac{1}{2}}& -{\frac{1}{2}}& \frac{1}{2}\end{array}\right], \left[\begin{array}{cccc} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& -{\frac{1}{2}}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& 0\\ \frac{1}{2}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& 0& {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}& 0& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& -{\frac{1}{2}}\\ 0& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& \frac{1}{2}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right], \left[\begin{array}{cccc} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}& -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}& -{\frac{1}{2}}& 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& \frac{1}{2}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& 0\\ \frac{1}{2}& {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}& {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}& 0\\ 0& 0& 0& 1\end{array}\right]	\right\}$
+Transforms for vertex generation:<br>
 <br>
 
+$\tilde{T}_i\in\left\{
+	\left[\begin{matrix}1&amp;0&amp;0&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;1\end{matrix}\right],
+	\left[\begin{matrix}-\MA&amp;-\MA&amp;-\MA&amp;-\MA\\ \MA&amp;\MA&amp;-\MA&amp;-\MA\\ \MA&amp;-\MA&amp;\MA&amp;-\MA\\ \MA&amp;-\MA&amp;-\MA&amp;\MA\end{matrix}\right],
+	\left[\begin{matrix}\MB&amp;-\MA&amp;\MC&amp;0\\ \MA&amp;\MB&amp;0&amp;\MD\\ \MD&amp;0&amp;\MB&amp;-\MA\\0&amp;\MC&amp;\MA&amp;\MB\end{matrix}\right],
+	\left[\begin{matrix}\MD&amp;-\MB&amp;-\MA&amp;0\\ \MB&amp;\MA&amp;\MC&amp;0\\ \MA&amp;\MC&amp;\MB&amp;0\\0&amp;0&amp;0&amp;1\end{matrix}\right]
+\right\}$<br>
 <br>
-Vertexes:
+Vertexes:<br>
 <br>
 
-<br>
-${{{{{ T} _2}} {{{ V} _1}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{ V} _2}$
-<br>
-${{{{{ T} _2}} {{{ V} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{ V} _3}$
-<br>
-${{{{{ T} _3}} {{{ V} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{ V} _4}$
-<br>
-${{{{{ T} _2}} {{{ V} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{ V} _5}$
-<br>
-${{{{{ T} _2}} {{{ V} _5}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{ V} _6}$
-<br>
-${{{{{ T} _3}} {{{ V} _6}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{ V} _7}$
-<br>
-${{{{{ T} _2}} {{{ V} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{ V} _8}$
-<br>
-${{{{{ T} _2}} {{{ V} _8}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{ V} _9}$
-<br>
-${{{{{ T} _3}} {{{ V} _9}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _1} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _0}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _1}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _1} _2}$
-<br>
-${{{{{ T} _3}} {{{{ V} _1} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _1} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _3}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _4}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _4}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\end{array}\right]}} = {{{ V} _1} _5}$
-<br>
-${{{{{ T} _3}} {{{{ V} _1} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _1} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _6}}} = {\left[\begin{array}{c} 0\\ 1\\ 0\\ 0\end{array}\right]}} = {{{ V} _1} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _7}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _1} _8}$
-<br>
-${{{{{ T} _3}} {{{{ V} _1} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _1} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _1} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _2} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _2} _1}$
-<br>
-${{{{{ T} _3}} {{{{ V} _2} _1}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _2} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _2} _4}$
-<br>
-${{{{{ T} _3}} {{{{ V} _2} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _2} _5}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _5}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _2} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _7}$
-<br>
-${{{{{ T} _3}} {{{{ V} _2} _7}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _2} _8}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _8}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _2} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _2} _9}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _3} _0}$
-<br>
-${{{{{ T} _3}} {{{{ V} _3} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _1}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _1}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _2}}} = {\left[\begin{array}{c} 0\\ 0\\ 1\\ 0\end{array}\right]}} = {{{ V} _3} _3}$
-<br>
-${{{{{ T} _3}} {{{{ V} _3} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _3} _4}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _4}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _3} _5}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _5}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _3} _6}$
-<br>
-${{{{{ T} _3}} {{{{ V} _3} _6}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _3} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _3} _8}$
-<br>
-${{{{{ T} _2}} {{{{ V} _3} _8}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _3} _9}$
-<br>
-${{{{{ T} _3}} {{{{ V} _3} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _4} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _4} _1}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _1}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _4} _2}$
-<br>
-${{{{{ T} _3}} {{{{ V} _4} _2}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _3}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _4}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _5}$
-<br>
-${{{{{ T} _3}} {{{{ V} _4} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _4} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _6}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _4} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _4} _8}$
-<br>
-${{{{{ T} _3}} {{{{ V} _4} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _4} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _4} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _0}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _1}$
-<br>
-${{{{{ T} _4}} {{{{ V} _5} _1}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _4}$
-<br>
-${{{{{ T} _3}} {{{{ V} _5} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _5}$
-<br>
-${{{{{ T} _3}} {{{{ V} _5} _5}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _6}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _5} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _7}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _5} _8}$
-<br>
-${{{{{ T} _3}} {{{{ V} _5} _8}}} = {\left[\begin{array}{c} 0\\ 0\\ -{1}\\ 0\end{array}\right]}} = {{{ V} _5} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _5} _9}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _6} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _6} _1}$
-<br>
-${{{{{ T} _3}} {{{{ V} _6} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _6} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\end{array}\right]}} = {{{ V} _6} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _3}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _4}$
-<br>
-${{{{{ T} _3}} {{{{ V} _6} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _6} _5}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _6}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _7}$
-<br>
-${{{{{ T} _4}} {{{{ V} _6} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _8}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _6} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _6} _9}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _7} _0}$
-<br>
-${{{{{ T} _3}} {{{{ V} _7} _0}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _7} _1}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _7} _3}$
-<br>
-${{{{{ T} _4}} {{{{ V} _7} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _4}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _4}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _7} _5}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _5}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _7} _6}$
-<br>
-${{{{{ T} _3}} {{{{ V} _6} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _7} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _7}}} = {\left[\begin{array}{c} 1\\ 0\\ 0\\ 0\end{array}\right]}} = {{{ V} _7} _8}$
-<br>
-${{{{{ T} _2}} {{{{ V} _7} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _7} _9}$
-<br>
-${{{{{ T} _4}} {{{{ V} _7} _7}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _0}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _8} _1}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _1}}} = {\left[\begin{array}{c} -{1}\\ 0\\ 0\\ 0\end{array}\right]}} = {{{ V} _8} _2}$
-<br>
-${{{{{ T} _3}} {{{{ V} _8} _2}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _8} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _8} _4}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _8} _5}$
-<br>
-${{{{{ T} _3}} {{{{ V} _8} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{ V} _8} _7}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _7}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _8} _8}$
-<br>
-${{{{{ T} _3}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{ V} _8} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _8} _9}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _0}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _0}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{ V} _9} _1}$
-<br>
-${{{{{ T} _3}} {{{{ V} _9} _1}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{ V} _9} _2}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _3}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _3}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{ V} _9} _4}$
-<br>
-${{{{{ T} _3}} {{{{ V} _9} _4}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _5}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _5}}} = {\left[\begin{array}{c} 0\\ -{1}\\ 0\\ 0\end{array}\right]}} = {{{ V} _9} _6}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _7}$
-<br>
-${{{{{ T} _4}} {{{{ V} _9} _5}}} = {\left[\begin{array}{c} 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\end{array}\right]}} = {{{ V} _9} _8}$
-<br>
-${{{{{ T} _4}} {{{{ V} _9} _4}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{ V} _9} _9}$
-<br>
-${{{{{ T} _2}} {{{{ V} _9} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ \frac{1}{2}\\ 0\end{array}\right]}} = {{{{ V} _1} _0} _0}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _0}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _0} _1}$
-<br>
-${{{{{ T} _4}} {{{{ V} _9} _1}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _0} _2}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _2}}} = {\left[\begin{array}{c} \frac{1}{2}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ 0\end{array}\right]}} = {{{{ V} _1} _0} _3}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _3}}} = {\left[\begin{array}{c} -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ 0\\ \frac{1}{2}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{{ V} _1} _0} _4}$
-<br>
-${{{{{ T} _4}} {{{{ V} _8} _6}}} = {\left[\begin{array}{c} \frac{1}{2}\\ \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _5}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _5}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ \frac{1}{2}\\ \frac{1}{2}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _6}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _6}}} = {\left[\begin{array}{c} 0\\ 0\\ 0\\ -{1}\end{array}\right]}} = {{{{ V} _1} _0} _7}$
-<br>
-${{{{{ T} _3}} {{{{{ V} _1} _0} _7}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _0} _8}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _8}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _0} _9}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _0} _9}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _0}$
-<br>
-${{{{{ T} _3}} {{{{{ V} _1} _0} _8}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _1}$
-<br>
-${{{{{ T} _3}} {{{{ V} _6} _6}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _2}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _1} _2}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ \frac{1}{2}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _3}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _1} _3}}} = {\left[\begin{array}{c} {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ 0\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _4}$
-<br>
-${{{{{ T} _3}} {{{{{ V} _1} _1} _4}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\end{array}\right]}} = {{{{ V} _1} _1} _5}$
-<br>
-${{{{{ T} _3}} {{{{ V} _6} _2}}} = {\left[\begin{array}{c} 0\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ -{\frac{1}{2}}\end{array}\right]}} = {{{{ V} _1} _1} _6}$
-<br>
-${{{{{ T} _3}} {{{{ V} _5} _7}}} = {\left[\begin{array}{c} 0\\ \frac{1}{2}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _7}$
-<br>
-${{{{{ T} _4}} {{{{ V} _5} _5}}} = {\left[\begin{array}{c} \frac{1}{2}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _8}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _1} _8}}} = {\left[\begin{array}{c} -{\frac{1}{2}}\\ 0\\ {\frac{1}{4}}{\left({{1}{-{\sqrt{5}}}}\right)}\\ {\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _1} _9}$
-<br>
-${{{{{ T} _2}} {{{{{ V} _1} _1} _9}}} = {\left[\begin{array}{c} 0\\ -{\frac{1}{2}}\\ -{{\frac{1}{4}}{\left({{1} + {\sqrt{5}}}\right)}}\\ {\frac{1}{4}}{\left({{-{1}} + {\sqrt{5}}}\right)}\end{array}\right]}} = {{{{ V} _1} _2} _0}$
+$T_2 V_1=\left[\begin{matrix}-\MA\\-\MA\\-\MA\\ \MA\end{matrix}\right]=V_2$<br>
+$T_2 V_2=\left[\begin{matrix}\MA\\-\MA\\-\MA\\ \MA\end{matrix}\right]=V_3$<br>
+$T_3 V_3=\left[\begin{matrix}\MB\\0\\-\MA\\ \MD\end{matrix}\right]=V_4$<br>
+$T_2 V_4=\left[\begin{matrix}\MC\\ \MA\\0\\ \MB\end{matrix}\right]=V_5$<br>
+$T_2 V_5=\left[\begin{matrix}-\MA\\ \MC\\-\MB\\0\end{matrix}\right]=V_6$<br>
+$T_3 V_6=\left[\begin{matrix}0\\-\MA\\-\MB\\ \MC\end{matrix}\right]=V_7$<br>
+$T_2 V_7=\left[\begin{matrix}\MB\\ \MD\\0\\ \MA\end{matrix}\right]=V_8$<br>
+$T_2 V_8=\left[\begin{matrix}-\MB\\ \MD\\0\\ \MA\end{matrix}\right]=V_9$<br>
+$T_3 V_9=\left[\begin{matrix}-\MB\\0\\-\MA\\ \MD\end{matrix}\right]=V_{10}$<br>
+$T_2 V_{10}=\left[\begin{matrix}\MA\\ \MC\\-\MB\\0\end{matrix}\right]=V_{11}$<br>
+$T_2 V_{11}=\left[\begin{matrix}\MD\\ \MA\\0\\ \MB\end{matrix}\right]=V_{12}$<br>
+$T_3 V_{12}=\left[\begin{matrix}0\\ \MB\\ \MC\\ \MA\end{matrix}\right]=V_{13}$<br>
+$T_2 V_{13}=\left[\begin{matrix}-\MA\\ \MD\\-\MB\\0\end{matrix}\right]=V_{14}$<br>
+$T_2 V_{14}=\left[\begin{matrix}\MA\\ \MD\\-\MB\\0\end{matrix}\right]=V_{15}$<br>
+$T_3 V_{15}=\left[\begin{matrix}\MA\\ \MA\\-\MA\\-\MA\end{matrix}\right]=V_{16}$<br>
+$T_2 V_{16}=\left[\begin{matrix}0\\1\\0\\0\end{matrix}\right]=V_{17}$<br>
+$T_2 V_{17}=\left[\begin{matrix}-\MA\\ \MA\\-\MA\\-\MA\end{matrix}\right]=V_{18}$<br>
+$T_3 V_{18}=\left[\begin{matrix}-\MA\\0\\ \MC\\-\MB\end{matrix}\right]=V_{19}$<br>
+$T_2 V_{19}=\left[\begin{matrix}\MB\\ \MD\\0\\-\MA\end{matrix}\right]=V_{20}$<br>
+$T_2 V_{20}=\left[\begin{matrix}\MC\\ \MB\\ \MA\\0\end{matrix}\right]=V_{21}$<br>
+$T_3 V_{21}=\left[\begin{matrix}-\MB\\ \MA\\ \MD\\0\end{matrix}\right]=V_{22}$<br>
+$T_2 V_{22}=\left[\begin{matrix}0\\ \MC\\-\MA\\-\MB\end{matrix}\right]=V_{23}$<br>
+$T_2 V_{23}=\left[\begin{matrix}\MB\\ \MA\\ \MD\\0\end{matrix}\right]=V_{24}$<br>
+$T_3 V_{24}=\left[\begin{matrix}\MD\\ \MB\\ \MA\\0\end{matrix}\right]=V_{25}$<br>
+$T_2 V_{25}=\left[\begin{matrix}-\MB\\ \MD\\0\\-\MA\end{matrix}\right]=V_{26}$<br>
+$T_2 V_{26}=\left[\begin{matrix}\MA\\0\\ \MC\\-\MB\end{matrix}\right]=V_{27}$<br>
+$T_3 V_{27}=\left[\begin{matrix}\MA\\0\\ \MD\\-\MB\end{matrix}\right]=V_{28}$<br>
+$T_2 V_{28}=\left[\begin{matrix}0\\ \MA\\ \MB\\ \MC\end{matrix}\right]=V_{29}$<br>
+$T_2 V_{29}=\left[\begin{matrix}-\MA\\0\\ \MD\\-\MB\end{matrix}\right]=V_{30}$<br>
+$T_3 V_{30}=\left[\begin{matrix}-\MA\\-\MA\\ \MA\\-\MA\end{matrix}\right]=V_{31}$<br>
+$T_2 V_{31}=\left[\begin{matrix}\MA\\-\MA\\ \MA\\-\MA\end{matrix}\right]=V_{32}$<br>
+$T_2 V_{32}=\left[\begin{matrix}0\\0\\1\\0\end{matrix}\right]=V_{33}$<br>
+$T_3 V_{33}=\left[\begin{matrix}\MC\\0\\ \MB\\ \MA\end{matrix}\right]=V_{34}$<br>
+$T_2 V_{34}=\left[\begin{matrix}-\MA\\-\MB\\0\\ \MC\end{matrix}\right]=V_{35}$<br>
+$T_2 V_{35}=\left[\begin{matrix}\MB\\-\MA\\ \MD\\0\end{matrix}\right]=V_{36}$<br>
+$T_3 V_{36}=\left[\begin{matrix}\MB\\0\\ \MA\\ \MD\end{matrix}\right]=V_{37}$<br>
+$T_2 V_{37}=\left[\begin{matrix}-\MB\\0\\ \MA\\ \MD\end{matrix}\right]=V_{38}$<br>
+$T_2 V_{38}=\left[\begin{matrix}0\\-\MB\\ \MC\\-\MA\end{matrix}\right]=V_{39}$<br>
+$T_3 V_{39}=\left[\begin{matrix}\MA\\-\MB\\0\\ \MC\end{matrix}\right]=V_{40}$<br>
+$T_2 V_{40}=\left[\begin{matrix}\MD\\0\\ \MB\\ \MA\end{matrix}\right]=V_{41}$<br>
+$T_2 V_{41}=\left[\begin{matrix}-\MB\\-\MA\\ \MD\\0\end{matrix}\right]=V_{42}$<br>
+$T_3 V_{42}=\left[\begin{matrix}-\MA\\-\MB\\0\\ \MD\end{matrix}\right]=V_{43}$<br>
+$T_2 V_{43}=\left[\begin{matrix}\MA\\-\MB\\0\\ \MD\end{matrix}\right]=V_{44}$<br>
+$T_2 V_{44}=\left[\begin{matrix}0\\ \MC\\ \MA\\ \MB\end{matrix}\right]=V_{45}$<br>
+$T_3 V_{44}=\left[\begin{matrix}\MB\\ \MC\\0\\ \MA\end{matrix}\right]=V_{46}$<br>
+$T_2 V_{46}=\left[\begin{matrix}-\MA\\0\\ \MD\\ \MB\end{matrix}\right]=V_{47}$<br>
+$T_2 V_{47}=\left[\begin{matrix}\MC\\-\MB\\-\MA\\0\end{matrix}\right]=V_{48}$<br>
+$T_3 V_{48}=\left[\begin{matrix}\MD\\-\MB\\-\MA\\0\end{matrix}\right]=V_{49}$<br>
+$T_2 V_{49}=\left[\begin{matrix}\MA\\0\\ \MD\\ \MB\end{matrix}\right]=V_{50}$<br>
+$T_2 V_{50}=\left[\begin{matrix}-\MB\\ \MC\\0\\ \MA\end{matrix}\right]=V_{51}$<br>
+$T_4 V_{51}=\left[\begin{matrix}0\\-\MB\\ \MC\\ \MA\end{matrix}\right]=V_{52}$<br>
+$T_2 V_{52}=\left[\begin{matrix}\MD\\-\MA\\0\\ \MB\end{matrix}\right]=V_{53}$<br>
+$T_2 V_{53}=\left[\begin{matrix}\MC\\-\MA\\0\\ \MB\end{matrix}\right]=V_{54}$<br>
+$T_3 V_{54}=\left[\begin{matrix}0\\ \MC\\-\MA\\ \MB\end{matrix}\right]=V_{55}$<br>
+$T_3 V_{55}=\left[\begin{matrix}\MD\\0\\-\MB\\ \MA\end{matrix}\right]=V_{56}$<br>
+$T_2 V_{56}=\left[\begin{matrix}0\\ \MD\\-\MA\\ \MB\end{matrix}\right]=V_{57}$<br>
+$T_2 V_{57}=\left[\begin{matrix}\MC\\0\\-\MB\\ \MA\end{matrix}\right]=V_{58}$<br>
+$T_3 V_{58}=\left[\begin{matrix}0\\0\\-1\\0\end{matrix}\right]=V_{59}$<br>
+$T_2 V_{59}=\left[\begin{matrix}\MA\\ \MA\\-\MA\\ \MA\end{matrix}\right]=V_{60}$<br>
+$T_2 V_{60}=\left[\begin{matrix}-\MA\\ \MA\\-\MA\\ \MA\end{matrix}\right]=V_{61}$<br>
+$T_3 V_{60}=\left[\begin{matrix}\MD\\ \MB\\-\MA\\0\end{matrix}\right]=V_{62}$<br>
+$T_2 V_{62}=\left[\begin{matrix}\MC\\ \MB\\-\MA\\0\end{matrix}\right]=V_{63}$<br>
+$T_2 V_{63}=\left[\begin{matrix}0\\ \MA\\-\MB\\ \MC\end{matrix}\right]=V_{64}$<br>
+$T_3 V_{64}=\left[\begin{matrix}0\\ \MD\\-\MA\\-\MB\end{matrix}\right]=V_{65}$<br>
+$T_2 V_{65}=\left[\begin{matrix}\MA\\ \MB\\0\\ \MC\end{matrix}\right]=V_{66}$<br>
+$T_2 V_{66}=\left[\begin{matrix}-\MA\\ \MB\\0\\ \MC\end{matrix}\right]=V_{67}$<br>
+$T_4 V_{67}=\left[\begin{matrix}-\MB\\0\\-\MA\\ \MC\end{matrix}\right]=V_{68}$<br>
+$T_2 V_{68}=\left[\begin{matrix}\MB\\0\\-\MA\\ \MC\end{matrix}\right]=V_{69}$<br>
+$T_2 V_{69}=\left[\begin{matrix}0\\ \MB\\ \MD\\ \MA\end{matrix}\right]=V_{70}$<br>
+$T_3 V_{70}=\left[\begin{matrix}-\MA\\ \MB\\0\\ \MD\end{matrix}\right]=V_{71}$<br>
+$T_2 V_{71}=\left[\begin{matrix}\MC\\0\\-\MB\\-\MA\end{matrix}\right]=V_{72}$<br>
+$T_2 V_{72}=\left[\begin{matrix}\MB\\ \MA\\ \MC\\0\end{matrix}\right]=V_{73}$<br>
+$T_4 V_{72}=\left[\begin{matrix}\MD\\0\\-\MB\\-\MA\end{matrix}\right]=V_{74}$<br>
+$T_2 V_{74}=\left[\begin{matrix}\MA\\ \MB\\0\\ \MD\end{matrix}\right]=V_{75}$<br>
+$T_2 V_{75}=\left[\begin{matrix}-\MB\\ \MA\\ \MC\\0\end{matrix}\right]=V_{76}$<br>
+$T_3 V_{68}=\left[\begin{matrix}-\MA\\-\MA\\-\MA\\-\MA\end{matrix}\right]=V_{77}$<br>
+$T_2 V_{77}=\left[\begin{matrix}1\\0\\0\\0\end{matrix}\right]=V_{78}$<br>
+$T_2 V_{78}=\left[\begin{matrix}-\MA\\ \MA\\ \MA\\ \MA\end{matrix}\right]=V_{79}$<br>
+$T_4 V_{77}=\left[\begin{matrix}\MA\\-\MA\\-\MA\\-\MA\end{matrix}\right]=V_{80}$<br>
+$T_2 V_{80}=\left[\begin{matrix}\MA\\ \MA\\ \MA\\ \MA\end{matrix}\right]=V_{81}$<br>
+$T_2 V_{81}=\left[\begin{matrix}-1\\0\\0\\0\end{matrix}\right]=V_{82}$<br>
+$T_3 V_{82}=\left[\begin{matrix}-\MB\\-\MA\\ \MC\\0\end{matrix}\right]=V_{83}$<br>
+$T_2 V_{83}=\left[\begin{matrix}\MB\\-\MA\\ \MC\\0\end{matrix}\right]=V_{84}$<br>
+$T_2 V_{84}=\left[\begin{matrix}0\\ \MD\\ \MA\\ \MB\end{matrix}\right]=V_{85}$<br>
+$T_3 V_{80}=\left[\begin{matrix}\MB\\ \MC\\0\\-\MA\end{matrix}\right]=V_{86}$<br>
+$T_2 V_{86}=\left[\begin{matrix}0\\ \MA\\ \MB\\ \MD\end{matrix}\right]=V_{87}$<br>
+$T_2 V_{87}=\left[\begin{matrix}-\MB\\ \MC\\0\\-\MA\end{matrix}\right]=V_{88}$<br>
+$T_3 V_{86}=\left[\begin{matrix}\MB\\0\\ \MA\\ \MC\end{matrix}\right]=V_{89}$<br>
+$T_2 V_{89}=\left[\begin{matrix}-\MA\\ \MD\\ \MB\\0\end{matrix}\right]=V_{90}$<br>
+$T_2 V_{90}=\left[\begin{matrix}\MC\\-\MA\\0\\-\MB\end{matrix}\right]=V_{91}$<br>
+$T_3 V_{91}=\left[\begin{matrix}0\\-\MB\\ \MD\\-\MA\end{matrix}\right]=V_{92}$<br>
+$T_2 V_{92}=\left[\begin{matrix}\MA\\ \MC\\ \MB\\0\end{matrix}\right]=V_{93}$<br>
+$T_2 V_{93}=\left[\begin{matrix}-\MA\\ \MC\\ \MB\\0\end{matrix}\right]=V_{94}$<br>
+$T_3 V_{94}=\left[\begin{matrix}-\MA\\-\MA\\ \MA\\ \MA\end{matrix}\right]=V_{95}$<br>
+$T_2 V_{95}=\left[\begin{matrix}0\\-1\\0\\0\end{matrix}\right]=V_{96}$<br>
+$T_2 V_{96}=\left[\begin{matrix}\MA\\-\MA\\ \MA\\ \MA\end{matrix}\right]=V_{97}$<br>
+$T_4 V_{95}=\left[\begin{matrix}0\\-\MB\\ \MD\\ \MA\end{matrix}\right]=V_{98}$<br>
+$T_4 V_{94}=\left[\begin{matrix}\MC\\-\MB\\ \MA\\0\end{matrix}\right]=V_{99}$<br>
+$T_2 V_{99}=\left[\begin{matrix}\MD\\-\MB\\ \MA\\0\end{matrix}\right]=V_{100}$<br>
+$T_2 V_{100}=\left[\begin{matrix}0\\-\MA\\ \MB\\ \MD\end{matrix}\right]=V_{101}$<br>
+$T_4 V_{91}=\left[\begin{matrix}\MD\\-\MA\\0\\-\MB\end{matrix}\right]=V_{102}$<br>
+$T_2 V_{102}=\left[\begin{matrix}\MA\\ \MD\\ \MB\\0\end{matrix}\right]=V_{103}$<br>
+$T_2 V_{103}=\left[\begin{matrix}-\MB\\0\\ \MA\\ \MC\end{matrix}\right]=V_{104}$<br>
+$T_4 V_{86}=\left[\begin{matrix}\MA\\ \MA\\ \MA\\-\MA\end{matrix}\right]=V_{105}$<br>
+$T_2 V_{105}=\left[\begin{matrix}-\MA\\ \MA\\ \MA\\-\MA\end{matrix}\right]=V_{106}$<br>
+$T_2 V_{106}=\left[\begin{matrix}0\\0\\0\\-1\end{matrix}\right]=V_{107}$<br>
+$T_3 V_{107}=\left[\begin{matrix}0\\ \MC\\ \MA\\-\MB\end{matrix}\right]=V_{108}$<br>
+$T_2 V_{108}=\left[\begin{matrix}\MD\\0\\ \MB\\-\MA\end{matrix}\right]=V_{109}$<br>
+$T_2 V_{109}=\left[\begin{matrix}\MC\\0\\ \MB\\-\MA\end{matrix}\right]=V_{110}$<br>
+$T_3 V_{108}=\left[\begin{matrix}0\\-\MA\\ \MB\\ \MC\end{matrix}\right]=V_{111}$<br>
+$T_3 V_{66}=\left[\begin{matrix}0\\ \MB\\ \MD\\-\MA\end{matrix}\right]=V_{112}$<br>
+$T_2 V_{112}=\left[\begin{matrix}\MC\\ \MA\\0\\-\MB\end{matrix}\right]=V_{113}$<br>
+$T_2 V_{113}=\left[\begin{matrix}\MD\\ \MA\\0\\-\MB\end{matrix}\right]=V_{114}$<br>
+$T_3 V_{114}=\left[\begin{matrix}0\\ \MD\\ \MA\\-\MB\end{matrix}\right]=V_{115}$<br>
+$T_3 V_{62}=\left[\begin{matrix}0\\ \MB\\ \MC\\-\MA\end{matrix}\right]=V_{116}$<br>
+$T_3 V_{57}=\left[\begin{matrix}0\\ \MA\\-\MB\\ \MD\end{matrix}\right]=V_{117}$<br>
+$T_4 V_{55}=\left[\begin{matrix}\MA\\0\\ \MC\\ \MB\end{matrix}\right]=V_{118}$<br>
+$T_2 V_{118}=\left[\begin{matrix}-\MA\\0\\ \MC\\ \MB\end{matrix}\right]=V_{119}$<br>
+$T_2 V_{119}=\left[\begin{matrix}0\\-\MA\\-\MB\\ \MD\end{matrix}\right]=V_{120}$<br>
 <br>
 
 	</body>
