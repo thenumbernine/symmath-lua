@@ -120,8 +120,7 @@ MathJax.header = Header()
 
 MathJax.footer = [[
 	</body>
-</html>
-]]
+</html>]]
 
 
 function MathJax.print(...)
