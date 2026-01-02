@@ -49,7 +49,27 @@ TODO if I instead required a table constructor, it would make passing Arrays as 
 	as well as easier for subclasses (Matrix, Tensor, etc)
 --]]
 function Array:init(...)
+	-- [[ using tail-call I hope ... but in large matrices i'm getting stack overflow here ...
 	Array.super.init(self, self:fixctorargs(...))
+	--]]
+	--[[ not using tail-call, but allocating one extra table...
+	local Constant = require 'symmath.Constant'
+	local mt = getmetatable(self)
+	local args = table.pack(...)
+	for i=1,args.n do
+		local x = args[i]
+		-- same as in Expression:init but for regular tables, wrap them with this class type
+		if Constant.isNumber(x) then
+			x = Constant(x)
+		elseif not Expression:isa(x) then
+			local prevmt = getmetatable(x)
+			assert(prevmt == nil or prevmt == table)
+			x = mt(table.unpack(x))
+		end
+		args[i] = x
+	end
+	Array.super.init(self, args:unpack())
+	--]]
 end
 
 Array.__index = function(self, key)

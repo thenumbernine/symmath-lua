@@ -239,7 +239,7 @@ or it can be the axis from center of object to center of any face, with rotation
 or it can be the axis through any edge (?right?) with ... some other kind of rotation ...
 --]]
 local shapes = {
--- [=[
+--[=[
 	{
 		name = 'Tetrahedron',
 		dual = 'Tetrahedron',
@@ -472,20 +472,20 @@ local shapes = {
 				{-1,0,0,0},
 				{0,0,0,1}
 			)(),
--- [[ rotates the icosahedron at the end
+	-- [[ rotates the icosahedron at the end
 			Matrix(
 				{frac(1,2), frac(1,2), -frac(1,2), frac(1,2)},
 				{frac(1,2), frac(1,2), frac(1,2), -frac(1,2)},
 				{frac(1,2), -frac(1,2), frac(1,2), frac(1,2)},
 				{-frac(1,2), frac(1,2), frac(1,2), frac(1,2)}
 			),
---]]
+	--]]
 		}:mapi(function(T)
 			return (_24cellRot * T * _24cellRot:T())()
 		end),
 	},
 --]=]
---[=[
+-- [=[
 	{
 		name = '120-cell',
 		dual = '600-cell',
@@ -541,8 +541,16 @@ local shapes = {
 		-- V123 avg = unit([0, -1, -1, 2]) = [0, -1/sqrt(6), -1/sqrt(6), sqrt(2/3)]
 		--vtx1 = Matrix{0, -1/(sqrt(2)*sqrt(3)), -1/(sqrt(2)*sqrt(3)), frac(sqrt(2),sqrt(3))}:T(),	-- midpoint of some triplet of vertexes in the 600-cell
 		--
-		-- just using 0,0,0,1 works
-		vtx1 = Matrix{0,0,0,1}:T(),
+		-- 1) the surface isn't a triangle, it's a tetrahedron
+		-- 2) tht imght not eevn be a surface tetrahedron
+		-- 3) how to find a surface tetrahedron ....there's 12 vertices closest to any vertex which of those 12 form a tetrahedron?
+		--
+		vtx1 = (
+			Matrix{0, 0, 0, 1}:T()
+			+ Matrix{0, (-1+sqrt(5))/4, frac(1,2), (1+sqrt(5))/4}:T()
+			+ Matrix{0, (1-sqrt(5))/4, frac(1,2), (1+sqrt(5))/4}:T()
+			+ Matrix{frac(1,2), 0, (-1+sqrt(5))/4, (1+sqrt(5))/4}:T()
+		)(),--:unit(),
 
 		-- copied of 600-cell's xforms
 		xforms = table{
@@ -719,19 +727,10 @@ for _,shape in ipairs(shapes) do
 	local function roundForSearch(m)
 		return (m:map(function(x)
 			return math.round(x * 1e+7) * 1e-7
-			-- 120-cell fails ... why?
-			-- it has sqrt simplification errors too ... related?
-			-- maybe because i switched to storing the numerically-transformed number instead of re-evaluating the expression...
-			--return math.round(x * 1e+5) * 1e-5
 		end))
 	end
 	local function epsToKey(v)
-		--[[ naive and flexible
-		return tostring(v)
-		--]]
-		-- [[ faster and specific to matrix.ffi
 		return ffi.string(v.ptr, v.volume * ffi.sizeof(v.ctype))
-		--]]
 	end
 	local numxforms = xforms:mapi(buildNumXForm)
 	local numallxforms
@@ -746,14 +745,6 @@ for _,shape in ipairs(shapes) do
 	local numvtxs
 	local epsvtxs
 	local vtxIndexForEpsStr = {}
-
-	--[[ compare two numeric-matrices , true if they are within epsilon
-	local function matrixfindeps(a,b)
-		return (a - b):normLInf() < 1e-7
-	end
-	--]]
-	-- TODO just round to nearest 1e-7 and do equality-compare.  faster? nah, equality is failling.
-	-- and once that's done TODO search by hash key and string of floats of binary
 
 	local vtxs
 	local vtxsrcinfo
@@ -781,72 +772,24 @@ for _,shape in ipairs(shapes) do
 			depth = depth or 1
 			--local v = vtxs[j]
 			local numv = numvtxs[j]
-			--local vnorm = (v:T() * v)()[1][1]
-			--if Constant.isValue(vnorm, 0) then printbr("ERROR norm is zero for "..v) end
-			--assert(Matrix(v:dim()) == Matrix{4,1})
-			--for i,xform in ipairs(xforms) do
 			for i,numxform in ipairs(numxforms) do
 				local numxv = numxform * numv
 				local epsxv = roundForSearch(numxv)
-				--local xv = (xforms[i] * v)()
-				--local xvnorm = (xv:T() * xv)()[1][1]
-				--assert(Matrix(xv:dim()) == Matrix{4,1})
-				--if not Constant.isValue((xvnorm - vtx1norm)(), 0) then
-				--	printbr("ERROR - norms don't match.  was "..vtx1norm.." but now is "..xvnorm)
-				--end
-				--[[ can 'find' work?  can equality work?  yes. yes it does.
-				local k = vtxs:find(xv)
-				--]]
-				--[[ how about numeric comparison? faster...
-				local k = numvtxs:find(numxv, matrixfindeps)
-				--]]
-				--[[ how about numeric rounded equivalence search?
-				local k = epsvtxs:find(epsxv)
-				--]]
-				-- [[ how about with strings and hashes
 				local epsxvstr = epsToKey(epsxv)
 				local k = vtxIndexForEpsStr[epsxvstr]
-				--]]
-				-- TODO numeric vtx to serialized key, or even raw binary key to string key, would be even faster ...
-				--[[ or should i try subtracting?  does that help?
-				local k = vtxs:find(nil, function(xv2)
-					return (xv - xv2)() == zerovec
-				end)
-				--]]
-
 				if not k then
 					local xv = (xforms[i] * vtxs[j])()
 					vtxs:insert(xv)
 					k = #vtxs
 					vtxsrcinfo:insert{xform=i, vtx=j}
-					-- [[ re-evaluate?  yeah maybe so, at 120-cell I'm getting numerical problems and >q0 vertexes
 					local numxvcheck = buildNumVtx(xv)
 					local epsxvcheck = roundForSearch(numxvcheck)
 					numvtxs:insert(numxvcheck)
 					epsvtxs:insert(epsxvcheck)
-					-- the two should be equal, or else we risk an infinite loop (which is happening for 120-cell)
-					-- so how about I assert that (for debug runs)?
-					-- but the original un-rounded number might not be exactly the same ...
-					--[=[
-					local epsxvstrcheck = epsToKey(epsxvcheck)
-					vtxIndexForEpsStr[epsxvstrcheck] = k
-					assert.eq(epsxvstr, epsxvstrcheck)
-					--]=]
-					-- [=[ they should be equal so don't re-serialize it
 					vtxIndexForEpsStr[epsxvstr] = k
-					--]=]
-					--]]
-					--[[ or just use the numeric transform
-					numvtxs:insert(numxv)
-					epsvtxs:insert(epsxv)
-					vtxIndexForEpsStr[epsxvstr] = k
-					--]]
-
 					printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 					printerr('T_'..i..' * V_'..j..' = V_'..k)
 					buildvtxs(k, depth + 1)
-				else
-	--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 				end
 			end
 		end
@@ -882,55 +825,25 @@ for _,shape in ipairs(shapes) do
 				local j = xformstack:remove(1)
 				local M = allxforms[j]
 				local numM = numallxforms[j]
-				--for i,xform in ipairs(xforms) do
-					--local numxform = numxforms[i]
 				for i,numxform in ipairs(numxforms) do
 					local numxM = numxform * numM
 					local epsxM = roundForSearch(numxM)
-					--[[
-					local xM = (xform * M)()
-					local k = allxforms:find(xM)
-					--]]
-					--[[
-					local k = numallxforms:find(numxM, matrixfindeps)
-					--]]
-					--[[
-					local k = epsallxforms:find(epsxM)
-					--]]
-					-- [[
 					local epsxMstr = epsToKey(epsxM)
 					local k = allXFormIndexForEpsStr[epsxMstr]
-					--]]
 					if not k then
 						local xM = (xforms[i] * M)()
 						allxforms:insert(xM)
 						k = #allxforms
 						allxformsrcinfo:insert{i=i, j=j}
-						-- [[ re-evaluate (to prevent numerical error buildup)
 						local numxMcheck = buildNumXForm(xM)
 						local epsxMcheck = roundForSearch(numxMcheck)
 						numallxforms:insert(numxMcheck)
 						epsallxforms:insert(epsxMcheck)
-						--[=[ verify they are equal
-						local epsxMstrcheck = epsToKey(epsxMcheck)
-						allXFormIndexForEpsStr[epsxMstrcheck] = k
-						assert.eq(epsxMstr, epsxMstrcheck)
-						--]=]
-						-- [=[ assert they are equal
 						allXFormIndexForEpsStr[epsxMstr] = k
-						--]=]
-						--]]
-						--[[ use numeric trnsform
-						numallxforms:insert(numxM)
-						epsallxforms:insert(epsxM)
-						allXFormIndexForEpsStr[epsxMstr] = k
-						--]]
 						assert.eq(#allxforms, #allxformsrcinfo)
 						printbr((var'T'('_'..i) * var'T'('_'..j)):eq(xM):eq(var'T'('_'..k)))
 						printerr('T_'..i..' * T_'..j..' = T_'..k)
 						xformstack:insert(k)
-					else
-		--				printbr((var'T'('_'..i) * var'V'('_'..j)):eq(xv):eq(var'V'('_'..k)))
 					end
 				end
 			end
@@ -951,36 +864,17 @@ for _,shape in ipairs(shapes) do
 -- or ... atm the relabeling is optional, and probably should be especially for higher sized/dimension solids.
 	do
 		local rename = range(#vtxs)
-			--[=[ option #1: sort by inner product from vtx1
 			:sort(function(a,b)
-				return (numvtxs[1] * numvtxs[a]) > (numvtxs[1] * numvtxs[b])
-			end)
-			--]=]
-			-- option #2 (same but more detailed) - construct a basis orthogonal to vtx1 and sort by each axis
-			--[=[ option #3 (detailed but lazy) -- just sort by cartesian basis
-			:sort(function(a,b)
-				for j=1,n-1 do
-					if numvtxs[a][j] > numvtxs[b][j] then return true end
-					if numvtxs[a][j] < numvtxs[b][j] then return false end
-				end
-				return numvtxs[a][n] > numvtxs[b][n]
-			end)
-			--]=]
-			-- [=[ combine #1 and #3?
-			:sort(function(a,b)
-				-- option #1 part:
 				local a1 = numvtxs[1] * numvtxs[a]
 				local b1 = numvtxs[1] * numvtxs[b]
 				if a1 > b1 then return true end
 				if a1 < b1 then return false end
-				-- option #3 part:
 				for j=n,2,-1 do
 					if numvtxs[a][j] > numvtxs[b][j] then return true end
 					if numvtxs[a][j] < numvtxs[b][j] then return false end
 				end
 				return numvtxs[a][1] > numvtxs[b][1]
 			end)
-			--]=]
 
 		if matrix_ffi(rename) ~= matrix_ffi(range(#vtxs)) then
 
@@ -1076,22 +970,10 @@ this is slow, and too slow for the 120-cell and 600-cell
 		for i,numxi in ipairs(numallxforms) do
 			vtxMulTable[i] = vtxMulTable[i] or {}
 			for j,numvj in ipairs(numvtxs) do
-				--[[
-				local xv = (xi * vj)()
-				vtxMulTable[i][j] = assert(vtxs:find(xv))
-				--]]
 				local numxv = numxi * numvj
-				--[[
-				vtxMulTable[i][j] = assert(numvtxs:find(numxv, matrixfindeps))
-				--]]
 				local epsxv = roundForSearch(numxv)
-				--[[
-				vtxMulTable[i][j] = assert(epsvtxs:find(epsxv))
-				--]]
 				local epsxvstr = epsToKey(epsxv)
-				-- [[
 				vtxMulTable[i][j] = assert.index(vtxIndexForEpsStr, epsxvstr)
-				--]]
 			end
 		end
 		printerr'done finding vertex multiplication table'
@@ -1137,22 +1019,10 @@ this is slow, and too slow for the 120-cell and 600-cell
 		for i,numxi in ipairs(numallxforms) do
 			mulTable[i] = {}
 			for j,numxj in ipairs(numallxforms) do
-				--[[
-				local xk = (xi * xj)()
-				mulTable[i][j] = assert(allxforms:find(xk))
-				--]]
 				local numxk = numxi * numxj
-				--[[
-				mulTable[i][j] = assert(numallxforms:find(numxk, matrixfindeps))
-				--]]
 				local epsxk = roundForSearch(numxk)
-				--[[
-				mulTable[i][j] = assert(epsallxforms:find(epsxk))
-				--]]
 				local epsxkstr = epsToKey(epsxk)
-				-- [[
 				mulTable[i][j] = assert.index(allXFormIndexForEpsStr, epsxkstr)
-				--]]
 			end
 		end
 		printerr'done finding transform multiplication table'

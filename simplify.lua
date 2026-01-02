@@ -203,6 +203,7 @@ local function simplifyCall(simplifyObj, x, ...)
 
 		--do break end -- calling expand() again after this breaks things ...
 		i = i + 1
+		collectgarbage()
 	until i == simplifyMaxIter or x == lastx or getmetatable(x) == Invalid
 -- [[ debugging simplify loop stack trace
 	if i == simplifyMaxIter then
