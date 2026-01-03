@@ -49,10 +49,10 @@ TODO if I instead required a table constructor, it would make passing Arrays as 
 	as well as easier for subclasses (Matrix, Tensor, etc)
 --]]
 function Array:init(...)
-	-- [[ using tail-call I hope ... but in large matrices i'm getting stack overflow here ...
+	--[[ using tail-call I hope ... but in large matrices i'm getting stack overflow here ...
 	Array.super.init(self, self:fixctorargs(...))
 	--]]
-	--[[ not using tail-call, but allocating one extra table...
+	-- [[ not using tail-call, but allocating one extra table...
 	local Constant = require 'symmath.Constant'
 	local mt = getmetatable(self)
 	local args = table.pack(...)
@@ -325,8 +325,22 @@ local function matrixMatrixMul(a,b,aj,bj)
 	local sbj = ssb:remove(bj)
 	assert.eq(saj, sbj, "inner dimensions must be equal")
 	local sc = table(ssa):append(ssb)
-
 	symmath = symmath or require 'symmath'
+
+	-- if we are doing a degree-0 * degree-0 then
+	-- Array:lambda can't handle it so I have to do a special case somehow.
+	-- should I even bother wrap the results in a matrix?
+	-- or should I return it as an expression early?
+	-- I"ll do that ...
+	if #sc == 0 then
+		local sum = table()
+		for i=1,saj do
+			sum:insert(a[i] * b[i])
+		end
+		return symmath.tableToAdd(sum)
+	end
+
+
 	-- TODO should it be an Array or a Matrix or a Vector ...
 	-- ... or should I just merge them all into this class?
 	-- Vector has nothing different except its metatable.
@@ -337,7 +351,6 @@ local function matrixMatrixMul(a,b,aj,bj)
 	-- But oh wait there is no Vector class, it's just a wrapper for Array ...
 	local resultType = getmetatable(a)
 	if resultType == Array then resultType = getmetatable(b) end
-
 	return resultType:lambda(sc, function(...)
 		local i = {...}
 		local ia = table{table.unpack(i,1,#sa-1)}
@@ -352,7 +365,7 @@ local function matrixMatrixMul(a,b,aj,bj)
 			local bi = b[ib]
 			sum:insert(ai * bi)
 		end
-		return Expression.tableToSum(sum)
+		return symmath.tableToAdd(sum)
 	end)
 end
 
@@ -442,7 +455,7 @@ function Array:normSq()
 	for i,x in self:iter() do
 		sum:insert(x * x)
 	end
-	return Expression.tableToSum(sum)()
+	return symmath.tableToAdd(sum)()
 end
 
 -- L2 norm

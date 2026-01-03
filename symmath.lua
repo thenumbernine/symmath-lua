@@ -336,16 +336,16 @@ end
 -- here it has a smaller text to call it
 
 function symmath.tableToAdd(t)
-	symmath = symmath or require 'symmath'
-	if #t == 0 then return symmath.Constant(0) end
-	if #t == 1 then return t[1] end
+	local n = #t
+	if n == 0 then return symmath.Constant(0) end
+	if n == 1 then return t[1] end
 	return symmath.op.add(table.unpack(t))
 end
 
 function symmath.tableToMul(t)
-	symmath = symmath or require 'symmath'
-	if #t == 0 then return symmath.Constant(1) end
-	if #t == 1 then return t[1] end
+	local n = #t
+	if n == 0 then return symmath.Constant(1) end
+	if n == 1 then return t[1] end
 	return symmath.op.mul(table.unpack(t))
 end
 

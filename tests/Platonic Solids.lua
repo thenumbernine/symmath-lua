@@ -695,11 +695,12 @@ for _,shape in ipairs(shapes) do
 	printbr()
 	-- can't use \left\{ \right\} unless we merge the $'s
 	printbr('$'
-		..symmath.export.LaTeX:applyLaTeX(var'\\tilde{T}''_i')
+		..symmath.export.MathJax:applyLaTeX(var'\\tilde{T}''_i')
 		..[[\in \left\{]]
 		..xforms:mapi(function(xform)
-			return symmath.export.LaTeX:applyLaTeX(xform)
-		end):concat',', [[\right\}$]])
+			return symmath.export.MathJax:applyLaTeX(xform)
+		end):concat','
+		..[[\right\}$]])
 	printbr()
 
 	-- verify the matrices are in fact rotations ... tho i think anything above is gonna be
@@ -724,10 +725,11 @@ for _,shape in ipairs(shapes) do
 	end
 	-- store a copy rounded to nearest 1e-7 or so, so i can just do an equivalence test when searching
 	-- don't use this for numerics as well because subsequent errors can build up
+	local function roundEps(x)
+		return math.round(x * 1e+7) * 1e-7
+	end
 	local function roundForSearch(m)
-		return (m:map(function(x)
-			return math.round(x * 1e+7) * 1e-7
-		end))
+		return (m:map(roundEps))
 	end
 	local function epsToKey(v)
 		return ffi.string(v.ptr, v.volume * ffi.sizeof(v.ctype))
@@ -815,7 +817,7 @@ for _,shape in ipairs(shapes) do
 			return i, epsToKey(epsxform)
 		end):setmetatable(nil)
 
-	-- [[
+	--[[
 		printbr'All Transforms:'
 		printbr()
 
@@ -884,6 +886,12 @@ for _,shape in ipairs(shapes) do
 
 			vtxs = rename:mapi(function(i) return vtxs[i] end)
 			vtxsrcinfo = rename:mapi(function(i) return vtxsrcinfo[i] end)
+			numvtxs = rename:mapi(function(i) return numvtxs[i] end)
+			epsvtxs = rename:mapi(function(i) return epsvtxs[i] end)
+			-- I could remap this too but I'm lazy
+			vtxIndexForEpsStr = epsvtxs:mapi(function(epsvtx,i)
+				return i, epsToKey(epsvtx)
+			end):setmetatable(nil)
 		end
 	end
 --]]
@@ -910,9 +918,69 @@ for _,shape in ipairs(shapes) do
 	local vdots
 	do
 		printerr'building vdots'
-		vdots = (Vmat:T() * Vmat)()
+		--[[ something in here is running slow ...
+		vdots = (VmatT * Vmat)()
+		--]]
+		--[[ so instead let's evalute it one at a time, and only upper/lower triangular, and copy
+		-- VmatT[i][j] = i'th vertex j'th component
+		local vdots = Matrix:zeros{nvtxs, nvtxs}
+		for i=1,nvtxs do
+			for j=1,i do
+printerr('vdot', i, j)
+				local vdot = (VmatT[i] * VmatT[j])()
+				vdots[i][j] = vdot
+				vdots[j][i] = vdot
+			end
+		end
+		--]]
+		-- [[ this is going slow, so lets use the same trick:
+		-- numerical inner products, and map epsilon-rounded values to analytical solutions
+		vdots = Matrix:zeros{nvtxs, nvtxs}
+		local numvmatT = matrix_ffi(
+			-- if the inner is a matrix then does the outer have to be too?
+			-- or should I just remove the metatable from the inner?
+			require 'matrix'(
+				numvtxs:mapi(function(numvtx)
+				-- table-of-matrix_ffi's ...
+				-- how will the ctor handle it?
+				-- not well so I had to unpack it in a toLuaMatrix()
+				return numvtx:toLuaMatrix()
+			end))
+		)
+--printerr(numvmatT:size())	-- looks right
+--printerr(numvmatT)		-- looks right
+--printerr'calc num transpose'
+		local numvmat = numvmatT:T()
+--printerr'calc num mul'
+		local numvdots = numvmatT * numvmat
+--printerr'done calc num mul'
+		local epsvdotToVDot = {}
+		for i=1,nvtxs do
+			for j=1,i do
+--printerr()
+--printerr('i='..i..' j='..j)
+--printerr('numvtxs[i]', numvtxs[i], 'numvtxs[j]', numvtxs[j])
+--printerr('numvmatT[i]', numvmatT[i], 'numvmatT[j]', numvmatT[j])
+				local numvdot = numvdots[{i,j}]
+				local epsvdot = roundEps(numvdot)
+				local vdot = epsvdotToVDot[epsvdot]
+--printerr('numvdot', numvdot, 'epsvdot', epsvdot)
+				if not vdot then
+					vdot = (VmatT[i] * VmatT[j])()
+--assert.type(vdot, 'table')
+--assert.is(vdot, Expression)
+					epsvdotToVDot[epsvdot] = vdot
+--printerr('writing vdot['..i..','..j..'] = '..symmath.export.SingleLine(VmatT[i] * VmatT[j])..' = '..symmath.export.SingleLine(vdot))
+				else
+--printerr('reading vdot['..i..','..j..'] = '..symmath.export.SingleLine(VmatT[i] * VmatT[j])..' = '..symmath.export.SingleLine(vdot))
+				end
+				vdots[i][j] = vdot
+				vdots[j][i] = vdot
+			end
+		end
+		--]]
 	end
-	printbr((var'V''^T' * var'V'):eq(Vmat:T() * Vmat):eq(vdots))
+	printbr((var'V''^T' * var'V'):eq(VmatT * Vmat):eq(vdots))
 	printbr()
 
 	printerr'...done vertex inner products'
