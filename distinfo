@@ -211,6 +211,7 @@ testfiles = {
 	["tests/Lorentz group.lua"] = "symmath/tests/Lorentz group.lua",
 	["tests/MHD - flux eigenvectors.lua"] = "symmath/tests/MHD - flux eigenvectors.lua",
 	["tests/MHD - flux eigenvectors.symmath"] = "symmath/tests/MHD - flux eigenvectors.symmath",
+	["tests/MHD - primitive form.symmath"] = "symmath/tests/MHD - primitive form.symmath",
 	["tests/MHD inverse.lua"] = "symmath/tests/MHD inverse.lua",
 	["tests/MHD symmetrization.lua"] = "symmath/tests/MHD symmetrization.lua",
 	["tests/MakeTrigLookupTables.lua"] = "symmath/tests/MakeTrigLookupTables.lua",
