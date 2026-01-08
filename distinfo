@@ -210,6 +210,7 @@ testfiles = {
 	["tests/Kerr-Schild degenerate case.lua"] = "symmath/tests/Kerr-Schild degenerate case.lua",
 	["tests/Lorentz group.lua"] = "symmath/tests/Lorentz group.lua",
 	["tests/MHD - flux eigenvectors.lua"] = "symmath/tests/MHD - flux eigenvectors.lua",
+	["tests/MHD - flux eigenvectors.symmath"] = "symmath/tests/MHD - flux eigenvectors.symmath",
 	["tests/MHD inverse.lua"] = "symmath/tests/MHD inverse.lua",
 	["tests/MHD symmetrization.lua"] = "symmath/tests/MHD symmetrization.lua",
 	["tests/MakeTrigLookupTables.lua"] = "symmath/tests/MakeTrigLookupTables.lua",
