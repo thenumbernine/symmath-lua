@@ -4,7 +4,6 @@
 
 name = "symmath"
 files = {
-	".github/FUNDING.yml",
 	"Array.lua",
 	"CayleyDickson.lua",
 	"Constant.lua",
