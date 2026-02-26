@@ -6,7 +6,7 @@ local LaTeX = require 'symmath.export.LaTeX'	-- returns a singleton object
 local symmath
 
 
-local MathJax = LaTeX.class:subclass()
+local MathJax = getmetatable(LaTeX):subclass()
 
 MathJax.name = 'MathJax'
 MathJax.colsep = '&amp;'	-- & but for html

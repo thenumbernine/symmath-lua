@@ -92,7 +92,7 @@ end
 
 function Export:apply(expr, ...)
 	if type(expr) ~= 'table' then return tostring(expr) end
-	return self:applyForClass(expr.class, expr, ...)
+	return self:applyForClass(getmetatable(expr), expr, ...)
 end
 
 -- separate the __call function to allow child classes to permute the final output without permuting intermediate results

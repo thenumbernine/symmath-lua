@@ -167,7 +167,7 @@ However defining a function as "f = func('f', {x})" would require an externally 
 
 function UserFunction:evaluateDerivative(deriv, ...)
 	local x = table.unpack(self):clone()
-	local cl = self.class
+	local cl = self
 	if not cl.cached_df then
 		cl.cached_df = UserFunction:makeSubclass(
 			cl.name.."'",
@@ -181,7 +181,7 @@ function UserFunction:evaluateDerivative(deriv, ...)
 end
 
 function UserFunction:printEqn()
-	local cl = self.class
+	local cl = self
 	if cl.def then
 		return cl(cl.args:unpack()):eq(cl.def)
 	else
@@ -190,7 +190,7 @@ function UserFunction:printEqn()
 end
 
 function UserFunction:defeq()
-	local cl = self.class
+	local cl = self
 	return cl(cl.args:unpack()):eq(cl.def)
 end
 

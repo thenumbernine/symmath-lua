@@ -4,7 +4,7 @@ local RealSubset = require 'symmath.set.RealSubset'
 
 --[[
 so with exporters, I had the .lua file return an instance of the class.
-and I had subclasses subclass the singleton's .class.
+and I had subclasses subclass the singleton's class.
 
 But here I'm putting both singletones and classes in the table, exposed.
 

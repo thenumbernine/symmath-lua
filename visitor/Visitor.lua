@@ -60,7 +60,7 @@ function Visitor:apply(expr, ...)
 	if self.rememberVisit then
 -- [[ cache visitors & simplification.  does this help?
 assert(self.name ~= Visitor.name)
-		local selfmt = self.class	 --getmetatable(self)
+		local selfmt = getmetatable(self)
 		if not selfmt.hasBeenField then
 			selfmt.hasBeenField = 'hasBeen'..self.name
 		end

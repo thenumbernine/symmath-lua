@@ -59,7 +59,7 @@ local function vert(n)
 	return horizontalLine[1]..horizontalLine[2]:rep(n-2)..horizontalLine[3]
 end
 
-local MultiLine = SingleLine.class:subclass()
+local MultiLine = getmetatable(SingleLine):subclass()
 
 MultiLine.name = 'MultiLine'
 
