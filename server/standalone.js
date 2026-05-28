@@ -30,9 +30,8 @@ window.MathJax = {
 // ... then load mathjax ...
 await import('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 
-const fail = e => {
-console.log(arguments);
-console.log(e);
+const fail = (...args) => {
+	console.log(args);
 	throw 'failed';
 }
 

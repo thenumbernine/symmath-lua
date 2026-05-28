@@ -99,9 +99,9 @@ If you would like to use the benefits of shorthand lambdas of the [Lua langfix](
 
 This is a WIP.
 
-Setting the `SYMMATH_PATH` to the base directory of Symmath is required.
+You can cd to the dir of the worksheet you want to work on, and run `$SYMMATH_PATH/server/standalone.lua`
 
-Then cd to the dir of the worksheet you want to work on, and run `$SYMMATH_PATH/server/standalone.lua`
+It will determine the symmath location either based on `SYMMATH_PATH` environment variable or by Lua require search for `symmath`.
 
 This requires my lua-http project in order to run.
 

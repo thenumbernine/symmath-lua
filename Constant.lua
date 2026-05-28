@@ -1,4 +1,4 @@
---[[				
+--[[
 TODO maybe get rid of 'complex' in Constant
 instead just let symmath.i be some special value
 and then change element-within-set test to look for add(const, mul(i, const))
@@ -210,7 +210,7 @@ Constant.rules = {
 				if expr.value:isZero() then
 					return Constant(bignumber(0))
 				end
-			
+
 				if expr.value < 0 then
 					return tidy:apply(-Constant(-expr.value))
 				end

@@ -7,11 +7,25 @@ local tolua = require 'ext.tolua'
 local checkstr = '✓'
 local failstr = '✕'
 
-local symmathPath = os.getenv'SYMMATH_PATH'		-- I have it set to HOME/Projects/lua/symmath
-assert(symmathPath, "expected environment variable SYMMATH_PATH to be set")
-local unitTestPath = symmathPath..'/tests/unit'
-local unitTestCachePath = path(symmathPath)/'tests/unit-cache'
-local unitTestOutputPath = path(symmathPath)/'tests/output/unit'
+-- [[ here and in server/standalone.html.lua
+local symmathPath = os.getenv'SYMMATH_PATH'
+if symmathPath then
+	symmathPath = path(symmathPath)
+else
+	-- use pth
+	local fn = package.searchpath('symmath', package.path):gsub('\\', '/')
+	if fn then
+		symmathPath = path(fn):getdir()
+	end
+end
+if not symmathPath then
+	error("SYMMATH_PATH not defined and I can't find require 'symmath' in the LUA_PATH")
+end
+--]]
+
+local unitTestPath = symmathPath/'tests/unit'
+local unitTestCachePath = symmathPath/'tests/unit-cache'
+local unitTestOutputPath = symmathPath/'tests/output/unit'
 unitTestCachePath:mkdir(true)
 unitTestOutputPath:mkdir(true)
 
