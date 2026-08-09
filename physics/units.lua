@@ -49,6 +49,11 @@ return function(args)
 		_ENV = env
 	end
 
+	-- unit variables should be positive
+	local function unitvar(...)
+		return set.positiveReal:var(...)
+	end
+
 	local MathJax
 	local lprint	-- local print, specific to symmath.tostring
 	if args.verbose then
@@ -73,13 +78,13 @@ return function(args)
 
 	-- TODO always use the variables, then subst at the end / let the user subst ?
 	if args.valuesAsVars then
-		c_value = var'{\\tilde{c}}'
-		G_value = var'{\\tilde{G}}'
-		k_e_value = var'{\\tilde{k}_e}'
-		e_value = var'{\\tilde{e}}'
-		m_e_value = var'{\\tilde{m}_e}'
-		k_B_value = var'{\\tilde{k}_B}'
-		hBar_value = var'{\\tilde{h}}'	-- '{\\tilde{\\hBar}}' ... gives MathJax errors
+		c_value = unitvar'{\\tilde{c}}'
+		G_value = unitvar'{\\tilde{G}}'
+		k_e_value = unitvar'{\\tilde{k}_e}'
+		e_value = unitvar'{\\tilde{e}}'
+		m_e_value = unitvar'{\\tilde{m}_e}'
+		k_B_value = unitvar'{\\tilde{k}_B}'
+		hBar_value = unitvar'{\\tilde{h}}'	-- '{\\tilde{\\hBar}}' ... gives MathJax errors
 	else
 		c_value = c_value_in_m_per_s
 		G_value = G_value_in_m3_per_kg_s2
@@ -93,24 +98,24 @@ return function(args)
 	-- grab from symmath, put in units (courtesy of the metatable)
 	pi = pi
 
-	m = var'm'
+	m = unitvar'm'
 
 	lprint('meter:',m)
 
-	in_ = var'in'
+	in_ = unitvar'in'
 	in_in_m = in_:eq(.0254 * m)
 	lprint('inch:',in_in_m)
 
-	ft = var'ft'
+	ft = unitvar'ft'
 	ft_in_in = ft:eq(12 * in_)
 	in_in_ft = ft_in_in:solve(in_)
 	ft_in_m = ft_in_in:subst(in_in_m)()
 	in_in_m = in_in_ft:subst(ft_in_m)()
 	lprint('foot:', ft_in_in:eq(ft_in_m:rhs()))
 
-	s = var's'
+	s = unitvar's'
 
-	c = var'c'
+	c = unitvar'c'
 	c_in_m_s = c:eq(c_value * (m / s))
 	c_eq_1 = c:eq(1)
 	lprint()
@@ -123,14 +128,14 @@ return function(args)
 	lprint(m_in_s)
 	SI_in_m:insert(s_in_m)
 
-	Hz = var'Hz'
+	Hz = unitvar'Hz'
 	Hz_in_s = Hz:eq(1/s)
 	Hz_in_m = Hz_in_s:subst(s_in_m)():factorDivision()
 	lprint('hertz:', Hz_in_s:eq(Hz_in_m:rhs()))
 
 	-- gravity
-	G = var'G'
-	kg = var'kg'
+	G = unitvar'G'
+	kg = unitvar'kg'
 	G_in_SI = G:eq(G_value * (m^3 / (kg * s^2)))
 	G_eq_1 = G:eq(1)
 	lprint()
@@ -147,25 +152,25 @@ return function(args)
 	lprint(m_in_kg)
 	lprint(s_in_kg)
 
-	lb = var'lb'	-- pounds
+	lb = unitvar'lb'	-- pounds
 	lb_in_kg = lb:eq(0.45359237 * kg)
 
-	g_n = var'g_n'
+	g_n = unitvar'g_n'
 	g_n_def = g_n:eq(9.80665 * frac(m,s^2))
 
-	lbf = var'lbf'
+	lbf = unitvar'lbf'
 	lbf_def = lbf:eq(lb * g_n)
 	lbf_in_SI = lbf_def:subst(lb_in_kg, g_n_def)
 
 	-- 'pound-force' per inch^2
-	psi = var'psi'
+	psi = unitvar'psi'
 	psi_def = psi:eq(lbf / (in_^2))
 	psi_in_SI = psi_def:subst(lbf_in_SI, in_in_m)
 
 	local function addunits(units)
 		for _,info in ipairs(units) do
 			local name, symbol, SI = table.unpack(info)
-			local v = var(symbol)
+			local v = unitvar(symbol)
 			-- Should I rename this variable to Omega to coincide with all other unit variables?
 			if symbol == '\\Omega' then symbol = 'Ohm' end
 			local v_in_SI = v:eq(SI)
@@ -193,11 +198,11 @@ return function(args)
 	-- then substitute this back to solve for amperes in terms of meters.
 	-- If coulombs were the SI unit then all I would have to do is solve Coulomb's constant
 	--  (just as the gravitation constant solves for kg and the speed of light solves for m).
-	A = var'A'
+	A = unitvar'A'
 
 	-- Coulomb's constant
-	C = var'C'
-	k_e = var'k_e'
+	C = unitvar'C'
+	k_e = unitvar'k_e'
 	k_e_in_SI_and_C = k_e:eq(k_e_value * kg * m^3 / (s^2 * C^2)):factorDivision()
 	k_e_eq_1 = k_e:eq(1)
 	lprint()
@@ -226,7 +231,7 @@ return function(args)
 
 	lprint()
 	lprint"permeability and permittivity of free space"
-	epsilon_0 = var'\\epsilon_0'
+	epsilon_0 = unitvar'\\epsilon_0'
 	k_e_in_epsilon_0 = k_e:eq(frac(1, 4 * pi * epsilon_0))
 	lprint(k_e_in_epsilon_0)
 	epsilon_0_in_SI_and_C = k_e_in_epsilon_0:subst(k_e_in_SI_and_C):solve(epsilon_0):factorDivision()
@@ -234,7 +239,7 @@ return function(args)
 	epsilon_0_in_m = k_e_in_epsilon_0:subst(k_e_eq_1):solve(epsilon_0)
 	lprint('in natural units:',epsilon_0_in_m)
 
-	mu_0 = var'\\mu_0'
+	mu_0 = unitvar'\\mu_0'
 	cSq_in_mu_0_epsilon_0 = (c^2):eq(1 / (mu_0 * epsilon_0))
 	lprint(cSq_in_mu_0_epsilon_0)
 	mu_0_in_SI_and_C = cSq_in_mu_0_epsilon_0:subst(epsilon_0_in_SI_and_C):subst(c_in_m_s):solve(mu_0):factorDivision()
@@ -245,7 +250,7 @@ return function(args)
 	-- e
 	lprint()
 	lprint"electron charge:"
-	e = var'e'
+	e = unitvar'e'
 	C_in_e = C:eq(e_value * e)
 	lprint(C_in_e)
 	e_in_C = C_in_e:factorDivision()():solve(e)
@@ -253,14 +258,14 @@ return function(args)
 	lprint(e_in_C:eq(e_in_m:rhs()))
 
 	-- m_e
-	m_e = var'm_e'
+	m_e = unitvar'm_e'
 	m_e_in_kg = m_e:eq(m_e_value * kg)
 	m_e_in_m = m_e_in_kg:subst(kg_in_m)()
 	lprint()
 	lprint("electron mass:", m_e_in_kg:eq(m_e_in_m:rhs()))
 
-	K = var'K'
-	k_B = var'k_B'
+	K = unitvar'K'
+	k_B = unitvar'k_B'
 	k_B_in_SI = k_B:eq(k_B_value * ((m^2 * kg) / (K * s^2)))
 	k_B_eq_1 = k_B:eq(1)
 	lprint("Boltzmann's constant:", k_B_in_SI:eq(k_B_eq_1:rhs()))
@@ -270,7 +275,7 @@ return function(args)
 	lprint('Kelvin:', K_in_SI:eq(K_in_m:rhs()))
 
 	-- Planck constant
-	hBar = var'\\hbar'
+	hBar = unitvar'\\hbar'
 	hBar_in_s_J = hBar:eq(hBar_value * J * s)
 	hBar_in_m = hBar_in_s_J:subst(s_in_m, J_in_m)()
 	lprint("reduced Planck constant:", hBar_in_s_J:eq(hBar_in_m:rhs()))
@@ -279,34 +284,34 @@ return function(args)
 
 	lprint()
 	lprint'Planck units:'
-	l_P = var'l_P'
+	l_P = unitvar'l_P'
 	l_P_def = l_P:eq(sqrt(hBar * G / c^3))
 	l_P_in_m = l_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)()
 	lprint('length',l_P_def:eq(l_P_in_m:rhs()))
 
-	m_P = var'm_P'
+	m_P = unitvar'm_P'
 	m_P_def = m_P:eq(sqrt(hBar * c / G))
 	m_P_in_kg = m_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(kg_in_m:solve(m))()
 	lprint('mass',m_P_def:eq(m_P_in_kg:rhs()))
 
-	t_P = var't_P'
+	t_P = unitvar't_P'
 	t_P_def = t_P:eq(sqrt(hBar * G / c^5))
 	t_P_in_s = t_P_def:subst(hBar_in_m, c_eq_1, G_eq_1)():subst(s_in_m:solve(m))()
 	lprint('time',t_P_def:eq(t_P_in_s:rhs()))
 
-	q_P = var'q_P'
+	q_P = unitvar'q_P'
 	q_P_def = q_P:eq(sqrt(4 * pi * epsilon_0 * hBar * c))
 	q_P_in_C = q_P_def:subst(hBar_in_m, c_eq_1, G_eq_1, epsilon_0_in_m, pi:eq(math.pi)):subst(C_in_m:solve(m))()
 	lprint('charge',q_P_def:eq(q_P_in_C:rhs()))
 
-	T_P = var'T_P'
+	T_P = unitvar'T_P'
 	T_P_def = T_P:eq(sqrt(hBar * c^2 / k_B))
 	T_P_in_K = T_P_def:subst(hBar_in_m, c_eq_1, G_eq_1, k_B_eq_1):subst(K_in_m:solve(m))()
 	lprint('temperature',T_P_def:eq(T_P_in_K:rhs()))
 
 	lprint()
 	lprint'fine structure constant'
-	alpha = var'\\alpha'
+	alpha = unitvar'\\alpha'
 	alpha_def = alpha:eq((k_e * e^2) / (hBar * c))
 	alpha_in_m = alpha_def:subst(k_e_eq_1, e_in_m, hBar_in_m, c_eq_1)()
 	lprint(alpha_def:eq(alpha_in_m:rhs()))
@@ -325,7 +330,7 @@ return function(args)
 	-- eV
 	lprint()
 	lprint'electronvolt'
-	local eV = var'eV'
+	local eV = unitvar'eV'
 	local eV_in_J = eV:eq(1.60217653e-19 * J)
 	lprint(eV_in_J)
 
