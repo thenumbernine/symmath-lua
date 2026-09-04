@@ -15,7 +15,7 @@ local tolua = require 'ext.tolua'
 local fromlua = require 'ext.fromlua'
 local template = require 'template'
 local showcode = require 'template.showcode'
-local HTTP = require 'http.class'
+local HTTP = require 'http'
 local json = require 'dkjson'
 
 -- TODO better cmdline args
