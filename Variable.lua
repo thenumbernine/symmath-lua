@@ -146,7 +146,7 @@ function Variable:setDependentVars(...)
 	-- filter out setDependentVars() of matching # of tensorref indexes
 	-- this way x:setDependentVars(y) and x'^i':setDependentVars(y) are separate
 	if self.dependentVars then
-		self.dependentVars = self.dependentVars:filter(function(depvar)
+		self.dependentVars = self.dependentVars:filteri(function(depvar)
 			return depvar.src ~= self
 		end)
 	else

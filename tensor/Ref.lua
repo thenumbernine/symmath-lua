@@ -92,7 +92,7 @@ function TensorRef:setDependentVars(...)
 	-- filter out setDependentVars() of matching # of tensorref indexes
 	-- this way x:setDependentVars(y) and x'^i':setDependentVars(y) are separate
 	if var.dependentVars then
-		var.dependentVars = var.dependentVars:filter(function(depvar)
+		var.dependentVars = var.dependentVars:filteri(function(depvar)
 			return depvar.src == var
 			or #depvar.src ~= #self
 		end)
@@ -763,7 +763,7 @@ TensorRef.rules = {
 					if #valueSingleVarIndexes > 0 then
 --DEBUG(@5):printbr('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(t.variance,tostring):concat',',' at ',valueSingleVarIndexes:concat',')
 						-- remove the rest of the single-variance letters
-						local remainingIndexes = table.filter(t.variance, function(v,k)
+						local remainingIndexes = table.filteri(t.variance, function(v,k)
 							return not valueSingleVarIndexes:find(k)
 						end)
 						-- [=[

@@ -9,7 +9,7 @@ require 'symmath'.setup{env=env, MathJax={title='Schwarzschild - spherical - der
 
 local Props = require 'symmath.physics.diffgeom':subclass()
 Props.verbose = true
-Props.fields = Props.fields:filter(function(f) return f.name ~= 'Riemann' and f.name ~= 'Ricci' and f.name ~= 'Gaussian' and f.name ~= 'Einstein' end)
+Props.fields = Props.fields:filteri(function(f) return f.name ~= 'Riemann' and f.name ~= 'Ricci' and f.name ~= 'Gaussian' and f.name ~= 'Einstein' end)
 Props.fields:insert{
 	name = 'Ricci',
 	symbol = 'R',

@@ -852,7 +852,7 @@ Tensor.__newindex = function(self, key, value)
 --DEBUG(@5):print('we still have '..#valueSingleVarIndexes..' left of ',table.mapi(value.variance,tostring):concat',',' at ',valueSingleVarIndexes:unpack())
 			value = Tensor(
 				-- remove the rest of the single-variance letters
-				table.filter(value.variance, function(v,k)
+				table.filteri(value.variance, function(v,k)
 					return not valueSingleVarIndexes:find(k)
 				end), function(...)
 					local is = {...}

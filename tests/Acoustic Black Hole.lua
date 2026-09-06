@@ -8,7 +8,7 @@ local chart = Tensor.Chart{coords={'0', 'xyz'}}
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
 	-- :sort(function(a,b) return a < b end)
-	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
+	:filteri(function(s) return s:match'^[a-z]' end)		-- lowercase
 	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
 
 Tensor.defaultSymbols = table{'i','j','k','l','m','n'}

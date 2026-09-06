@@ -24,7 +24,7 @@ SymMath.lookupTable = table(SymMath.lookupTable):union{
 		local s = indent..'var('..tolua(expr:nameForExporter(self))
 		-- TODO I don't have support for serializing depvars of TensorRefs
 		if expr.dependentVars and #expr.dependentVars > 0 then
-			s = s .. ', {'..expr.dependentVars:filter(function(depvar)
+			s = s .. ', {'..expr.dependentVars:filteri(function(depvar)
 				return depvar.src == expr
 			end):mapi(function(depvar)
 				return self:apply(depvar.wrt)

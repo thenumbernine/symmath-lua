@@ -753,7 +753,7 @@ function ProdList:toExpr()
 		end
 	end)
 
-	list = list:filter(function(x)
+	list = list:filteri(function(x)
 		return not Constant.isValue(x, 1)
 	end)
 
@@ -1534,7 +1534,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 					local baseTerms
 					local didntFind
 					for _,mul in ipairs(muls) do
-						local nonConstTerms = table.filter(mul, function(x,k)
+						local nonConstTerms = table.filteri(mul, function(x,k)
 							if not Constant.isNumber(k) then return end
 							return not Constant:isa(x)
 						end)
@@ -1546,7 +1546,7 @@ print('prodList', prodLists:toExpr(), '<br>')
 								break
 							end
 						end
-						local constTerms = table.filter(mul, function(x,k)
+						local constTerms = table.filteri(mul, function(x,k)
 							if not Constant.isNumber(k) then return end
 							return Constant:isa(x)
 						end)

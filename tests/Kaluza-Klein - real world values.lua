@@ -4,7 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env}
 local MathJax = symmath.export.MathJax
-symmath.tostring = MathJax 
+symmath.tostring = MathJax
 local printbr = MathJax.print
 MathJax.header.title = 'Kaluza-Klein - real world values'
 print(
@@ -12,8 +12,8 @@ print(
 		'</head>',
 		[[<script type='text/javascript' src='template.js'/></script>
 		<script type='text/javascript'>
-Template.prototype.openstring = '{=={';		
-Template.prototype.closestring = '}==}';		
+Template.prototype.openstring = '{=={';
+Template.prototype.closestring = '}==}';
 		</script>
 	</head>
 ]]):gsub('<body ', '<body templated ')
@@ -29,7 +29,7 @@ end
 --local constantScalarField = false	-- with implicitVars=true, you have to manually define your nil/false flags
 
 
--- this sets simplifyConstantPowers 
+-- this sets simplifyConstantPowers
 local units = require 'symmath.physics.units'()	--{valuesAsVars=true}
 
 
@@ -42,10 +42,10 @@ function splitTermIndexes(x, splitMap)
 --printbr('element within add op:', x)
 	for _,s in ipairs(summed) do
 		local newForThisTerm = table()
---printbr('finding symbol in splitMap '..s.symbol)						
+--printbr('finding symbol in splitMap '..s.symbol)
 assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 		for _,repl in ipairs(splitMap[s.symbol]) do
---printbr('...replacing symbol with '..repl)						
+--printbr('...replacing symbol with '..repl)
 			-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
 			local symbol = s.symbol
 			if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
@@ -75,10 +75,10 @@ function splitIndexes(expr, splitMap)
 --printbr('element within add op:', x)
 				for _,s in ipairs(summed) do
 					local newForThisTerm = table()
---printbr('finding symbol in splitMap '..s.symbol)						
+--printbr('finding symbol in splitMap '..s.symbol)
 assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 					for _,repl in ipairs(splitMap[s.symbol]) do
---printbr('...replacing symbol with '..repl)						
+--printbr('...replacing symbol with '..repl)
 						-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
 						local symbol = s.symbol
 						if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
@@ -126,7 +126,7 @@ printbr([[$c = $<input name='speed_of_light_in_m_per_s' value=']]..units.c_value
 printbr([[$G = $<input name='gravitational_constant_in_m3_per_kg_s2' value=']]..units.G_value_in_m3_per_kg_s2..[['/> $\cdot \frac{m^3}{kg \cdot s^2} = 1 = $ gravitational constant.]])
 printbr([[$k_e = $<input name='Coulomb_constant_in_kg_m3_per_C2_s2' value=']]..units.k_e_value_in_kg_m3_per_C2_s2..[['/> $\cdot \frac{kg \cdot m^3}{C^2 \cdot s^2}$ = Coulomb's constant (typically $\frac{1}{4 \pi \epsilon_0}$).]])
 
--- TODO compile symmath to JavaScript.  
+-- TODO compile symmath to JavaScript.
 -- That might mean using units{valuesAsVars=true} and then compiling them to have names matching the JavaScript variable names.
 -- That also means separating the units.k_e_value, units.G_value from the units themselve (kg / C)
 printbr(sqrt(k_e / G), [[ = {=={ sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C = Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $ \cdot \frac{kg}{C} = 1 =$ conversion from kg to C]])
@@ -145,7 +145,7 @@ local chart = Tensor.Chart{coords={'txyz','5'}}
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
 	-- :sort(function(a,b) return a < b end)
-	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
+	:filteri(function(s) return s:match'^[a-z]' end)		-- lowercase
 	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
 
 Tensor.defaultSymbols = greekSymbols
@@ -274,7 +274,7 @@ printbr(unitVelEqn)
 
 printbr('Substitute definition of ', g5'_ab')
 unitVelEqn = unitVelEqn
-	:replace(g5_parts[1][1], g5_def[1][1])() 
+	:replace(g5_parts[1][1], g5_def[1][1])()
 	:replace(g5_parts[1][2], g5_def[1][2])()
 	:replace(g5_parts[2][2], g5_def[2][2])()
 printbr(unitVelEqn)
@@ -406,17 +406,17 @@ Also notice that this shows then the charge-mass ratio in the Lorentz force law 
 <br>
 
 Of course you can avoid the constraint that that charge-mass ratio is dependent on the 3-velocity if you just relax the constraint of $u_\mu u^\mu = -1$.<br>
-Then, for constaint $u^5 = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}}$, 
-any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br> 
+Then, for constaint $u^5 = \frac{1}{4} \frac{q}{M} \sqrt{\frac{k_e}{G}}$,
+any deviations in the electric potential $A_t$ could relate to deviations in the 4-vel-norm (or in deviations in the Kaluza field, which I am keeping constant in this worksheet).<br>
 <br>
 
 Let's look at $\delta u^5$ with respect to $\delta u^\mu$ in the constraint above:<br>
 
-$ \delta u^5 = 
+$ \delta u^5 =
 -\frac{1}{(A_5)^2} \delta A_5 ( -A_\mu u^\mu \pm {\phi_K}^{-1} \sqrt{
 	-u_\mu u^\mu - 1
 } ) + \frac{1}{A_5} (
-	- \delta A_\mu u^\mu - A_\mu \delta u^\mu 
+	- \delta A_\mu u^\mu - A_\mu \delta u^\mu
 	\pm \frac{
 		{\phi_K}^{-3} \delta \phi_K (u_\mu u^\mu + 1)
 		- {\phi_K}^{-2} u_\mu \delta u^\mu
@@ -429,7 +429,7 @@ $ \delta u^5 =
 $<br>
 
 ...and as for $\delta u^5$ wrt $\delta (u_\mu u^\mu)$ in specific...<br>
-$ \frac{\delta u^5}{\delta (u_\mu u^\mu)} = 
+$ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 \mp \frac{
 	1
 }{2 A_5 {\phi_K}^2 \sqrt{
@@ -437,7 +437,7 @@ $ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 }}
 $<br>
 ...and if $A_5 = 2 (\phi_K)^{-1}$...<br>
-$ \frac{\delta u^5}{\delta (u_\mu u^\mu)} = 
+$ \frac{\delta u^5}{\delta (u_\mu u^\mu)} =
 \mp \frac{
 	1
 }{4 \sqrt{

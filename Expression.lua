@@ -1604,11 +1604,11 @@ function Expression:getIndexesUsed()
 		end
 		return
 			-- fixed
-			indexCounts:filter(function(index,symbol)
+			indexCounts:filteri(function(index,symbol)
 				return index.count == 1
 			end),
 			-- summed
-			indexCounts:filter(function(index,symbol)
+			indexCounts:filteri(function(index,symbol)
 				return index.count > 1
 			end),
 			-- extra
@@ -1645,15 +1645,15 @@ function Expression:getIndexesUsed()
 		end)
 		return
 			-- fixed
-			indexCounts:filter(function(index,symbol)
+			indexCounts:filteri(function(index,symbol)
 				return index.count == 1 and not index.extra
 			end),
 			-- summed
-			indexCounts:filter(function(index,symbol)
+			indexCounts:filteri(function(index,symbol)
 				return index.count > 1
 			end),
 			-- extra
-			indexCounts:filter(function(index,symbol)
+			indexCounts:filteri(function(index,symbol)
 				return index.count == 1 and index.extra
 			end)
 
@@ -1741,7 +1741,7 @@ function Expression.replaceWithDense(expr, cache)
 
 			-- replace any Tensor default symbols
 			if x[1] == deltaSymbol then
-				local nonDerivIndexes = indexes:filter(function(index)
+				local nonDerivIndexes = indexes:filteri(function(index)
 					return not index.derivative
 				end)
 				if #nonDerivIndexes == 2 then

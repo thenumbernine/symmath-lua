@@ -4,7 +4,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1, env) else _ENV = env end
 require 'symmath'.setup{env=env}
 local MathJax = symmath.export.MathJax
-symmath.tostring = MathJax 
+symmath.tostring = MathJax
 local printbr = MathJax.print
 MathJax.header.title = 'Kaluza-Klein - index notation'
 print(
@@ -12,8 +12,8 @@ print(
 		'</head>',
 		[[<script type='text/javascript' src='template.js'/></script>
 		<script type='text/javascript'>
-Template.prototype.openstring = '{=={';		
-Template.prototype.closestring = '}==}';		
+Template.prototype.openstring = '{=={';
+Template.prototype.closestring = '}==}';
 		</script>
 	</head>
 ]]):gsub('<body ', '<body templated ')
@@ -29,7 +29,7 @@ end
 --local constantScalarField = false	-- with implicitVars=true, you have to manually define your nil/false flags
 
 
--- this sets simplifyConstantPowers 
+-- this sets simplifyConstantPowers
 local units = require 'symmath.physics.units'()	--{valuesAsVars=true}
 
 
@@ -42,10 +42,10 @@ function splitTermIndexes(x, splitMap)
 --printbr('element within add op:', x)
 	for _,s in ipairs(summed) do
 		local newForThisTerm = table()
---printbr('finding symbol in splitMap '..s.symbol)						
+--printbr('finding symbol in splitMap '..s.symbol)
 assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 		for _,repl in ipairs(splitMap[s.symbol]) do
---printbr('...replacing symbol with '..repl)						
+--printbr('...replacing symbol with '..repl)
 			-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
 			local symbol = s.symbol
 			if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
@@ -75,10 +75,10 @@ function splitIndexes(expr, splitMap)
 --printbr('element within add op:', x)
 				for _,s in ipairs(summed) do
 					local newForThisTerm = table()
---printbr('finding symbol in splitMap '..s.symbol)						
+--printbr('finding symbol in splitMap '..s.symbol)
 assert(splitMap[s.symbol], "failed to find split for symbol "..s.symbol)
 					for _,repl in ipairs(splitMap[s.symbol]) do
---printbr('...replacing symbol with '..repl)						
+--printbr('...replacing symbol with '..repl)
 						-- TODO between strings, numbers, and multi-char symbols, right now the symbol system is a mess
 						local symbol = s.symbol
 						if type(symbol) == 'string' and #symbol > 1 then symbol = ' '..symbol end
@@ -126,7 +126,7 @@ printbr([[$c = $<input name='speed_of_light_in_m_per_s' value=']]..units.c_value
 printbr([[$G = $<input name='gravitational_constant_in_m3_per_kg_s2' value=']]..units.G_value_in_m3_per_kg_s2..[['/> $\cdot \frac{m^3}{kg \cdot s^2} = 1 = $ gravitational constant.]])
 printbr([[$k_e = $<input name='Coulomb_constant_in_kg_m3_per_C2_s2' value=']]..units.k_e_value_in_kg_m3_per_C2_s2..[['/> $\cdot \frac{kg \cdot m^3}{C^2 \cdot s^2}$ = Coulomb's constant (typically $\frac{1}{4 \pi \epsilon_0}$).]])
 
--- TODO compile symmath to JavaScript.  
+-- TODO compile symmath to JavaScript.
 -- That might mean using units{valuesAsVars=true} and then compiling them to have names matching the JavaScript variable names.
 -- That also means separating the units.k_e_value, units.G_value from the units themselve (kg / C)
 printbr(sqrt(k_e / G), [[ = {=={ sqrt_Coulomb_constant_over_gravitational_constant_in_kg_per_C = Math.sqrt(Coulomb_constant_in_kg_m3_per_C2_s2 / gravitational_constant_in_m3_per_kg_s2) }==} $ \cdot \frac{kg}{C} = 1 =$ conversion from kg to C]])
@@ -144,7 +144,7 @@ local chart = Tensor.Chart{coords={'txyz','5'}}
 
 local greekSymbols = require 'symmath.tensor.symbols'.greekSymbolNames
 	-- :sort(function(a,b) return a < b end)
-	:filter(function(s) return s:match'^[a-z]' end)		-- lowercase
+	:filteri(function(s) return s:match'^[a-z]' end)		-- lowercase
 	:mapi(function(s) return '\\'..s end)				-- append \ to the beginning for LaTeX
 
 Tensor.defaultSymbols = greekSymbols
@@ -272,11 +272,11 @@ printbr(g5'^ab':eq(g5U_def))
 printbr()
 
 local delta = var'\\delta'
-local delta5_from_g5_def = 
+local delta5_from_g5_def =
 	(
 		g5_def'_ac'():reindex{ [' \\beta'] = ' \\gamma'}
 		* g5U_def'^cb'():reindex{ [' \\alpha'] = ' \\gamma'}
-	)() 
+	)()
 		:replace(A' _\\gamma' * g' ^\\gamma ^\\beta', A' ^\\beta')
 		:replace(A' ^\\gamma' * g' _\\alpha _\\gamma', A' _\\alpha')
 		:replace(g' ^\\gamma ^\\beta' * g' _\\alpha _\\gamma', delta' _\\alpha ^\\beta')
@@ -341,7 +341,7 @@ local conn5 = var'\\tilde{\\Gamma}'
 local conn5L_def = Tensor('_abc', function(a,b,c)
 	return (frac(1,2) * (
 		-- g_ab,c
-		dg5_def[c][a][b]	
+		dg5_def[c][a][b]
 		-- + g_ac,b
 		+ dg5_def[b][a][c]:reindex{[' \\beta \\gamma'] = ' \\gamma \\beta'}
 		-- - g_bc,a
@@ -354,13 +354,13 @@ local F = var'F'
 local conn4 = var'\\Gamma'
 --[[ why isn't this working anymore?
 conn5L_def = conn5L_def:replace(
-	(g' _\\alpha _\\beta _,\\gamma' + g' _\\alpha _\\gamma _,\\beta' - g' _\\beta _\\gamma _,\\alpha')(), 
+	(g' _\\alpha _\\beta _,\\gamma' + g' _\\alpha _\\gamma _,\\beta' - g' _\\beta _\\gamma _,\\alpha')(),
 	2 * conn4'_\\alpha _\\beta _\\gamma'
 )()
 --]]
 -- [[ instead ...
 conn5L_def = conn5L_def:replace(
-	g' _\\alpha _\\beta _,\\gamma', 
+	g' _\\alpha _\\beta _,\\gamma',
 	2 * conn4'_\\alpha _\\beta _\\gamma' - g' _\\alpha _\\gamma _,\\beta' + g' _\\beta _\\gamma _,\\alpha'
 )()
 --]]
@@ -509,7 +509,7 @@ printbr(spatialGeodesic_def)
 printbr[[Notice, if we assume $A_\mu u^\mu = 0$ then we are left only with terms for gravitational acceleration the and Lorentz force.]]
 printbr'Splitting spacetime indexes into space+time'
 spatialGeodesic_def = splitIndexes(spatialGeodesic_def, {['\\beta'] = {0, 'j'}, ['\\gamma'] = {0, 'k'}})
-spatialGeodesic_def = (spatialGeodesic_def * c^2):simplifyAddMulDiv()	-- multiply by c^2 <=> convert units of rhs to m/s^2 
+spatialGeodesic_def = (spatialGeodesic_def * c^2):simplifyAddMulDiv()	-- multiply by c^2 <=> convert units of rhs to m/s^2
 printbr(spatialGeodesic_def)
 
 -- TODO just use a Lorentz factor and don't approximate anything
@@ -537,8 +537,8 @@ printbr'Low-velocity Faraday tensor:'
 printbr('Assume', EU_from_F, ',', B_from_F)
 spatialGeodesic_def = spatialGeodesic_def:subst(
 	EU_from_F,
-	B_from_F:reindex{ijk='jil'}, 
-	B_from_F:reindex{ijk='kil'}, 
+	B_from_F:reindex{ijk='jil'},
+	B_from_F:reindex{ijk='kil'},
 	(B'_l' * epsilon'_k^il'):eq(-B'^l' * epsilon'^i_kl'),
 	(B'_l' * epsilon'_j^il'):eq(-B'^k' * epsilon'^i_jk')
 )
@@ -570,7 +570,7 @@ spatialGeodesic_def = spatialGeodesic_def:subst(
 	du_ds_from_dv_dt
 ):simplifyAddMulDiv()
 printbr(spatialGeodesic_def)
--- TODO real-world values ... 
+-- TODO real-world values ...
 -- *) what is the force produced on an electron in the magnetic field around the wire given above?
 -- *) what is the force produced on an electron from the gravitational field of the Earth?
 -- *) how about the other terms...
@@ -580,7 +580,7 @@ local substitutions = table{
 	-- physical constants
 	units.G_in_SI,
 	units.k_e_in_SI_and_C,
-	-- what is acting upon our particle 
+	-- what is acting upon our particle
 	mass2:eq(earthmass),
 	r:eq(earthradius),
 	-- our moving particle
@@ -704,7 +704,7 @@ printbr'<hr>'
 printbr'connection partial:'
 local dconn5_2x2x2_def = Tensor('^a_bc', function(a,b,c)
 	local x = conn5U_def[a][b][c]',d'()
-	if constantScalarField then	
+	if constantScalarField then
 		x = x:replace(phi_K'_,d', 0)()
 	end
 	x = x:map(function(x)
@@ -728,7 +728,7 @@ printbr(conn5'^a_bc,d':eq(dconn5U_def))
 printbr()
 
 
-local conn5USq_def = 
+local conn5USq_def =
 	conn5U_def'^a_ec'():reindex{[' \\beta'] = ' \\epsilon'}
 	* conn5U_def'^e_bd'():reindex{[' \\alpha \\gamma \\mu'] = ' \\epsilon \\delta \\nu'}
 printbr((conn5'^a_be' * conn5'^e_cd'):eq(conn5USq_def))
@@ -759,7 +759,7 @@ local Riemann5_def = Tensor('^a_bcd', function(a,b,c,d)
 end)
 
 Riemann5_def = Riemann5_def
-	:replace( A' _\\beta _,\\delta _,\\gamma', A' _\\beta _,\\gamma _,\\delta')	
+	:replace( A' _\\beta _,\\delta _,\\gamma', A' _\\beta _,\\gamma _,\\delta')
 	:replace( A' _\\delta _,\\beta _,\\gamma', F' _\\gamma _\\delta _,\\beta' + A' _\\gamma _,\\beta _,\\delta')
 	:simplify()
 
@@ -816,13 +816,13 @@ Riemann5_def[1][1][2][1] = Riemann5_def[1][1][2][1]:reindex{[' \\nu'] = ' \\epsi
 Riemann5_def = (Riemann5_def
 	:replace(
 		F' _\\delta ^\\alpha _,\\gamma',
-		- F' _\\delta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma' 
+		- F' _\\delta ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\gamma'
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
 		+ F' _\\delta ^\\alpha _;\\gamma'
 	)
 	:replace(
 		F' _\\gamma ^\\alpha _,\\delta',
-		- F' _\\gamma ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta' 
+		- F' _\\gamma ^\\epsilon' * conn4' ^\\alpha _\\epsilon _\\delta'
 		+ F' _\\epsilon ^\\alpha' * conn4' ^\\epsilon _\\gamma _\\delta'
 		+ F' _\\gamma ^\\alpha _;\\delta'
 	)
@@ -916,11 +916,11 @@ if not constantScalarField then
 		:replace(phi_K' ^,\\gamma' * F' _\\gamma _\\beta', -phi_K' _,\\gamma' * F' _\\beta ^\\gamma')
 		:replace(phi_K' ^,\\gamma' * F' _\\gamma _\\alpha', -phi_K' _,\\gamma' * F' _\\alpha ^\\gamma')
 		:replace(phi_K' _,\\gamma _,\\beta' * A' ^\\gamma', A' _\\gamma' * phi_K' ^,\\gamma _,\\beta' + phi_K' ^,\\gamma' * A' _\\gamma _,\\beta' - phi_K' _,\\gamma' * A' ^\\gamma _,\\beta')
-	
+
 	Ricci5_def[1][1] = Ricci5_def[1][1]
 		:replace(phi_K' _,\\alpha _,\\beta', phi_K' _;\\alpha _;\\beta' + phi_K' _,\\gamma' * conn4' ^\\gamma _\\alpha _\\beta')
 		:replace(A' _\\gamma' * phi_K' ^,\\gamma', A' ^\\gamma' * phi_K' _,\\gamma')
-	
+
 	Ricci5_def = Ricci5_def:simplifyAddMulDiv()
 	printbr(R5'_ab':eq(Ricci5_def))
 end
@@ -981,7 +981,7 @@ printbr'<hr>'
 printbr'stress-energy tensor:'
 
 local T5 = var'\\tilde{T}'
-local T5_def = Tensor('_ab', 
+local T5_def = Tensor('_ab',
 	{T5'_\\alpha _\\beta', T5'_\\alpha _5'},
 	{T5'_5 _\\beta', T5'_55'}
 )
@@ -1042,7 +1042,7 @@ printbr('Substitute', R_from_EFE5)
 -- within divF_from_EFE5_5_mu, R is multiplied by A_alpha ... but R's def holds alphas as sum indexes ...
 -- so this will introduce duplicate sums ...
 --divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:subst(R_from_EFE5):simplifyAddMulDiv()
--- so either (A) reindex R_from_EFE5 manually ... 
+-- so either (A) reindex R_from_EFE5 manually ...
 --divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:subst(R_from_EFE5:reindex{[' \\alpha \\beta \\gamma'] = ' \\mu \\nu \\rho'}):simplifyAddMulDiv()
 -- or (B) try to rely on substIndex ... (which has problem?)
 divF_from_EFE5_5_mu = divF_from_EFE5_5_mu:substIndex(R_from_EFE5):simplifyAddMulDiv()
@@ -1084,14 +1084,14 @@ if constantScalarField then
 	-- TODO make sure this is up to date manually, or use some operators here
 	printbr[[
 $
-	(	
-		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha 
+	(
+		12 \pi G \frac{1}{c^4 \mu_0} F^{\mu\nu} A_\alpha
 		+ \delta^\mu_\alpha \delta^\nu_\beta \nabla^\beta
-	) F_{\mu\nu} 
+	) F_{\mu\nu}
 	- (
-		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta 
-		+ R \delta^\beta_\alpha 
-	) A_\beta 
+		16 \frac{1}{c^2} \pi G \rho u_\alpha u^\beta
+		+ R \delta^\beta_\alpha
+	) A_\beta
 	= \mu_0 J_\alpha
 $<br>
 
@@ -1137,12 +1137,12 @@ local so = (tmp:switch() * -mu_0 + frac(1,4) * g' _\\alpha _\\beta' * F' _\\mu ^
 
 printbr('So', so)
 -- T_EM_ab = 1/mu0 (F_au F_b^u - 1/4 g_ab F_uv F^uv)
--- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv 
+-- so F_ae F_b^e = mu0 T_EM_ab + 1/4 g_ab F_uv F^uv
 EFE5_mu_nu_def = EFE5_mu_nu_def:replace(
 	F' _\\alpha ^\\gamma' * F' _\\beta _\\gamma', -so[2]:reindex{[' \\alpha \\mu _\\beta'] = ' \\alpha \\gamma \\beta'}
 ):tidyIndexes{fixed=' \\alpha \\beta'}:simplifyAddMulDiv()
 printbr(EFE5_mu_nu_def)
--- can't just say "replace R" because it will substitute the indexed R's ... 
+-- can't just say "replace R" because it will substitute the indexed R's ...
 -- but I'll replace the R_αβ - 1/2 R g_αβ with G_αβ
 printbr('Substitute', divF_from_EFE5_5_mu)
 local EFE5_mu_nu_def_A = EFE5_mu_nu_def:subst(
@@ -1172,7 +1172,7 @@ printbr[[using a specific stress-energy tensor:]]
 printbr[[$\tilde{T}_{ab} = c^2 \rho u_a u_b + P (\tilde{g}_{ab} + u_a u_b)$]]
 printbr()
 local P = var'P'
-local T5_def = Tensor('_ab', 
+local T5_def = Tensor('_ab',
 	{
 		(c^2 * rho + P) * u' _\\alpha' * u' _\\beta' + P * g5' _\\alpha _\\beta',
 		(c^2 * rho + P) * u' _\\alpha' * u'_5' + P * g5' _\\alpha _5',
@@ -1200,7 +1200,7 @@ T5_def = T5_def
 		u5L_def[2]:reindex{[' \\beta'] = ' \\gamma'}
 		* u5L_def[2]:reindex{[' \\beta'] = ' \\delta'}
 	)
-	
+
 	:subst(
 		u5L_def:reindex{[' \\beta'] = ' \\gamma'},
 		u5U_def,

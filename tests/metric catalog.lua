@@ -723,7 +723,7 @@ local spacetimes = table{
 	},
 }
 
-spacetimes = spacetimes:filter(function(c)
+spacetimes = spacetimes:filteri(function(c)
 	return c.title == 'Schwarzschild, anholonomic'
 end)
 
